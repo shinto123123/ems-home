@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notifications</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+ /* CSS Part 3 */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    padding:13px 22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    color:#8898aa;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+/* ───────── TOP NAVBAR ───────── */
+
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:#0b1437;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.header h1{
+    font-size:28px;
+    color:#ffffff;
+}
+
+.read-btn{
+    padding:11px 22px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.read-btn:hover{
+    background:#3182ce;
+}
+
+.read-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs{
+    display:flex;
+    gap:30px;
+    border-bottom:1px solid #1b2e6e;
+    margin-bottom:18px;
+}
+
+.tab{
+    padding-bottom:12px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+    position:relative;
+    font-size:14px;
+}
+
+.tab:hover{
+    color:#ffffff;
+}
+
+.tab.active{
+    color:#4299e1;
+    font-weight:600;
+}
+
+.tab.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-1px;
+    width:100%;
+    height:3px;
+    background:#4299e1;
+    border-radius:10px;
+}
+/* =========================
+   NOTIFICATION CONTAINER
+========================= */
+
+.notification-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.notification-box::-webkit-scrollbar{
+    width:8px;
+}
+
+.notification-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+/* =========================
+   NOTIFICATION ITEM
+========================= */
+
+.notification-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 24px;
+    border-bottom:1px solid #1b2e6e;
+    transition:.3s;
+}
+
+.notification-item:last-child{
+    border-bottom:none;
+}
+
+.notification-item:hover{
+    background:#16265c;
+}
+
+/* =========================
+   LEFT SECTION
+========================= */
+
+.left-section{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex:1;
+}
+
+.dot{
+    width:10px;
+    height:10px;
+    background:#4299e1;
+    border-radius:50%;
+    flex-shrink:0;
+    box-shadow:0 0 8px rgba(66,153,225,.6);
+}
+
+.notify-icon{
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.notify-content h3{
+    color:#ffffff;
+    font-size:15px;
+    margin-bottom:5px;
+    font-weight:600;
+}
+
+.notify-content p{
+    color:#8898aa;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================
+   RIGHT SECTION
+========================= */
+
+.right-section{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    color:#8898aa;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.right-section span{
+    color:#8898aa;
+}
+
+.right-section i{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.right-section i:hover{
+    background:#4299e1;
+    color:#ffffff;
+    transform:translateX(3px);
+}
+
+/* =========================
+   UNREAD NOTIFICATION
+========================= */
+
+.notification-item.unread{
+    border-left:4px solid #4299e1;
+}
+
+/* =========================
+   READ NOTIFICATION
+========================= */
+
+.notification-item.read{
+    opacity:.75;
+}
+
+.notification-item.read .dot{
+    background:#6b7280;
+    box-shadow:none;
+}
+/* =========================
+   NOTIFICATION CONTAINER
+========================= */
+
+.notification-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.notification-box::-webkit-scrollbar{
+    width:8px;
+}
+
+.notification-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+/* =========================
+   NOTIFICATION ITEM
+========================= */
+
+.notification-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 24px;
+    border-bottom:1px solid #1b2e6e;
+    transition:.3s;
+}
+
+.notification-item:last-child{
+    border-bottom:none;
+}
+
+.notification-item:hover{
+    background:#16265c;
+}
+
+/* =========================
+   LEFT SECTION
+========================= */
+
+.left-section{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex:1;
+}
+
+.dot{
+    width:10px;
+    height:10px;
+    background:#4299e1;
+    border-radius:50%;
+    flex-shrink:0;
+    box-shadow:0 0 8px rgba(66,153,225,.6);
+}
+
+.notify-icon{
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.notify-content h3{
+    color:#ffffff;
+    font-size:15px;
+    margin-bottom:5px;
+    font-weight:600;
+}
+
+.notify-content p{
+    color:#8898aa;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================
+   RIGHT SECTION
+========================= */
+
+.right-section{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    color:#8898aa;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.right-section span{
+    color:#8898aa;
+}
+
+.right-section i{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.right-section i:hover{
+    background:#4299e1;
+    color:#ffffff;
+    transform:translateX(3px);
+}
+
+/* =========================
+   UNREAD NOTIFICATION
+========================= */
+
+.notification-item.unread{
+    border-left:4px solid #4299e1;
+}
+
+/* =========================
+   READ NOTIFICATION
+========================= */
+
+.notification-item.read{
+    opacity:.75;
+}
+
+.notification-item.read .dot{
+    background:#6b7280;
+    box-shadow:none;
+}
+
+/* =========================
+   COMPOSE MODAL
+========================= */
+
+.modal-backdrop{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(5,10,30,0.82);backdrop-filter:blur(5px);z-index:99999;display:flex;justify-content:center;align-items:center;visibility:hidden;opacity:0;transition:opacity 0.3s ease, visibility 0.3s ease;}
+.modal-backdrop.open{visibility:visible;opacity:1;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;width:100%;max-width:520px;border-radius:16px;box-shadow:0 15px 40px rgba(0,0,0,0.6);overflow:hidden;transform:translateY(-30px);transition:transform 0.3s ease;}
+.modal-backdrop.open .modal-box{transform:translateY(0);}
+.modal-header{padding:20px 25px;background:#16265c;border-bottom:1px solid #1b2e6e;display:flex;justify-content:space-between;align-items:center;}
+.modal-header h3{color:#ffffff;font-size:18px;font-weight:600;}
+.close-modal-btn{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:color 0.2s;}
+.close-modal-btn:hover{color:#f87171;}
+.modal-body{padding:25px;}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{color:#8898aa;font-size:12px;font-weight:600;}
+.form-group input, .form-group textarea{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:10px 14px;color:#ffffff;font-size:14px;outline:none;transition:border-color 0.2s;font-family:inherit;}
+.form-group input:focus, .form-group textarea:focus{border-color:#4299e1;}
+.form-group input::placeholder, .form-group textarea::placeholder{color:#4a5568;}
+.audience-pill-wrap{display:flex;gap:8px;flex-wrap:wrap;}
+.audience-pill-item{position:relative;}
+.audience-pill-item input[type="checkbox"]{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:2;}
+.audience-pill-label{display:inline-flex;align-items:center;gap:6px;background:#0b1437;border:1px solid #1b2e6e;padding:6px 14px;border-radius:20px;font-size:12.5px;color:#cbd5e1;cursor:pointer;transition:.2s;}
+.audience-pill-item input[type="checkbox"]:checked + .audience-pill-label{background:rgba(66,153,225,0.1);border-color:#4299e1;color:#fff;}
+.modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:12px;}
+.cancel-modal-btn{background:#1b2e6e;color:#e2e8f0;border:none;padding:11px 22px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:background 0.2s;}
+.cancel-modal-btn:hover{background:#243b82;}
+.submit-modal-btn{background:#4299e1;color:#ffffff;border:none;padding:11px 22px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:background 0.2s;}
+.submit-modal-btn:hover{background:#3182ce;}
+</style>
+
+</head>
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<div class="logo">
+EMS ADMIN
+</div>
+
+<ul>
+ <li ><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li ><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li ><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li ><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li class="active"><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+ </ul>
+</div>
+
+
+<!-- Main -->
+
+<div class="main">
+
+<!-- Topbar -->
+
+<!-- TOP NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="navbar-logo">
+            LOGO
+        </div>
+
+        <span class="navbar-title">
+            EMPLOYEE MANAGEMENT SYSTEM
+        </span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </div>
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+
+        <div class="nav-profile" id="navProfileToggle">
+
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Content -->
+
+<div class="content">
+
+<div class="header">
+
+<h1>Notifications</h1>
+
+<div style="display:flex; gap:12px;">
+
+<button class="read-btn" id="openComposeBtn" style="background:#1b2e6e;">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+New Notification
+
+</button>
+
+<button class="read-btn" id="markAllReadBtn">
+
+<i class="fa-regular fa-circle-check"></i>
+
+Mark All as Read
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- Tabs -->
+
+<div class="tabs">
+
+<div class="tab active">
+
+All (4)
+
+</div>
+
+<div class="tab">
+
+Unread (4)
+
+</div>
+
+<div class="tab">
+
+Read (0)
+
+</div>
+
+</div>
+
+
+<!-- Notification Box -->
+
+<div class="notification-box" id="notificationBox">
+    <div style="text-align:center; padding:24px; color:#8898aa;">Loading notifications...</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- Compose Notification Modal -->
+<div class="modal-backdrop" id="composeModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>New Notification</h3>
+            <button class="close-modal-btn" id="closeComposeBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Target Audience</label>
+                <div class="audience-pill-wrap">
+                    <div class="audience-pill-item">
+                        <input type="checkbox" id="audAll" checked>
+                        <div class="audience-pill-label">All</div>
+                    </div>
+                    <div class="audience-pill-item">
+                        <input type="checkbox" id="audHr">
+                        <div class="audience-pill-label">HR</div>
+                    </div>
+                    <div class="audience-pill-item">
+                        <input type="checkbox" id="audMgr">
+                        <div class="audience-pill-label">Managers</div>
+                    </div>
+                    <div class="audience-pill-item">
+                        <input type="checkbox" id="audEmp">
+                        <div class="audience-pill-label">Employees</div>
+                    </div>
+                    <div class="audience-pill-item">
+                        <input type="checkbox" id="audInt">
+                        <div class="audience-pill-label">Interns</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="composeTitleInput" placeholder="Enter notification title...">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="composeBodyInput" rows="4" placeholder="Write the notification message..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-modal-btn" id="cancelComposeBtn">Cancel</button>
+                <button type="button" class="submit-modal-btn" id="sendNotifBtn">Publish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, addDoc, getDocs, doc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const box = document.getElementById('notificationBox');
+
+    async function loadNotifications() {
+        try {
+            const snap = await getDocs(collection(db, "notifications"));
+            const relevant = [];
+            snap.forEach((docSnap) => {
+                const n = docSnap.data();
+                if (n.audience === "All" || n.audience === "Admins") relevant.push({ id: docSnap.id, ...n });
+            });
+
+            if (relevant.length === 0) {
+                box.innerHTML = `<div style="text-align:center; padding:24px; color:#8898aa;">No notifications yet.</div>`;
+                return;
+            }
+
+            box.innerHTML = "";
+            relevant.forEach((n) => {
+                const isRead = (n.readByUids || []).includes(currentUser.uid);
+                box.insertAdjacentHTML('beforeend', `
+                    <div class="notification-item ${isRead ? 'read' : 'unread'}">
+                        <div class="left-section">
+                            <div class="dot"></div>
+                            <div class="notify-icon"><i class="fa-regular fa-bell"></i></div>
+                            <div class="notify-content">
+                                <h3>${n.title || 'Notification'}</h3>
+                                <p>${n.body || ''}</p>
+                            </div>
+                        </div>
+                        <div class="right-section">
+                            <span>${n.sender || ''}</span>
+                            <i class="fa-solid fa-angle-right mark-read-btn" data-id="${n.id}" style="cursor:pointer;"></i>
+                        </div>
+                    </div>
+                `);
+            });
+
+            document.querySelectorAll('.mark-read-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await updateDoc(doc(db, "notifications", btn.getAttribute('data-id')), { readByUids: arrayUnion(currentUser.uid) });
+                    loadNotifications();
+                });
+            });
+
+        } catch (error) {
+            console.error("Failed to load notifications: ", error);
+            box.innerHTML = `<div style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</div>`;
+        }
+    }
+
+    document.getElementById('markAllReadBtn').addEventListener('click', async () => {
+        const snap = await getDocs(collection(db, "notifications"));
+        const updates = [];
+        snap.forEach((docSnap) => {
+            updates.push(updateDoc(doc(db, "notifications", docSnap.id), { readByUids: arrayUnion(currentUser.uid) }));
+        });
+        await Promise.all(updates);
+        loadNotifications();
+    });
+
+    loadNotifications();
+
+    // Compose modal wiring
+    const composeModal = document.getElementById('composeModal');
+    const openComposeBtn = document.getElementById('openComposeBtn');
+    const closeComposeBtn = document.getElementById('closeComposeBtn');
+    const cancelComposeBtn = document.getElementById('cancelComposeBtn');
+    const audAll = document.getElementById('audAll');
+    const audHr = document.getElementById('audHr');
+    const audMgr = document.getElementById('audMgr');
+    const audEmp = document.getElementById('audEmp');
+    const audInt = document.getElementById('audInt');
+    const composeTitleInput = document.getElementById('composeTitleInput');
+    const composeBodyInput = document.getElementById('composeBodyInput');
+    const sendNotifBtn = document.getElementById('sendNotifBtn');
+
+    const openCompose = () => composeModal.classList.add('open');
+    const closeCompose = () => composeModal.classList.remove('open');
+    openComposeBtn.addEventListener('click', openCompose);
+    closeComposeBtn.addEventListener('click', closeCompose);
+    cancelComposeBtn.addEventListener('click', closeCompose);
+
+    function resetComposeForm() {
+        composeTitleInput.value = '';
+        composeBodyInput.value = '';
+        audAll.checked = true;
+        audHr.checked = false;
+        audMgr.checked = false;
+        audEmp.checked = false;
+        audInt.checked = false;
+    }
+
+    sendNotifBtn.addEventListener('click', async () => {
+        const title = composeTitleInput.value.trim();
+        const body = composeBodyInput.value.trim();
+
+        if (!title || !body) {
+            alert("Please provide both a title and a message.");
+            return;
+        }
+
+        let audiences;
+        if (audAll.checked) {
+            audiences = ["All"];
+        } else {
+            audiences = [];
+            if (audHr.checked) audiences.push("HR");
+            if (audMgr.checked) audiences.push("Managers");
+            if (audEmp.checked) audiences.push("Employees");
+            if (audInt.checked) audiences.push("Interns");
+        }
+
+        if (audiences.length === 0) {
+            alert("Please select at least one target audience.");
+            return;
+        }
+
+        try {
+            for (const audience of audiences) {
+                await addDoc(collection(db, "notifications"), {
+                    title,
+                    body,
+                    audience,
+                    sender: currentUser.name,
+                    createdAt: serverTimestamp(),
+                    readByUids: []
+                });
+            }
+            closeCompose();
+            resetComposeForm();
+            loadNotifications();
+        } catch (err) {
+            alert("Error publishing notification: " + err.message);
+        }
+    });
+</script>
+</body>
+</html>

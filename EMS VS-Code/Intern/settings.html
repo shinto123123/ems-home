@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:4px;}
+
+.panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.panel:hover{border-color:#4299e1;}
+.panel h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;}
+.panel .muted{font-size:12.5px;color:#8898aa;}
+
+.pref-item{display:flex;align-items:center;gap:10px;font-size:13px;color:#e2e8f0;cursor:pointer;margin-top:12px;}
+.pref-item input{width:16px;height:16px;accent-color:#4299e1;}
+
+.btn-primary{background:#4299e1;color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;margin-top:14px;}
+.btn-primary:hover{background:#2b7fd1;}
+.btn-danger{background:#d43f3a;color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;margin-top:14px;}
+.btn-danger:hover{background:#b6322e;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+     <ul class="sidebar-menu">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li class="active"><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <h1>Settings</h1>
+        <p>Manage your account preferences and security.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Account</h3>
+        <div class="muted">Sign out of your account on this device.</div>
+        <button id="logoutAccountBtn" class="btn-danger">Logout</button>
+      </div>
+
+      <div class="panel">
+        <h3>Preferences</h3>
+        <label class="pref-item"><input type="checkbox" id="emailNotif" checked> Email notifications</label>
+      </div>
+
+      <div class="panel">
+        <h3>Security</h3>
+        <label class="pref-item"><input type="checkbox" id="twoFactorToggle"> Two-factor authentication</label>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  function doLogout(e) {
+    e.preventDefault();
+    logout("../");
+  }
+  document.getElementById('logoutBtn').addEventListener('click', doLogout);
+  document.getElementById('logoutAccountBtn').addEventListener('click', doLogout);
+
+  const emailNotifCheckbox = document.getElementById('emailNotif');
+  const twoFactorCheckbox = document.getElementById('twoFactorToggle');
+
+  async function loadPreferences() {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      const snap = await getDoc(doc(db, "interns", currentUser.docId));
+      if (!snap.exists()) return;
+      const data = snap.data();
+      emailNotifCheckbox.checked = data.emailNotifications !== false;
+      twoFactorCheckbox.checked = data.twoFactorEnabled === true;
+    } catch (err) {
+      console.error("Failed to load preferences: ", err);
+    }
+  }
+
+  emailNotifCheckbox.addEventListener('change', async () => {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      await updateDoc(doc(db, "interns", currentUser.docId), { emailNotifications: emailNotifCheckbox.checked });
+    } catch (err) {
+      alert('Failed to update email notification preference: ' + err.message);
+    }
+  });
+
+  twoFactorCheckbox.addEventListener('change', async () => {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      await updateDoc(doc(db, "interns", currentUser.docId), { twoFactorEnabled: twoFactorCheckbox.checked });
+    } catch (err) {
+      alert('Failed to update two-factor authentication preference: ' + err.message);
+    }
+  });
+
+  loadPreferences();
+</script>
+
+</body>
+</html>

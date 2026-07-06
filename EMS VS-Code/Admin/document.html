@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document Management</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+ <style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#8898aa;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+    padding:13px 22px;
+    transition: .2s;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show{
+    display:block;
+}
+
+.nav-profile-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover{
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i{
+    width:14px;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    overflow:hidden;
+    background:#0b1437;
+}
+
+/* =========================
+   BREADCRUMB
+========================= */
+.breadcrumb{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#8898aa;
+    font-size:13px;
+}
+
+.breadcrumb i{
+    color:#4299e1;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.header h1{
+    font-size:24px;
+    font-weight:700;
+    color:#ffffff;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#8898aa;
+    font-size:13px;
+}
+
+.header-buttons{
+    display:flex;
+    gap:12px;
+}
+
+.upload-btn,
+.folder-btn,
+.export-btn{
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid #1b2e6e;
+    background:#111c44;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.upload-btn:hover,
+.folder-btn:hover{
+    background:#1b2e6e;
+}
+
+.export-btn{
+    background:#4299e1;
+    border-color:#4299e1;
+}
+
+.export-btn:hover{
+    background:#3182ce;
+}
+
+.upload-btn i,
+.folder-btn i,
+.export-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+.filter-box{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.search-document{
+    width:320px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:11px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#8898aa;
+    transition:.3s;
+}
+
+.search-document:focus-within{
+    border-color:#4299e1;
+}
+
+.search-document input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:#ffffff;
+    font-size:14px;
+}
+
+.search-document input::placeholder{
+    color:#8898aa;
+}
+
+.filter-box select{
+    min-width:180px;
+    padding:11px 14px;
+    background:#0b1437;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    cursor:pointer;
+    font-size:13px;
+    transition:.3s;
+}
+
+.filter-box select:hover,
+.filter-box select:focus{
+    border-color:#4299e1;
+}
+
+.filter-btn,
+.reset-btn{
+    padding:11px 22px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.filter-btn{
+    background:#4299e1;
+    color:#ffffff;
+}
+
+.filter-btn:hover{
+    background:#3182ce;
+}
+
+.reset-btn{
+    background:#111c44;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+}
+
+.reset-btn:hover{
+    background:#1b2e6e;
+}
+
+.filter-btn i,
+.reset-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.table-box::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1200px;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px 18px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+    border-bottom:1px solid #1b2e6e;
+}
+
+td{
+    padding:15px 18px;
+    color:#d7dfef;
+    border-top:1px solid #1b2e6e;
+    font-size:13px;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.3s;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+.document{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.document i{
+    font-size:28px;
+}
+
+/* File Icon Colors */
+.pdf{ color:#ef4444; }
+.word{ color:#3b82f6; }
+.excel{ color:#22c55e; }
+.ppt{ color:#f97316; }
+.image{ color:#14b8a6; }
+.generic{ color:#a0aec0; }
+
+/* =========================
+   STATUS
+========================= */
+.active-status,
+.inactive-status{
+    display:inline-block;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.active-status{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+.inactive-status{
+    background:rgba(107,114,128,.18);
+    color:#cbd5e1;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.actions{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.actions i{
+    color:#8898aa;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.actions i:hover{
+    color:#4299e1;
+    transform:scale(1.1);
+}
+
+.actions i.fa-trash-can:hover{
+    color:#f87171;
+}
+
+input[type="checkbox"]{
+    accent-color:#4299e1;
+    cursor:pointer;
+}
+
+/* =========================
+   FOOTER / PAGINATION
+========================= */
+.footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+    font-size:13px;
+}
+
+.pagination{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =========================
+   MODAL DIALOG POPUPS
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover { color: #f87171; }
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
+}
+
+.detail-item {
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(27, 46, 110, 0.5);
+    padding-bottom: 8px;
+}
+.detail-item span:first-child { color: #8898aa; font-size: 13px; }
+.detail-item span:last-child { color: #ffffff; font-size: 14px; font-weight: 500; }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:1200px){
+    .filter-box{ flex-wrap:wrap; }
+    .search-document{ width:100%; }
+}
+
+@media(max-width:768px){
+    body{ overflow:auto; }
+    .sidebar{ width:200px; }
+    .main{ margin-left:200px; width:calc(100% - 200px); }
+    .header{ flex-direction:column; align-items:flex-start; gap:15px; }
+    .header-buttons{ width:100%; flex-wrap:wrap; }
+    .filter-box{ flex-direction:column; align-items:stretch; }
+    .search-document, .filter-box select, .filter-btn, .reset-btn{ width:100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li class="active"><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="breadcrumb">
+            Dashboard <i class="fa-solid fa-angle-right"></i> Documents
+        </div>
+
+        <div class="header">
+            <div>
+                <h1>Document Management</h1>
+                <p>Upload, organize and manage all company documents.</p>
+            </div>
+            <div class="header-buttons">
+                <button class="upload-btn" id="openUploadBtn"><i class="fa-solid fa-upload"></i> Upload Document</button>
+                <button class="folder-btn"><i class="fa-regular fa-folder-open"></i> New Folder</button>
+                <button class="export-btn"><i class="fa-solid fa-download"></i> Export</button>
+            </div>
+        </div>
+
+        <div class="filter-box">
+            <div class="search-document">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search documents by name...">
+            </div>
+            <select id="deptFilter">
+                <option value="All Departments">All Departments</option>
+                <option value="HR">HR</option>
+                <option value="IT">IT</option>
+                <option value="Finance">Finance</option>
+                <option value="Admin">Admin</option>
+            </select>
+            <select id="typeFilter">
+                <option value="All Document Types">All Document Types</option>
+                <option value="Policy">Policy</option>
+                <option value="Finance">Finance</option>
+                <option value="Presentation">Presentation</option>
+                <option value="Image">Image</option>
+                <option value="Template">Template</option>
+            </select>
+            <select id="statusFilter">
+                <option value="All Status">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <button class="filter-btn" id="filterBtn"><i class="fa-solid fa-filter"></i> Filter</button>
+            <button class="reset-btn" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>Document Name</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Uploaded By</th>
+                        <th>Uploaded On</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="documentTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <div class="entries" id="entriesCount">Showing 0 entries</div>
+            <div class="pagination">
+                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="page active">1</div>
+                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="uploadModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Upload New Document</h3>
+            <button class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="uploadDocForm">
+            <div class="form-group">
+                <label for="fileInput">Choose File From System</label>
+                <input type="file" id="fileInput" required style="background: none; border: none; padding: 5px 0;">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="docCategory">Document Category Type</label>
+                    <select id="docCategory">
+                        <option value="Policy">Policy</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Presentation">Presentation</option>
+                        <option value="Image">Image</option>
+                        <option value="Template">Template</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="docDept">Target Department</label>
+                    <select id="docDept">
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="docStatus">Initial Document Status</label>
+                <select id="docStatus">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelModalBtn">Cancel</button>
+                <button type="submit" class="btn-submit" id="submitBtn">Save Document</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="editDocModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Edit Document Metadata</h3>
+            <button class="modal-close" id="closeEditDocModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="editDocForm">
+            <input type="hidden" id="editDocId">
+            <div class="form-group">
+                <label for="editFileName">Document Name</label>
+                <input type="text" id="editFileName" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editDocCategory">Document Category Type</label>
+                    <select id="editDocCategory">
+                        <option value="Policy">Policy</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Presentation">Presentation</option>
+                        <option value="Image">Image</option>
+                        <option value="Template">Template</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editDocDept">Target Department</label>
+                    <select id="editDocDept">
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editDocStatus">Document Status</label>
+                <select id="editDocStatus">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelEditDocModalBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="viewModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Document Details Overview</h3>
+            <button class="modal-close" id="closeViewModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="viewModalContent">
+            </div>
+        <div class="form-actions">
+            <button type="button" class="btn-cancel" id="closeViewInfoBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["admin"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  let localDocsCache = [];
+
+  // Modal Interactive Setup Components
+  const modal = document.getElementById('uploadModal');
+  const viewModal = document.getElementById('viewModal');
+  const editModal = document.getElementById('editDocModal');
+  const openUploadBtn = document.getElementById('openUploadBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const uploadDocForm = document.getElementById('uploadDocForm');
+  const editDocForm = document.getElementById('editDocForm');
+
+  openUploadBtn.addEventListener('click', () => modal.classList.add('show'));
+  const hideModal = () => { modal.classList.remove('show'); uploadDocForm.reset(); };
+  closeModalBtn.addEventListener('click', hideModal);
+  cancelModalBtn.addEventListener('click', hideModal);
+
+  document.getElementById('closeViewModalBtn').addEventListener('click', () => viewModal.classList.remove('show'));
+  document.getElementById('closeViewInfoBtn').addEventListener('click', () => viewModal.classList.remove('show'));
+
+  const hideEditModal = () => { editModal.classList.remove('show'); editDocForm.reset(); };
+  document.getElementById('closeEditDocModalBtn').addEventListener('click', hideEditModal);
+  document.getElementById('cancelEditDocModalBtn').addEventListener('click', hideEditModal);
+
+  // Utility extension checker for icons mapping
+  function getFileIconClass(fileName) {
+      if (!fileName) return 'fa-regular fa-file generic';
+      const ext = fileName.split('.').pop().toLowerCase();
+      if (ext === 'pdf') return 'fa-regular fa-file-pdf pdf';
+      if (['doc', 'docx'].includes(ext)) return 'fa-regular fa-file-word word';
+      if (['xls', 'xlsx'].includes(ext)) return 'fa-regular fa-file-excel excel';
+      if (['ppt', 'pptx'].includes(ext)) return 'fa-regular fa-file-powerpoint ppt';
+      if (['png', 'jpg', 'jpeg', 'gif', 'svg'].includes(ext)) return 'fa-regular fa-image image';
+      return 'fa-regular fa-file generic';
+  }
+
+  // File system human readable data size string converter
+  function formatBytes(bytes, decimals = 2) {
+      if (!bytes || bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  // CLOUD FIRESTORE LOADING STATE
+  async function fetchDocuments() {
+      const tableBody = document.getElementById('documentTableBody');
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color:#8898aa;">Loading document records...</td></tr>`;
+      try {
+          const snapshot = await getDocs(collection(db, "documents"));
+          localDocsCache = [];
+          snapshot.forEach((docSnap) => {
+              localDocsCache.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          renderTable(localDocsCache);
+      } catch (err) {
+          console.error("Error loading documents: ", err);
+          tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color:#f87171;">Failed to load documents: ${err.message}</td></tr>`;
+      }
+  }
+
+  // RENDER INTERFACE GRID ROW ITEMS
+  function renderTable(docsArray) {
+    const tableBody = document.getElementById('documentTableBody');
+    const countDisplay = document.getElementById('entriesCount');
+    tableBody.innerHTML = '';
+
+    if (!docsArray || docsArray.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#8898aa;">No documents found matching filters.</td></tr>`;
+        countDisplay.textContent = `Showing 0 entries`;
+        return;
+    }
+
+    docsArray.forEach((docItem) => {
+        const iconClass = getFileIconClass(docItem.fileName);
+        const statusClass = docItem.status === 'Active' ? 'active-status' : 'inactive-status';
+
+        const rowTemplate = `
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                    <div class="document">
+                        <i class="${iconClass}"></i>
+                        ${docItem.fileName}
+                    </div>
+                </td>
+                <td>${docItem.category || '-'}</td>
+                <td>${docItem.department || '-'}</td>
+                <td>${docItem.uploadedBy || 'System User'}</td>
+                <td>${docItem.uploadedOn || '-'}</td>
+                <td>${docItem.size || '-'}</td>
+                <td><span class="${statusClass}">${docItem.status || 'Active'}</span></td>
+                <td>
+                    <div class="actions">
+                        <i class="fa-regular fa-eye view-btn" data-id="${docItem.id}"></i>
+                        <i class="fa-regular fa-pen-to-square edit-btn" data-id="${docItem.id}"></i>
+                        <i class="fa-solid fa-download download-local-btn" data-id="${docItem.id}"></i>
+                        <i class="fa-regular fa-trash-can delete-btn" data-id="${docItem.id}"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+    });
+
+    countDisplay.textContent = `Showing ${docsArray.length} of ${localDocsCache.length} entries`;
+    attachActionListeners();
+  }
+
+  // ATTACH ACTION BUTTON HOOKS DETECTORS
+  function attachActionListeners() {
+      // Info details popup presentation loader
+      document.querySelectorAll('.view-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              const docId = e.target.getAttribute('data-id');
+              const targetDoc = localDocsCache.find(d => d.id === docId);
+              if(targetDoc) {
+                  document.getElementById('viewModalContent').innerHTML = `
+                      <div class="detail-item"><span>File Name</span><span>${targetDoc.fileName}</span></div>
+                      <div class="detail-item"><span>Category</span><span>${targetDoc.category}</span></div>
+                      <div class="detail-item"><span>Department</span><span>${targetDoc.department}</span></div>
+                      <div class="detail-item"><span>Uploaded By</span><span>${targetDoc.uploadedBy}</span></div>
+                      <div class="detail-item"><span>Uploaded Date</span><span>${targetDoc.uploadedOn}</span></div>
+                      <div class="detail-item"><span>File Size</span><span>${targetDoc.size}</span></div>
+                      <div class="detail-item"><span>Status</span><span style="font-weight:bold; color:#4299e1;">${targetDoc.status}</span></div>
+                  `;
+                  viewModal.classList.add('show');
+              }
+          });
+      });
+
+      // Open edit modal populated from cache for rename/metadata changes
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              const docId = e.target.getAttribute('data-id');
+              const targetDoc = localDocsCache.find(d => d.id === docId);
+              if (targetDoc) {
+                  document.getElementById('editDocId').value = targetDoc.id;
+                  document.getElementById('editFileName').value = targetDoc.fileName || '';
+                  document.getElementById('editDocCategory').value = targetDoc.category || 'Policy';
+                  document.getElementById('editDocDept').value = targetDoc.department || 'HR';
+                  document.getElementById('editDocStatus').value = targetDoc.status || 'Active';
+                  editModal.classList.add('show');
+              }
+          });
+      });
+
+      // No real file storage backs these records - metadata only
+      document.querySelectorAll('.download-local-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+              alert("No physical file is stored for this document - metadata only.");
+          });
+      });
+
+      // Delete target document permanently from Firestore
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+              const docId = e.target.getAttribute('data-id');
+              if(confirm("Permanently remove this document record from the database?")) {
+                  try {
+                      await deleteDoc(doc(db, "documents", docId));
+                      fetchDocuments();
+                  } catch (err) {
+                      alert("Deletion error: " + err.message);
+                  }
+              }
+          });
+      });
+  }
+
+  // LIVE SEARCH RUNTIME ENGINE INTERACTIVE DROPDOWN FILTERS
+  function runSearchFilter() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const selectedDept = document.getElementById('deptFilter').value;
+      const selectedType = document.getElementById('typeFilter').value;
+      const selectedStatus = document.getElementById('statusFilter').value;
+
+      const filteredList = localDocsCache.filter(docItem => {
+          const nameMatch = docItem.fileName ? docItem.fileName.toLowerCase().includes(searchTerm) : false;
+          const matchesDept = (selectedDept === "All Departments") || (docItem.department === selectedDept);
+          const matchesType = (selectedType === "All Document Types") || (docItem.category === selectedType);
+          const matchesStatus = (selectedStatus === "All Status") || (docItem.status === selectedStatus);
+
+          return nameMatch && matchesDept && matchesType && matchesStatus;
+      });
+
+      renderTable(filteredList);
+  }
+
+  document.getElementById('searchInput').addEventListener('input', runSearchFilter);
+  document.getElementById('deptFilter').addEventListener('change', runSearchFilter);
+  document.getElementById('typeFilter').addEventListener('change', runSearchFilter);
+  document.getElementById('statusFilter').addEventListener('change', runSearchFilter);
+  document.getElementById('filterBtn').addEventListener('click', runSearchFilter);
+  
+  document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('deptFilter').value = 'All Departments';
+      document.getElementById('typeFilter').value = 'All Document Types';
+      document.getElementById('statusFilter').value = 'All Status';
+      renderTable(localDocsCache);
+  });
+
+  // FIRESTORE WRITE: Read file input parameters and save metadata only
+  uploadDocForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const currentDate = new Date();
+      const formattedTimestampString = currentDate.toLocaleString('en-US', {
+          month: 'short', day: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: true
+      });
+
+      const newDocItem = {
+          fileName: file.name,
+          category: document.getElementById('docCategory').value,
+          department: document.getElementById('docDept').value,
+          status: document.getElementById('docStatus').value,
+          size: formatBytes(file.size),
+          uploadedBy: currentUser.name,
+          uploadedOn: formattedTimestampString
+      };
+
+      try {
+          await addDoc(collection(db, "documents"), newDocItem);
+          hideModal();
+          fetchDocuments();
+      } catch (err) {
+          alert("Error uploading document metadata: " + err.message);
+      }
+  });
+
+  // FIRESTORE WRITE: Update document metadata (rename / recategorize)
+  editDocForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const docId = document.getElementById('editDocId').value;
+
+      const updatedDocItem = {
+          fileName: document.getElementById('editFileName').value,
+          category: document.getElementById('editDocCategory').value,
+          department: document.getElementById('editDocDept').value,
+          status: document.getElementById('editDocStatus').value
+      };
+
+      try {
+          await updateDoc(doc(db, "documents", docId), updatedDocItem);
+          hideEditModal();
+          fetchDocuments();
+      } catch (err) {
+          alert("Error updating document metadata: " + err.message);
+      }
+  });
+
+  fetchDocuments();
+</script>
+</body>
+</html>

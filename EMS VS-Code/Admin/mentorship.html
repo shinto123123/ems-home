@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    padding:13px 22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    color:#8898aa;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+/* ───────── TOP NAVBAR ───────── */
+
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    overflow:hidden;
+    background:#0b1437;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header h1{
+    font-size:28px;
+    color:#ffffff;
+}
+
+.add-btn{
+    padding:11px 22px;
+    border:none;
+    background:#4299e1;
+    color:#ffffff;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#3182ce;
+}
+
+.add-btn i{
+    margin-right:6px;
+}
+/* =========================
+   MENTORSHIP CARDS
+========================= */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    border-color:#4299e1;
+}
+
+/* =========================
+   CARD ICON
+========================= */
+
+.icon{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#0b1437;
+    border:2px solid #4299e1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.card p{
+    color:#8898aa;
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.card h2{
+    color:#ffffff;
+    font-size:28px;
+    margin-bottom:4px;
+}
+
+.card small{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+
+.filters{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.filters input,
+.filters select{
+    height:42px;
+    padding:0 14px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    color:#ffffff;
+    font-size:13px;
+    transition:.3s;
+}
+
+.filters input{
+    min-width:220px;
+}
+
+.filters input::placeholder{
+    color:#8898aa;
+}
+
+.filters input:focus,
+.filters select:focus{
+    border-color:#4299e1;
+}
+
+.filters select{
+    min-width:180px;
+    cursor:pointer;
+}
+
+/* =========================
+   DATE RANGE
+========================= */
+
+.filters input[value]{
+    min-width:200px;
+}
+
+/* =========================
+   FILTER BUTTON
+========================= */
+
+.filter-btn{
+    height:42px;
+    padding:0 22px;
+    border:none;
+    background:#4299e1;
+    color:#ffffff;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.filter-btn:hover{
+    background:#3182ce;
+}
+
+.filter-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   EFFECTS
+========================= */
+
+.filters input,
+.filters select,
+.filter-btn{
+    transition:all .3s ease;
+}
+/* =========================
+   TABLE
+========================= */
+
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.table-box::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.table-box::-webkit-scrollbar-track{
+    background:#0b1437;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1350px;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+    border-bottom:1px solid #1b2e6e;
+}
+
+td{
+    padding:15px;
+    color:#d7dfef;
+    border-top:1px solid #1b2e6e;
+    font-size:13px;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.3s;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+/* =========================
+   PERSON
+========================= */
+
+.person{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.person img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.person h4{
+    color:#ffffff;
+    font-size:14px;
+    margin-bottom:3px;
+}
+
+.person p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.active-status{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+.completed-status{
+    background:rgba(59,130,246,.18);
+    color:#60a5fa;
+}
+
+.upcoming-status{
+    background:rgba(251,191,36,.18);
+    color:#fbbf24;
+}
+
+/* =========================
+   ACTION
+========================= */
+
+td .fa-ellipsis-vertical{
+    color:#8898aa;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+td .fa-ellipsis-vertical:hover{
+    color:#4299e1;
+    transform:scale(1.1);
+}
+
+.action-icons{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.action-icons i{
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.action-icons .edit-icon{
+    color:#4299e1;
+}
+
+.action-icons .edit-icon:hover{
+    transform:scale(1.1);
+}
+
+.action-icons .delete-icon{
+    color:#f87171;
+}
+
+.action-icons .delete-icon:hover{
+    transform:scale(1.1);
+}
+
+/* =========================
+   MODAL OVERLAYS & FORMS
+========================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover { color: #f87171; }
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
+}
+
+.btn-cancel {
+    background: #16265c;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover { background: #1b2e6e; }
+
+.btn-submit {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-submit:hover { background: #3182ce; }
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+    font-size:13px;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:8px;
+    border:1px solid #1b2e6e;
+    background:#111c44;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =========================
+   INSIGHT CARDS
+========================= */
+
+.insights{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.insight-card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    transition:.3s;
+}
+
+.insight-card:hover{
+    border-color:#4299e1;
+    transform:translateY(-2px);
+}
+
+.insight-icon{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    background:#0b1437;
+    border:2px solid #4299e1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.insight-card h4{
+    color:#8898aa;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.insight-card h2{
+    color:#ffffff;
+    font-size:24px;
+    margin-bottom:3px;
+}
+
+.insight-card p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   GLOBAL SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#0b1437;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1200px){
+
+    .cards,
+    .insights{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .filters{
+        flex-wrap:wrap;
+    }
+
+}
+
+@media(max-width:768px){
+
+    body{
+        overflow:auto;
+    }
+
+    .sidebar{
+        width:200px;
+    }
+
+    .main{
+        margin-left:200px;
+        width:calc(100% - 200px);
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .search-box{
+        width:220px;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .cards,
+    .insights{
+        grid-template-columns:1fr;
+    }
+
+    .filters{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filters input,
+    .filters select,
+    .filter-btn{
+        width:100%;
+    }
+
+}
+    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentorship Management</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+
+<div class="logo">
+EMS ADMIN
+</div>
+
+<ul>
+ <li ><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li ><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li ><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li ><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li class="active"><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+ </ul>
+
+</div>
+
+
+<div class="main">
+
+<!-- Topbar -->
+
+<!-- TOP NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="navbar-logo">
+            LOGO
+        </div>
+
+        <span class="navbar-title">
+            EMPLOYEE MANAGEMENT SYSTEM
+        </span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </div>
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+
+        <div class="nav-profile" id="navProfileToggle">
+
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Content -->
+
+<div class="content">
+
+<div class="header">
+
+<h1>Mentorship Management</h1>
+
+<button class="add-btn" id="addMentorshipBtn">
+<i class="fa-solid fa-plus"></i>
+Add Mentorship
+</button>
+
+</div>
+
+
+<!-- Cards -->
+
+<div class="cards">
+
+<div class="card">
+<div class="icon"><i class="fa-solid fa-users"></i></div>
+<div>
+<p>Total Mentorships</p>
+<h2>24</h2>
+<small>All Time</small>
+</div>
+</div>
+
+<div class="card">
+<div class="icon"><i class="fa-solid fa-user-group"></i></div>
+<div>
+<p>Active Mentorships</p>
+<h2>18</h2>
+<small>Currently Active</small>
+</div>
+</div>
+
+<div class="card">
+<div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+<div>
+<p>Completed Mentorships</p>
+<h2>6</h2>
+<small>All Time</small>
+</div>
+</div>
+
+<div class="card">
+<div class="icon"><i class="fa-regular fa-calendar-check"></i></div>
+<div>
+<p>Upcoming Reviews</p>
+<h2>7</h2>
+<small>Next 30 Days</small>
+</div>
+</div>
+
+</div>
+
+
+<!-- Filters -->
+
+<div class="filters">
+
+<input type="text" placeholder="Search mentor or mentee...">
+
+<select>
+<option>All Departments</option>
+</select>
+
+<select>
+<option>All Status</option>
+</select>
+
+<select>
+<option>All Mentorship Types</option>
+</select>
+
+<input type="text" value="01/05/2025 - 31/05/2025">
+
+<button class="filter-btn">
+<i class="fa-solid fa-filter"></i>
+Filter
+</button>
+
+</div>
+<!-- Table -->
+
+<div class="table-box">
+
+<table>
+
+<thead>
+<tr>
+<th>Mentor</th>
+<th>Mentee</th>
+<th>Department</th>
+<th>Mentorship Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+<th>Next Review</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="mentorshipTableBody">
+
+<tr>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=11">
+<div>
+<h4>David Brown</h4>
+<p>Team Lead</p>
+</div>
+</div>
+</td>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=21">
+<div>
+<h4>Aarav Sharma</h4>
+<p>Software Engineer</p>
+</div>
+</div>
+</td>
+
+<td>IT</td>
+<td>Career Guidance</td>
+<td>01/04/2025</td>
+<td>30/09/2025</td>
+
+<td>
+<span class="status active-status">
+Active
+</span>
+</td>
+
+<td>15/06/2025</td>
+
+<td>
+<i class="fa-solid fa-ellipsis-vertical"></i>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=12">
+<div>
+<h4>Sarah Johnson</h4>
+<p>HR Manager</p>
+</div>
+</div>
+</td>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=22">
+<div>
+<h4>Priya Patel</h4>
+<p>HR Executive</p>
+</div>
+</div>
+</td>
+
+<td>HR</td>
+<td>Skill Development</td>
+<td>15/03/2025</td>
+<td>15/09/2025</td>
+
+<td>
+<span class="status active-status">
+Active
+</span>
+</td>
+
+<td>10/06/2025</td>
+
+<td>
+<i class="fa-solid fa-ellipsis-vertical"></i>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=13">
+<div>
+<h4>Mike Smith</h4>
+<p>Project Manager</p>
+</div>
+</div>
+</td>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=23">
+<div>
+<h4>Rohan Mehta</h4>
+<p>Project Analyst</p>
+</div>
+</div>
+</td>
+
+<td>Projects</td>
+<td>Project Mentoring</td>
+<td>01/02/2025</td>
+<td>31/05/2025</td>
+
+<td>
+<span class="status completed-status">
+Completed
+</span>
+</td>
+
+<td>-</td>
+
+<td>
+<i class="fa-solid fa-ellipsis-vertical"></i>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=14">
+<div>
+<h4>Emily Davis</h4>
+<p>Finance Manager</p>
+</div>
+</div>
+</td>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=24">
+<div>
+<h4>Sneha Iyer</h4>
+<p>Finance Executive</p>
+</div>
+</div>
+</td>
+
+<td>Finance</td>
+<td>Career Guidance</td>
+<td>10/04/2025</td>
+<td>10/10/2025</td>
+
+<td>
+<span class="status active-status">
+Active
+</span>
+</td>
+
+<td>20/06/2025</td>
+
+<td>
+<i class="fa-solid fa-ellipsis-vertical"></i>
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=15">
+<div>
+<h4>John Doe</h4>
+<p>Tech Lead</p>
+</div>
+</div>
+</td>
+
+<td>
+<div class="person">
+<img src="https://i.pravatar.cc/50?img=25">
+<div>
+<h4>Vikram Singh</h4>
+<p>Software Engineer</p>
+</div>
+</div>
+</td>
+
+<td>IT</td>
+<td>Skill Development</td>
+<td>05/05/2025</td>
+<td>05/11/2025</td>
+
+<td>
+<span class="status upcoming-status">
+Upcoming
+</span>
+</td>
+
+<td>01/07/2025</td>
+
+<td>
+<i class="fa-solid fa-ellipsis-vertical"></i>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- Footer -->
+
+<div class="footer">
+
+<div>
+Showing 1 to 5 of 24 entries
+</div>
+
+<div class="pagination">
+
+<div class="page">
+<i class="fa-solid fa-angle-left"></i>
+</div>
+
+<div class="page active">1</div>
+
+<div class="page">2</div>
+
+<div class="page">3</div>
+
+<div class="page">...</div>
+
+<div class="page">5</div>
+
+<div class="page">
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+</div>
+
+</div>
+<!-- Mentorship Insights -->
+
+<div class="insights">
+
+<div class="insight-card">
+
+<div class="insight-icon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<div>
+<h4>Average Mentorship Duration</h4>
+<h2>6.2 Months</h2>
+</div>
+
+</div>
+
+
+<div class="insight-card">
+
+<div class="insight-icon">
+<i class="fa-regular fa-star"></i>
+</div>
+
+<div>
+<h4>Satisfaction Score</h4>
+<h2>4.6 / 5</h2>
+</div>
+
+</div>
+
+
+
+<div class="insight-card">
+
+<div class="insight-icon">
+<i class="fa-regular fa-circle-check"></i>
+</div>
+
+<div>
+<h4>Completion Rate</h4>
+<h2>75%</h2>
+</div>
+
+</div>
+
+
+
+<div class="insight-card">
+
+<div class="insight-icon">
+<i class="fa-regular fa-calendar-check"></i>
+</div>
+
+<div>
+<h4>Upcoming Reviews</h4>
+<h2>7</h2>
+<p>Next 30 Days</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="editMentorshipModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Edit Mentorship Program</h3>
+            <button class="modal-close" id="closeEditMentorshipModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="editMentorshipForm">
+            <input type="hidden" id="editMentorshipDocId">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editMentorName">Mentor Name</label>
+                    <input type="text" id="editMentorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMenteeName">Mentee Name</label>
+                    <input type="text" id="editMenteeName" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editDepartment">Department</label>
+                    <input type="text" id="editDepartment" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProgramName">Mentorship Type</label>
+                    <input type="text" id="editProgramName" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editStartDate">Start Date</label>
+                    <input type="text" id="editStartDate" placeholder="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label for="editEndDate">End Date</label>
+                    <input type="text" id="editEndDate" placeholder="DD/MM/YYYY">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus">
+                        <option value="Active">Active</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Upcoming">Upcoming</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editProgress">Progress (%)</label>
+                    <input type="number" id="editProgress" min="0" max="100">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelEditMentorshipBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('mentorshipTableBody');
+    let loadedMentorshipsCache = {};
+
+    // Edit Modal DOM Hooks
+    const editModal = document.getElementById('editMentorshipModal');
+    const editForm = document.getElementById('editMentorshipForm');
+    const hideEditModal = () => { editModal.classList.remove('show'); editForm.reset(); };
+    document.getElementById('closeEditMentorshipModalBtn').addEventListener('click', hideEditModal);
+    document.getElementById('cancelEditMentorshipBtn').addEventListener('click', hideEditModal);
+
+    async function loadMentorships() {
+        try {
+            const snap = await getDocs(collection(db, "mentorship"));
+            loadedMentorshipsCache = {};
+            if (snap.empty) {
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#8898aa;">No mentorship programs found. Click "Add Mentorship" to create one.</td></tr>`;
+                return;
+            }
+            tableBody.innerHTML = "";
+            snap.forEach((docSnap) => {
+                const m = docSnap.data();
+                const id = docSnap.id;
+                loadedMentorshipsCache[id] = { id, ...m };
+
+                const statusClass = m.status ? m.status.toLowerCase() + '-status' : 'active-status';
+
+                tableBody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td><div class="person"><div><h4>${m.mentorName || '-'}</h4></div></div></td>
+                        <td><div class="person"><div><h4>${m.menteeName || '-'}</h4></div></div></td>
+                        <td>${m.department || '-'}</td>
+                        <td>${m.programName || '-'}</td>
+                        <td>${m.startDate || '-'}</td>
+                        <td>${m.endDate || '-'}</td>
+                        <td><span class="status ${statusClass}">${m.status || 'Active'}</span></td>
+                        <td>${m.progress || 0}%</td>
+                        <td>
+                            <div class="action-icons">
+                                <i class="fa-solid fa-pen-to-square edit-icon action-edit-trigger" data-id="${id}"></i>
+                                <i class="fa-solid fa-trash delete-icon action-delete-trigger" data-id="${id}"></i>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+            bindActionRowListeners();
+        } catch (error) {
+            console.error("Failed to load mentorship programs: ", error);
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+        }
+    }
+
+    // Row Operations Bindings
+    function bindActionRowListeners() {
+        document.querySelectorAll('.action-edit-trigger').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const docId = btn.getAttribute('data-id');
+                const targetData = loadedMentorshipsCache[docId];
+
+                if (targetData) {
+                    document.getElementById('editMentorshipDocId').value = docId;
+                    document.getElementById('editMentorName').value = targetData.mentorName || '';
+                    document.getElementById('editMenteeName').value = targetData.menteeName || '';
+                    document.getElementById('editDepartment').value = targetData.department || '';
+                    document.getElementById('editProgramName').value = targetData.programName || '';
+                    document.getElementById('editStartDate').value = targetData.startDate || '';
+                    document.getElementById('editEndDate').value = targetData.endDate || '';
+                    document.getElementById('editStatus').value = targetData.status || 'Active';
+                    document.getElementById('editProgress').value = targetData.progress || 0;
+
+                    editModal.classList.add('show');
+                }
+            });
+        });
+
+        document.querySelectorAll('.action-delete-trigger').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const docId = btn.getAttribute('data-id');
+                const targetData = loadedMentorshipsCache[docId];
+
+                if (confirm(`Are you sure you want to delete the mentorship program for ${targetData ? targetData.menteeName : 'this record'}?`)) {
+                    try {
+                        await deleteDoc(doc(db, "mentorship", docId));
+                        alert("Mentorship program successfully removed.");
+                        loadMentorships();
+                    } catch (error) {
+                        alert("Deletion process error: " + error.message);
+                    }
+                }
+            });
+        });
+    }
+
+    // UPDATE Action Form Interception Logic
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const docId = document.getElementById('editMentorshipDocId').value;
+
+        const updatedProgram = {
+            mentorName: document.getElementById('editMentorName').value,
+            menteeName: document.getElementById('editMenteeName').value,
+            department: document.getElementById('editDepartment').value,
+            programName: document.getElementById('editProgramName').value,
+            startDate: document.getElementById('editStartDate').value,
+            endDate: document.getElementById('editEndDate').value,
+            status: document.getElementById('editStatus').value,
+            progress: Number(document.getElementById('editProgress').value) || 0
+        };
+
+        try {
+            await updateDoc(doc(db, "mentorship", docId), updatedProgram);
+            alert("Mentorship program successfully updated!");
+            hideEditModal();
+            loadMentorships();
+        } catch (error) {
+            alert("Error updating mentorship program: " + error.message);
+        }
+    });
+
+    document.getElementById('addMentorshipBtn').addEventListener('click', async () => {
+        const programName = prompt("Program name:");
+        if (!programName) return;
+        const mentorName = prompt("Mentor name:") || "";
+        const menteeName = prompt("Mentee name:") || "";
+        const department = prompt("Department:") || "";
+
+        try {
+            await addDoc(collection(db, "mentorship"), {
+                programName, mentorName, menteeName, department,
+                startDate: new Date().toLocaleDateString(), endDate: "-",
+                status: "Active", progress: 0
+            });
+            loadMentorships();
+        } catch (error) {
+            alert("Failed to create mentorship program: " + error.message);
+        }
+    });
+
+    loadMentorships();
+</script>
+</body>
+</html>

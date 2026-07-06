@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager - Payroll</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN SECTION ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{padding:16px 22px 0;background:#0b1437;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-bottom:8px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;}
+.breadcrumbs span{color:#1b2e6e;}
+.page-header h2{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{color:#8898aa;font-size:13px;margin-top:2px;}
+
+.content{flex:1;padding:16px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+.table-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden;}
+.table-wrapper{overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;}
+.data-table th{background:rgba(11,20,55,0.4);color:#8898aa;font-size:11.5px;font-weight:600;padding:14px;border-bottom:1px solid #1b2e6e;white-space:nowrap;}
+.data-table td{border-bottom:1px solid #1b2e6e;padding:14px;color:#e2e8f0;font-size:13px;vertical-align:middle;white-space:nowrap;}
+.data-table tr:last-child td{border-bottom:none;}
+
+.status-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge.paid{background:rgba(74,222,128,0.15);color:#4ade80;}
+.status-badge.pending{background:rgba(251,191,36,0.15);color:#fbbf24;}
+
+.btn-link{background:none;border:none;color:#4299e1;font-size:13px;cursor:pointer;padding:0;}
+.btn-link:hover{text-decoration:underline;}
+
+.footer-text{text-align:center;color:#4a5568;font-size:11px;padding:4px 0 10px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">manager</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
+      <li><a href="team-members.html"><i class="fa-solid fa-users"></i>Team Members</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
+      <li><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+      <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
+      <li class="active"><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div class="breadcrumbs">
+        <a href="#">Dashboard</a> <span>/</span> <a href="#" style="color:#e2e8f0">Payroll</a>
+      </div>
+      <div>
+        <h2>Payroll</h2>
+        <p>View payroll records and payment receipts across the organization.</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="table-panel">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Basic Salary</th>
+                <th>Allowances</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+                <th>Status</th>
+                <th>Receipt</th>
+              </tr>
+            </thead>
+            <tbody id="payrollTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["manager"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('payrollTableBody');
+    let payrollCacheById = {};
+
+    function formatMoney(n) {
+        const num = Number(n) || 0;
+        return num.toLocaleString('en-IN');
+    }
+
+    async function loadPayroll() {
+        try {
+            const snap = await getDocs(collection(db, "payroll"));
+            if (snap.empty) {
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
+                return;
+            }
+            tableBody.innerHTML = "";
+            payrollCacheById = {};
+            snap.forEach((docSnap) => {
+                const p = docSnap.data();
+                payrollCacheById[docSnap.id] = p;
+                const statusCls = (p.status || 'Pending').toLowerCase();
+                const grossSalary = p.grossSalary ?? p.basicSalary;
+                const receiptCell = p.receiptData
+                    ? `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}">View</button>`
+                    : `<span style="color:#8898aa;">-</span>`;
+                tableBody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td><strong>${p.employeeName || '-'}</strong></td>
+                        <td>${p.department || '-'}</td>
+                        <td>${p.designation || '-'}</td>
+                        <td>${formatMoney(grossSalary)}</td>
+                        <td>${formatMoney(p.allowances)}</td>
+                        <td>${formatMoney(p.deductions)}</td>
+                        <td>${formatMoney(p.netPay)}</td>
+                        <td><span class="status-badge ${statusCls}">${p.status || 'Pending'}</span></td>
+                        <td>${receiptCell}</td>
+                    </tr>
+                `);
+            });
+
+            document.querySelectorAll('.view-receipt-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const record = payrollCacheById[btn.getAttribute('data-id')];
+                    if (!record || !record.receiptData) return;
+                    const win = window.open();
+                    if (record.receiptType && record.receiptType.startsWith('image/')) {
+                        win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
+                    } else {
+                        win.location.href = record.receiptData;
+                    }
+                });
+            });
+
+        } catch (error) {
+            console.error("Failed to load payroll: ", error);
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+        }
+    }
+
+    loadPayroll();
+</script>
+
+</body>
+</html>

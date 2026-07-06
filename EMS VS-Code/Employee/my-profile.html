@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - Employee Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── HEADER & BREADCRUMBS ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-top:4px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs i{font-size:10px;color:#1b2e6e;}
+
+/* ── BUTTONS ── */
+.btn-outline{background:transparent;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s;}
+.btn-outline:hover{border-color:#4299e1;color:#4299e1;}
+.btn-primary{background:#4299e1;border:none;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;align-self:flex-start;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* ── PROFILE HERO CARD ── */
+.profile-hero{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:22px;display:flex;gap:24px;box-shadow:0 4px 18px rgba(0,0,0,.2);align-items:center;}
+.hero-avatar-block{display:flex;flex-direction:column;align-items:center;gap:12px;flex-shrink:0;}
+.hero-avatar{width:110px;height:110px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:42px;color:#8898aa;}
+.hero-meta-left h2{font-size:20px;font-weight:700;color:#fff;}
+.hero-meta-left p{font-size:13px;color:#8898aa;margin-top:2px;margin-bottom:12px;}
+.hero-contact-list{display:flex;flex-direction:column;gap:6px;}
+.hero-contact-item{display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;}
+.hero-contact-item i{color:#4299e1;width:14px;}
+
+.hero-divider{width:1px;background:#1b2e6e;align-self:stretch;margin:0 8px;}
+
+.hero-details-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:x;row-gap:12px;column-gap:24px;}
+.detail-entry{display:flex;font-size:13px;line-height:1.4;}
+.detail-label{width:120px;color:#8898aa;flex-shrink:0;}
+.detail-value{color:#fff;font-weight:500;}
+
+/* ── TAB PANELBED SYSTEM ── */
+.profile-layout-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start;}
+
+.tab-container{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);overflow:hidden;}
+.tabs-nav{display:flex;background:#111c44;border-bottom:1px solid #1b2e6e;padding:0 16px;}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:14px 16px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+.tab-content{padding:22px;display:flex;flex-direction:column;gap:20px;}
+.tab-content h3{font-size:15px;font-weight:600;color:#fff;border-bottom:1px solid #1b2e6e;padding-bottom:10px;margin-bottom:4px;}
+
+/* ── FORM ARCHITECTURE ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full-width{grid-column: span 2;}
+.form-group label{font-size:12.5px;color:#8898aa;font-weight:500;}
+.form-control{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:9px 12px;color:#e2e8f0;font-size:13px;outline:none;width:100%;transition:.2s;}
+.form-control:focus{border-color:#4299e1;}
+textarea.form-control{resize:none;height:68px;}
+select.form-control{cursor:pointer;}
+
+/* ── RIGHT PANEL BLOCKS ── */
+.right-sidebar-stack{display:flex;flex-direction:column;gap:16px;}
+.panel-block{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;box-shadow:0 4px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;gap:14px;}
+.panel-block-header{display:flex;justify-content:space-between;align-items:center;}
+.panel-block-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+.btn-sm-action{background:transparent;border:1px solid #1b2e6e;color:#fff;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s;}
+.btn-sm-action:hover{border-color:#4299e1;color:#4299e1;}
+
+/* Tag/Skill Blocks */
+.skills-flex-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.tag-badge{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;transition:.2s;}
+.tag-badge:hover{border-color:#4299e1;color:#4299e1;}
+
+/* Text Blocks */
+.about-box-text{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:12px;font-size:13px;color:#e2e8f0;line-height:1.5;}
+
+/* Social Link Cards Matrix */
+.social-links-row{display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;}
+.social-icon-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;height:44px;display:flex;align-items:center;justify-content:center;color:#8898aa;text-decoration:none;font-size:18px;transition:.2s;}
+.social-icon-card:hover{border-color:#4299e1;color:#4299e1;transform:translateY(-2px);}
+
+/* Responsive Rules */
+@media(max-width:1250px){
+    .profile-layout-grid{grid-template-columns:1fr;}
+    .profile-hero{flex-direction:column;align-items:stretch;}
+    .hero-divider{height:1px;width:100%;margin:12px 0;align-self:initial;}
+}
+@media(max-width:850px){
+    .hero-details-grid{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    .form-group.full-width{grid-column:span 1;}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">Employee Portal</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, documents...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </div>
+       <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li class="active"><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li ><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li ><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>My Profile</h1>
+          <div class="breadcrumbs">
+            <a href="#">Dashboard</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>My Profile</span>
+          </div>
+        </div>
+        <button class="btn-outline"><i class="fa-regular fa-pen-to-square"></i>Edit Profile</button>
+      </div>
+
+      <div class="profile-hero">
+        <div class="hero-avatar-block">
+          <div class="hero-avatar"><i class="fa-regular fa-user"></i></div>
+          <button class="btn-sm-action"><i class="fa-solid fa-camera"></i>Change Photo</button>
+        </div>
+        
+        <div class="hero-meta-left">
+          <h2 id="heroName">-</h2>
+          <p id="heroDesignation">-</p>
+          <div class="hero-contact-list">
+            <div class="hero-contact-item"><i class="fa-regular fa-envelope"></i> <span id="heroEmail">-</span></div>
+            <div class="hero-contact-item"><i class="fa-solid fa-phone"></i> <span id="heroPhone">-</span></div>
+            <div class="hero-contact-item"><i class="fa-solid fa-location-dot"></i> <span id="heroLocation">-</span></div>
+          </div>
+        </div>
+
+        <div class="hero-divider"></div>
+
+        <div class="hero-details-grid">
+          <div class="detail-entry"><div class="detail-label">Employee ID</div><div class="detail-value" id="heroEmployeeId">: -</div></div>
+          <div class="detail-entry"><div class="detail-label">Status</div><div class="detail-value" id="heroStatus">: -</div></div>
+          <div class="detail-entry"><div class="detail-label">Department</div><div class="detail-value" id="heroDepartment">: -</div></div>
+          <div class="detail-entry"><div class="detail-label">Designation</div><div class="detail-value" id="heroDesignationDetail">: -</div></div>
+          <div class="detail-entry"><div class="detail-label">Date of Birth</div><div class="detail-value" id="heroDob">: -</div></div>
+          <div class="detail-entry"><div class="detail-label">Gender</div><div class="detail-value" id="heroGender">: -</div></div>
+        </div>
+      </div>
+
+      <div class="profile-layout-grid">
+        
+        <div class="tab-container">
+          <div class="tabs-nav">
+            <button class="tab-btn active">Personal Information</button>
+            <button class="tab-btn">Job Information</button>
+            <button class="tab-btn">Bank Details</button>
+            <button class="tab-btn">Emergency Contact</button>
+            <button class="tab-btn">Documents</button>
+          </div>
+          
+          <div class="tab-content">
+            <h3>Personal Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-control" id="profileFullName">
+              </div>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea class="form-control" id="profileAddress"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" id="profileEmail" disabled style="opacity:0.6; cursor:not-allowed;">
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" class="form-control" id="profileCity">
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" id="profilePhone">
+              </div>
+              <div class="form-group">
+                <label>State</label>
+                <input type="text" class="form-control" id="profileState">
+              </div>
+              <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" class="form-control" id="profileDob">
+              </div>
+              <div class="form-group">
+                <label>PIN Code</label>
+                <input type="text" class="form-control" id="profilePincode">
+              </div>
+              <div class="form-group">
+                <label>Gender</label>
+                <select class="form-control" id="profileGender">
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Country</label>
+                <select class="form-control" id="profileCountry">
+                  <option selected>India</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn-primary" style="margin-top:8px;" id="saveProfileBtn">Update Personal Information</button>
+          </div>
+        </div>
+
+        <div class="right-sidebar-stack">
+          
+          <div class="panel-block">
+            <div class="panel-block-header">
+              <h3>Skills</h3>
+              <button class="btn-sm-action"><i class="fa-solid fa-plus"></i>Add Skill</button>
+            </div>
+            <div class="skills-flex-wrap">
+              <span class="tag-badge">Java</span>
+              <span class="tag-badge">Spring Boot</span>
+              <span class="tag-badge">MySQL</span>
+              <span class="tag-badge">JavaScript</span>
+              <span class="tag-badge">React</span>
+              <span class="tag-badge">Git</span>
+              <span class="tag-badge">REST APIs</span>
+              <span class="tag-badge">Problem Solving</span>
+              <span class="tag-badge">Agile</span>
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <div class="panel-block-header">
+              <h3>About Me</h3>
+            </div>
+            <div class="about-box-text">
+              Passionate software engineer with experience in building web applications and RESTful APIs. I enjoy solving problems and learning new technologies.
+            </div>
+          </div>
+
+          <div class="panel-block">
+            <div class="panel-block-header">
+              <h3>Social Links</h3>
+            </div>
+            <div class="social-links-row">
+              <a href="#" class="social-icon-card"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#" class="social-icon-card"><i class="fa-brands fa-github"></i></a>
+              <a href="#" class="social-icon-card"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" class="social-icon-card"><i class="fa-solid fa-globe"></i></a>
+            </div>
+          </div>
+
+        </div></div></div></div></div>
+
+<script type="module">
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["employee"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const employeeDocRef = doc(db, "employees", currentUser.docId);
+
+    function populateProfile(me) {
+        document.getElementById('heroName').textContent = me.name || currentUser.name;
+        document.getElementById('heroDesignation').textContent = me.designation || '-';
+        document.getElementById('heroEmail').textContent = me.email || currentUser.email;
+        document.getElementById('heroPhone').textContent = me.phone || '-';
+        document.getElementById('heroLocation').textContent = [me.city, me.state, me.country].filter(Boolean).join(', ') || '-';
+        document.getElementById('heroEmployeeId').textContent = `: ${currentUser.docId}`;
+        document.getElementById('heroStatus').textContent = `: ${me.status || '-'}`;
+        document.getElementById('heroDepartment').textContent = `: ${me.department || '-'}`;
+        document.getElementById('heroDesignationDetail').textContent = `: ${me.designation || '-'}`;
+        document.getElementById('heroDob').textContent = `: ${me.dob || '-'}`;
+        document.getElementById('heroGender').textContent = `: ${me.gender || '-'}`;
+
+        document.getElementById('profileFullName').value = me.name || currentUser.name || '';
+        document.getElementById('profileAddress').value = me.address || '';
+        document.getElementById('profileEmail').value = me.email || currentUser.email || '';
+        document.getElementById('profileCity').value = me.city || '';
+        document.getElementById('profilePhone').value = me.phone || '';
+        document.getElementById('profileState').value = me.state || '';
+        document.getElementById('profileDob').value = me.dob || '';
+        document.getElementById('profilePincode').value = me.pincode || '';
+        if (me.gender) document.getElementById('profileGender').value = me.gender;
+        if (me.country) document.getElementById('profileCountry').value = me.country;
+
+        document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = me.name || currentUser.name);
+        document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = me.designation || currentUser.role);
+    }
+
+    async function loadProfile() {
+        try {
+            const snap = await getDoc(employeeDocRef);
+            const me = snap.exists() ? snap.data() : {};
+            populateProfile(me);
+        } catch (err) {
+            console.error("Failed to load profile: ", err);
+            alert("Failed to load profile: " + err.message);
+        }
+    }
+
+    document.getElementById('saveProfileBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const updatedProfile = {
+            name: document.getElementById('profileFullName').value.trim(),
+            phone: document.getElementById('profilePhone').value.trim(),
+            address: document.getElementById('profileAddress').value.trim(),
+            city: document.getElementById('profileCity').value.trim(),
+            state: document.getElementById('profileState').value.trim(),
+            dob: document.getElementById('profileDob').value,
+            pincode: document.getElementById('profilePincode').value.trim(),
+            gender: document.getElementById('profileGender').value,
+            country: document.getElementById('profileCountry').value
+        };
+
+        if (!updatedProfile.name) {
+            alert("Full name cannot be empty.");
+            return;
+        }
+
+        try {
+            await updateDoc(employeeDocRef, updatedProfile);
+            alert("Profile updated successfully.");
+            loadProfile();
+        } catch (err) {
+            alert("Failed to update profile: " + err.message);
+        }
+    });
+
+    loadProfile();
+</script>
+
+</body>
+</html>

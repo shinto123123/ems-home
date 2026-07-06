@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Logs - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:4px;}
+
+/* ── TOP KPI METRICS ROW ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;}
+.metric-icon-box{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4299e1;flex-shrink:0;}
+.kpi-info-block{display:flex;flex-direction:column;gap:2px;}
+.kpi-title{font-size:11.5px;color:#8898aa;font-weight:600;}
+.kpi-val{font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.kpi-subtext{font-size:11px;color:#8898aa;margin-top:2px;}
+
+/* ── MAIN PANEL COMPONENT ── */
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+
+/* Sub Tab Bar Structure + Right Hand Functional Actions */
+.panel-utilities-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:2px;margin-bottom:16px;gap:16px;flex-wrap:wrap;}
+.tabs-nav{display:flex;gap:4px;}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+.action-buttons-group{display:flex;align-items:center;gap:10px;}
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#8898aa;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm-outline:hover{border-color:#4299e1;color:#4299e1;}
+.btn-sm-solid{background:#4299e1;border:1px solid #4299e1;color:#fff;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm-solid:hover{background:#3182ce;border-color:#3182ce;}
+
+/* Intermediate Filter Selector Control Matrix */
+.filter-controls-row{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
+.filters-left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;padding:8px 14px;border-radius:10px;font-size:12.5px;outline:none;cursor:pointer;display:inline-flex;align-items:center;}
+.select-sm option{background:#111c44;}
+
+.panel-search-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;width:260px;}
+.panel-search-box i{color:#4a5568;font-size:12px;}
+.panel-search-box input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:12.5px;}
+
+/* ── STRUCTURED LOGS DATA TABLE ── */
+.data-table-container{width:100%;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
+.data-table th{color:#8898aa;font-weight:600;padding:12px 10px;border-bottom:1px solid #1b2e6e;}
+.data-table td{color:#e2e8f0;padding:14px 10px;border-bottom:1px solid #1b2e6e;vertical-align:middle;line-height:1.4;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+
+/* Custom Date Block Typography Styles */
+.date-meta-text strong{display:block;color:#fff;font-weight:600;}
+.date-meta-text span{font-size:11px;color:#8898aa;}
+
+/* Task Subheading styling */
+.task-title-meta strong{display:block;color:#fff;font-weight:600;}
+.task-title-meta span{font-size:11.5px;color:#8898aa;}
+
+/* Status Custom Badges */
+.badge-status{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.badge-status.approved{background:rgba(72,187,120,0.1);color:#48bb78;border-color:rgba(72,187,120,0.2);}
+
+/* Row Utilities Action Buttons */
+.btn-row-action{background:transparent;border:1px solid #1b2e6e;color:#8898aa;width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.btn-row-action:hover{border-color:#4299e1;color:#4299e1;}
+
+/* Pagination footer design layout */
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
+.pagination-controls{display:flex;gap:4px;align-items:center;}
+.page-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:600;font-size:11.5px;transition:.2s;}
+.page-nav-btn:hover, .page-nav-btn.active{border-color:#4299e1;background:#4299e1;color:#fff;}
+.pagination-ellipsis{padding:0 4px;font-size:12px;color:#4a5568;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .panel-utilities-row, .filter-controls-row{flex-direction:column;align-items:stretch;gap:12px;}
+    .tabs-nav{overflow-x:auto;}
+    .panel-search-box, .filters-left-group{width:100%;}
+    .filters-left-group .select-sm{flex:1;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+
+/* =========================
+   MODAL OVERLAYS & FORMS (Add Work Log)
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #f87171;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
+}
+
+.btn-cancel {
+    background: #16265c;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #1b2e6e;
+}
+
+.btn-submit {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-submit:hover {
+    background: #3182ce;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, mentors...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+       <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li ><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li ><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li class="active"><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li ><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li ><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li ><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <h1>Work Logs</h1>
+        <p>Log your daily work, tasks, and progress. Submit your work log for mentor review.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-calendar"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Total Logs</span>
+            <span class="kpi-val" id="kpiTotalLogs">0</span>
+            <span class="kpi-subtext">All Time</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #cbd5e1;"><i class="fa-regular fa-file-lines"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Submitted</span>
+            <span class="kpi-val" id="kpiSubmittedLogs">0</span>
+            <span class="kpi-subtext">Logs Submitted</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #fbbf24;"><i class="fa-regular fa-clock"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Pending</span>
+            <span class="kpi-val" id="kpiPendingLogs">0</span>
+            <span class="kpi-subtext">Awaiting Review</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #48bb78;"><i class="fa-regular fa-circle-check"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Approved</span>
+            <span class="kpi-val" id="kpiApprovedLogs">0</span>
+            <span class="kpi-subtext">Logs Approved</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        
+        <div class="panel-utilities-row">
+          <div class="tabs-nav">
+            <button class="tab-btn active">My Work Logs</button>
+            <button class="tab-btn">Pending Review</button>
+            <button class="tab-btn">Approved Logs</button>
+            <button class="tab-btn">All Logs</button>
+          </div>
+          <div class="action-buttons-group">
+            <button class="btn-sm-outline"><i class="fa-solid fa-download"></i>Export Logs</button>
+            <button class="btn-sm-solid" id="openWorkLogModalBtn"><i class="fa-solid fa-plus"></i>Add Work Log</button>
+          </div>
+        </div>
+
+        <div class="filter-controls-row">
+          <div class="filters-left-group">
+            <select class="select-sm">
+              <option>📅 01/05/2025 - 15/05/2025</option>
+            </select>
+            <select class="select-sm">
+              <option>All Projects</option>
+              <option>Employee Management System</option>
+            </select>
+            <select class="select-sm">
+              <option>All Statuses</option>
+              <option>Pending Review</option>
+              <option>Approved</option>
+            </select>
+          </div>
+          <div class="panel-search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search work log...">
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 12%;">Date</th>
+                <th style="width: 22%;">Project / Task</th>
+                <th style="width: 32%;">Work Description</th>
+                <th style="width: 8%;">Hours</th>
+                <th style="width: 12%;">Status</th>
+                <th style="width: 14%;">Submitted On</th>
+                <th style="text-align: center; width: 10%;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="workLogsTableBody">
+              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading work logs...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <span id="workLogsCountLabel">Showing 0 logs</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="workLogModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Work Log</h3>
+      <button class="modal-close" id="closeWorkLogModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="addWorkLogForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="workLogDate">Date</label>
+          <input type="date" id="workLogDate" required>
+        </div>
+        <div class="form-group">
+          <label for="workLogHours">Hours</label>
+          <input type="number" id="workLogHours" min="0" step="0.5" required placeholder="e.g., 4.0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="workLogProject">Project</label>
+        <input type="text" id="workLogProject" required placeholder="e.g., Employee Management System">
+      </div>
+      <div class="form-group">
+        <label for="workLogTask">Task / Module</label>
+        <input type="text" id="workLogTask" required placeholder="e.g., User Module">
+      </div>
+      <div class="form-group">
+        <label for="workLogDescription">Work Description</label>
+        <textarea id="workLogDescription" rows="4" required placeholder="Describe the work completed..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelWorkLogModalBtn">Cancel</button>
+        <button type="submit" class="btn-submit">Submit Work Log</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  const modal = document.getElementById("workLogModal");
+  const openModalBtn = document.getElementById("openWorkLogModalBtn");
+  const closeModalBtn = document.getElementById("closeWorkLogModalBtn");
+  const cancelModalBtn = document.getElementById("cancelWorkLogModalBtn");
+  const addWorkLogForm = document.getElementById("addWorkLogForm");
+
+  const hideModal = () => { modal.classList.remove("show"); addWorkLogForm.reset(); };
+  openModalBtn.addEventListener("click", () => modal.classList.add("show"));
+  closeModalBtn.addEventListener("click", hideModal);
+  cancelModalBtn.addEventListener("click", hideModal);
+
+  function formatDate(value) {
+    if (!value) return "-";
+    try {
+      const d = value && value.toDate ? value.toDate() : new Date(value);
+      if (isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("en-GB");
+    } catch {
+      return value;
+    }
+  }
+
+  function formatDayName(value) {
+    try {
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString(undefined, { weekday: "long" });
+    } catch {
+      return "";
+    }
+  }
+
+  function formatSubmittedOn(ts) {
+    try {
+      const d = ts && ts.toDate ? ts.toDate() : new Date(ts);
+      if (isNaN(d.getTime())) return { date: "-", time: "" };
+      return {
+        date: d.toLocaleDateString("en-GB"),
+        time: d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+      };
+    } catch {
+      return { date: "-", time: "" };
+    }
+  }
+
+  function updateWorkLogsWidgets(logsArray) {
+    const total = logsArray.length;
+    const pendingCount = logsArray.filter((log) => (log.status || "").toLowerCase() === "pending review").length;
+    const approvedCount = logsArray.filter((log) => (log.status || "").toLowerCase() === "approved").length;
+
+    document.getElementById("kpiTotalLogs").textContent = total;
+    document.getElementById("kpiSubmittedLogs").textContent = total;
+    document.getElementById("kpiPendingLogs").textContent = pendingCount;
+    document.getElementById("kpiApprovedLogs").textContent = approvedCount;
+  }
+
+  function renderWorkLogs(logsArray) {
+    const tbody = document.getElementById("workLogsTableBody");
+    const countLabel = document.getElementById("workLogsCountLabel");
+    tbody.innerHTML = "";
+
+    updateWorkLogsWidgets(logsArray || []);
+
+    if (!logsArray || logsArray.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No work logs submitted yet. Click "Add Work Log" to begin.</td></tr>`;
+      countLabel.textContent = "Showing 0 logs";
+      return;
+    }
+
+    logsArray.forEach((log) => {
+      const isApproved = (log.status || "").toLowerCase() === "approved";
+      const submitted = formatSubmittedOn(log.submittedOn);
+      const rowTemplate = `
+        <tr>
+          <td><div class="date-meta-text"><strong>${formatDate(log.date)}</strong><span>${formatDayName(log.date)}</span></div></td>
+          <td><div class="task-title-meta"><strong>${log.project || "-"}</strong><span>${log.task || "-"}</span></div></td>
+          <td style="color: #cbd5e1;">${log.description || "-"}</td>
+          <td style="font-weight: 600;">${log.hours != null ? log.hours + " hrs" : "-"}</td>
+          <td><span class="badge-status${isApproved ? " approved" : ""}">${log.status || "Pending Review"}</span></td>
+          <td><div class="date-meta-text"><strong>${submitted.date}</strong><span>${submitted.time}</span></div></td>
+          <td style="text-align: center; white-space: nowrap;">
+            <button class="btn-row-action"><i class="fa-regular fa-eye"></i></button>
+          </td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML("beforeend", rowTemplate);
+    });
+
+    countLabel.textContent = `Showing 1 to ${logsArray.length} of ${logsArray.length} logs`;
+  }
+
+  async function loadWorkLogs() {
+    try {
+      const q = query(collection(db, "workLogs"), where("uid", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      const logsArray = [];
+      querySnapshot.forEach((docSnap) => logsArray.push({ id: docSnap.id, ...docSnap.data() }));
+      logsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+      renderWorkLogs(logsArray);
+    } catch (err) {
+      console.error("Error loading work logs: ", err);
+      document.getElementById("workLogsTableBody").innerHTML =
+        `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load work logs.</td></tr>`;
+      alert("Could not load your work logs: " + err.message);
+    }
+  }
+
+  addWorkLogForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const newLog = {
+        uid: currentUser.uid,
+        internName: currentUser.name,
+        project: document.getElementById("workLogProject").value,
+        task: document.getElementById("workLogTask").value,
+        description: document.getElementById("workLogDescription").value,
+        hours: parseFloat(document.getElementById("workLogHours").value),
+        status: "Pending Review",
+        date: document.getElementById("workLogDate").value,
+        submittedOn: serverTimestamp()
+      };
+      await addDoc(collection(db, "workLogs"), newLog);
+      hideModal();
+      await loadWorkLogs();
+    } catch (err) {
+      console.error("Error submitting work log: ", err);
+      alert("Could not submit work log: " + err.message);
+    }
+  });
+
+  loadWorkLogs();
+</script>
+
+</body>
+</html>

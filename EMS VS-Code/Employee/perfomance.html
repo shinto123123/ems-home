@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance - Employee Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-top:4px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs i{font-size:10px;color:#1b2e6e;}
+.select-sm{background:#111c44;border:1px solid #1b2e6e;color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12.5px;outline:none;cursor:pointer;}
+
+/* ── TOP KPI ROW MATRIX ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;transform:translateY(-2px);}
+
+.radial-container{position:relative;width:60px;height:60px;flex-shrink:0;}
+.radial-container svg{width:60px;height:60px;transform:rotate(-90deg);}
+.radial-bg{fill:none;stroke:#0b1437;stroke-width:4;}
+.radial-fill{fill:none;stroke:#4299e1;stroke-width:4;stroke-linecap:round;}
+.radial-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.radial-center-text strong{display:block;font-size:13px;color:#fff;line-height:1;}
+.radial-center-text span{font-size:9px;color:#8898aa;display:block;margin-top:1px;}
+
+/* FIXED: Added missing opening curly brace here */
+.kpi-info-block {flex:1; display:flex; flex-direction:column; gap:2px;}
+.kpi-title{font-size:12px;color:#8898aa;font-weight:600;margin-bottom:2px;}
+.kpi-meta-val{font-size:14px;font-weight:700;color:#fff;}
+.star-rating{color:#fbbf24;font-size:11px;margin:3px 0;}
+.star-rating i.muted{color:#4a5568;}
+.kpi-subtext{font-size:11px;color:#8898aa;display:block;}
+.link-btn{color:#4299e1;font-size:11.5px;text-decoration:none;font-weight:600;display:inline-block;}
+.link-btn:hover{text-decoration:underline;}
+
+.metric-icon-box{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4299e1;flex-shrink:0;}
+
+/* ── SUB NAVIGATION TABS ── */
+.tabs-nav{display:flex;background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:4px 12px;gap:4px;box-shadow:0 4px 18px rgba(0,0,0,.2);}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+/* ── TWO COLUMN MIDDLE BLOCK LAYOUT ── */
+.performance-layout-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.panel-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+
+/* Chart Visual Blocks (Radar Simulation + Line Trend) */
+.charts-split-row{display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px;}
+
+.radar-simulation-box{display:flex;align-items:center;gap:16px;padding:8px 0;}
+.radar-svg-wrap{width:130px;height:130px;position:relative;flex-shrink:0;}
+.radar-svg-wrap svg{width:100%;height:100%;}
+.radar-polygon-bg{fill:rgba(27,46,110,0.3);stroke:#1b2e6e;stroke-width:1;}
+.radar-polygon-fill{fill:rgba(66,153,225,0.15);stroke:#4299e1;stroke-width:1.5;}
+
+/* FIXED: Changed justify-content to space-between */
+.radar-legend-list{flex:1;display:flex;flex-direction:column;gap:6px;font-size:11.5px;}
+.radar-legend-item{display:flex;align-items:center;justify-content:space-between;}
+.radar-lbl-group{display:flex;align-items:center;gap:6px;color:#cbd5e1;}
+.radar-dot{width:6px;height:6px;border-radius:50%;background:#4299e1;}
+.radar-val{color:#fff;font-weight:600;}
+
+/* Trend Line Chart Simulation */
+.trend-chart-box{display:flex;flex-direction:column;height:140px;justify-content:space-between;position:relative;padding-top:10px;}
+.trend-svg-wrap{position:relative;width:100%;height:100px;border-left:1px solid #1b2e6e;border-bottom:1px solid #1b2e6e;}
+.trend-svg-wrap svg{width:100%;height:100%;position:absolute;top:0;left:0;}
+.trend-x-axis{display:grid;grid-template-columns:repeat(5, 1fr);margin-top:6px;font-size:10px;color:#8898aa;text-align:center;}
+
+/* Right Stack Sidebar List Options */
+.sidebar-list-block{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.sidebar-list-block:last-child{margin-bottom:0;}
+.sidebar-list-title{font-size:12.5px;color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.sidebar-list-title i{color:#4299e1;font-size:14px;}
+.sidebar-list-title.improve i{color:#fbbf24;}
+.sidebar-ul{list-style:none;padding-left:4px;display:flex;flex-direction:column;gap:6px;}
+.sidebar-ul li{font-size:12.5px;color:#cbd5e1;display:flex;align-items:center;gap:8px;}
+.sidebar-ul li::before{content:"•";color:#4299e1;font-weight:bold;}
+.sidebar-list-block.improve .sidebar-ul li::before{color:#fbbf24;}
+
+/* Quick Nav Cards Setup */
+/* FIXED: Changed justify-content to space-between */
+.quick-action-list{display:flex;flex-direction:column;gap:10px;}
+.action-item-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:12px;color:#e2e8f0;text-decoration:none;font-size:12.5px;font-weight:500;display:flex;align-items:center;justify-content:space-between;transition:.2s;}
+.action-item-card:hover{border-color:#4299e1;color:#fff;}
+.action-card-left{display:flex;align-items:center;gap:10px;}
+.action-card-left i{color:#8898aa;font-size:14px;}
+.action-item-card:hover .action-card-left i{color:#4299e1;}
+
+/* ── LOWER HISTORY TABLE LOG ── */
+.lower-full-width-panel{grid-column: span 2;}
+.data-table-container{width:100%;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
+.data-table th{color:#8898aa;font-weight:600;padding:10px 8px;border-bottom:1px solid #1b2e6e;}
+.data-table td{color:#e2e8f0;padding:12px 8px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+.btn-icon-action{background:transparent;border:1px solid #1b2e6e;color:#8898aa;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.btn-icon-action:hover{border-color:#4299e1;color:#4299e1;}
+
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
+.pagination-controls{display:flex;gap:6px;}
+.page-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:600;transition:.2s;}
+.page-nav-btn:hover, .page-nav-btn.active{border-color:#4299e1;background:#4299e1;color:#fff;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+    .performance-layout-grid{grid-template-columns:1fr;}
+    .lower-full-width-panel{grid-column: span 1;}
+}
+@media(max-width:900px){
+    .charts-split-row{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .page-header{flex-direction:column;align-items:stretch;gap:8px;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">Employee Portal</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, documents...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li class="active"><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>Performance</h1>
+          <div class="breadcrumbs">
+            <a href="#">Dashboard</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Performance</span>
+          </div>
+        </div>
+        <select class="select-sm">
+          <option>Performance Year : 2024-2025</option>
+        </select>
+      </div>
+
+      <div class="metrics-grid">
+        
+        <div class="metric-card">
+          <div class="radial-container">
+            <svg viewBox="0 0 36 36">
+              <circle class="radial-bg" cx="18" cy="18" r="15.9"/>
+              <circle class="radial-fill" cx="18" cy="18" r="15.9" stroke-dasharray="90 10"/>
+            </svg>
+            <div class="radial-center-text"><strong>4.5</strong><span>/ 5</span></div>
+          </div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Overall Rating</span>
+            <div class="star-rating">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star muted"></i>
+            </div>
+            <span class="kpi-meta-val" style="font-size:12px;">Excellent</span>
+            <span class="kpi-subtext" style="font-size:10px; margin-top:2px;">Last updated 15 May 2025</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="radial-container">
+            <svg viewBox="0 0 36 36">
+              <circle class="radial-bg" cx="18" cy="18" r="15.9"/>
+              <circle class="radial-fill" cx="18" cy="18" r="15.9" stroke-dasharray="80 20"/>
+            </svg>
+            <div class="radial-center-text"><strong>80%</strong></div>
+          </div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Goals Completed</span>
+            <span class="kpi-meta-val" style="font-size:15px; margin-bottom:4px;">4 of 5 Goals</span>
+            <span class="kpi-subtext">Completed</span>
+            <a href="#" class="link-btn" style="margin-top:2px;">View Goals</a>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-comment-dots"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Feedback Received</span>
+            <span class="kpi-meta-val" style="font-size:20px; line-height:1;">12</span>
+            <span class="kpi-subtext" style="margin:2px 0 4px;">Feedbacks</span>
+            <a href="#" class="link-btn">View Feedback</a>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-calendar-check"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Next Review</span>
+            <span class="kpi-meta-val" style="font-size:15px; margin-bottom:2px;">15 Jun 2025</span>
+            <span class="kpi-subtext" style="margin-bottom:4px;">Annual Review</span>
+            <a href="#" class="link-btn">View Details</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tabs-nav">
+        <button class="tab-btn active">Overview</button>
+        <button class="tab-btn">Goals</button>
+        <button class="tab-btn">Feedback</button>
+        <button class="tab-btn">Reviews</button>
+        <button class="tab-btn">Skills</button>
+        <button class="tab-btn">Development Plan</button>
+        <button class="tab-btn">History</button>
+      </div>
+
+      <div class="performance-layout-grid">
+        
+        <div class="card-panel">
+          <div class="charts-split-row">
+            
+            <div>
+              <div class="panel-header" style="margin-bottom:6px;"><h3>Performance Summary</h3></div>
+              <div class="radar-simulation-box">
+                <div class="radar-svg-wrap">
+                  <svg viewBox="0 0 40 40">
+                    <polygon class="radar-polygon-bg" points="20,2 38,15 31,36 9,36 2,15"/>
+                    <polygon class="radar-polygon-bg" points="20,8 32,17 27,31 13,31 8,17"/>
+                    <polygon class="radar-polygon-bg" points="20,14 26,19 24,26 16,26 14,19"/>
+                    <line x1="20" y1="20" x2="20" y2="2" stroke="#1b2e6e" stroke-width="0.5"/>
+                    <line x1="20" y1="20" x2="38" y2="15" stroke="#1b2e6e" stroke-width="0.5"/>
+                    <line x1="20" y1="20" x2="31" y2="36" stroke="#1b2e6e" stroke-width="0.5"/>
+                    <line x1="20" y1="20" x2="9" y2="36" stroke="#1b2e6e" stroke-width="0.5"/>
+                    <line x1="20" y1="20" x2="2" y2="15" stroke="#1b2e6e" stroke-width="0.5"/>
+                    <polygon class="radar-polygon-fill" points="20,5 34,16 28,31 12,32 5,16"/>
+                  </svg>
+                </div>
+                
+                <div class="radar-legend-list">
+                  <div class="radar-legend-item"><div class="radar-lbl-group"><div class="radar-dot"></div>Quality of Work</div><span class="radar-val">4.5 / 5</span></div>
+                  <div class="radar-legend-item"><div class="radar-lbl-group"><div class="radar-dot"></div>Timeliness</div><span class="radar-val">4.0 / 5</span></div>
+                  <div class="radar-legend-item"><div class="radar-lbl-group"><div class="radar-dot"></div>Teamwork</div><span class="radar-val">4.5 / 5</span></div>
+                  <div class="radar-legend-item"><div class="radar-lbl-group"><div class="radar-dot"></div>Communication</div><span class="radar-val">4.0 / 5</span></div>
+                  <div class="radar-legend-item"><div class="radar-lbl-group"><div class="radar-dot"></div>Problem Solving</div><span class="radar-val">4.5 / 5</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="panel-header" style="margin-bottom:6px;"><h3>Rating Trend</h3></div>
+              <div class="trend-chart-box">
+                <div class="trend-svg-wrap">
+                  <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+                    <path d="M 10 25 L 30 20 L 50 16 L 70 25 L 90 10 L 90 40 L 10 40 Z" fill="rgba(66,153,225,0.06)"/>
+                    <polyline points="10,25 30,20 50,16 70,25 90,10" fill="none" stroke="#4299e1" stroke-width="1.2"/>
+                    <circle cx="10" cy="25" r="1" fill="#0b1437" stroke="#4299e1" stroke-width="0.8"/>
+                    <circle cx="30" cy="20" r="1" fill="#0b1437" stroke="#4299e1" stroke-width="0.8"/>
+                    <circle cx="50" cy="16" r="1" fill="#0b1437" stroke="#4299e1" stroke-width="0.8"/>
+                    <circle cx="70" cy="25" r="1" fill="#0b1437" stroke="#4299e1" stroke-width="0.8"/>
+                    <circle cx="90" cy="10" r="1.2" fill="#4299e1"/>
+                  </svg>
+                </div>
+                <div class="trend-x-axis">
+                  <span>Q2 2023</span><span>Q3 2023</span><span>Q4 2023</span><span>Q1 2024</span><span>Q2 2024</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          
+          <div class="card-panel">
+            <div class="sidebar-list-block">
+              <div class="sidebar-list-title"><i class="fa-solid fa-trophy"></i><span>Strengths</span></div>
+              <ul class="sidebar-ul">
+                <li>Strong technical skills</li>
+                <li>Good problem solving</li>
+                <li>Timely task delivery</li>
+                <li>Team collaboration</li>
+              </ul>
+            </div>
+            <div class="sidebar-list-block" style="margin-top:8px; border-top:1px solid #1b2e6e; padding-top:14px;">
+              <div class="sidebar-list-title improve"><i class="fa-solid fa-triangle-exclamation"></i><span>Areas to Improve</span></div>
+              <ul class="sidebar-ul">
+                <li>Documentation</li>
+                <li>Proactive communication</li>
+                <li>Work estimation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card-panel" style="gap:10px;">
+            <div class="panel-header"><h3>Quick Links</h3></div>
+            <div class="quick-action-list">
+              <a href="#" class="action-item-card">
+                <div class="action-card-left"><i class="fa-regular fa-clock"></i><span>View Review History</span></div>
+                <i class="fa-solid fa-chevron-right" style="font-size:10px; color:#8898aa;"></i>
+              </a>
+              <a href="#" class="action-item-card">
+                <div class="action-card-left"><i class="fa-regular fa-file-lines"></i><span>View Development Plan</span></div>
+                <i class="fa-solid fa-chevron-right" style="font-size:10px; color:#8898aa;"></i>
+              </a>
+              <a href="#" class="action-item-card">
+                <div class="action-card-left"><i class="fa-regular fa-user"></i><span>Provide Self Review</span></div>
+                <i class="fa-solid fa-chevron-right" style="font-size:10px; color:#8898aa;"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card-panel lower-full-width-panel">
+          <div class="panel-header"><h3>Review History</h3></div>
+          
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Review Period</th>
+                  <th>Review Type</th>
+                  <th>Overall Rating</th>
+                  <th>Reviewed By</th>
+                  <th>Review Date</th>
+                  <th style="text-align:center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reviewHistoryTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">Loading review history...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-footer">
+            <span>Showing 1 to 5 of 5 reviews</span>
+            <div class="pagination-controls">
+              <button class="page-nav-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px;"></i></button>
+              <button class="page-nav-btn active">1</button>
+              <button class="page-nav-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px;"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["employee"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const reviewTableBody = document.getElementById('reviewHistoryTableBody');
+
+    function renderStars(rating) {
+        const numRating = Number(rating) || 0;
+        const fullStars = Math.floor(numRating);
+        const hasHalf = numRating - fullStars >= 0.5;
+        let starsHtml = "";
+        for (let i = 0; i < fullStars; i++) starsHtml += `<i class="fa-solid fa-star"></i>`;
+        if (hasHalf) starsHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
+        const remaining = 5 - fullStars - (hasHalf ? 1 : 0);
+        for (let i = 0; i < remaining; i++) starsHtml += `<i class="fa-regular fa-star" style="color:#4a5568;"></i>`;
+        return `${starsHtml} <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">${numRating}</span>`;
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '-';
+        if (typeof dateStr.toDate === 'function') {
+            return dateStr.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function renderReviewHistory(records) {
+        if (records.length === 0) {
+            reviewTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">No performance reviews found yet.</td></tr>`;
+            return;
+        }
+        reviewTableBody.innerHTML = "";
+        records.forEach((r) => {
+            reviewTableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${r.reviewCycle || '-'}</td>
+                    <td>${r.status || '-'}</td>
+                    <td style="color:#fbbf24;">${renderStars(r.rating)}</td>
+                    <td>${r.reviewedBy || '-'}</td>
+                    <td>${formatDate(r.reviewDate)}</td>
+                    <td><button class="btn-icon-action" style="margin:0 auto;"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+            `);
+        });
+    }
+
+    async function loadPerformance() {
+        try {
+            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+            const me = meSnap.exists() ? meSnap.data() : {};
+            document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = currentUser.name);
+            document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = me.designation || currentUser.role);
+        } catch {
+            // non-critical, ignore
+        }
+
+        try {
+            const q = query(collection(db, "performance"), where("uid", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            const records = [];
+            snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
+            records.sort((a, b) => {
+                const aTime = a.reviewDate && a.reviewDate.toMillis ? a.reviewDate.toMillis() : new Date(a.reviewDate || 0).getTime();
+                const bTime = b.reviewDate && b.reviewDate.toMillis ? b.reviewDate.toMillis() : new Date(b.reviewDate || 0).getTime();
+                return bTime - aTime;
+            });
+            renderReviewHistory(records);
+        } catch (err) {
+            console.error("Failed to load performance reviews: ", err);
+            reviewTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${err.message}</td></tr>`;
+        }
+    }
+
+    loadPerformance();
+</script>
+
+</body>
+</html>

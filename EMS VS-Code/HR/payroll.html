@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Payroll Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE AREA ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 5 Column Financial Metrics Grid */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:15px;font-weight:700;color:#fff;white-space:nowrap;}
+
+/* Sub Navigation Navigation Row Submenu */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;position:relative;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Filters Configuration Controls Toolbar Panel */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.date-picker-btn{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+
+/* Cycle Payroll Statement Block Card Component */
+.period-summary-card{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.period-meta-block{display:flex;align-items:center;gap:16px;}
+.period-icon-wrap{width:42px;height:42px;border-radius:10px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:16px;}
+.period-data-grid{display:flex;gap:32px;}
+.period-data-node span{display:block;font-size:10.5px;color:#8898aa;margin-bottom:4px;}
+.period-data-node strong{display:block;font-size:13px;color:#fff;font-weight:600;}
+
+/* Sub-header section parameters bar */
+.section-subheading-bar{display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+.section-subheading-bar h3{color:#fff;font-size:14px;font-weight:600;}
+.search-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:8px;width:100%;max-width:240px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12px;width:100%;}
+.search-box i{color:#4a5568;font-size:11px;}
+
+/* Payroll Spreadsheet Matrix Data Table View */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.payroll-table{width:100%;border-collapse:collapse;text-align:left;}
+.payroll-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.payroll-table td{padding:10px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.payroll-table tr:last-child td{border-bottom:none;}
+.payroll-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.payroll-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+/* Checkbox alignment configuration styles */
+.chk-cell{width:36px;text-align:center;}
+.chk-cell input[type="checkbox"]{accent-color:#4299e1;cursor:pointer;}
+
+/* Status Variable Badges */
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;min-width:64px;}
+.status-badge.paid{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.pending{background:rgba(251,191,36,0.1);color:#fbbf24;}
+
+.btn-table-action{background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:.2s;}
+.btn-table-action:hover{border-color:#4299e1;color:#fff;}
+.btn-icon-dot{background:none;border:none;color:#8898aa;cursor:pointer;font-size:13px;padding:4px;}
+
+/* Pagination panel footer block bar row */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* ── DETAILS PANEL (RIGHT): INDIVIDUAL REMUNERATION INSPECTOR CONSOLE ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Profile Context Header Block metadata overview info */
+.profile-hero{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8898aa;}
+.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
+.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:11px;color:#cbd5e1;display:block;margin-top:2px;}
+
+/* Navigation sub tab elements links row */
+.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;}
+.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.tab-link:hover{color:#fff;}
+
+/* Container info data fields block components segments */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;}
+.section-title{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* Dropdown Accordion Accordion Grid calculation summary panel items */
+.calculation-accordion-node{display:flex;flex-direction:column;gap:2px;}
+.accordion-summary-bar{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid #1b2e6e;}
+.accordion-label{font-size:12.5px;color:#cbd5e1;display:flex;align-items:center;gap:6px;}
+.accordion-label i{font-size:10px;color:#8898aa;}
+.accordion-val{font-size:12.5px;color:#fff;font-weight:600;}
+
+/* Net Pay Highlight Display block row panel component */
+.net-pay-highlight-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#162256;border:1px solid #233a82;border-radius:10px;margin-top:4px;}
+.net-pay-label{font-size:13px;font-weight:600;color:#fff;}
+.net-pay-amount{font-size:16px;font-weight:700;color:#4299e1;}
+
+/* PDF Document Slips Download Trigger Component Button */
+.btn-download-slip-box{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;color:#cbd5e1;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-download-slip-box:hover{border-color:#4299e1;color:#fff;}
+
+/* Bottom operational system console triggers buttons footer layout */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;gap:10px;}
+.btn-footer-half{flex:1;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;}
+.btn-footer-half:hover{border-color:#8898aa;color:#fff;}
+.btn-footer-half.primary{background:#4299e1;color:#fff;border-color:#4299e1;}
+.btn-footer-half.primary:hover{background:#2b7fd1;}
+
+.d-none{display:none !important;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li class="active"><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <h2>Payroll Management</h2>
+        <div class="breadcrumb">Dashboard &gt; <span>Payroll</span></div>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="mini-info"><p>Total Employees</p><h3>250</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-wallet"></i></div>
+            <div class="mini-info"><p>Total Payroll (May 2025)</p><h3>₹1,25,00,000</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="mini-info"><p>Paid Employees</p><h3>220 <span style="font-size:11px; color:#4ade80; font-weight:normal; margin-left:4px;">88%</span></h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Pending Employees</p><h3>30 <span style="font-size:11px; color:#fbbf24; font-weight:normal; margin-left:4px;">12%</span></h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="mini-info"><p>Total Deductions</p><h3>₹15,00,000</h3></div>
+          </div>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active">Payroll Run</button>
+          <button class="segment-btn">Salary Components</button>
+          <div style="position:absolute; right:0; top:-4px; display:flex; gap:8px;">
+            <button class="btn-action" style="background:#fff; color:#111c44; font-weight:600;">Generate Payroll</button>
+            <button class="btn-action btn-primary" style="font-weight:600;">Run Payroll</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="date-picker-btn">
+            <i class="fa-regular fa-calendar"></i>
+            <span>May 2025</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:10px; margin-left:4px; color:#8898aa;"></i>
+          </div>
+          <select class="filter-select"><option>All Departments</option></select>
+          <select class="filter-select"><option>All Locations</option></select>
+          <select class="filter-select"><option>All Status</option></select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="period-summary-card">
+          <div class="period-meta-block">
+            <div class="period-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+            <div class="period-data-grid">
+              <div class="period-data-node"><span>Payroll Period</span><strong>01 May 2025 - 31 May 2025</strong></div>
+              <div class="period-data-node"><span>Pay Date</span><strong>31 May 2025</strong></div>
+              <div class="period-data-node"><span>Employees</span><strong>250</strong></div>
+              <div class="period-data-node"><span>Net Pay</span><strong>₹1,10,00,000</strong></div>
+              <div class="period-data-node"><span>Status</span><span class="status-badge paid" style="min-width:auto; padding:2px 8px; margin-top:2px;">Completed</span></div>
+            </div>
+          </div>
+          <button class="btn-action" style="background:#0b1437; border:1px solid #1b2e6e;">View Summary</button>
+        </div>
+
+        <div class="section-subheading-bar">
+          <h3>Employee Payroll</h3>
+          <div style="display:flex; gap:10px; width:100%; justify-content:flex-end; align-items:center;">
+            <div class="search-box">
+              <i class="fa-solid fa-search"></i>
+              <input type="text" placeholder="Search by employee name or ID...">
+            </div>
+            <button class="btn-action" style="background:#0b1437; border:1px solid #1b2e6e; padding:6px 14px;"><i class="fa-solid fa-download"></i> Export</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="payroll-table">
+            <thead>
+              <tr>
+                <th class="chk-cell"><input type="checkbox"></th>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Gross Salary (₹)</th>
+                <th>Net Pay (₹)</th>
+                <th>Status</th>
+                <th>Receipt</th>
+                <th style="text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="payrollTableBody">
+              <tr class="selected">
+                <td class="chk-cell"><input type="checkbox" checked></td>
+                <td>EMP001</td>
+                <td><strong>John Doe</strong></td>
+                <td>Engineering</td>
+                <td>Software Engineer</td>
+                <td>80,000</td>
+                <td>71,650</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td style="text-align:center;"><button class="btn-table-action">View</button><button class="btn-icon-dot" style="margin-left:6px;"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 8 of 250 employees</span>
+            <div class="pagination">
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
+              <a href="#" class="page-link active">1</a>
+              <a href="#" class="page-link">2</a>
+              <a href="#" class="page-link">3</a>
+              <span style="padding: 4px 6px;">...</span>
+              <a href="#" class="page-link">32</a>
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Employee Payroll Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar"><i class="fa-regular fa-user"></i></div>
+          <div class="hero-meta">
+            <h2>John Doe <span class="status-badge paid" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; min-width:auto; padding:2px 6px;">Paid</span></h2>
+            <p>EMP001 • Software Engineer</p>
+            <span>Engineering Department</span>
+          </div>
+        </div>
+
+        <div class="tab-nav">
+          <a href="#" class="tab-link active">Overview</a>
+          <a href="#" class="tab-link">Earnings</a>
+          <a href="#" class="tab-link">Deductions</a>
+          <a href="#" class="tab-link">Tax</a>
+          <a href="#" class="tab-link">History</a>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Pay Summary (May 2025)</div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="accordion-summary-bar" style="border:none; padding:0;">
+              <span class="accordion-label" style="color:#cbd5e1;">Gross Salary</span>
+              <span class="accordion-val">₹80,000</span>
+            </div>
+            
+            <div class="calculation-accordion-node">
+              <div class="accordion-summary-bar">
+                <span class="accordion-label"><i class="fa-solid fa-chevron-down"></i> Total Earnings</span>
+                <span class="accordion-val">₹10,000</span>
+              </div>
+            </div>
+            
+            <div class="calculation-accordion-node">
+              <div class="accordion-summary-bar">
+                <span class="accordion-label"><i class="fa-solid fa-chevron-down"></i> Total Deductions</span>
+                <span class="accordion-val">₹18,350</span>
+              </div>
+            </div>
+            
+            <div class="net-pay-highlight-row">
+              <span class="net-pay-label">Net Pay</span>
+              <span class="net-pay-amount">₹71,650</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Payment Information</div>
+          <div class="info-grid">
+            <span class="info-label">Payment Status</span><span class="info-value"><span class="status-badge paid" style="min-width:auto; padding:2px 6px;">Paid</span></span>
+            <span class="info-label">Payment Date</span><span class="info-value">31 May 2025</span>
+            <span class="info-label">Payment Mode</span><span class="info-value">Bank Transfer</span>
+            <span class="info-label">Bank Account</span><span class="info-value">******** 5678</span>
+            <span class="info-label">Transaction ID</span><span class="info-value">TRX1234567890</span>
+          </div>
+        </div>
+
+        <div class="info-section" style="padding:10px;">
+          <div class="section-title" style="margin-bottom:8px; font-size:12px;">Payslip</div>
+          <button class="btn-download-slip-box"><i class="fa-solid fa-download"></i> Download Payslip</button>
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-footer-half">View Payroll History</button>
+        <button class="btn-footer-half primary">Recalculate Payroll</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+
+  // Dismiss right flyout context panel container trigger event click handler
+  closePanelBtn.addEventListener('click', () => {
+    detailsPanel.classList.add('d-none');
+  });
+</script>
+
+<script type="module">
+    import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["hr"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const payrollTableBody = document.getElementById('payrollTableBody');
+    let loadedPayrollCache = {};
+
+    function formatMoney(n) {
+        const num = Number(n) || 0;
+        return num.toLocaleString('en-IN');
+    }
+
+    function buildActionCell(id, status) {
+        const isPaid = status === 'Paid';
+        const markPaidBtn = isPaid
+            ? `<button class="btn-icon-dot" style="margin-left:6px;"><i class="fa-solid fa-ellipsis-vertical"></i></button>`
+            : `<button class="btn-icon-dot mark-paid-btn" data-id="${id}" title="Mark as Paid" style="margin-left:6px;"><i class="fa-solid fa-circle-check"></i></button>`;
+        return `<button class="btn-table-action">View</button>${markPaidBtn}`;
+    }
+
+    function rowTemplate(id, pay) {
+        const status = pay.status || 'Pending';
+        const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
+        const grossSalary = pay.grossSalary ?? pay.basicSalary;
+        const receiptCell = pay.receiptData
+            ? `<button class="btn-table-action view-receipt-btn" data-id="${id}">View</button>`
+            : `<span style="color:#8898aa;">-</span>`;
+        return `
+            <tr data-id="${id}">
+                <td class="chk-cell"><input type="checkbox"></td>
+                <td>${pay.employeeUid || ''}</td>
+                <td><strong>${pay.employeeName || ''}</strong></td>
+                <td>${pay.department || ''}</td>
+                <td>${pay.designation || ''}</td>
+                <td>${formatMoney(grossSalary)}</td>
+                <td>${formatMoney(pay.netPay)}</td>
+                <td><span class="status-badge ${statusCls}">${status}</span></td>
+                <td>${receiptCell}</td>
+                <td style="text-align:center;">${buildActionCell(id, status)}</td>
+            </tr>
+        `;
+    }
+
+    // Cloud Firestore Live Database Sync Fetcher (org-wide read, no department filter)
+    async function fetchPayrollRecords() {
+        payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>`;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "payroll"));
+            payrollTableBody.innerHTML = "";
+            loadedPayrollCache = {};
+
+            if (querySnapshot.empty) {
+                payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const id = docSnap.id;
+                const pay = docSnap.data();
+                loadedPayrollCache[id] = { id, ...pay };
+                payrollTableBody.insertAdjacentHTML('beforeend', rowTemplate(id, pay));
+            });
+
+            bindMarkPaidTriggers();
+            bindReceiptTriggers();
+
+        } catch (error) {
+            console.error("Firestore loading failure context: ", error);
+            payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#f87171;">Failed reading collection: ${error.message}</td></tr>`;
+        }
+    }
+
+    // Attach Mark Paid action listeners dynamically
+    function bindMarkPaidTriggers() {
+        document.querySelectorAll('.mark-paid-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "payroll", id), { status: "Paid" });
+                    if (loadedPayrollCache[id]) loadedPayrollCache[id].status = "Paid";
+                    const row = payrollTableBody.querySelector(`tr[data-id="${id}"]`);
+                    if (row) row.outerHTML = rowTemplate(id, loadedPayrollCache[id] || { status: "Paid" });
+                    bindMarkPaidTriggers();
+                    bindReceiptTriggers();
+                } catch (err) {
+                    alert("Error updating payroll status: " + err.message);
+                }
+            });
+        });
+    }
+
+    // Attach receipt view listeners dynamically
+    function bindReceiptTriggers() {
+        document.querySelectorAll('.view-receipt-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const record = loadedPayrollCache[btn.getAttribute('data-id')];
+                if (!record || !record.receiptData) return;
+                const win = window.open();
+                if (record.receiptType && record.receiptType.startsWith('image/')) {
+                    win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
+                } else {
+                    win.location.href = record.receiptData;
+                }
+            });
+        });
+    }
+
+    // Initialize Page Loop Data Fetch instantly
+    fetchPayrollRecords();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:4px;}
+
+/* ── TOP KPI METRICS ROW ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;}
+.metric-icon-box{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4299e1;flex-shrink:0;}
+.kpi-info-block{display:flex;flex-direction:column;gap:2px;}
+.kpi-title{font-size:11.5px;color:#8898aa;font-weight:600;}
+.kpi-val{font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.kpi-subtext{font-size:11px;color:#8898aa;margin-top:2px;}
+
+/* ── MIDDLE SPLIT TWO COLUMN GRID LAYOUT ── */
+.feedback-layout-grid{display:grid;grid-template-columns:1.8fr 1.1fr;gap:16px;align-items:start;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+
+/* Utilities Sub-Tabs Header Line */
+.panel-utilities-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:2px;margin-bottom:16px;gap:16px;flex-wrap:wrap;}
+.tabs-nav{display:flex;gap:4px;}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;padding:6px 12px;border-radius:8px;font-size:12.5px;outline:none;cursor:pointer;}
+.select-sm option{background:#111c44;}
+
+/* Left Feedback List Rows View */
+.feedback-items-list{display:flex;flex-direction:column;}
+.feedback-row-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(27,46,110,0.6);position:relative;}
+.feedback-row-item:last-child{border-bottom:none;padding-bottom:4px;}
+.feedback-user-avatar{width:38px;height:38px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;flex-shrink:0;}
+
+.feedback-body-content{flex:1;display:flex;flex-direction:column;gap:6px;}
+.meta-author-header{display:flex;align-items:flex-start;justify-content:space-between;}
+.author-details h4{font-size:13.5px;font-weight:600;color:#fff;}
+.author-details p{font-size:11.5px;color:#8898aa;margin-top:1px;}
+.feedback-timestamp{font-size:11px;color:#8898aa;}
+
+.star-rating{color:#fbbf24;font-size:11px;display:flex;gap:2px;margin:2px 0;}
+.star-rating i.muted{color:#4a5568;}
+
+.feedback-message-text{font-size:13px;color:#cbd5e1;line-height:1.5;margin:2px 0;}
+.feedback-project-tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#8898aa;margin-top:2px;}
+.feedback-project-tag i{font-size:11px;}
+
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#4299e1;padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;align-self:flex-end;}
+.btn-sm-outline:hover{background:rgba(66,153,225,0.05);border-color:#4299e1;}
+
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid #1b2e6e;font-size:12.5px;color:#8898aa;}
+
+/* Right Stats Sidebar Panels Layout */
+.right-sidebar-stack{display:flex;flex-direction:column;gap:16px;}
+.panel-header-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:14px;}
+
+/* Performance Overview Graphic Sections */
+.overview-graphic-container{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 0;}
+.radial-progress-box{position:relative;width:90px;height:90px;flex-shrink:0;}
+.radial-progress-box svg{width:90px;height:90px;transform:rotate(-90deg);}
+.radial-bg{fill:none;stroke:#0b1437;stroke-width:6;}
+.radial-fill{fill:none;stroke:#4299e1;stroke-width:6;stroke-linecap:round;}
+.radial-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.radial-center-text h2{font-size:18px;color:#fff;font-weight:700;}
+.radial-center-text span{font-size:10px;color:#8898aa;}
+
+/* Horizontal Stack Rating Matrix Lines */
+.star-distribution-bars{flex:1;display:flex;flex-direction:column;gap:6px;padding-left:10px;}
+.distribution-row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#8898aa;}
+.distribution-label{display:inline-flex;align-items:center;gap:4px;min-width:24px;color:#cbd5e1;font-weight:500;}
+.distribution-label i{font-size:10px;color:#fbbf24;}
+.bar-track-bg{background:#0b1437;border:1px solid #1b2e6e;height:6px;border-radius:10px;flex:1;overflow:hidden;}
+.bar-fill-value{background:#4299e1;height:100%;border-radius:10px;}
+.percentage-txt{min-width:28px;text-align:right;font-size:11px;}
+
+.sidebar-caption-text{font-size:11.5px;color:#8898aa;margin-top:12px;border-top:1px solid rgba(27,46,110,0.5);padding-top:10px;}
+
+/* Topic Items Stack Configuration */
+.topics-items-stack{display:flex;flex-direction:column;gap:12px;}
+.topic-score-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.topic-card-left{display:flex;gap:12px;align-items:center;}
+.topic-icon-box{width:34px;height:34px;border-radius:8px;background:#111c44;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:13px;flex-shrink:0;}
+.topic-details h4{font-size:12.5px;color:#fff;font-weight:600;}
+.topic-details p{font-size:11.5px;color:#8898aa;margin-top:1px;}
+.score-badge{background:rgba(72,187,120,0.1);color:#48bb78;border:1px solid rgba(72,187,120,0.2);padding:2px 6px;border-radius:6px;font-size:11.5px;font-weight:700;}
+
+/* ── LOWER REQUEST FEEDBACK ACTION ROW ── */
+.request-feedback-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.request-feedback-panel:hover{border-color:#4299e1;}
+.request-left-info h3{font-size:14.5px;font-weight:700;color:#fff;}
+.request-left-info p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+
+.request-action-group{display:flex;align-items:center;gap:12px;}
+.select-lg{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;padding:8px 14px;border-radius:10px;font-size:12.5px;outline:none;cursor:pointer;width:180px;}
+.select-lg option{background:#111c44;}
+.btn-sm-solid{background:#4299e1;border:1px solid #4299e1;color:#fff;padding:8px 16px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-sm-solid:hover{background:#3182ce;border-color:#3182ce;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+    .feedback-layout-grid{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .panel-utilities-row{flex-direction:column;align-items:stretch;gap:12px;}
+    .tabs-nav{overflow-x:auto;}
+    .request-feedback-panel{flex-direction:column;align-items:stretch;gap:14px;}
+    .request-action-group{flex-direction:column;align-items:stretch;}
+    .select-lg{width:100%;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, mentors...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+     <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li ><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li class="active"><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <h1>Feedback</h1>
+        <p>View feedback and ratings from your mentor and provide your feedback.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-comments"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Total Feedback</span>
+            <span class="kpi-val" id="kpiTotalFeedback">0</span>
+            <span class="kpi-subtext">All Time</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color:#cbd5e1;"><i class="fa-regular fa-user"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">From Mentor</span>
+            <span class="kpi-val" id="kpiFromMentor">0</span>
+            <span class="kpi-subtext">Feedback Received</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color:#cbd5e1;"><i class="fa-regular fa-pen-to-square"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Given Feedback</span>
+            <span class="kpi-val" id="kpiGivenFeedback">0</span>
+            <span class="kpi-subtext">Feedback Submitted</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color:#fbbf24;"><i class="fa-regular fa-star"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Average Rating</span>
+            <span class="kpi-val" id="kpiAverageRating">0 / 5</span>
+            <span class="kpi-subtext">Overall Performance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-layout-grid">
+        
+        <div class="card-panel">
+          <div class="panel-utilities-row">
+            <div class="tabs-nav">
+              <button class="tab-btn active">Received Feedback</button>
+              <button class="tab-btn">Given Feedback</button>
+              <button class="tab-btn">Feedback Requests</button>
+            </div>
+            <select class="select-sm">
+              <option>All Projects</option>
+            </select>
+          </div>
+
+          <div class="feedback-items-list" id="feedbackItemsList">
+            <div class="feedback-row-item"><div class="feedback-body-content"><p class="feedback-message-text">Loading feedback...</p></div></div>
+          </div>
+
+          <div class="pagination-footer">
+            <span id="feedbackCountLabel">Showing 0 feedbacks</span>
+          </div>
+        </div>
+
+        <div class="right-sidebar-stack">
+          
+          <div class="card-panel">
+            <h3 class="panel-header-title">Performance Overview</h3>
+            <div class="overview-graphic-container">
+              <div class="radial-progress-box">
+                <svg viewBox="0 0 36 36">
+                  <circle class="radial-bg" cx="18" cy="18" r="15.95"/>
+                  <circle class="radial-fill" id="ratingRadialFill" cx="18" cy="18" r="15.95" stroke-dasharray="0 100"/>
+                </svg>
+                <div class="radial-center-text">
+                  <h2 id="ratingRadialVal">0</h2>
+                  <span>Out of 5</span>
+                </div>
+              </div>
+
+              <div class="star-distribution-bars">
+                <div class="distribution-row">
+                  <span class="distribution-label">5 <i class="fa-solid fa-star"></i></span>
+                  <div class="bar-track-bg"><div class="bar-fill-value" id="starBarFill5" style="width: 0%;"></div></div>
+                  <span class="percentage-txt" id="starBarPct5">0%</span>
+                </div>
+                <div class="distribution-row">
+                  <span class="distribution-label">4 <i class="fa-solid fa-star"></i></span>
+                  <div class="bar-track-bg"><div class="bar-fill-value" id="starBarFill4" style="width: 0%;"></div></div>
+                  <span class="percentage-txt" id="starBarPct4">0%</span>
+                </div>
+                <div class="distribution-row">
+                  <span class="distribution-label">3 <i class="fa-solid fa-star"></i></span>
+                  <div class="bar-track-bg"><div class="bar-fill-value" id="starBarFill3" style="width: 0%;"></div></div>
+                  <span class="percentage-txt" id="starBarPct3">0%</span>
+                </div>
+                <div class="distribution-row">
+                  <span class="distribution-label">2 <i class="fa-solid fa-star"></i></span>
+                  <div class="bar-track-bg"><div class="bar-fill-value" id="starBarFill2" style="width: 0%;"></div></div>
+                  <span class="percentage-txt" id="starBarPct2">0%</span>
+                </div>
+                <div class="distribution-row">
+                  <span class="distribution-label">1 <i class="fa-solid fa-star"></i></span>
+                  <div class="bar-track-bg"><div class="bar-fill-value" id="starBarFill1" style="width: 0%;"></div></div>
+                  <span class="percentage-txt" id="starBarPct1">0%</span>
+                </div>
+              </div>
+            </div>
+            <p class="sidebar-caption-text">Based on feedback from mentors and reviewers</p>
+          </div>
+
+          <div class="card-panel">
+            <h3 class="panel-header-title">Project Performance Reviews</h3>
+            <div class="topics-items-stack" id="projectReviewsList">
+              <p style="color:#8898aa; font-size:13px;">Loading reviews...</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="request-feedback-panel">
+        <div class="request-left-info">
+          <h3>Request Feedback</h3>
+          <p>Request feedback from your mentor or manager.</p>
+        </div>
+        <div class="request-action-group">
+          <select class="select-lg" id="mentorSelect">
+            <option value="">Select Mentor</option>
+            <option value="David Mentor">David Mentor</option>
+          </select>
+          <button class="btn-sm-solid" id="requestFeedbackBtn">Request Feedback <i class="fa-regular fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  function formatTimestamp(ts) {
+    try {
+      const d = ts && ts.toDate ? ts.toDate() : new Date(ts);
+      if (isNaN(d.getTime())) return "-";
+      return d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" });
+    } catch {
+      return "-";
+    }
+  }
+
+  function starsHtml(rating) {
+    const full = Math.round(Number(rating) || 0);
+    let html = "";
+    for (let i = 0; i < 5; i++) {
+      html += `<i class="fa-solid fa-star${i < full ? "" : " muted"}"></i>`;
+    }
+    return html;
+  }
+
+  function updateFeedbackWidgets(givenArray, requestedArray) {
+    const totalReceived = givenArray.length;
+    const ratings = givenArray.map((f) => Number(f.rating)).filter((r) => !isNaN(r) && r > 0);
+    const avgRating = ratings.length > 0 ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : 0;
+
+    document.getElementById("kpiTotalFeedback").textContent = totalReceived;
+    document.getElementById("kpiFromMentor").textContent = totalReceived;
+    document.getElementById("kpiGivenFeedback").textContent = requestedArray.length;
+    document.getElementById("kpiAverageRating").textContent = `${avgRating ? avgRating.toFixed(1) : 0} / 5`;
+
+    document.getElementById("ratingRadialVal").textContent = avgRating ? avgRating.toFixed(1) : "0";
+    const radialPct = Math.round((avgRating / 5) * 100);
+    document.getElementById("ratingRadialFill").setAttribute("stroke-dasharray", `${radialPct} ${100 - radialPct}`);
+
+    for (let star = 1; star <= 5; star++) {
+      const count = ratings.filter((r) => Math.round(r) === star).length;
+      const pct = ratings.length > 0 ? Math.round((count / ratings.length) * 100) : 0;
+      document.getElementById(`starBarFill${star}`).style.width = pct + "%";
+      document.getElementById(`starBarPct${star}`).textContent = pct + "%";
+    }
+  }
+
+  function renderFeedback(feedbackArray) {
+    const list = document.getElementById("feedbackItemsList");
+    const countLabel = document.getElementById("feedbackCountLabel");
+    list.innerHTML = "";
+
+    if (!feedbackArray || feedbackArray.length === 0) {
+      list.innerHTML = `<div class="feedback-row-item"><div class="feedback-body-content"><p class="feedback-message-text">No feedback received yet.</p></div></div>`;
+      countLabel.textContent = "Showing 0 feedbacks";
+      return;
+    }
+
+    feedbackArray.forEach((fb) => {
+      const rowTemplate = `
+        <div class="feedback-row-item">
+          <div class="feedback-user-avatar"><i class="fa-regular fa-user"></i></div>
+          <div class="feedback-body-content">
+            <div class="meta-author-header">
+              <div class="author-details">
+                <h4>${fb.mentorName || "Mentor"}</h4>
+                <p>Project Mentor</p>
+              </div>
+              <span class="feedback-timestamp">${formatTimestamp(fb.createdAt)}</span>
+            </div>
+            <div class="star-rating">${starsHtml(fb.rating)}</div>
+            <p class="feedback-message-text">${fb.message || ""}</p>
+            <div class="feedback-project-tag"><i class="fa-regular fa-folder"></i><span>${fb.project || "General"}</span></div>
+          </div>
+        </div>
+      `;
+      list.insertAdjacentHTML("beforeend", rowTemplate);
+    });
+
+    countLabel.textContent = `Showing 1 to ${feedbackArray.length} of ${feedbackArray.length} feedbacks`;
+  }
+
+  async function loadFeedback() {
+    try {
+      const q = query(collection(db, "feedback"), where("menteeUid", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      const allArray = [];
+      querySnapshot.forEach((docSnap) => allArray.push({ id: docSnap.id, ...docSnap.data() }));
+
+      const feedbackArray = allArray.filter((f) => f.status === "Given");
+      const requestedArray = allArray.filter((f) => f.status === "Requested");
+
+      updateFeedbackWidgets(feedbackArray, requestedArray);
+      renderFeedback(feedbackArray);
+    } catch (err) {
+      console.error("Error loading feedback: ", err);
+      document.getElementById("feedbackItemsList").innerHTML =
+        `<div class="feedback-row-item"><div class="feedback-body-content"><p class="feedback-message-text">Failed to load feedback.</p></div></div>`;
+    }
+  }
+
+  async function populateMentorOptions() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "mentorship"));
+      const names = new Set();
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.mentorName) names.add(data.mentorName);
+      });
+      if (names.size > 0) {
+        const select = document.getElementById("mentorSelect");
+        select.innerHTML = `<option value="">Select Mentor</option>`;
+        names.forEach((name) => {
+          select.insertAdjacentHTML("beforeend", `<option value="${name}">${name}</option>`);
+        });
+      }
+    } catch {
+      // mentorship collection not available yet - keep the static fallback options
+    }
+  }
+
+  document.getElementById("requestFeedbackBtn").addEventListener("click", async () => {
+    const select = document.getElementById("mentorSelect");
+    const mentorName = select.value;
+    if (!mentorName) {
+      alert("Please select a mentor first.");
+      return;
+    }
+    try {
+      await addDoc(collection(db, "feedback"), {
+        menteeUid: currentUser.uid,
+        mentorUid: null,
+        mentorName: mentorName,
+        status: "Requested",
+        createdAt: serverTimestamp(),
+        rating: null,
+        message: "",
+        project: ""
+      });
+      alert("Feedback request sent to " + mentorName + ".");
+      select.value = "";
+    } catch (err) {
+      console.error("Error requesting feedback: ", err);
+      alert("Could not send feedback request: " + err.message);
+    }
+  });
+
+  async function loadProjectReviews() {
+    const container = document.getElementById("projectReviewsList");
+    try {
+      const snap = await getDocs(query(collection(db, "performance"), where("uid", "==", currentUser.uid)));
+      if (snap.empty) {
+        container.innerHTML = `<p style="color:#8898aa; font-size:13px;">No project reviews yet. Your manager or HR will rate you once an assigned project is completed.</p>`;
+        return;
+      }
+      const reviews = [];
+      snap.forEach((s) => reviews.push(s.data()));
+      reviews.sort((a, b) => (b.reviewDate?.seconds || 0) - (a.reviewDate?.seconds || 0));
+
+      container.innerHTML = reviews.map((r) => `
+        <div class="topic-score-card">
+          <div class="topic-card-left">
+            <div class="topic-icon-box"><i class="fa-solid fa-diagram-project"></i></div>
+            <div class="topic-details">
+              <h4>${r.projectName || 'General Review'}</h4>
+              <p>${r.comments || 'No comments provided.'} &mdash; ${r.reviewedBy || 'Reviewer'} (${(r.reviewedByRole || '').toUpperCase()})</p>
+            </div>
+          </div>
+          <span class="score-badge">${r.rating !== undefined && r.rating !== null ? Number(r.rating).toFixed(1) : '-'}</span>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error("Failed to load project reviews: ", err);
+      container.innerHTML = `<p style="color:#f87171; font-size:13px;">Failed to load reviews: ${err.message}</p>`;
+    }
+  }
+
+  loadFeedback();
+  populateMentorOptions();
+  loadProjectReviews();
+</script>
+
+</body>
+</html>

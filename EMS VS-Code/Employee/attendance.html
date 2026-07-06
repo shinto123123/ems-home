@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance - Employee Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-top:4px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs i{font-size:10px;color:#1b2e6e;}
+
+/* ── BUTTONS ── */
+.btn-primary{background:#4299e1;border:none;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px;}
+.btn-primary:hover{background:#2b7fd1;}
+.btn-outline{background:transparent;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;width:100%;}
+.btn-outline:hover{border-color:#4299e1;color:#4299e1;}
+
+/* ── 4-COLUMN KPI METRIC BARS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;transform:translateY(-2px);}
+.metric-icon{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#4299e1;flex-shrink:0;}
+.metric-info p{font-size:12px;color:#8898aa;font-weight:600;margin-bottom:2px;}
+.metric-info h2{font-size:22px;font-weight:700;color:#fff;line-height:1.2;}
+.metric-info span{font-size:11px;color:#8898aa;}
+
+/* ── THREE COLUMN MIDDLE LAYOUT ── */
+.attendance-layout-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.panel-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+.panel-header-sub{font-size:12px;color:#8898aa;}
+
+/* 1. CALENDAR MODULE */
+.cal-navigation{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:13px;color:#e2e8f0;}
+.cal-nav-arrows{display:flex;gap:16px;cursor:pointer;color:#8898aa;}
+.cal-nav-arrows i:hover{color:#4299e1;}
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;padding:4px 8px;border-radius:6px;font-size:12px;outline:none;}
+.calendar-days-grid{display:grid;grid-template-columns:repeat(7, 1fr);text-align:center;row-gap:8px;column-gap:4px;font-size:12px;}
+.day-name{color:#8898aa;font-weight:600;padding-bottom:6px;}
+.day-num{color:#e2e8f0;padding:8px 0;border-radius:8px;cursor:pointer;transition:.2s;border:1px solid transparent;}
+.day-num:hover{border-color:#1b2e6e;}
+.day-num.muted{color:#4a5568;}
+.day-num.present{border-color:rgba(66,153,225,0.4);background:rgba(66,153,225,0.05);}
+.day-num.absent{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05);color:#ef4444;}
+.day-num.half-day{border-style:dashed;border-color:#fbbf24;}
+.day-num.late{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.day-num.selected{background:#4299e1;color:#fff;font-weight:700;}
+.calendar-legend{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid #1b2e6e;font-size:11px;color:#8898aa;}
+.leg-item{display:flex;align-items:center;gap:6px;}
+.leg-dot-indicator{width:8px;height:8px;border-radius:50%;background:#8898aa;}
+
+/* 2. TODAY'S ATTENDANCE PANEL */
+.user-preview-row{display:flex;align-items:center;gap:12px;background:#0b1437;padding:12px;border-radius:10px;border:1px solid #1b2e6e;margin-bottom:14px;}
+.user-preview-avatar{width:38px;height:38px;border-radius:50%;background:#111c44;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.user-preview-info h4{font-size:13px;color:#fff;}
+.user-preview-info p{font-size:11px;color:#8898aa;}
+.timeline-data-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.timeline-data-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(27,46,110,0.5);}
+.timeline-data-row:last-child{border-bottom:none;}
+.timeline-label{color:#8898aa;}
+.timeline-val{color:#fff;font-weight:500;}
+.badge-status-pill{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(74,222,128,0.15);color:#4ade80;}
+
+/* 3. CHART MODULE */
+.donut-chart-box{display:flex;justify-content:center;align-items:center;position:relative;width:120px;height:120px;margin:10px auto 16px;}
+.donut-chart-box svg{width:120px;height:120px;transform:rotate(-90deg);}
+.donut-bg{fill:none;stroke:#0b1437;stroke-width:4.5;}
+.donut-fill{fill:none;stroke:#4299e1;stroke-width:4.5;stroke-dasharray:75 25;stroke-linecap:round;}
+.donut-center-info{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.donut-center-info strong{display:block;font-size:20px;color:#fff;line-height:1;}
+.donut-center-info span{font-size:10px;color:#8898aa;margin-top:2px;display:block;}
+.breakdown-list{display:flex;flex-direction:column;gap:8px;font-size:12.5px;}
+.breakdown-row{display:flex;align-items:center;justify-content:space-between;}
+.breakdown-label-wrap{display:flex;align-items:center;gap:8px;color:#cbd5e1;}
+.breakdown-dot{width:9px;height:9px;border-radius:50%;}
+.breakdown-val{color:#fff;font-weight:600;}
+
+/* ── ATTENDANCE RECORDS LOG (LOWER ROW) ── */
+.records-filter-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px;}
+.filters-wrap{display:flex;gap:10px;}
+.data-table-container{width:100%;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px;}
+.data-table th{color:#8898aa;font-weight:600;padding:12px 10px;border-bottom:1px solid #1b2e6e;background:#111c44;}
+.data-table td{color:#e2e8f0;padding:12px 10px;border-bottom:1px solid #1b2e6e;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+.table-status-badge{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.table-status-badge.present{background:rgba(74,222,128,0.15);color:#4ade80;}
+.table-status-badge.late{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.table-status-badge.absent{background:rgba(239,68,68,0.15);color:#ef4444;}
+.btn-icon-action{background:transparent;border:1px solid #1b2e6e;color:#8898aa;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.btn-icon-action:hover{border-color:#4299e1;color:#4299e1;}
+
+/* PAGINATION FRAMES */
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
+.pagination-controls{display:flex;gap:6px;}
+.page-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:600;transition:.2s;}
+.page-nav-btn:hover, .page-nav-btn.active{border-color:#4299e1;background:#4299e1;color:#fff;}
+
+/* Responsive Framework Modifications */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+    .attendance-layout-grid{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .records-filter-header{flex-direction:column;align-items:stretch;}
+    .filters-wrap{flex-direction:column;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">Employee Portal</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, documents...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>Attendance</h1>
+          <div class="breadcrumbs">
+            <a href="#">Dashboard</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Attendance</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-primary" id="checkInOutBtn"><i class="fa-solid fa-right-to-bracket"></i>Check In</button>
+          <button class="btn-primary"><i class="fa-solid fa-download"></i>Export Report</button>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-regular fa-calendar-check"></i></div>
+          <div class="metric-info">
+            <p>Present Days</p>
+            <h2 id="metricPresentDays">0</h2>
+            <span>This Month</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-regular fa-calendar-xmark"></i></div>
+          <div class="metric-info">
+            <p>Absent Days</p>
+            <h2 id="metricAbsentDays">0</h2>
+            <span>This Month</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-regular fa-clock"></i></div>
+          <div class="metric-info">
+            <p>Late Arrivals</p>
+            <h2 id="metricLateArrivals">0</h2>
+            <span>This Month</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-percent"></i></div>
+          <div class="metric-info">
+            <p>Attendance %</p>
+            <h2 id="metricAttendancePercent">0%</h2>
+            <span>This Month</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="attendance-layout-grid">
+        
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Attendance Calendar</h3>
+          </div>
+          <div class="cal-navigation">
+            <div class="cal-nav-arrows">
+              <i class="fa-solid fa-chevron-left"></i>
+              <i class="fa-solid fa-angle-left"></i>
+            </div>
+            <strong>May 2025</strong>
+            <div class="cal-nav-arrows">
+              <i class="fa-solid fa-chevron-right"></i>
+              <select class="select-sm">
+                <option>Month</option>
+              </select>
+            </div>
+          </div>
+          <div class="calendar-days-grid" id="calendarDaysGrid">
+            <div class="day-name">Sun</div><div class="day-name">Mon</div><div class="day-name">Tue</div><div class="day-name">Wed</div><div class="day-name">Thu</div><div class="day-name">Fri</div><div class="day-name">Sat</div>
+          </div>
+          <div class="calendar-legend">
+            <div class="leg-item"><div class="leg-dot-indicator" style="background:rgba(66,153,225,0.6)"></div> Present</div>
+            <div class="leg-item"><div class="leg-dot-indicator" style="background:#ef4444"></div> Absent</div>
+            <div class="leg-item"><div class="leg-dot-indicator" style="border:1px dashed #fbbf24; background:none;"></div> Half Day</div>
+            <div class="leg-item"><div class="leg-dot-indicator" style="background:#fbbf24"></div> Late</div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Today's Attendance</h3>
+              <span class="panel-header-sub" id="todayDateLabel">-</span>
+            </div>
+          </div>
+          <div class="user-preview-row">
+            <div class="user-preview-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="user-preview-info">
+              <h4 id="todayUserName">-</h4>
+              <p id="todayUserDesignation">-</p>
+            </div>
+          </div>
+          <div class="timeline-data-list">
+            <div class="timeline-data-row"><span class="timeline-label">Status</span><span class="badge-status-pill" id="todayStatusVal">No Record</span></div>
+            <div class="timeline-data-row"><span class="timeline-label">Check In</span><span class="timeline-val" id="todayCheckInVal">-</span></div>
+            <div class="timeline-data-row"><span class="timeline-label">Check Out</span><span class="timeline-val" id="todayCheckOutVal">-</span></div>
+            <div class="timeline-data-row"><span class="timeline-label">Working Hours</span><span class="timeline-val" style="color:#4299e1;" id="todayWorkingHoursVal">-</span></div>
+            <div class="timeline-data-row"><span class="timeline-label">Break Duration</span><span class="timeline-val">-</span></div>
+          </div>
+          <button class="btn-outline" style="margin-top:auto;">View My Timesheet</button>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="card-panel" style="flex:1;">
+            <div class="panel-header"><h3>Attendance Summary <span style="font-size:12px; color:#8898aa; font-weight:normal;">(May 2025)</span></h3></div>
+            <div class="donut-chart-box">
+              <svg viewBox="0 0 36 36">
+                <circle class="donut-bg" cx="18" cy="18" r="15.9"/>
+                <circle class="donut-fill" cx="18" cy="18" r="15.9"/>
+              </svg>
+              <div class="donut-center-info">
+                <strong id="donutTotalDays">0</strong>
+                <span>Total Days</span>
+              </div>
+            </div>
+            <div class="breakdown-list">
+              <div class="breakdown-row"><div class="breakdown-label-wrap"><div class="breakdown-dot" style="background:#4299e1;"></div>Present</div><span class="breakdown-val" id="donutPresentVal">0</span></div>
+              <div class="breakdown-row"><div class="breakdown-label-wrap"><div class="breakdown-dot" style="background:#ef4444;"></div>Absent</div><span class="breakdown-val" id="donutAbsentVal">0</span></div>
+              <div class="breakdown-row"><div class="breakdown-label-wrap"><div class="breakdown-dot" style="background:#4a5568;"></div>Half Day</div><span class="breakdown-val" id="donutHalfDayVal">0</span></div>
+              <div class="breakdown-row"><div class="breakdown-label-wrap"><div class="breakdown-dot" style="background:#fbbf24;"></div>Late</div><span class="breakdown-val" id="donutLateVal">0</span></div>
+            </div>
+          </div>
+          
+          <div class="card-panel" style="gap:10px;">
+            <div class="panel-header"><h3>Quick Actions</h3></div>
+            <button class="btn-outline"><i class="fa-regular fa-calendar-plus"></i> Request Regularization</button>
+            <button class="btn-outline"><i class="fa-regular fa-file-lines"></i> View Attendance Policy</button>
+          </div>
+        </div>
+
+      </div><div class="card-panel">
+        <div class="records-filter-header">
+          <h3>Attendance Records</h3>
+          <div class="filters-wrap">
+            <select class="select-sm" style="padding:6px 12px;"><option>May 2025</option></select>
+            <select class="select-sm" style="padding:6px 12px;"><option>All Status</option></select>
+          </div>
+        </div>
+        
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Status</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Working Hours</th>
+                <th>Break Duration</th>
+                <th>Remarks</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceLogTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:24px; color:#8898aa;">Loading attendance records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <span>Showing 1 to 5 of 21 records</span>
+          <div class="pagination-controls">
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px;"></i></button>
+            <button class="page-nav-btn active">1</button>
+            <button class="page-nav-btn">2</button>
+            <button class="page-nav-btn">3</button>
+            <button class="page-nav-btn">4</button>
+            <button class="page-nav-btn">5</button>
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px;"></i></button>
+          </div>
+        </div>
+
+      </div></div></div></div>
+
+<script type="module">
+    import { collection, getDocs, query, where, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["employee"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const calendarGrid = document.getElementById('calendarDaysGrid');
+    const logTableBody = document.getElementById('attendanceLogTableBody');
+    const checkInOutBtn = document.getElementById('checkInOutBtn');
+
+    let attendanceByDate = {};
+    let meDesignation = currentUser.role;
+    let meDepartment = null;
+
+    function todayDateStr() {
+        return new Date().toISOString().slice(0, 10);
+    }
+
+    function formatTimeNow() {
+        return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    }
+
+    function deriveCheckInStatus(now) {
+        const cutoff = new Date(now);
+        cutoff.setHours(9, 15, 0, 0);
+        return now > cutoff ? 'Late' : 'Present';
+    }
+
+    function updateCheckButtonUI() {
+        const record = attendanceByDate[todayDateStr()];
+        if (!record || !record.checkIn) {
+            checkInOutBtn.disabled = false;
+            checkInOutBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i>Check In`;
+            checkInOutBtn.onclick = handleCheckIn;
+        } else if (record.checkIn && !record.checkOut) {
+            checkInOutBtn.disabled = false;
+            checkInOutBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i>Check Out`;
+            checkInOutBtn.onclick = handleCheckOut;
+        } else {
+            checkInOutBtn.disabled = true;
+            checkInOutBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i>Completed Today`;
+            checkInOutBtn.onclick = null;
+        }
+    }
+
+    async function handleCheckIn() {
+        checkInOutBtn.disabled = true;
+        try {
+            const now = new Date();
+            const dateStr = todayDateStr();
+            const docId = `${currentUser.uid}_${dateStr}`;
+            await setDoc(doc(db, "attendance", docId), {
+                uid: currentUser.uid,
+                employeeUid: currentUser.uid,
+                department: meDepartment,
+                date: dateStr,
+                checkIn: formatTimeNow(),
+                checkInTimestamp: now.getTime(),
+                checkOut: null,
+                checkOutTimestamp: null,
+                status: deriveCheckInStatus(now),
+                workingHours: null,
+                remarks: ""
+            });
+            await loadAttendance();
+        } catch (err) {
+            console.error("Check-in failed: ", err);
+            alert("Check-in failed: " + err.message);
+            updateCheckButtonUI();
+        }
+    }
+
+    async function handleCheckOut() {
+        checkInOutBtn.disabled = true;
+        try {
+            const now = new Date();
+            const dateStr = todayDateStr();
+            const docId = `${currentUser.uid}_${dateStr}`;
+            const record = attendanceByDate[dateStr];
+            let workingHours = null;
+            if (record && record.checkInTimestamp) {
+                const diffMs = now.getTime() - record.checkInTimestamp;
+                const h = Math.floor(diffMs / 3600000);
+                const m = Math.round((diffMs % 3600000) / 60000);
+                workingHours = `${h}h ${String(m).padStart(2, '0')}m`;
+            }
+            await updateDoc(doc(db, "attendance", docId), {
+                checkOut: formatTimeNow(),
+                checkOutTimestamp: now.getTime(),
+                workingHours
+            });
+            await loadAttendance();
+        } catch (err) {
+            console.error("Check-out failed: ", err);
+            alert("Check-out failed: " + err.message);
+            updateCheckButtonUI();
+        }
+    }
+
+    function statusToClass(status) {
+        switch ((status || '').toLowerCase()) {
+            case 'present': return 'present';
+            case 'late': return 'late';
+            case 'absent': return 'absent';
+            case 'leave': return 'half-day';
+            default: return '';
+        }
+    }
+
+    function formatDateParts(dateStr) {
+        const dateObj = new Date(dateStr);
+        if (isNaN(dateObj)) return { display: dateStr || '-', day: '-' };
+        return {
+            display: dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            day: dateObj.toLocaleDateString('en-US', { weekday: 'short' })
+        };
+    }
+
+    function renderCalendar() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startWeekday = firstDay.getDay();
+        const daysInMonth = lastDay.getDate();
+        const prevMonthLastDate = new Date(year, month, 0).getDate();
+        const todayStr = today.toISOString().slice(0, 10);
+
+        let cellsHtml = "";
+        for (let i = startWeekday - 1; i >= 0; i--) {
+            cellsHtml += `<div class="day-num muted">${prevMonthLastDate - i}</div>`;
+        }
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = new Date(year, month, d).toISOString().slice(0, 10);
+            const record = attendanceByDate[dateStr];
+            let classes = "day-num";
+            if (record) classes += " " + statusToClass(record.status);
+            if (dateStr === todayStr) classes += " selected";
+            cellsHtml += `<div class="${classes}">${d}</div>`;
+        }
+        const totalCells = startWeekday + daysInMonth;
+        const trailing = (7 - (totalCells % 7)) % 7;
+        for (let i = 1; i <= trailing; i++) {
+            cellsHtml += `<div class="day-num muted">${i}</div>`;
+        }
+
+        calendarGrid.innerHTML = `<div class="day-name">Sun</div><div class="day-name">Mon</div><div class="day-name">Tue</div><div class="day-name">Wed</div><div class="day-name">Thu</div><div class="day-name">Fri</div><div class="day-name">Sat</div>` + cellsHtml;
+    }
+
+    function renderMetricsAndSummary(records) {
+        const presentCount = records.filter(r => (r.status || '').toLowerCase() === 'present').length;
+        const absentCount = records.filter(r => (r.status || '').toLowerCase() === 'absent').length;
+        const lateCount = records.filter(r => (r.status || '').toLowerCase() === 'late').length;
+        const leaveCount = records.filter(r => (r.status || '').toLowerCase() === 'leave').length;
+        const totalCount = records.length;
+        const attendedCount = presentCount + lateCount;
+        const percent = totalCount > 0 ? Math.round((attendedCount / totalCount) * 100) : 0;
+
+        document.getElementById('metricPresentDays').textContent = presentCount;
+        document.getElementById('metricAbsentDays').textContent = absentCount;
+        document.getElementById('metricLateArrivals').textContent = lateCount;
+        document.getElementById('metricAttendancePercent').textContent = `${percent}%`;
+
+        document.getElementById('donutTotalDays').textContent = totalCount;
+        document.getElementById('donutPresentVal').textContent = presentCount;
+        document.getElementById('donutAbsentVal').textContent = absentCount;
+        document.getElementById('donutHalfDayVal').textContent = leaveCount;
+        document.getElementById('donutLateVal').textContent = lateCount;
+    }
+
+    function renderTodayPanel() {
+        const today = new Date();
+        document.getElementById('todayDateLabel').textContent = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', weekday: 'long' });
+        document.getElementById('todayUserName').textContent = currentUser.name;
+        document.getElementById('todayUserDesignation').textContent = meDesignation;
+
+        const todayStr = today.toISOString().slice(0, 10);
+        const record = attendanceByDate[todayStr];
+        if (record) {
+            document.getElementById('todayStatusVal').textContent = record.status || '-';
+            document.getElementById('todayCheckInVal').textContent = record.checkIn || '-';
+            document.getElementById('todayCheckOutVal').textContent = record.checkOut || '-';
+            document.getElementById('todayWorkingHoursVal').textContent = record.workingHours || '-';
+        } else {
+            document.getElementById('todayStatusVal').textContent = 'No Record';
+            document.getElementById('todayCheckInVal').textContent = '-';
+            document.getElementById('todayCheckOutVal').textContent = '-';
+            document.getElementById('todayWorkingHoursVal').textContent = '-';
+        }
+    }
+
+    function renderLogTable(records) {
+        if (records.length === 0) {
+            logTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#8898aa;">No attendance records found yet.</td></tr>`;
+            return;
+        }
+        logTableBody.innerHTML = "";
+        records.forEach(r => {
+            const { display, day } = formatDateParts(r.date);
+            const statusClass = statusToClass(r.status) || 'present';
+            logTableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${display}</td>
+                    <td>${day}</td>
+                    <td><span class="table-status-badge ${statusClass}">${r.status || '-'}</span></td>
+                    <td>${r.checkIn || '-'}</td>
+                    <td>${r.checkOut || '-'}</td>
+                    <td>${r.workingHours || '-'}</td>
+                    <td>-</td>
+                    <td>${r.remarks || '-'}</td>
+                    <td><button class="btn-icon-action"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+            `);
+        });
+    }
+
+    async function loadAttendance() {
+        try {
+            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+            if (meSnap.exists()) {
+                meDesignation = meSnap.data().designation || currentUser.role;
+                meDepartment = meSnap.data().department || null;
+                document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = currentUser.name);
+                document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = meDesignation);
+            }
+        } catch {
+            // non-critical, ignore
+        }
+
+        try {
+            const q = query(collection(db, "attendance"), where("uid", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            const records = [];
+            attendanceByDate = {};
+            snap.forEach((docSnap) => {
+                const data = docSnap.data();
+                records.push(data);
+                if (data.date) attendanceByDate[data.date] = data;
+            });
+            records.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            renderCalendar();
+            renderMetricsAndSummary(records);
+            renderTodayPanel();
+            renderLogTable(records);
+            updateCheckButtonUI();
+        } catch (err) {
+            console.error("Failed to load attendance: ", err);
+            renderCalendar();
+            renderTodayPanel();
+            logTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load attendance: ${err.message}</td></tr>`;
+            updateCheckButtonUI();
+        }
+    }
+
+    loadAttendance();
+</script>
+
+</body>
+</html>

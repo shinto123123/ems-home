@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0b1437;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: #e2e8f0;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+    width: 230px;
+    height: 100vh;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+    position: fixed;
+    z-index: 200;
+}
+
+.sidebar .logo {
+    padding: 18px 25px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #8898aa;
+    font-size: 14px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    background: #1b2e6e;
+    color: #ffffff;
+}
+
+/* ── MAIN WRAPPER ── */
+.main {
+    flex: 1;
+    margin-left: 230px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ── TOPBAR NAVBAR ── */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
+}
+
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-search i { color: #4a5568; font-size: 14px; }
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.nav-search input::placeholder { color: #4a5568; }
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    transition: .3s;
+}
+
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
+}
+
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+}
+
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+
+.nav-profile-info h4 { font-size: 13px; font-weight: 600; color: #ffffff; }
+.nav-profile-info small { font-size: 11px; color: #8898aa; }
+.nav-profile .fa-chevron-down { font-size: 11px; color: #8898aa; }
+.nav-profile-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 160px; background: #111c44; border: 1px solid #1b2e6e; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.4); padding: 6px; display: none; z-index: 1000; }
+.nav-profile-dropdown.show { display: block; }
+.nav-profile-dropdown a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; color: #d7dfef; font-size: 13px; text-decoration: none; transition: .15s; }
+.nav-profile-dropdown a:hover { background: rgba(66,153,225,.12); color: #fff; }
+.nav-profile-dropdown a i { width: 14px; }
+
+/* ── CONTENT AREA ── */
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    background: #0b1437;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.page-header h1 { font-size: 24px; font-weight: 700; color: #ffffff; }
+.page-header p { font-size: 13px; color: #8898aa; margin-top: 4px; }
+
+.header-buttons { display: flex; gap: 10px; }
+.header-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    background: #111c44;
+    color: #e2e8f0;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.header-buttons button:hover {
+    background: #1b2e6e;
+    border-color: #4299e1;
+    color: #ffffff;
+}
+.header-buttons button i { color: #4299e1; font-size: 14px; }
+
+/* ── MAIN LAYOUT ── */
+.attendance-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── LEFT EMPLOYEE LIST PANEL ── */
+.employee-panel {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.employee-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #16265c;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.employee-search i { color: #8898aa; font-size: 14px; }
+.employee-search input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #e2e8f0;
+    font-size: 14px;
+    width: 100%;
+}
+.employee-search input::placeholder { color: #5a6a85; }
+
+.employee-list {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.employee {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #1b2e6e;
+    transition: background 0.2s;
+}
+
+.employee:last-child { border-bottom: none; }
+.employee:hover { background: rgba(27, 46, 110, 0.5); }
+.employee.active {
+    background: #1b2e6e;
+    border-left: 4px solid #4299e1;
+    padding-left: 12px;
+}
+
+.employee img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1b2e6e;
+}
+.employee.active img { border-color: #4299e1; }
+
+.employee-avatar-placeholder {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    border: 2px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+}
+.employee.active .employee-avatar-placeholder { border-color: #4299e1; }
+
+.employee-info h4 { font-size: 13px; font-weight: 600; color: #ffffff; }
+.employee-info span { font-size: 11px; color: #8898aa; display: block; margin-top: 2px; }
+.employee-info .emp-id {
+    background: #16265c;
+    color: #4299e1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+/* ── RIGHT PANEL: TRACKER CALENDAR CONTAINER ── */
+.calendar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* Calendar Display Box */
+.calendar-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Navigation Bar Component */
+.calendar-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.current-profile-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.current-profile-badge h2 { font-size: 16px; color: #ffffff; font-weight: 600; }
+.current-profile-badge span {
+    background: #1b2e6e;
+    color: #4299e1;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.calendar-navigation {
+    display: flex;
+    align-items: center;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.nav-arrow-btn {
+    background: none;
+    border: none;
+    color: #8898aa;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.nav-arrow-btn:hover { background: #1b2e6e; color: #ffffff; }
+.calendar-navigation span {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 15px;
+}
+
+/* Weekday Label Matrix */
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.weekdays div {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #8898aa;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 6px 0;
+}
+
+/* Calendar Date Grid Matrix */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.day {
+    aspect-ratio: 1.5; 
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 10px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s;
+}
+
+.day:hover {
+    transform: translateY(-2px);
+    border-color: #4299e1;
+}
+
+.day-number { font-size: 12px; font-weight: 600; color: #8898aa; }
+
+.status-label-badge {
+    align-self: flex-start;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.time-stamp {
+    font-size: 9px;
+    color: #8898aa;
+    margin-top: 4px;
+    font-weight: 500;
+    align-self: flex-end;
+}
+
+/* Theme Variant Status Badges */
+.day.present { background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.15); }
+.day.present .day-number { color: #ffffff; }
+.day.present .status-label-badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+.day.late { background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.15); }
+.day.late .day-number { color: #ffffff; }
+.day.late .status-label-badge { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+.day.absent { background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.15); }
+.day.absent .day-number { color: #ffffff; }
+.day.absent .status-label-badge { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+.day.leave { background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.15); }
+.day.leave .day-number { color: #ffffff; }
+.day.leave .status-label-badge { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+.day.empty { background: rgba(255, 255, 255, 0.02); border-color: rgba(27, 46, 110, 0.3); opacity: 0.4; cursor: default; }
+
+/* Color Status Legend Indicators Bar */
+.calendar-legend {
+    display: flex;
+    gap: 20px;
+    padding: 14px 0 0 4px;
+    margin-top: 14px;
+    border-top: 1px solid #1b2e6e;
+}
+
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8898aa; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+.legend-dot.present { background: #4ade80; }
+.legend-dot.late { background: #fbbf24; }
+.legend-dot.leave { background: #60a5fa; }
+.legend-dot.absent { background: #f87171; }
+
+/* ── SUMMARY DASH CARDS ── */
+.summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.summary-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.summary-card h3 {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8898aa;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+}
+
+.summary-card h2 { font-size: 24px; font-weight: 700; }
+.summary-card:nth-child(1) h2 { color: #4ade80; }
+.summary-card:nth-child(2) h2 { color: #fbbf24; }
+.summary-card:nth-child(3) h2 { color: #60a5fa; }
+.summary-card:nth-child(4) h2 { color: #f87171; }
+.summary-card:nth-child(5) h2 { color: #22d3ee; }
+
+/* ── DETAILED ATTENDANCE LOG TABLE ── */
+.details-table {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.details-table h3 { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 14px; }
+.details-table table { width: 100%; border-collapse: collapse; }
+.details-table thead tr { background: #0b1437; }
+
+.details-table th {
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #8898aa;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: left;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.details-table th:first-child { border-radius: 8px 0 0 8px; }
+.details-table th:last-child { border-radius: 0 8px 8px 0; }
+.details-table tbody tr { border-bottom: 1px solid #1b2e6e; transition: background 0.15s; }
+.details-table tbody tr:last-child { border-bottom: none; }
+.details-table tbody tr:hover { background: rgba(27, 46, 110, 0.4); }
+.details-table td { padding: 12px 16px; font-size: 13px; color: #cbd5e0; }
+
+.status-present { color: #4ade80 !important; font-weight: 600; }
+.status-late { color: #fbbf24 !important; font-weight: 600; }
+.status-absent { color: #f87171 !important; font-weight: 600; }
+.status-leave { color: #60a5fa !important; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="page-header">
+            <div>
+                <h1>Attendance Management</h1>
+                <p>Monitor employee attendance, late check-ins and leave records.</p>
+            </div>
+            <div class="header-buttons">
+                <button><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                <button><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+            </div>
+        </div>
+
+        <div class="attendance-layout">
+            
+            <div class="employee-panel">
+                <div class="employee-search">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="employeeSearchInput" placeholder="Search employee...">
+                </div>
+                <div class="employee-list" id="firebaseEmployeeList">
+                    <div style="text-align: center; padding: 20px; color: #8898aa; font-size: 13px;">Loading database records...</div>
+                </div>
+            </div>
+
+            <div class="calendar-panel">
+                
+                <div class="calendar-box">
+                    <div class="calendar-top-bar">
+                        <div class="current-profile-badge">
+                            <h2 id="activeProfileName">Select an Employee</h2>
+                            <span id="activeProfileId">ID: --</span>
+                        </div>
+                        <div class="calendar-navigation">
+                            <button class="nav-arrow-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span>June 2026</span>
+                            <button class="nav-arrow-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="weekdays">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid">
+                        <div class="day empty"></div>
+                        <div class="day present"><span class="day-number">1</span><span class="status-label-badge">Present</span><span class="time-stamp">09:02 AM</span></div>
+                        <div class="day present"><span class="day-number">2</span><span class="status-label-badge">Present</span><span class="time-stamp">09:05 AM</span></div>
+                        <div class="day absent"><span class="day-number">3</span><span class="status-label-badge">Absent</span><span class="time-stamp">--</span></div>
+                        <div class="day present"><span class="day-number">4</span><span class="status-label-badge">Present</span><span class="time-stamp">08:58 AM</span></div>
+                        <div class="day late"><span class="day-number">5</span><span class="status-label-badge">Late Arrival</span><span class="time-stamp">09:18 AM</span></div>
+                        <div class="day empty"><span class="day-number">6</span></div>
+                        <div class="day empty"><span class="day-number">7</span></div>
+                        <div class="day present"><span class="day-number">8</span><span class="status-label-badge">Present</span><span class="time-stamp">09:01 AM</span></div>
+                        <div class="day present"><span class="day-number">9</span><span class="status-label-badge">Present</span><span class="time-stamp">08:55 AM</span></div>
+                        <div class="day present"><span class="day-number">10</span><span class="status-label-badge">Present</span><span class="time-stamp">09:00 AM</span></div>
+                        <div class="day present"><span class="day-number">11</span><span class="status-label-badge">Present</span><span class="time-stamp">09:03 AM</span></div>
+                        <div class="day leave"><span class="day-number">12</span><span class="status-label-badge">On Leave</span><span class="time-stamp">--</span></div>
+                        <div class="day empty"><span class="day-number">13</span></div>
+                        <div class="day empty"><span class="day-number">14</span></div>
+                        <div class="day present"><span class="day-number">15</span><span class="status-label-badge">Present</span><span class="time-stamp">08:59 AM</span></div>
+                        <div class="day present"><span class="day-number">16</span><span class="status-label-badge">Present</span><span class="time-stamp">09:02 AM</span></div>
+                        <div class="day present"><span class="day-number">17</span><span class="status-label-badge">Present</span><span class="time-stamp">09:04 AM</span></div>
+                        <div class="day late"><span class="day-number">18</span><span class="status-label-badge">Late Arrival</span><span class="time-stamp">09:22 AM</span></div>
+                        <div class="day present"><span class="day-number">19</span><span class="status-label-badge">Present</span><span class="time-stamp">09:01 AM</span></div>
+                        <div class="day empty"><span class="day-number">20</span></div>
+                        <div class="day empty"><span class="day-number">21</span></div>
+                        <div class="day present"><span class="day-number">22</span><span class="status-label-badge">Present</span><span class="time-stamp">08:57 AM</span></div>
+                        <div class="day absent"><span class="day-number">23</span><span class="status-label-badge">Absent</span><span class="time-stamp">--</span></div>
+                        <div class="day present"><span class="day-number">24</span><span class="status-label-badge">Present</span><span class="time-stamp">09:00 AM</span></div>
+                        <div class="day present"><span class="day-number">25</span><span class="status-label-badge">Present</span><span class="time-stamp">09:04 AM</span></div>
+                        <div class="day present"><span class="day-number">26</span><span class="status-label-badge">Present</span><span class="time-stamp">09:02 AM</span></div>
+                        <div class="day empty"><span class="day-number">27</span></div>
+                        <div class="day empty"><span class="day-number">28</span></div>
+                        <div class="day present"><span class="day-number">29</span><span class="status-label-badge">Present</span><span class="time-stamp">08:56 AM</span></div>
+                        <div class="day present"><span class="day-number">30</span><span class="status-label-badge">Present</span><span class="time-stamp">09:01 AM</span></div>
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item"><div class="legend-dot present"></div> Present</div>
+                        <div class="legend-item"><div class="legend-dot late"></div> Late Arrival</div>
+                        <div class="legend-item"><div class="legend-dot leave"></div> On Leave</div>
+                        <div class="legend-item"><div class="legend-dot absent"></div> Absent</div>
+                    </div>
+                </div>
+
+                <div class="summary">
+                    <div class="summary-card"><h3>Present</h3><h2>20</h2></div>
+                    <div class="summary-card"><h3>Late</h3><h2>2</h2></div>
+                    <div class="summary-card"><h3>Leave</h3><h2>1</h2></div>
+                    <div class="summary-card"><h3>Absent</h3><h2>2</h2></div>
+                    <div class="summary-card"><h3>Attendance Ratio</h3><h2>91%</h2></div>
+                </div>
+
+                <div class="details-table">
+                    <h3>Attendance Logs</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Working Hours</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="attendanceTable">
+                            <tr><td>03 Jun 2026</td><td>--</td><td>--</td><td>0h</td><td class="status-absent">Absent</td></tr>
+                            <tr><td>02 Jun 2026</td><td>09:18 AM</td><td>06:07 PM</td><td>8h 49m</td><td class="status-late">Late Arrival</td></tr>
+                            <tr><td>01 Jun 2026</td><td>09:02 AM</td><td>06:05 PM</td><td>9h 03m</td><td class="status-present">Present</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const rosterContainer = document.getElementById('firebaseEmployeeList');
+    const searchInput = document.getElementById('employeeSearchInput');
+    const activeNameLabel = document.getElementById('activeProfileName');
+    const activeIdLabel = document.getElementById('activeProfileId');
+
+    let cachedStaffArray = [];
+
+    // Fetches roster records live from your shared 'employees' collection
+    async function fetchRosterData() {
+        try {
+            const snapshot = await getDocs(collection(db, "employees"));
+            rosterContainer.innerHTML = "";
+            cachedStaffArray = [];
+            let indexCount = 1;
+
+            if (snapshot.empty) {
+                rosterContainer.innerHTML = `<div style="text-align: center; padding: 20px; color: #8898aa; font-size: 13px;">No employee matching indexes found.</div>`;
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const formattedId = "EMP" + String(indexCount).padStart(3, '0');
+                
+                cachedStaffArray.push({
+                    id: formattedId,
+                    name: data.name,
+                    department: data.department || "General",
+                    avatarUrl: data.avatarUrl || ""
+                });
+                indexCount++;
+            });
+
+            renderRosterToUI(cachedStaffArray);
+
+            // Defaults selection viewport context to first element if available
+            if (cachedStaffArray.length > 0) {
+                selectEmployeeContext(cachedStaffArray[0].id, cachedStaffArray[0].name);
+            }
+
+        } catch (error) {
+            console.error("Error connecting roster profiles: ", error);
+            rosterContainer.innerHTML = `<div style="text-align: center; padding: 20px; color: #f87171; font-size: 12px;">Fetch Failure: ${error.message}</div>`;
+        }
+    }
+
+    // Handles layout template binding injections
+    function renderRosterToUI(array) {
+        rosterContainer.innerHTML = "";
+        
+        array.forEach((item, index) => {
+            const avatarCode = item.avatarUrl 
+                ? `<img src="${item.avatarUrl}" alt="User">`
+                : `<div class="employee-avatar-placeholder"><i class="fa-regular fa-user"></i></div>`;
+
+            const itemHTML = `
+                <div class="employee-row-item employee ${index === 0 ? 'active' : ''}" data-id="${item.id}" data-name="${item.name}">
+                    ${avatarCode}
+                    <div class="employee-info">
+                        <h4>${item.name} <span class="emp-id">${item.id}</span></h4>
+                        <span>${item.department} Department</span>
+                    </div>
+                </div>
+            `;
+            rosterContainer.insertAdjacentHTML('beforeend', itemHTML);
+        });
+
+        attachRowClickListeners();
+    }
+
+    // Connects layout variables dynamically on select triggers
+    function attachRowClickListeners() {
+        document.querySelectorAll('.employee-row-item').forEach(row => {
+            row.addEventListener('click', () => {
+                document.querySelectorAll('.employee-row-item').forEach(r => r.classList.remove('active'));
+                row.classList.add('active');
+
+                const targetId = row.getAttribute('data-id');
+                const targetName = row.getAttribute('data-name');
+                
+                selectEmployeeContext(targetId, targetName);
+            });
+        });
+    }
+
+    function selectEmployeeContext(id, name) {
+        activeNameLabel.innerText = name;
+        activeIdLabel.innerText = id;
+    }
+
+    // Handles frontend local filter matching
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value.toLowerCase().trim();
+        const filtered = cachedStaffArray.filter(emp => emp.name.toLowerCase().includes(value) || emp.department.toLowerCase().includes(value));
+        renderRosterToUI(filtered);
+    });
+
+    fetchRosterData();
+</script>
+</body>
+</html>

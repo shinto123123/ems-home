@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager - Leave Requests</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN SECTION ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* Page Breadcrumbs & Top Headers */
+.page-header{padding:16px 22px 0;background:#0b1437;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-bottom:8px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs span{color:#1b2e6e;}
+.header-action-container{display:flex;justify-content:space-between;align-items:center;}
+.page-header h2{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{color:#8898aa;font-size:13px;margin-top:2px;}
+.header-controls{display:flex;align-items:center;gap:12px;}
+
+/* Form & Layout Tools */
+.date-box{display:flex;align-items:center;gap:9px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;padding:9px 16px;color:#e2e8f0;font-size:13px;cursor:pointer;transition:.2s;}
+.date-box:hover{border-color:#4299e1;}
+.date-box i:first-child{color:#4299e1;}
+.date-box .fa-chevron-down{color:#8898aa;font-size:11px;}
+
+.btn-outline{background:none;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px;}
+.btn-outline:hover{border-color:#4299e1;color:#4299e1;background:rgba(66,153,225,0.05);}
+.btn-primary{background:#4299e1;color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:600;transition:.2s;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* ── CONTENT AREA CONTAINER ── */
+.content{flex:1;padding:16px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── OVERVIEW METRICS STATUS GRID (5 Columns) ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.kpi-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.kpi-card:hover{border-color:#4299e1;transform:translateY(-2px);}
+.kpi-icon{width:40px;height:40px;border-radius:10px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8898aa;flex-shrink:0;}
+.kpi-info p{font-size:11.5px;color:#8898aa;margin-bottom:2px;}
+.kpi-info h3{font-size:20px;font-weight:700;color:#fff;line-height:1;}
+.kpi-info small{font-size:11px;color:#8898aa;margin-top:4px;display:block;}
+
+/* Colored variations for dashboard widgets icons status matching context */
+.kpi-card.pending .kpi-icon {color: #fbbf24; border-color: rgba(251,191,36,0.3);}
+.kpi-card.approved .kpi-icon {color: #4ade80; border-color: rgba(74,222,128,0.3);}
+.kpi-card.rejected .kpi-icon {color: #f87171; border-color: rgba(248,113,113,0.3);}
+
+/* ── CENTRAL DATA SHELF WRAPPER PANEL ── */
+.table-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden;}
+
+/* Filter Inline Section Tabs */
+.tabs-bar{display:flex;gap:4px;padding:0 14px;background:rgba(11,20,55,0.3);border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:14px 16px;color:#8898aa;font-size:12.5px;font-weight:600;text-decoration:none;border-bottom:2px solid transparent;transition:.2s;}
+.tab-link:hover{color:#fff;}
+.tab-link.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+/* Controls Sub-Filters Panel Row */
+.filter-row{padding:14px;display:flex;align-items:flex-end;gap:12px;border-bottom:1px solid #1b2e6e;}
+.filter-item{display:flex;flex-direction:column;gap:5px;}
+.filter-item.search-box{flex:1.4;}
+.filter-item.select-box{flex:1;}
+.filter-item label{font-size:11px;color:#8898aa;font-weight:500;}
+.input-position-wrapper{position:relative;display:flex;align-items:center;}
+.input-position-wrapper i.search-icon{position:absolute;left:12px;color:#4a5568;font-size:13px;}
+.input-position-wrapper i.chevron-icon{position:absolute;right:12px;color:#8898aa;font-size:10px;pointer-events:none;}
+.filter-row input{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px 8px 34px;color:#e2e8f0;font-size:12.5px;outline:none;transition:.2s;}
+.filter-row select{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 30px 8px 12px;color:#e2e8f0;font-size:12.5px;outline:none;appearance:none;cursor:pointer;transition:.2s;}
+.filter-row input:focus, .filter-row select:focus{border-color:#4299e1;}
+.filter-row input::placeholder{color:#4a5568;}
+.filter-buttons-wrap{display:flex;gap:8px;}
+
+/* Data Table Matrix Structure */
+.table-wrapper{overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;}
+.data-table th{background:rgba(11,20,55,0.1);color:#8898aa;font-size:11.5px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;white-space:nowrap;}
+.data-table td{border-bottom:1px solid #1b2e6e;padding:12px 14px;color:#e2e8f0;font-size:13px;vertical-align:middle;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:rgba(66,153,225,0.01);}
+
+/* Column Content Configurations */
+.checkbox-cell, .action-cell{text-align:center;width:40px;}
+.custom-checkbox{width:15px;height:15px;accent-color:#4299e1;cursor:pointer;}
+
+.user-identity-wrap{display:flex;align-items:center;gap:10px;white-space:nowrap;}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:11px;}
+.user-name{font-weight:600;color:#fff;}
+.user-id{font-size:11px;color:#8898aa;margin-top:1px;display:block;}
+
+.type-cell-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#e2e8f0;}
+.type-cell-badge i{font-size:12px;}
+.type-cell-badge.annual i {color: #4ade80;}
+.type-cell-badge.sick i {color: #6366f1;}
+.type-cell-badge.personal i {color: #fbbf24;}
+
+.date-duration-info{white-space:nowrap;}
+.date-duration-info span{display:block;font-size:11px;color:#8898aa;margin-top:2px;}
+.reason-text-box{max-width:240px;font-size:12.5px;color:#cbd5e1;line-height:1.4;}
+
+/* Log Status Tags configurations */
+.status-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge.pending{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.status-badge.approved{background:rgba(74,222,128,0.15);color:#4ade80;}
+.status-badge.rejected{background:rgba(248,113,113,0.15);color:#f87171;}
+
+/* Actions buttons blocks */
+.actions-container{display:flex;align-items:center;gap:6px;justify-content:center;}
+.btn-action-trigger{width:28px;height:28px;border-radius:6px;border:1px solid #1b2e6e;background:#0b1437;color:#8898aa;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.2s;}
+.btn-action-trigger.approve:hover{border-color:#4ade80;color:#4ade80;background:rgba(74,222,128,0.05);}
+.btn-action-trigger.reject:hover{border-color:#f87171;color:#f87171;background:rgba(248,113,113,0.05);}
+.btn-action-trigger.view:hover{border-color:#4299e1;color:#4299e1;}
+
+/* Pagination Panel Footer block */
+.pagination-footer{border-top:1px solid #1b2e6e;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,20,55,0.2);}
+.entry-counter-text{font-size:12.5px;color:#8898aa;}
+.page-controls-wrapper{display:flex;align-items:center;gap:4px;}
+.p-btn{min-width:28px;height:28px;padding:0 8px;border-radius:6px;background:#0b1437;border:1px solid #1b2e6e;color:#8898aa;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;text-decoration:none;}
+.p-btn:hover{border-color:#4299e1;color:#4299e1;}
+.p-btn.active{background:#4299e1;border-color:#4299e1;color:#fff;}
+
+.footer-text{text-align:center;color:#4a5568;font-size:11px;padding:4px 0 10px;}
+
+@media(max-width:1350px){.kpi-grid{grid-template-columns:repeat(3,1fr);}.filter-row{flex-wrap:wrap;}.filter-item{flex:1 1 200px !important;}.filter-buttons-wrap{width:100%;justify-content:flex-end;margin-top:4px;}}
+@media(max-width:750px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ── MY LEAVE REQUESTS (MANAGER OWN) ── */
+.my-leave-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden;}
+.my-leave-panel .panel-title-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #1b2e6e;}
+.my-leave-panel .panel-title-row h3{color:#fff;font-size:14px;font-weight:700;}
+
+/* ── MODAL (APPLY FOR LEAVE) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,10,30,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:460px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transform:translateY(-20px);transition:transform 0.3s ease;}
+.modal-overlay.show .modal-box{transform:translateY(0);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:14px;margin-bottom:18px;}
+.modal-header h3{color:#fff;font-size:16px;font-weight:600;}
+.modal-close{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:#f87171;}
+.modal-form-group{margin-bottom:14px;}
+.modal-form-group label{display:block;color:#8898aa;font-size:11.5px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px;}
+.modal-form-group input, .modal-form-group select, .modal-form-group textarea{width:100%;padding:9px 12px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#fff;font-size:13px;outline:none;transition:border-color 0.2s;font-family:inherit;}
+.modal-form-group input:focus, .modal-form-group select:focus, .modal-form-group textarea:focus{border-color:#4299e1;}
+.modal-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid #1b2e6e;padding-top:14px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">Manager</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+  <ul>
+      <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
+      <li><a href="team-members.html"><i class="fa-solid fa-users"></i>Team Members</a></li>
+      <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li class="active"><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
+      <li><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+      <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li ><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div class="breadcrumbs">
+        <a href="#">Dashboard</a> <span>/</span> <a href="#" style="color:#e2e8f0">Leave Requests</a>
+      </div>
+      <div class="header-action-container">
+        <div>
+          <h2>Leave Requests</h2>
+          <p>Review and manage leave requests from your team members.</p>
+        </div>
+        <div class="header-controls">
+          <div class="date-box">
+            <i class="fa-regular fa-calendar"></i>
+            <span>20 May – 26 May 2024</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <button class="btn-outline"><i class="fa-solid fa-download"></i>Export</button>
+          <button class="btn-primary" id="openMgrLeaveModalBtn"><i class="fa-solid fa-plus"></i>Apply for Leave</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-regular fa-file-lines"></i></div>
+          <div class="kpi-info"><p>Total Requests</p><h3>24</h3><small>This Month</small></div>
+        </div>
+        <div class="kpi-card pending">
+          <div class="kpi-icon"><i class="fa-regular fa-clock"></i></div>
+          <div class="kpi-info"><p>Pending</p><h3>6</h3><small style="color: #fbbf24">Awaiting Action</small></div>
+        </div>
+        <div class="kpi-card approved">
+          <div class="kpi-icon"><i class="fa-regular fa-circle-check"></i></div>
+          <div class="kpi-info"><p>Approved</p><h3>14</h3><small style="color: #4ade80">This Month</small></div>
+        </div>
+        <div class="kpi-card rejected">
+          <div class="kpi-icon"><i class="fa-regular fa-circle-xmark"></i></div>
+          <div class="kpi-info"><p>Rejected</p><h3>4</h3><small style="color: #f87171">This Month</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-ban"></i></div>
+          <div class="kpi-info"><p>Cancelled</p><h3>0</h3><small>This Month</small></div>
+        </div>
+      </div>
+
+      <div class="table-panel">
+        
+        <div class="tabs-bar">
+          <a href="#" class="tab-link active">Pending (6)</a>
+          <a href="#" class="tab-link">Approved (14)</a>
+          <a href="#" class="tab-link">Rejected (4)</a>
+          <a href="#" class="tab-link">Cancelled (0)</a>
+          <a href="#" class="tab-link">All Requests (24)</a>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-item search-box">
+            <div class="input-position-wrapper">
+              <i class="fa-solid fa-search search-icon"></i>
+              <input type="text" placeholder="Search by name or ID...">
+            </div>
+          </div>
+          <div class="filter-item select-box">
+            <label>Department</label>
+            <div class="input-position-wrapper">
+              <select><option>All Departments</option></select>
+              <i class="fa-solid fa-chevron-down chevron-icon"></i>
+            </div>
+          </div>
+          <div class="filter-item select-box">
+            <label>Leave Type</label>
+            <div class="input-position-wrapper">
+              <select><option>All Types</option></select>
+              <i class="fa-solid fa-chevron-down chevron-icon"></i>
+            </div>
+          </div>
+          <div class="filter-item select-box">
+            <label>Duration</label>
+            <div class="input-position-wrapper">
+              <select><option>All</option></select>
+              <i class="fa-solid fa-chevron-down chevron-icon"></i>
+            </div>
+          </div>
+          <div class="filter-buttons-wrap">
+            <button class="btn-outline" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+            <button class="btn-primary" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="checkbox-cell"><input type="checkbox" class="custom-checkbox"></th>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>Duration</th>
+                <th>Dates</th>
+                <th>Reason</th>
+                <th>Applied On</th>
+                <th>Status</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="leaveTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading leave requests...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <div class="entry-counter-text" id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
+          <div class="page-controls-wrapper">
+            <a href="#" class="p-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px"></i></a>
+            <a href="#" class="p-btn active">1</a>
+            <a href="#" class="p-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="my-leave-panel">
+        <div class="panel-title-row">
+          <h3>My Leave Requests</h3>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Leave Type</th>
+                <th>Duration</th>
+                <th>Dates</th>
+                <th>Reason</th>
+                <th>Applied On</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="myLeaveTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:20px; color:#8898aa;">Loading your leave requests...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+
+    </div> </div> </div>
+
+<div class="modal-overlay" id="mgrLeaveModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Apply for Leave</h3>
+      <button class="modal-close" id="closeMgrLeaveModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="mgrLeaveForm">
+      <div class="modal-form-group">
+        <label>Leave Type</label>
+        <select id="mgrLeaveType" required>
+          <option value="" selected disabled>Select Leave Type</option>
+          <option>Annual Leave</option>
+          <option>Sick Leave</option>
+          <option>Comp Off</option>
+          <option>Personal Leave</option>
+        </select>
+      </div>
+      <div class="modal-form-row">
+        <div class="modal-form-group">
+          <label>From Date</label>
+          <input type="date" id="mgrLeaveFromDate" required>
+        </div>
+        <div class="modal-form-group">
+          <label>To Date</label>
+          <input type="date" id="mgrLeaveToDate" required>
+        </div>
+      </div>
+      <div class="modal-form-group">
+        <label>Reason</label>
+        <textarea id="mgrLeaveReason" rows="3" placeholder="Reason for leave (optional)"></textarea>
+      </div>
+      <div class="modal-form-actions">
+        <button type="button" class="btn-outline" id="cancelMgrLeaveModalBtn">Cancel</button>
+        <button type="submit" class="btn-primary">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, addDoc, query, where, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["manager"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('leaveTableBody');
+    const entriesCounter = document.getElementById('tableEntriesCounter');
+    const myLeaveTableBody = document.getElementById('myLeaveTableBody');
+    let myDept = null;
+
+    // Manager's own leave requests share the department-filtered leaveRequests query, so
+    // they must be excluded from the approval table client-side (managers can't approve
+    // their own leave; only admin sees those). Missing requesterRole = legacy employee data.
+    function isApprovableByManager(data) {
+        const role = (data.requesterRole || '').toLowerCase();
+        if (!role) return true;
+        return role === 'employee' || role === 'intern';
+    }
+
+    function formatDate(value) {
+        if (!value) return '-';
+        if (typeof value.toDate === 'function') {
+            return value.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        return value;
+    }
+
+    function leaveTypeClass(leaveType) {
+        const t = (leaveType || '').toLowerCase();
+        if (t.includes('sick')) return 'sick';
+        if (t.includes('personal')) return 'personal';
+        return 'annual';
+    }
+
+    async function loadLeaveRequests() {
+        try {
+            if (!myDept) {
+                const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+                myDept = meSnap.exists() ? meSnap.data().department : null;
+            }
+
+            const q = query(collection(db, "leaveRequests"), where("department", "==", myDept));
+            const querySnapshot = await getDocs(q);
+            tableBody.innerHTML = "";
+            let counter = 0;
+
+            const approvableDocs = querySnapshot.docs.filter((docSnap) => isApprovableByManager(docSnap.data()));
+
+            if (approvableDocs.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No leave requests found for your department.</td></tr>`;
+                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+                return;
+            }
+
+            approvableDocs.forEach((docSnap) => {
+                const lr = docSnap.data();
+                const id = docSnap.id;
+                counter++;
+                const statusClass = (lr.status || 'pending').toLowerCase();
+                const typeClass = leaveTypeClass(lr.leaveType);
+                const isPending = statusClass === 'pending';
+
+                const actionButtons = isPending
+                    ? `<button class="btn-action-trigger approve" data-id="${id}"><i class="fa-solid fa-check"></i></button><button class="btn-action-trigger reject" data-id="${id}"><i class="fa-solid fa-xmark"></i></button><button class="btn-action-trigger view"><i class="fa-regular fa-eye"></i></button>`
+                    : `<button class="btn-action-trigger view"><i class="fa-regular fa-eye"></i></button>`;
+
+                const rowTemplate = `
+                    <tr>
+                        <td class="checkbox-cell"><input type="checkbox" class="custom-checkbox"></td>
+                        <td><div class="user-identity-wrap"><div class="user-avatar"><i class="fa-regular fa-user"></i></div><div><span class="user-name">${lr.employeeName || '-'}</span><span class="user-id">${lr.department || ''}</span></div></div></td>
+                        <td><div class="type-cell-badge ${typeClass}"><i class="fa-solid fa-plane-departure"></i> ${lr.leaveType || '-'}</div></td>
+                        <td><strong>${lr.totalDays || '-'} ${lr.totalDays === 1 ? 'Day' : 'Days'}</strong></td>
+                        <td><div class="date-duration-info">${formatDate(lr.fromDate)}<span>to ${formatDate(lr.toDate)}</span></div></td>
+                        <td><div class="reason-text-box">${lr.reason || '-'}</div></td>
+                        <td>${formatDate(lr.appliedOn)}</td>
+                        <td><span class="status-badge ${statusClass}">${lr.status || 'Pending'}</span></td>
+                        <td><div class="actions-container">${actionButtons}</div></td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            });
+
+            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
+            bindActionListeners();
+
+        } catch (err) {
+            console.error("Failed to load leave requests: ", err);
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
+            alert("Error loading leave requests: " + err.message);
+        }
+    }
+
+    async function loadMyLeaveRequests() {
+        try {
+            const q = query(collection(db, "leaveRequests"), where("uid", "==", currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            if (querySnapshot.empty) {
+                myLeaveTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:#8898aa;">You have not applied for any leave yet.</td></tr>`;
+                return;
+            }
+            const rows = [];
+            querySnapshot.forEach((docSnap) => rows.push(docSnap.data()));
+            rows.sort((a, b) => (b.fromDate || '').localeCompare(a.fromDate || ''));
+            myLeaveTableBody.innerHTML = "";
+            rows.forEach((lr) => {
+                const statusClass = (lr.status || 'pending').toLowerCase();
+                myLeaveTableBody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td><div class="type-cell-badge ${leaveTypeClass(lr.leaveType)}"><i class="fa-solid fa-plane-departure"></i> ${lr.leaveType || '-'}</div></td>
+                        <td><strong>${lr.totalDays || '-'} ${lr.totalDays === 1 ? 'Day' : 'Days'}</strong></td>
+                        <td><div class="date-duration-info">${formatDate(lr.fromDate)}<span>to ${formatDate(lr.toDate)}</span></div></td>
+                        <td><div class="reason-text-box">${lr.reason || '-'}</div></td>
+                        <td>${formatDate(lr.appliedOn)}</td>
+                        <td><span class="status-badge ${statusClass}">${lr.status || 'Pending'}</span></td>
+                    </tr>
+                `);
+            });
+        } catch (err) {
+            console.error("Failed to load your leave requests: ", err);
+            myLeaveTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:#f87171;">Failed to load your leave requests.</td></tr>`;
+        }
+    }
+
+    function bindActionListeners() {
+        document.querySelectorAll('.btn-action-trigger.approve').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "leaveRequests", id), { status: "Approved" });
+                    loadLeaveRequests();
+                } catch (err) {
+                    alert("Error approving leave request: " + err.message);
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-action-trigger.reject').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "leaveRequests", id), { status: "Rejected" });
+                    loadLeaveRequests();
+                } catch (err) {
+                    alert("Error rejecting leave request: " + err.message);
+                }
+            });
+        });
+    }
+
+    // Apply for Leave (manager's own leave request)
+    const mgrLeaveModal = document.getElementById('mgrLeaveModal');
+    const openMgrLeaveModalBtn = document.getElementById('openMgrLeaveModalBtn');
+    const closeMgrLeaveModalBtn = document.getElementById('closeMgrLeaveModalBtn');
+    const cancelMgrLeaveModalBtn = document.getElementById('cancelMgrLeaveModalBtn');
+    const mgrLeaveForm = document.getElementById('mgrLeaveForm');
+
+    const hideMgrLeaveModal = () => { mgrLeaveModal.classList.remove('show'); mgrLeaveForm.reset(); };
+    openMgrLeaveModalBtn.addEventListener('click', () => mgrLeaveModal.classList.add('show'));
+    closeMgrLeaveModalBtn.addEventListener('click', hideMgrLeaveModal);
+    cancelMgrLeaveModalBtn.addEventListener('click', hideMgrLeaveModal);
+
+    mgrLeaveForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const leaveType = document.getElementById('mgrLeaveType').value;
+        const fromDate = document.getElementById('mgrLeaveFromDate').value;
+        const toDate = document.getElementById('mgrLeaveToDate').value;
+        const reason = document.getElementById('mgrLeaveReason').value;
+
+        const fromD = new Date(fromDate);
+        const toD = new Date(toDate);
+        const totalDays = Math.round((toD - fromD) / (1000 * 60 * 60 * 24)) + 1;
+        if (!leaveType || !fromDate || !toDate || totalDays < 1) {
+            alert('Please select a valid leave type and date range.');
+            return;
+        }
+
+        try {
+            if (!myDept) {
+                const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+                myDept = meSnap.exists() ? meSnap.data().department : null;
+            }
+            await addDoc(collection(db, "leaveRequests"), {
+                uid: currentUser.uid,
+                employeeName: currentUser.name,
+                department: myDept || "",
+                leaveType: leaveType,
+                fromDate: fromDate,
+                toDate: toDate,
+                totalDays: totalDays,
+                reason: reason || "",
+                status: "Pending",
+                requesterRole: "manager",
+                appliedOn: serverTimestamp()
+            });
+            alert('Leave request submitted successfully.');
+            hideMgrLeaveModal();
+            loadMyLeaveRequests();
+        } catch (err) {
+            alert('Failed to submit leave request: ' + err.message);
+        }
+    });
+
+    loadLeaveRequests();
+    loadMyLeaveRequests();
+</script>
+
+</body>
+</html>

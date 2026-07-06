@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Notifications</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE MULTIPANEL ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:center;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 4 Column Announcement Metrics Grid */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+
+/* Sub Navigation Category Tabs Link row */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Filters Controls Bar Panel */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Data Roster History Log Layout Table */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.noti-table{width:100%;border-collapse:collapse;text-align:left;}
+.noti-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.noti-table td{padding:12px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.noti-table tr:last-child td{border-bottom:none;}
+.noti-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.noti-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+/* Target Audience Variable badges styling */
+.audience-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;}
+.audience-badge.all{background:rgba(66,153,225,0.1);color:#4299e1;}
+.audience-badge.managers{background:rgba(168,85,247,0.1);color:#a855f7;}
+.audience-badge.employees{background:rgba(74,222,128,0.1);color:#4ade80;}
+.audience-badge.interns;{background:rgba(251,191,36,0.1);color:#fbbf24;}
+
+/* Delivery Medium Indicators */
+.method-icon-wrap{display:flex;gap:6px;color:#8898aa;font-size:12px;}
+.method-icon-wrap i.active{color:#4299e1;}
+
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
+.btn-icon:hover{color:#fff;}
+
+/* Pagination footer */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* ── DETAILS PANEL (RIGHT): COMPOSE / INSPECTOR DRAWER ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Custom Functional Form Controls Components */
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:12px;color:#cbd5e1;font-weight:500;}
+.form-group label span{color:#f56565;margin-left:2px;}
+.form-group input, .form-group select, .form-group textarea{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;outline:none;width:100%;}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#4299e1;}
+.form-group input::placeholder, .form-group textarea::placeholder{color:#4a5568;}
+.form-group textarea{resize:none;height:120px;}
+
+/* Target Audience Segment Checkbox group blocks */
+.audience-pill-selector-wrap{display:flex;gap:8px;flex-wrap:wrap;}
+.audience-pill-item{position:relative;}
+.audience-pill-item input[type="checkbox"]{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:2;}
+.audience-pill-label{display:inline-flex;align-items:center;gap:6px;background:#0b1437;border:1px solid #1b2e6e;padding:6px 14px;border-radius:20px;font-size:12.5px;color:#cbd5e1;cursor:pointer;transition:.2s;}
+.audience-pill-item input[type="checkbox"]:checked + .audience-pill-label{background:rgba(66,153,225,0.1);border-color:#4299e1;color:#fff;}
+
+/* Channel Transmission Checkboxes blocks layout */
+.delivery-channel-container{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px;}
+.channel-checkbox-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:#cbd5e1;cursor:pointer;}
+.channel-checkbox-card input[type="checkbox"]{accent-color:#4299e1;cursor:pointer;}
+.channel-checkbox-card i{color:#8898aa;font-size:14px;width:16px;}
+
+/* Actions bar component footer row */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;justify-content:flex-end;gap:10px;}
+
+.d-none{display:none !important;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li class="active"><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <div>
+          <h2>Notifications & Announcements</h2>
+          <div class="breadcrumb">Dashboard &gt; <span>Notifications</span></div>
+        </div>
+        <button class="btn-action btn-primary" id="openComposeBtn" style="font-weight:600;"><i class="fa-solid fa-paper-plane"></i> Broadcast Notification</button>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-bullhorn"></i></div>
+            <div class="mini-info"><p>Total Broadcasts</p><h3>142</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="mini-info"><p>To Employees</p><h3>84</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <div class="mini-info"><p>To Managers</p><h3>36</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div>
+            <div class="mini-info"><p>To Interns</p><h3>22</h3></div>
+          </div>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active">Sent Announcements</button>
+          <button class="segment-btn">Drafts</button>
+          <button class="segment-btn">Scheduled</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search by title, content or author...">
+          </div>
+          <select class="filter-select"><option>All Targets</option><option>All Staff</option><option>Managers</option><option>Interns</option></select>
+          <select class="filter-select"><option>All Types</option><option>Urgent Announcement</option><option>General Update</option><option>Policy Revision</option></select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="noti-table">
+            <thead>
+              <tr>
+                <th>Sent Timestamp</th>
+                <th>Notification Title</th>
+                <th>Target Group</th>
+                <th>Channels</th>
+                <th>Sender / Author</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="notificationTableBody">
+              <tr class="selected">
+                <td>26 Jun 2026<br><span style="font-size:11px; color:#8898aa;">10:00 AM</span></td>
+                <td><strong>Quarterly Performance Review Cycle Initiated</strong></td>
+                <td><span class="audience-badge managers">Managers</span></td>
+                <td>
+                  <div class="method-icon-wrap">
+                    <i class="fa-solid fa-desktop active" title="Portal Dashboard Alert"></i>
+                    <i class="fa-solid fa-envelope active" title="Email Copy Sent"></i>
+                  </div>
+                </td>
+                <td>HR Team (Admin)</td>
+                <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+              <tr>
+                <td>24 Jun 2026<br><span style="font-size:11px; color:#8898aa;">03:15 PM</span></td>
+                <td><strong>Updated Financial Leave Carry-forward Policy Guideline</strong></td>
+                <td><span class="audience-badge employees">Employees</span></td>
+                <td>
+                  <div class="method-icon-wrap">
+                    <i class="fa-solid fa-desktop active" title="Portal Dashboard Alert"></i>
+                    <i class="fa-solid fa-envelope active" title="Email Copy Sent"></i>
+                  </div>
+                </td>
+                <td>John Doe (HR Head)</td>
+                <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+              <tr>
+                <td>20 Jun 2026<br><span style="font-size:11px; color:#8898aa;">09:30 AM</span></td>
+                <td><strong>Mandatory Tech Orientation & Hackathon Guidelines</strong></td>
+                <td><span class="audience-badge all" style="background:rgba(251,191,36,0.1); color:#fbbf24;">Interns</span></td>
+                <td>
+                  <div class="method-icon-wrap">
+                    <i class="fa-solid fa-desktop active" title="Portal Dashboard Alert"></i>
+                    <i class="fa-solid fa-envelope active" title="Email Copy Sent"></i>
+                  </div>
+                </td>
+                <td>Training Dept</td>
+                <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+              <tr>
+                <td>15 Jun 2026<br><span style="font-size:11px; color:#8898aa;">01:00 PM</span></td>
+                <td><strong>System Maintenance: ERP Upgrade Downtime Schedule Notification</strong></td>
+                <td><span class="audience-badge all">All Staff</span></td>
+                <td>
+                  <div class="method-icon-wrap">
+                    <i class="fa-solid fa-desktop active" title="Portal Dashboard Alert"></i>
+                    <i class="fa-solid fa-envelope" title="No Email sent"></i>
+                  </div>
+                </td>
+                <td>IT Infrastructure</td>
+                <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 4 of 142 broadcasts</span>
+            <div class="pagination">
+              <a href="#" class="page-link active">1</a>
+              <a href="#" class="page-link">2</a>
+              <a href="#" class="page-link">3</a>
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="composePanel">
+      <div class="details-header">
+        <h3>Compose Broadcast Notification</h3>
+        <button class="close-panel-btn" id="closeComposeBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        
+        <div class="form-group">
+          <label>Target Audience Group Selectors<span>*</span></label>
+          <div class="audience-pill-selector-wrap">
+            <div class="audience-pill-item">
+              <input type="checkbox" id="audAll" checked>
+              <div class="audience-pill-label">All Staff</div>
+            </div>
+            <div class="audience-pill-item">
+              <input type="checkbox" id="audMgr">
+              <div class="audience-pill-label">Managers Sector</div>
+            </div>
+            <div class="audience-pill-item">
+              <input type="checkbox" id="audEmp">
+              <div class="audience-pill-label">Regular Employees</div>
+            </div>
+            <div class="audience-pill-item">
+              <input type="checkbox" id="audInt">
+              <div class="audience-pill-label">Interns Cohort</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notification Classification Category<span>*</span></label>
+          <select id="composeCategorySelect">
+            <option>General Update Announcement</option>
+            <option>Urgent/Critical Notice Alert</option>
+            <option>Policy Revision Specification</option>
+            <option>Event/Activity Invitation</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Announcement Headline / Title<span>*</span></label>
+          <input type="text" id="composeTitleInput" placeholder="Enter succinct subject headline title...">
+        </div>
+
+        <div class="form-group">
+          <label>Notification Body Rich Message Content<span>*</span></label>
+          <textarea id="composeBodyInput" placeholder="Write announcement details parameters or instructions guidelines here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Transmission Channels Medium Selection</label>
+          <div class="delivery-channel-container">
+            <div class="channel-checkbox-card">
+              <input type="checkbox" id="chkDashboard" checked>
+              <i class="fa-solid fa-desktop"></i>
+              <span>Dashboard Web Banner</span>
+            </div>
+            <div class="channel-checkbox-card">
+              <input type="checkbox" id="chkEmail" checked>
+              <i class="fa-solid fa-envelope"></i>
+              <span>Send Corporate Email Copy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Scheduling Execution Constraints</label>
+          <select id="scheduleSelector">
+            <option>Broadcast Immediately Right Now</option>
+            <option>Schedule Future Dispatch Timestamp</option>
+          </select>
+        </div>
+
+        <div class="form-group d-none" id="deferredTimestampField">
+          <label>Target Execution Future Date-Time Parameters</label>
+          <input type="datetime-local">
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-action" style="background:transparent; color:#8898aa;" id="cancelBtn">Save Draft</button>
+        <button class="btn-action btn-primary" id="sendNotifBtn"><i class="fa-solid fa-paper-plane"></i> Dispatch Broadcast</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const openComposeBtn = document.getElementById('openComposeBtn');
+  const closeComposeBtn = document.getElementById('closeComposeBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const composePanel = document.getElementById('composePanel');
+  const scheduleSelector = document.getElementById('scheduleSelector');
+  const deferredTimestampField = document.getElementById('deferredTimestampField');
+
+  // Flyout form window view toggles configuration listeners
+  openComposeBtn.addEventListener('click', () => composePanel.classList.remove('d-none'));
+  closeComposeBtn.addEventListener('click', () => composePanel.classList.add('d-none'));
+  cancelBtn.addEventListener('click', () => composePanel.classList.add('d-none'));
+
+  // Deferred dynamic future date-time field row view trigger controller option listener
+  scheduleSelector.addEventListener('change', (e) => {
+    if(e.target.selectedIndex === 1) {
+      deferredTimestampField.classList.remove('d-none');
+    } else {
+      deferredTimestampField.classList.add('d-none');
+    }
+  });
+</script>
+
+<script type="module">
+    import { collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["hr"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    // Compose Panel Field Bind Hooks
+    const composePanelEl = document.getElementById('composePanel');
+    const audAll = document.getElementById('audAll');
+    const audMgr = document.getElementById('audMgr');
+    const audEmp = document.getElementById('audEmp');
+    const audInt = document.getElementById('audInt');
+    const composeCategorySelect = document.getElementById('composeCategorySelect');
+    const composeTitleInput = document.getElementById('composeTitleInput');
+    const composeBodyInput = document.getElementById('composeBodyInput');
+    const sendNotifBtn = document.getElementById('sendNotifBtn');
+    const notificationTableBody = document.getElementById('notificationTableBody');
+
+    // Audience badge class + label lookup, kept aligned with existing .audience-badge CSS variants
+    const audienceMeta = {
+        All: { cls: 'all', label: 'All Staff' },
+        Managers: { cls: 'managers', label: 'Managers' },
+        Employees: { cls: 'employees', label: 'Employees' },
+        Interns: { cls: 'interns', label: 'Interns' }
+    };
+
+    function formatSentTimestamp(createdAt) {
+        if (!createdAt || typeof createdAt.toDate !== 'function') {
+            return `<span style="color:#8898aa;">Just now</span>`;
+        }
+        const d = createdAt.toDate();
+        const datePart = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const timePart = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        return `${datePart}<br><span style="font-size:11px; color:#8898aa;">${timePart}</span>`;
+    }
+
+    // Cloud Firestore Live Database Sync Fetcher (org-wide read, no department filter)
+    async function fetchNotificationRecords() {
+        notificationTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">Loading broadcasts...</td></tr>`;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "notifications"));
+            notificationTableBody.innerHTML = "";
+
+            if (querySnapshot.empty) {
+                notificationTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">No notifications sent yet. Click 'Broadcast Notification' to send one.</td></tr>`;
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const noti = docSnap.data();
+                const meta = audienceMeta[noti.audience] || { cls: 'all', label: noti.audience || '-' };
+
+                const rowTemplate = `
+                    <tr>
+                        <td>${formatSentTimestamp(noti.createdAt)}</td>
+                        <td><strong>${noti.title || ''}</strong></td>
+                        <td><span class="audience-badge ${meta.cls}">${meta.label}</span></td>
+                        <td>
+                            <div class="method-icon-wrap">
+                                <i class="fa-solid fa-desktop active" title="Portal Dashboard Alert"></i>
+                            </div>
+                        </td>
+                        <td>${noti.sender || ''}</td>
+                        <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                    </tr>
+                `;
+                notificationTableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            });
+
+        } catch (error) {
+            console.error("Firestore loading failure context: ", error);
+            notificationTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#f87171;">Failed reading collection: ${error.message}</td></tr>`;
+        }
+    }
+
+    function resetComposeForm() {
+        composeTitleInput.value = '';
+        composeBodyInput.value = '';
+        composeCategorySelect.selectedIndex = 0;
+        audAll.checked = true;
+        audMgr.checked = false;
+        audEmp.checked = false;
+        audInt.checked = false;
+    }
+
+    // Dispatch Broadcast: builds one Firestore doc per checked audience (audAll short-circuits to a single "All" doc)
+    sendNotifBtn.addEventListener('click', async () => {
+        const title = composeTitleInput.value.trim();
+        const body = composeBodyInput.value.trim();
+        const category = composeCategorySelect.value;
+
+        if (!title || !body) {
+            alert("Please provide both a title and a body message before dispatching.");
+            return;
+        }
+
+        let audiences;
+        if (audAll.checked) {
+            audiences = ["All"];
+        } else {
+            audiences = [];
+            if (audMgr.checked) audiences.push("Managers");
+            if (audEmp.checked) audiences.push("Employees");
+            if (audInt.checked) audiences.push("Interns");
+        }
+
+        if (audiences.length === 0) {
+            alert("Please select at least one target audience.");
+            return;
+        }
+
+        try {
+            for (const audience of audiences) {
+                await addDoc(collection(db, "notifications"), {
+                    title,
+                    body,
+                    category,
+                    audience,
+                    sender: currentUser.name,
+                    createdAt: serverTimestamp(),
+                    readByUids: []
+                });
+            }
+            alert("Broadcast dispatched successfully.");
+            composePanelEl.classList.add('d-none');
+            resetComposeForm();
+            fetchNotificationRecords();
+        } catch (err) {
+            alert("Error dispatching broadcast: " + err.message);
+        }
+    });
+
+    // Initialize Page Loop Data Fetch instantly
+    fetchNotificationRecords();
+</script>
+
+</body>
+</html>

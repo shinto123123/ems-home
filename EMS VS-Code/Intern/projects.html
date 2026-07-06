@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assigned Projects - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:4px;}
+.select-sm{background:#111c44;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 14px;border-radius:10px;font-size:12.5px;outline:none;cursor:pointer;}
+
+/* ── TOP FOUR KPI METRICS GRID ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;}
+.metric-icon-box{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4299e1;flex-shrink:0;}
+.kpi-info-block{display:flex;flex-direction:column;gap:2px;}
+.kpi-title{font-size:11.5px;color:#8898aa;font-weight:600;}
+.kpi-val{font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.kpi-subtext{font-size:11px;color:#8898aa;margin-top:2px;}
+
+/* ── PROJECT LOG TABLE CONTAINER PANEL ── */
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.panel-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+
+.panel-search-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:8px;width:240px;}
+.panel-search-box i{color:#4a5568;font-size:12px;}
+.panel-search-box input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:12px;}
+
+.data-table-container{width:100%;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
+.data-table th{color:#8898aa;font-weight:600;padding:12px 10px;border-bottom:1px solid #1b2e6e;}
+.data-table td{color:#e2e8f0;padding:14px 10px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+
+/* Status Badges */
+.badge-status{background:rgba(66,153,225,0.1);color:#4299e1;border:1px solid rgba(66,153,225,0.2);padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+.badge-status.completed{background:rgba(72,187,120,0.1);color:#48bb78;border-color:rgba(72,187,120,0.2);}
+
+/* Progress Strip Components */
+.progress-container-inline{display:flex;align-items:center;gap:10px;width:130px;}
+.progress-bar-bg{background:#0b1437;border:1px solid #1b2e6e;height:6px;border-radius:10px;flex:1;overflow:hidden;position:relative;}
+.progress-bar-fill{background:#4299e1;height:100%;border-radius:10px;}
+.progress-container-inline.completed .progress-bar-fill{background:#48bb78;}
+.progress-text{font-size:11.5px;font-weight:600;color:#fff;min-width:28px;}
+
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#4299e1;padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;}
+.btn-sm-outline:hover{background:rgba(66,153,225,0.1);border-color:#4299e1;}
+
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
+.pagination-controls{display:flex;gap:6px;}
+.page-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:600;transition:.2s;}
+.page-nav-btn:hover, .page-nav-btn.active{border-color:#4299e1;background:#4299e1;color:#fff;}
+
+/* ── LOWER SECTION TWO COLUMN GRID ── */
+.lower-layout-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.view-all-link{font-size:11.5px;color:#8898aa;text-decoration:none;}
+.view-all-link:hover{color:#4299e1;}
+
+/* Upcoming Deadlines Styling */
+.deadline-list{display:flex;flex-direction:column;gap:12px;justify-content:center;height:100%;}
+.deadline-item{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.deadline-info h4{font-size:13px;color:#fff;font-weight:600;}
+.deadline-info p{font-size:11.5px;color:#8898aa;margin-top:2px;}
+.days-pill{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;}
+
+/* Donut Progress Overview Graphic Section */
+/* ── Donut Progress Overview Graphic Section ── */
+.donut-chart-container{display:flex;align-items:center;justify-content:space-around;gap:16px;padding:10px 0;}
+.donut-graphic{position:relative;width:110px;height:110px;flex-shrink:0;}
+.donut-graphic svg{width:110px;height:110px;transform:rotate(-90deg);}
+.donut-bg{fill:none;stroke:transparent;}
+
+/* Wireframe style strokes and colors */
+.donut-fill-primary{fill:none;stroke:#4a5568;stroke-width:4.5;stroke-dasharray:75 25;stroke-dashoffset:0;}
+.donut-fill-secondary{fill:none;stroke:#cbd5e1;stroke-width:4.5;stroke-dasharray:25 75;stroke-dashoffset:-75;}
+
+.donut-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.donut-center-text h2{font-size:22px;color:#fff;font-weight:700;line-height:1;}
+.donut-center-text span{font-size:11px;color:#8898aa;display:block;margin-top:2px;}
+
+.donut-legend-list{display:flex;flex-direction:column;gap:8px;}
+.legend-item{display:flex;align-items:center;justify-content:space-between;width:150px;font-size:12px;}
+.legend-lbl-group{display:flex;align-items:center;gap:8px;color:#cbd5e1;}
+.legend-dot{width:10px;height:10px;border-radius:2px;} /* Square indicator like the wireframe */
+
+/* Monochromatic colors matching the wireframe segments */
+.legend-dot.inprogress{background:#4a5568;}
+.legend-dot.completed{background:#cbd5e1;}
+.legend-dot.notstarted{background:#1b2e6e; border: 1px solid #4a5568;}
+.legend-val{color:#8898aa;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+    .lower-layout-grid{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .metrics-grid, .lower-layout-grid{grid-template-columns:1fr;}
+    .page-header{flex-direction:column;gap:12px;align-items:stretch;}
+    .panel-header{flex-direction:column;gap:10px;align-items:stretch;}
+    .panel-search-box{width:100%;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, mentor...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+       <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li ><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li class="active"><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li ><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li ><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>Assignment Projects</h1>
+          <p>View all projects assigned to you. Track progress, tasks, and deadlines.</p>
+        </div>
+        <select class="select-sm">
+          <option>All Status</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-folder"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Total Projects</span>
+            <span class="kpi-val" id="kpiTotalProjects">0</span>
+            <span class="kpi-subtext">Projects Assigned</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #fbbf24;"><i class="fa-solid fa-spinner"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">In Progress</span>
+            <span class="kpi-val" id="kpiInProgress">0</span>
+            <span class="kpi-subtext">Active Projects</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #48bb78;"><i class="fa-regular fa-circle-check"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Completed</span>
+            <span class="kpi-val" id="kpiCompleted">0</span>
+            <span class="kpi-subtext">Projects Completed</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-calendar"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Upcoming Deadlines</span>
+            <span class="kpi-val" id="kpiUpcomingDeadlines">0</span>
+            <span class="kpi-subtext">Due in next 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <div class="panel-header">
+          <h3>Assigned Projects</h3>
+          <div class="panel-search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search project...">
+          </div>
+        </div>
+        
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Project Title</th>
+                <th style="width: 30%;">Description</th>
+                <th>Start Date</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody">
+              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading projects...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <span id="projectsCountLabel">Showing 0 of 0 projects</span>
+          <div class="pagination-controls">
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px;"></i></button>
+            <button class="page-nav-btn active">1</button>
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px;"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lower-layout-grid">
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3><i class="fa-regular fa-calendar-check" style="color: #4299e1; margin-right: 8px;"></i>Upcoming Deadlines</h3>
+            <a href="#" class="view-all-link">View All</a>
+          </div>
+          <div class="deadline-list">
+            <div class="deadline-item">
+              <div class="deadline-info">
+                <h4>Attendance Tracking Module</h4>
+                <p>Due on 25/05/2025</p>
+              </div>
+              <span class="days-pill">10 days left</span>
+            </div>
+            <div class="deadline-item">
+              <div class="deadline-info">
+                <h4>Dashboard & Reports</h4>
+                <p>Due on 05/06/2025</p>
+              </div>
+              <span class="days-pill">21 days left</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Project Progress Overview</h3>
+            <a href="#" class="view-all-link">View Report</a>
+          </div>
+          <div class="donut-chart-container">
+            <div class="donut-graphic">
+              <svg viewBox="0 0 36 36">
+                <circle class="donut-bg" cx="18" cy="18" r="15.95"/>
+                <circle id="donutFillPrimary" class="donut-fill-primary" cx="18" cy="18" r="15.95"/>
+                <circle id="donutFillSecondary" class="donut-fill-secondary" cx="18" cy="18" r="15.95"/>
+              </svg>
+              <div class="donut-center-text">
+                <h2 id="donutTotalVal">0</h2>
+                <span>Total</span>
+              </div>
+            </div>
+
+            <div class="donut-legend-list">
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot inprogress"></div>In Progress</div>
+                <span class="legend-val" id="donutInProgressVal">0 (0%)</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot completed"></div>Completed</div>
+                <span class="legend-val" id="donutCompletedVal">0 (0%)</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot notstarted"></div>Not Started</div>
+                <span class="legend-val" id="donutNotStartedVal">0 (0%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  function formatDate(value) {
+    if (!value) return "-";
+    try {
+      const d = value && value.toDate ? value.toDate() : new Date(value);
+      if (isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("en-GB");
+    } catch {
+      return value;
+    }
+  }
+
+  function updateProjectsWidgets(projectsArray) {
+    const total = projectsArray.length;
+    const completedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "completed").length;
+    const notStartedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "not started").length;
+    const inProgressCount = total - completedCount - notStartedCount;
+
+    const sevenDaysAhead = new Date();
+    sevenDaysAhead.setDate(sevenDaysAhead.getDate() + 7);
+    const now = new Date();
+    const upcomingDeadlines = projectsArray.filter((p) => {
+      if ((p.status || "").toLowerCase() === "completed") return false;
+      try {
+        const d = p.endDate && p.endDate.toDate ? p.endDate.toDate() : new Date(p.endDate);
+        return !isNaN(d.getTime()) && d >= now && d <= sevenDaysAhead;
+      } catch {
+        return false;
+      }
+    }).length;
+
+    document.getElementById("kpiTotalProjects").textContent = total;
+    document.getElementById("kpiInProgress").textContent = inProgressCount;
+    document.getElementById("kpiCompleted").textContent = completedCount;
+    document.getElementById("kpiUpcomingDeadlines").textContent = upcomingDeadlines;
+
+    const pct = (n) => (total > 0 ? Math.round((n / total) * 100) : 0);
+    const inProgressPct = pct(inProgressCount);
+    const completedPct = pct(completedCount);
+    const notStartedPct = pct(notStartedCount);
+
+    document.getElementById("donutTotalVal").textContent = total;
+    document.getElementById("donutFillPrimary").setAttribute("stroke-dasharray", `${inProgressPct} ${100 - inProgressPct}`);
+    document.getElementById("donutFillPrimary").setAttribute("stroke-dashoffset", "0");
+    document.getElementById("donutFillSecondary").setAttribute("stroke-dasharray", `${completedPct} ${100 - completedPct}`);
+    document.getElementById("donutFillSecondary").setAttribute("stroke-dashoffset", "-" + inProgressPct);
+
+    document.getElementById("donutInProgressVal").textContent = `${inProgressCount} (${inProgressPct}%)`;
+    document.getElementById("donutCompletedVal").textContent = `${completedCount} (${completedPct}%)`;
+    document.getElementById("donutNotStartedVal").textContent = `${notStartedCount} (${notStartedPct}%)`;
+  }
+
+  function renderProjects(projectsArray) {
+    const tbody = document.getElementById("projectsTableBody");
+    tbody.innerHTML = "";
+
+    const total = (projectsArray || []).length;
+    document.getElementById("projectsCountLabel").textContent = `Showing ${total} of ${total} projects`;
+
+    if (!projectsArray || projectsArray.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No projects assigned to you yet.</td></tr>`;
+      return;
+    }
+
+    projectsArray.forEach((p) => {
+      const isCompleted = (p.status || "").toLowerCase() === "completed";
+      const progress = Number(p.progress) || 0;
+      const rowTemplate = `
+        <tr>
+          <td style="font-weight: 600;">${p.name || "Untitled Project"}</td>
+          <td style="color: #8898aa;">${p.description || "-"}</td>
+          <td>${formatDate(p.startDate)}</td>
+          <td>${formatDate(p.endDate)}</td>
+          <td><span class="badge-status${isCompleted ? " completed" : ""}">${p.status || "In Progress"}</span></td>
+          <td>
+            <div class="progress-container-inline${isCompleted ? " completed" : ""}">
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
+              <span class="progress-text">${progress}%</span>
+            </div>
+          </td>
+          <td style="text-align: right;"><button class="btn-sm-outline">View Details</button></td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML("beforeend", rowTemplate);
+    });
+  }
+
+  async function loadProjects() {
+    try {
+      const q = query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      const projectsArray = [];
+      querySnapshot.forEach((docSnap) => projectsArray.push({ id: docSnap.id, ...docSnap.data() }));
+      updateProjectsWidgets(projectsArray);
+      renderProjects(projectsArray);
+    } catch (err) {
+      console.error("Error loading projects: ", err);
+      document.getElementById("projectsTableBody").innerHTML =
+        `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load projects.</td></tr>`;
+      alert("Could not load your projects: " + err.message);
+    }
+  }
+
+  loadProjects();
+</script>
+
+</body>
+</html>

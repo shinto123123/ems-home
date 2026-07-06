@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Settings - HR</title>
+  <style>
+    :root{--bg:#f7f4ff;--panel:rgba(255,255,255,.96);--panel-soft:rgba(244,247,255,.95);--text:#1f2937;--muted:#5b6b8a;--blue:#5b4bff;--border:rgba(139,152,255,.22);--shadow:0 24px 60px rgba(64,84,171,.12)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(180deg,#f6f4ff 0%,#edf7ff 40%,#fff 100%);color:var(--text)}
+    .app{min-height:100vh;display:grid;grid-template-columns:280px 1fr;gap:24px;padding:24px}
+    .sidebar{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(240,243,255,.95));border:1px solid rgba(139,152,255,.24);border-radius:24px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:18px}
+    .nav-link{display:flex;align-items:center;padding:12px 14px;border-radius:16px;color:var(--text);text-decoration:none;font-size:15px;transition:background .2s,color .2s}
+    .nav-link.active,.nav-link:hover{background:linear-gradient(135deg,rgba(91,75,255,.16),rgba(255,126,182,.14));color:var(--blue)}
+    .main{display:grid;gap:24px}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(244,247,255,.95));border:1px solid rgba(139,152,255,.18);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+    .action-btn{padding:8px 10px;border-radius:10px;border:none;background:linear-gradient(135deg,#5b4bff,#ff7eb6);color:#fff;cursor:pointer}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>HR Portal</h1>
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="Employee.html" class="nav-link">Employees</a>
+      <a href="department.html" class="nav-link">Departments & Designations</a>
+      <a href="attendance.html" class="nav-link">Attendance</a>
+      <a href="leave management.html" class="nav-link">Leave Management</a>
+      <a href="recruitment.html" class="nav-link">Recruitment</a>
+      <a href="perfomance.html" class="nav-link">Performance</a>
+      <a href="project-management.html" class="nav-link">Projects</a>
+      <a href="internship.html" class="nav-link">Internship Management</a>
+      <a href="mentorship.html" class="nav-link">Mentorship Management</a>
+      <a href="document.html" class="nav-link">Documents</a>
+      <a href="payroll.html" class="nav-link">Payroll</a>
+      <a href="reports.html" class="nav-link">Reports & Analytics</a>
+      <a href="notifications.html" class="nav-link">Notifications</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+      <a href="settings.html" class="nav-link active">Settings</a>
+    </aside>
+
+    <main class="main">
+      <section class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <h2 style="margin:0">Settings</h2>
+            <p class="muted" style="margin:6px 0 0">Account, preferences and security for HR users.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:grid;gap:12px">
+          <div class="panel">
+            <h3 style="margin:0 0 8px">Account</h3>
+            <div class="muted">Manage account details and password.</div>
+            <div style="margin-top:12px"><button id="logoutBtn" class="action-btn" style="background:#d43f3a">Logout</button></div>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin:0 0 8px">Preferences</h3>
+            <label><input type="checkbox" id="emailNotif" checked /> Email notifications</label>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin:0 0 8px">Security</h3>
+            <label><input type="checkbox" id="twoFactorToggle" /> Two-factor authentication</label>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin:0 0 8px">Company Settings</h3>
+            <div class="muted" style="margin-bottom:10px">Organization-wide defaults, shared across Admin and HR.</div>
+            <div style="display:grid;gap:10px;max-width:420px">
+              <div>
+                <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:4px">Company Name</label>
+                <input id="companyNameInput" type="text" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--panel-soft)" placeholder="e.g. Acme Corp" />
+              </div>
+              <div>
+                <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:4px">Standard Working Hours</label>
+                <input id="workingHoursInput" type="text" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--panel-soft)" placeholder="e.g. 9:00 AM - 6:00 PM" />
+              </div>
+              <div>
+                <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:4px">Default Annual Leave Days</label>
+                <input id="defaultLeaveDaysInput" type="number" min="0" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--panel-soft)" placeholder="e.g. 24" />
+              </div>
+              <div><button id="saveCompanySettingsBtn" class="action-btn">Save Company Settings</button></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["hr"]);
+
+    // sidebar active helper
+    (function(){try{const file=(location.pathname.split('/').pop()||'dashboard.html').split('?')[0].split('#')[0];const links=document.querySelectorAll('.sidebar .nav-link');links.forEach(a=>a.classList.remove('active'));for(const a of links){const href=a.getAttribute('href');if(!href) continue;const hrefFile=href.split('/').pop();if(hrefFile===file){a.classList.add('active');break}}}catch(e){}}
+    )();
+
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      logout();
+    });
+
+    const emailNotifCheckbox = document.getElementById('emailNotif');
+    const twoFactorCheckbox = document.getElementById('twoFactorToggle');
+
+    // Account-specific preferences live on this HR user's own employees/{docId} doc
+    async function loadAccountPreferences() {
+      if (!currentUser || !currentUser.docId) return;
+      try {
+        const snap = await getDoc(doc(db, "employees", currentUser.docId));
+        if (!snap.exists()) return;
+        const data = snap.data();
+        emailNotifCheckbox.checked = data.emailNotifications !== false; // default true
+        twoFactorCheckbox.checked = data.twoFactorEnabled === true;
+      } catch (err) {
+        console.error("Failed to load account preferences: ", err);
+      }
+    }
+
+    emailNotifCheckbox.addEventListener('change', async () => {
+      if (!currentUser || !currentUser.docId) return;
+      try {
+        await updateDoc(doc(db, "employees", currentUser.docId), { emailNotifications: emailNotifCheckbox.checked });
+      } catch (err) {
+        alert('Failed to update email notification preference: ' + err.message);
+      }
+    });
+
+    twoFactorCheckbox.addEventListener('change', async () => {
+      if (!currentUser || !currentUser.docId) return;
+      try {
+        await updateDoc(doc(db, "employees", currentUser.docId), { twoFactorEnabled: twoFactorCheckbox.checked });
+      } catch (err) {
+        alert('Failed to update two-factor authentication preference: ' + err.message);
+      }
+    });
+
+    // Company-wide defaults live on the shared settings/company doc (also used by Admin/settings.html)
+    async function loadCompanySettings() {
+      try {
+        const snap = await getDoc(doc(db, "settings", "company"));
+        if (!snap.exists()) return;
+        const data = snap.data();
+        document.getElementById('companyNameInput').value = data.companyName || '';
+        document.getElementById('workingHoursInput').value = data.workingHours || '';
+        document.getElementById('defaultLeaveDaysInput').value = data.defaultLeaveDays ?? '';
+      } catch (err) {
+        console.error("Failed to load company settings: ", err);
+      }
+    }
+
+    document.getElementById('saveCompanySettingsBtn').addEventListener('click', async () => {
+      try {
+        await setDoc(doc(db, "settings", "company"), {
+          companyName: document.getElementById('companyNameInput').value,
+          workingHours: document.getElementById('workingHoursInput').value,
+          defaultLeaveDays: Number(document.getElementById('defaultLeaveDaysInput').value) || 0
+        }, { merge: true });
+        alert('Company settings saved.');
+      } catch (err) {
+        alert('Failed to save company settings: ' + err.message);
+      }
+    });
+
+    loadAccountPreferences();
+    loadCompanySettings();
+  </script>
+</body>
+</html>

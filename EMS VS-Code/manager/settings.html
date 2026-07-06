@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Settings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{padding:16px 22px 0;background:#0b1437;}
+.page-header h2{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{color:#8898aa;font-size:13px;margin-top:2px;}
+
+.content{flex:1;padding:16px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+.panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.panel:hover{border-color:#4299e1;}
+.panel h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;}
+.panel .muted{font-size:12.5px;color:#8898aa;}
+
+.pref-item{display:flex;align-items:center;gap:10px;font-size:13px;color:#e2e8f0;cursor:pointer;margin-top:12px;}
+.pref-item input{width:16px;height:16px;accent-color:#4299e1;}
+
+.btn-primary{background:#4299e1;color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;margin-top:14px;}
+.btn-primary:hover{background:#2b7fd1;}
+.btn-danger{background:#d43f3a;color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;margin-top:14px;}
+.btn-danger:hover{background:#b6322e;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">Manager</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
+      <li><a href="team-members.html"><i class="fa-solid fa-users"></i>Team Members</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
+      <li><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+      <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li class="active"><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <h2>Settings</h2>
+      <p>Manage your account preferences and security.</p>
+    </div>
+
+    <div class="content">
+
+      <div class="panel">
+        <h3>Account</h3>
+        <div class="muted">Sign out of your account on this device.</div>
+        <button id="logoutAccountBtn" class="btn-danger">Logout</button>
+      </div>
+
+      <div class="panel">
+        <h3>Preferences</h3>
+        <label class="pref-item"><input type="checkbox" id="emailNotif" checked> Email notifications</label>
+      </div>
+
+      <div class="panel">
+        <h3>Security</h3>
+        <label class="pref-item"><input type="checkbox" id="twoFactorToggle"> Two-factor authentication</label>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["manager"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+    document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+
+  function doLogout(e) {
+    e.preventDefault();
+    logout("../");
+  }
+  document.getElementById('logoutLink').addEventListener('click', doLogout);
+  document.getElementById('logoutAccountBtn').addEventListener('click', doLogout);
+
+  const emailNotifCheckbox = document.getElementById('emailNotif');
+  const twoFactorCheckbox = document.getElementById('twoFactorToggle');
+
+  async function loadPreferences() {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      const snap = await getDoc(doc(db, "employees", currentUser.docId));
+      if (!snap.exists()) return;
+      const data = snap.data();
+      emailNotifCheckbox.checked = data.emailNotifications !== false;
+      twoFactorCheckbox.checked = data.twoFactorEnabled === true;
+    } catch (err) {
+      console.error("Failed to load preferences: ", err);
+    }
+  }
+
+  emailNotifCheckbox.addEventListener('change', async () => {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      await updateDoc(doc(db, "employees", currentUser.docId), { emailNotifications: emailNotifCheckbox.checked });
+    } catch (err) {
+      alert('Failed to update email notification preference: ' + err.message);
+    }
+  });
+
+  twoFactorCheckbox.addEventListener('change', async () => {
+    if (!currentUser || !currentUser.docId) return;
+    try {
+      await updateDoc(doc(db, "employees", currentUser.docId), { twoFactorEnabled: twoFactorCheckbox.checked });
+    } catch (err) {
+      alert('Failed to update two-factor authentication preference: ' + err.message);
+    }
+  });
+
+  loadPreferences();
+</script>
+
+</body>
+</html>

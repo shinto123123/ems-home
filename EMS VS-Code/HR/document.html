@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Document Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE AREA ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 5 Column Metric Counter Cards Ribbon */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#8898aa;}
+
+/* Sub Navigation Categories Link Row Menu */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Filters Controls Bar Panel Layout */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+
+/* Section Categorization Header Indicators */
+.content-sub-title{font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;}
+
+/* Horizontal Folders Grid Track Track Row */
+.folders-horizontal-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.folder-block-card{background:#111c44;border:1px solid #1b2e6e;border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:.2s;}
+.folder-block-card:hover{border-color:#4299e1;background:rgba(66,153,225,0.02);}
+.folder-icon-wrap{width:32px;height:32px;border-radius:6px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:14px;flex-shrink:0;}
+.folder-meta-text strong{display:block;color:#fff;font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.folder-meta-text small{display:block;color:#8898aa;font-size:10.5px;margin-top:1px;}
+.folder-block-card.create-new-card{border-style:dashed;justify-content:center;color:#8898aa;font-size:12.5px;font-weight:500;}
+.folder-block-card.create-new-card:hover{color:#fff;border-color:#4299e1;}
+
+/* Ledger Matrix Spreadsheet Data Table Document Rows */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.document-table{width:100%;border-collapse:collapse;text-align:left;}
+.document-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.document-table td{padding:10px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.document-table tr:last-child td{border-bottom:none;}
+.document-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.document-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+.chk-cell{width:36px;text-align:center;}
+.chk-cell input[type="checkbox"]{accent-color:#4299e1;cursor:pointer;}
+
+/* Interactive Document Icon Node naming grid cell */
+.file-title-cell{display:flex;align-items:center;gap:10px;font-weight:500;color:#fff;}
+.file-icon-box{font-size:15px;flex-shrink:0;width:20px;text-align:center;}
+.file-icon-box.fa-file-pdf{color:#f87171;}
+.file-icon-box.fa-file-word{color:#60a5fa;}
+.file-icon-box.fa-file-excel{color:#4ade80;}
+.file-icon-box.fa-file-powerpoint{color:#fbbf24;}
+
+/* Extensions Type pill flags */
+.type-badge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10.5px;font-weight:700;}
+.type-badge.pdf{background:rgba(248,113,113,0.1);color:#f87171;}
+.type-badge.docx{background:rgba(96,165,250,0.1);color:#60a5fa;}
+.type-badge.xlsx{background:rgba(74,222,128,0.1);color:#4ade80;}
+.type-badge.pptx{background:rgba(251,191,36,0.1);color:#fbbf24;}
+
+/* Internal Visibility Group tags badges */
+.access-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+.access-badge.global{background:rgba(74,222,128,0.1);color:#4ade80;}
+.access-badge.department{background:rgba(66,153,225,0.1);color:#4299e1;}
+.access-badge.restricted{background:rgba(168,85,247,0.1);color:#a855f7;}
+
+.btn-icon-dots{background:none;border:none;color:#8898aa;cursor:pointer;font-size:13px;padding:4px;}
+.btn-icon-dots:hover{color:#fff;}
+
+/* Pagination Panel Bar Footer layout components row */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* ── INSPECTOR CANVAS PANEL (RIGHT) ── */
+.inspector-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.inspector-content{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;}
+.inspector-content::-webkit-scrollbar{width:6px;}
+.inspector-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+.inspector-card-node{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.inspector-card-node h4{color:#fff;font-size:13.5px;font-weight:600;border-bottom:1px solid #162256;padding-bottom:6px;}
+
+/* Concentric radial storage wheel graphs layouts metrics legends grid */
+.storage-wheel-wrapper{display:flex;align-items:center;gap:16px;}
+.storage-wheel-graphic{position:relative;width:80px;height:80px;flex-shrink:0;}
+.storage-wheel-graphic svg{width:80px;height:80px;transform:rotate(-90deg);}
+.storage-wheel-center-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;}
+.storage-wheel-center-text strong{display:block;font-size:12px;color:#fff;font-weight:700;}
+.storage-wheel-center-text small{display:block;font-size:9px;color:#8898aa;margin-top:1px;}
+.storage-legends-list{flex:1;display:flex;flex-direction:column;gap:6px;}
+.legend-row-item{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#cbd5e1;}
+.legend-bullet-text{display:flex;align-items:center;gap:6px;}
+.legend-color-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.legend-row-item span{color:#8898aa;}
+
+/* Compact form button layout anchors controllers box trigger link */
+.btn-inspector-action-trigger{width:100%;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-inspector-action-trigger:hover{border-color:#4299e1;color:#fff;}
+
+/* Quick actions component stacked links menus layout */
+.quick-actions-stack{display:flex;flex-direction:column;gap:8px;}
+.quick-action-link-row{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:12.5px;font-weight:500;cursor:pointer;text-align:left;transition:.2s;}
+.quick-action-link-row:hover{border-color:#4299e1;color:#fff;background:rgba(66,153,225,0.01);}
+.quick-action-link-row i{color:#8898aa;width:14px;text-align:center;}
+
+/* Vertical Audit Logs Recent Activity Timeline tracker nodes components */
+.activity-timeline-stack{display:flex;flex-direction:column;gap:14px;position:relative;padding-left:14px;margin-top:2px;}
+.activity-timeline-stack::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:1px;background:#1b2e6e;}
+.activity-timeline-node{position:relative;}
+.activity-timeline-dot{width:9px;height:9px;border-radius:50%;position:absolute;left:-14px;top:4px;border:2px solid #0b1437;box-sizing:content-box;}
+.activity-timeline-node.upload .activity-timeline-dot{background:#4ade80;}
+.activity-timeline-node.share .activity-timeline-dot{background:#a855f7;}
+.activity-timeline-node.download .activity-timeline-dot{background:#4299e1;}
+.activity-timeline-node.create .activity-timeline-dot{background:#fbbf24;}
+
+.activity-node-details strong{display:block;color:#fff;font-size:12px;font-weight:500;}
+.activity-node-details p{font-size:11px;color:#cbd5e1;margin-top:2px;}
+.activity-node-details small{display:block;color:#8898aa;font-size:10.5px;margin-top:2px;}
+
+.d-none{display:none !important;}
+
+/* ── UPLOAD DOCUMENT MODAL (additive, matches Employee.html/department.html modal house style) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,9,28,0.75);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;width:100%;max-width:480px;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;}
+.modal-header{padding:16px 20px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:space-between;align-items:center;}
+.modal-header h3{color:#fff;font-size:15px;font-weight:600;}
+.modal-close{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:#f87171;}
+.modal-body{padding:20px;display:flex;flex-direction:column;gap:14px;}
+.modal-body .form-group{display:flex;flex-direction:column;gap:6px;}
+.modal-body .form-group label{font-size:12px;color:#cbd5e1;font-weight:500;}
+.modal-body .form-group input,.modal-body .form-group select{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;outline:none;width:100%;font-family:inherit;}
+.modal-body .form-group input:focus,.modal-body .form-group select:focus{border-color:#4299e1;}
+.modal-footer{padding:14px 20px;border-top:1px solid #1b2e6e;background:#0b1437;display:flex;justify-content:flex-end;gap:10px;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Per-row document action icons (trash / restore / delete permanently) */
+.doc-actions-cell{display:flex;gap:10px;align-items:center;justify-content:center;}
+.doc-action-icon{background:none;border:none;color:#8898aa;cursor:pointer;font-size:14px;padding:4px;transition:.2s;}
+.doc-action-icon:hover{color:#fff;}
+.doc-action-icon.danger:hover{color:#f87171;}
+.doc-action-icon.success:hover{color:#4ade80;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li class="active"><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <div>
+          <h2>Document Management</h2>
+          <div class="breadcrumb">Dashboard &gt; <span>Documents</span></div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-action btn-primary" style="font-weight:600;" id="openUploadModalBtn"><i class="fa-solid fa-plus"></i> Upload Document</button>
+          <button class="btn-action" style="background:#0b1437; border:1px solid #1b2e6e;"><i class="fa-regular fa-folder-open"></i> New Folder</button>
+        </div>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="mini-info"><p>Total Documents</p><h3>1,250</h3><small>All Time</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-folder"></i></div>
+            <div class="mini-info"><p>Folders</p><h3>320</h3><small>All Time</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <div class="mini-info"><p>Employee Documents</p><h3>850</h3><small>All Time</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-building"></i></div>
+            <div class="mini-info"><p>Company Documents</p><h3>400</h3><small>All Time</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-cloud-arrow-up" style="color:#f87171;"></i></div>
+            <div class="mini-info"><p>Storage Used</p><h3>24.6 GB</h3><small>of 100 GB</small></div>
+          </div>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active" data-view="all">All Documents</button>
+          <button class="segment-btn" data-view="employee">Employee Documents</button>
+          <button class="segment-btn" data-view="company">Company Documents</button>
+          <button class="segment-btn" data-view="shared">Shared with Me</button>
+          <button class="segment-btn" data-view="trash">Trash</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search documents by name, type or owner...">
+          </div>
+          <select class="filter-select"><option>All Types</option></select>
+          <select class="filter-select"><option>All Departments</option></select>
+          <select class="filter-select"><option>All Access</option></select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div>
+          <div class="content-sub-title">Folders</div>
+          <div class="folders-horizontal-grid">
+            <div class="folder-block-card">
+              <div class="folder-icon-wrap"><i class="fa-solid fa-folder"></i></div>
+              <div class="folder-meta-text"><strong>HR Policies</strong><small>25 Documents</small></div>
+            </div>
+            <div class="folder-block-card">
+              <div class="folder-icon-wrap"><i class="fa-solid fa-folder"></i></div>
+              <div class="folder-meta-text"><strong>Employee Handbook</strong><small>18 Documents</small></div>
+            </div>
+            <div class="folder-block-card">
+              <div class="folder-icon-wrap"><i class="fa-solid fa-folder"></i></div>
+              <div class="folder-meta-text"><strong>Forms & Templates</strong><small>32 Documents</small></div>
+            </div>
+            <div class="folder-block-card">
+              <div class="folder-icon-wrap"><i class="fa-solid fa-folder"></i></div>
+              <div class="folder-meta-text"><strong>Compliance</strong><small>15 Documents</small></div>
+            </div>
+            <div class="folder-block-card">
+              <div class="folder-icon-wrap"><i class="fa-solid fa-folder"></i></div>
+              <div class="folder-meta-text"><strong>Training Materials</strong><small>45 Documents</small></div>
+            </div>
+            <div class="folder-block-card create-new-card">
+              <i class="fa-solid fa-plus" style="margin-right:6px;"></i> New Folder
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="content-sub-title" style="margin-bottom:6px;">Documents (1,250)</div>
+          <div class="table-wrap">
+            <table class="document-table">
+              <thead>
+                <tr>
+                  <th class="chk-cell"><input type="checkbox"></th>
+                  <th>Document Name</th>
+                  <th>Type</th>
+                  <th>Owner</th>
+                  <th>Department</th>
+                  <th>Last Modified</th>
+                  <th>Size</th>
+                  <th>Access</th>
+                  <th style="text-align:center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="documentTableBody">
+                <tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading documents...</td></tr>
+              </tbody>
+            </table>
+            
+            <div class="table-footer">
+              <span>Showing 1 to 8 of 1,250 documents</span>
+              <div class="pagination">
+                <a href="#" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <span style="padding:4px 6px;">...</span>
+                <a href="#" class="page-link">157</a>
+                <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="inspector-panel" id="inspectorPanel">
+      <div class="inspector-content">
+        
+        <div class="inspector-card-node">
+          <h4>Storage Overview</h4>
+          <div class="storage-wheel-wrapper">
+            <div class="storage-wheel-graphic">
+              <svg>
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#0b1437" stroke-width="5"/>
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#4299e1" stroke-width="5" stroke-dasharray="53 213"/>
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#00b5d8" stroke-width="5" stroke-dasharray="37 213" stroke-dashoffset="-53"/>
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#a855f7" stroke-width="5" stroke-dasharray="14 213" stroke-dashoffset="-90"/>
+              </svg>
+              <div class="storage-wheel-center-text"><strong>24.6 GB</strong><small>Used</small></div>
+            </div>
+            <div class="storage-legends-list">
+              <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4299e1;"></div>Employee Docs</div><span>12.4 GB</span></div>
+              <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#00b5d8;"></div>Company Docs</div><span>8.7 GB</span></div>
+              <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#a855f7;"></div>Shared Docs</div><span>3.2 GB</span></div>
+              <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4ade80;"></div>Other</div><span>0.3 GB</span></div>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#8898aa; margin-top:4px;">
+            <span>24.6 GB of 100 GB used</span>
+            <span>75.4 GB available</span>
+          </div>
+          <button class="btn-inspector-action-trigger">Manage Storage</button>
+        </div>
+
+        <div class="inspector-card-node">
+          <h4>Quick Actions</h4>
+          <div class="quick-actions-stack">
+            <button class="quick-action-link-row" id="quickUploadBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Document</button>
+            <button class="quick-action-link-row"><i class="fa-regular fa-folder"></i> Create New Folder</button>
+            <button class="quick-action-link-row"><i class="fa-regular fa-file-lines"></i> Request Document</button>
+            <button class="quick-action-link-row"><i class="fa-solid fa-user-lock"></i> Manage Access</button>
+          </div>
+        </div>
+
+        <div class="inspector-card-node" style="flex:1;">
+          <h4 style="border:none; padding-bottom:0; display:flex; justify-content:space-between; align-items:center;">Recent Activity <button style="background:none; border:none; color:#4299e1; font-size:11px; cursor:pointer;">View All</button></h4>
+          <div class="activity-timeline-stack">
+            <div class="activity-timeline-node upload">
+              <div class="activity-timeline-dot"></div>
+              <div class="activity-node-details">
+                <strong>Employee Handbook.pdf</strong>
+                <p>Uploaded by HR Team</p>
+                <small>20 May 2025, 10:30 AM</small>
+              </div>
+            </div>
+            <div class="activity-timeline-node share">
+              <div class="activity-timeline-dot"></div>
+              <div class="activity-node-details">
+                <strong>Leave Policy.docx</strong>
+                <p>Shared with Marketing Team</p>
+                <small>18 May 2025, 03:15 PM</small>
+              </div>
+            </div>
+            <div class="activity-timeline-node download">
+              <div class="activity-timeline-dot"></div>
+              <div class="activity-node-details">
+                <strong>Code of Conduct.pdf</strong>
+                <p>Downloaded by Jane Smith</p>
+                <small>15 May 2025, 11:20 AM</small>
+              </div>
+            </div>
+            <div class="activity-timeline-node create">
+              <div class="activity-timeline-dot"></div>
+              <div class="activity-node-details">
+                <strong>New folder "Compliance" created</strong>
+                <p>By HR Team</p>
+                <small>14 May 2025, 04:45 PM</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="uploadDocModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Upload Document</h3>
+      <button class="modal-close" id="closeUploadModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="uploadDocForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Document Name (with extension)</label>
+          <input type="text" id="uploadFileName" placeholder="e.g. Employee Handbook.pdf" required>
+        </div>
+        <div class="form-group">
+          <label>Category / Type</label>
+          <select id="uploadCategory">
+            <option value="pdf">PDF</option>
+            <option value="docx">DOCX</option>
+            <option value="xlsx">XLSX</option>
+            <option value="pptx">PPTX</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <input type="text" id="uploadDepartment" placeholder="e.g. HR, Engineering, All">
+        </div>
+        <div class="form-group">
+          <label>Access</label>
+          <select id="uploadAccess">
+            <option value="global">Global (Company Document)</option>
+            <option value="department">Department (Shared)</option>
+            <option value="restricted">Restricted (Employee Document)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-action" id="cancelUploadModalBtn">Cancel</button>
+        <button type="submit" class="btn-action btn-primary">Upload</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  const documentTableBody = document.getElementById('documentTableBody');
+
+  const FILE_ICONS = {
+    pdf: 'fa-file-pdf', doc: 'fa-file-word', docx: 'fa-file-word',
+    xls: 'fa-file-excel', xlsx: 'fa-file-excel', ppt: 'fa-file-powerpoint', pptx: 'fa-file-powerpoint'
+  };
+  const TYPE_BADGE_CLASSES = ['pdf', 'docx', 'xlsx', 'pptx'];
+  const ACCESS_BADGE_CLASSES = ['global', 'department', 'restricted'];
+
+  let documentsCache = []; // full list, in-memory, filtered client-side per active segment tab
+  let currentView = 'all'; // all | employee | company | shared | trash
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function getExtension(fileName) {
+    const parts = String(fileName || '').split('.');
+    return parts.length > 1 ? parts.pop().toLowerCase() : '';
+  }
+
+  function renderRow(data, isTrashView) {
+    const id = data.id;
+    const fileName = data.fileName || 'Untitled Document';
+    const ext = getExtension(fileName);
+    const iconClass = FILE_ICONS[ext] || 'fa-file-lines';
+
+    const typeLabel = data.category || '—';
+    const typeClass = TYPE_BADGE_CLASSES.includes(String(typeLabel).toLowerCase()) ? String(typeLabel).toLowerCase() : '';
+
+    const accessLabel = data.status || '—';
+    const accessClass = ACCESS_BADGE_CLASSES.includes(String(accessLabel).toLowerCase()) ? String(accessLabel).toLowerCase() : '';
+
+    const actionsHtml = isTrashView
+      ? `<button class="doc-action-icon success restore-doc-btn" data-id="${id}" title="Restore"><i class="fa-solid fa-rotate-left"></i></button>
+         <button class="doc-action-icon danger perm-delete-doc-btn" data-id="${id}" title="Delete Permanently"><i class="fa-solid fa-trash"></i></button>`
+      : `<button class="doc-action-icon danger trash-doc-btn" data-id="${id}" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>`;
+
+    return `
+      <tr data-id="${id}">
+        <td class="chk-cell"><input type="checkbox"></td>
+        <td><div class="file-title-cell"><i class="fa-solid ${iconClass} file-icon-box"></i> ${escapeHtml(fileName)}</div></td>
+        <td><span class="type-badge ${typeClass}">${escapeHtml(typeLabel)}</span></td>
+        <td>${escapeHtml(data.uploadedBy || '—')}</td>
+        <td>${escapeHtml(data.department || '—')}</td>
+        <td>${escapeHtml(data.uploadedOn || '—')}</td>
+        <td>${escapeHtml(data.size || '—')}</td>
+        <td><span class="access-badge ${accessClass}">${escapeHtml(accessLabel)}</span></td>
+        <td style="text-align:center;"><div class="doc-actions-cell">${actionsHtml}</div></td>
+      </tr>`;
+  }
+
+  // Filters the in-memory cache according to the active segment tab, then (re)draws the table
+  function renderDocuments() {
+    let filtered;
+    if (currentView === 'trash') {
+      filtered = documentsCache.filter(d => d.deleted === true);
+    } else {
+      filtered = documentsCache.filter(d => d.deleted !== true);
+      if (currentView === 'employee') filtered = filtered.filter(d => d.status === 'restricted');
+      else if (currentView === 'company') filtered = filtered.filter(d => d.status === 'global');
+      else if (currentView === 'shared') filtered = filtered.filter(d => d.status === 'department');
+    }
+
+    documentTableBody.innerHTML = '';
+    if (filtered.length === 0) {
+      documentTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">${currentView === 'trash' ? 'Trash is empty.' : 'No documents found.'}</td></tr>`;
+      return;
+    }
+    const isTrashView = currentView === 'trash';
+    filtered.forEach((data) => {
+      documentTableBody.insertAdjacentHTML('beforeend', renderRow(data, isTrashView));
+    });
+    bindDocumentRowActions();
+  }
+
+  function bindDocumentRowActions() {
+    document.querySelectorAll('.trash-doc-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        if (!confirm('Move this document to Trash?')) return;
+        try {
+          await updateDoc(doc(db, "documents", id), { deleted: true });
+          await loadDocuments();
+        } catch (err) {
+          alert('Failed to move document to trash: ' + err.message);
+        }
+      });
+    });
+
+    document.querySelectorAll('.restore-doc-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        try {
+          await updateDoc(doc(db, "documents", id), { deleted: false });
+          await loadDocuments();
+        } catch (err) {
+          alert('Failed to restore document: ' + err.message);
+        }
+      });
+    });
+
+    document.querySelectorAll('.perm-delete-doc-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        if (!confirm('Permanently delete this document? This cannot be undone.')) return;
+        try {
+          await deleteDoc(doc(db, "documents", id));
+          await loadDocuments();
+        } catch (err) {
+          alert('Failed to permanently delete document: ' + err.message);
+        }
+      });
+    });
+  }
+
+  // Segment tab wiring (All / Employee / Company / Shared / Trash)
+  document.querySelectorAll('.segment-btn[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.segment-btn[data-view]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.getAttribute('data-view');
+      renderDocuments();
+    });
+  });
+
+  async function loadDocuments() {
+    try {
+      const snapshot = await getDocs(collection(db, "documents"));
+      documentsCache = [];
+      snapshot.forEach((docSnap) => {
+        documentsCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      renderDocuments();
+    } catch (err) {
+      console.error('Failed to load documents:', err);
+      documentTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load documents.</td></tr>';
+    }
+  }
+
+  // Upload Document modal wiring
+  const uploadDocModal = document.getElementById('uploadDocModal');
+  const uploadDocForm = document.getElementById('uploadDocForm');
+  const openUploadModal = () => uploadDocModal.classList.remove('d-none');
+  const closeUploadModal = () => { uploadDocModal.classList.add('d-none'); uploadDocForm.reset(); };
+
+  document.getElementById('openUploadModalBtn').addEventListener('click', openUploadModal);
+  document.getElementById('quickUploadBtn').addEventListener('click', openUploadModal);
+  document.getElementById('closeUploadModalBtn').addEventListener('click', closeUploadModal);
+  document.getElementById('cancelUploadModalBtn').addEventListener('click', closeUploadModal);
+
+  uploadDocForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "documents"), {
+        fileName: document.getElementById('uploadFileName').value,
+        category: document.getElementById('uploadCategory').value,
+        department: document.getElementById('uploadDepartment').value || 'All',
+        status: document.getElementById('uploadAccess').value,
+        uploadedBy: currentUser.name,
+        uploadedOn: new Date().toLocaleDateString(),
+        size: '—',
+        deleted: false
+      });
+      closeUploadModal();
+      await loadDocuments();
+    } catch (err) {
+      alert('Failed to upload document: ' + err.message);
+    }
+  });
+
+  loadDocuments();
+</script>
+
+</body>
+</html>

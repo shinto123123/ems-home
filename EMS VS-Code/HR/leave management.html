@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Leave Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 5 Column Metric Ribbon Grid */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#8898aa;}
+
+/* Segment Filter Options Row Submenu tabs */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Filters Bar Panel */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.date-picker-btn{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Table Elements layout sheet */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.leave-table{width:100%;border-collapse:collapse;text-align:left;}
+.leave-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 16px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.leave-table td{padding:10px 16px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.leave-table tr:last-child td{border-bottom:none;}
+.leave-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.leave-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+/* Inline User styling profile block */
+.user-cell{display:flex;align-items:center;gap:10px;}
+.user-meta-info strong{display:block;color:#fff;font-size:13px;font-weight:500;}
+.user-meta-info small{display:block;color:#8898aa;font-size:11px;}
+.user-avatar-mini{width:28px;height:28px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:11px;}
+
+/* Leave Status Flag Blocks */
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;min-width:64px;}
+.status-badge.approved{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.pending{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.status-badge.rejected{background:rgba(248,113,113,0.1);color:#f87171;}
+
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
+
+/* Pagination Panel Footer Layout */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* Bottom Leave Balance Overview Container Blocks */
+.balance-panel-header{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+.balance-panel-header h3{color:#fff;font-size:14px;font-weight:600;}
+.balance-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.balance-card{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;position:relative;overflow:hidden;}
+.balance-card-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.balance-card-meta i{color:#8898aa;font-size:13px;}
+.balance-card-meta span{font-size:11px;color:#cbd5e1;}
+.balance-card h4{font-size:16px;font-weight:700;color:#fff;}
+.balance-card h4 span{font-size:12px;font-weight:normal;color:#8898aa;}
+.balance-card small{font-size:10px;color:#8898aa;display:block;margin-top:2px;}
+.progress-track{height:4px;background:#0b1437;border-radius:2px;margin-top:8px;position:relative;overflow:hidden;}
+.progress-bar{height:100%;position:absolute;left:0;top:0;border-radius:2px;}
+
+/* ── DETAILS PANEL (RIGHT) ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Profile block header info */
+.profile-hero{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8898aa;}
+.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
+.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:11px;color:#cbd5e1;display:block;margin-top:2px;}
+
+/* Parameters Info Segment blocks layout */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;}
+.section-title{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* File Attachments Node Component Styling */
+.attachment-pill{display:flex;align-items:center;justify-content:space-between;background:#0b1437;border:1px solid #1b2e6e;padding:10px 12px;border-radius:8px;}
+.attach-info-block{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#e2e8f0;}
+.attach-info-block i{color:#4299e1;font-size:15px;}
+.attach-info-block small{display:block;color:#8898aa;font-size:11px;margin-top:1px;}
+.attach-dl-btn{background:none;border:none;color:#8898aa;cursor:pointer;font-size:13px;}
+.attach-dl-btn:hover{color:#fff;}
+
+/* Vertical Timeline Track Component Parameters Layout */
+.timeline-track-wrap{display:flex;flex-direction:column;gap:16px;position:relative;padding-left:16px;margin-top:4px;}
+.timeline-track-wrap::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:#1b2e6e;}
+.timeline-node{position:relative;}
+.timeline-dot{width:10px;height:10px;border-radius:50%;position:absolute;left:-16px;top:4px;background:#1b2e6e;border:2px solid #0b1437;box-sizing:content-box;}
+.timeline-node.complete .timeline-dot{background:#4ade80;}
+.timeline-node.active .timeline-dot{background:#4299e1;}
+.timeline-node-title{font-size:12.5px;font-weight:600;color:#fff;}
+.timeline-node-time{font-size:11px;color:#8898aa;margin-top:2px;display:block;}
+.timeline-node-desc{font-size:11.5px;color:#cbd5e1;margin-top:4px;display:block;}
+
+/* Bottom Action block console footers footer */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;gap:10px;}
+.btn-footer-half{flex:1;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;transition:.2s;}
+.btn-footer-half:hover{border-color:#8898aa;color:#fff;}
+.btn-footer-half.danger{border-color:#f87171;color:#f87171;}
+.btn-footer-half.danger:hover{background:rgba(248,113,113,0.1);}
+
+.d-none{display:none !important;}
+
+/* ── MY LEAVE REQUESTS (HR OWN) ── */
+.my-leave-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:16px 18px;}
+.my-leave-panel .panel-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.my-leave-panel h3{color:#fff;font-size:14px;font-weight:600;}
+
+/* ── MODAL (APPLY FOR LEAVE) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,10,30,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:460px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transform:translateY(-20px);transition:transform 0.3s ease;}
+.modal-overlay.show .modal-box{transform:translateY(0);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:14px;margin-bottom:18px;}
+.modal-header h3{color:#fff;font-size:16px;font-weight:600;}
+.modal-close{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:#f87171;}
+.modal-form-group{margin-bottom:14px;}
+.modal-form-group label{display:block;color:#8898aa;font-size:11.5px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px;}
+.modal-form-group input, .modal-form-group select, .modal-form-group textarea{width:100%;padding:9px 12px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#fff;font-size:13px;outline:none;transition:border-color 0.2s;font-family:inherit;}
+.modal-form-group input:focus, .modal-form-group select:focus, .modal-form-group textarea:focus{border-color:#4299e1;}
+.modal-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid #1b2e6e;padding-top:14px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li class="active"><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <h2>Leave Management</h2>
+        <div class="breadcrumb">Dashboard &gt; <span>Leave Management</span></div>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-calendar-days"></i></div>
+            <div class="mini-info"><p>Total Leave Requests</p><h3>45</h3><small>This Month</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="mini-info"><p>Approved</p><h3>30</h3><small style="color:#4ade80;">67%</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Pending</p><h3>10</h3><small style="color:#fbbf24;">22%</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-circle-xmark"></i></div>
+            <div class="mini-info"><p>Rejected</p><h3>5</h3><small style="color:#f87171;">11%</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-clock"></i></div>
+            <div class="mini-info"><p>On Leave Today</p><h3>12</h3></div>
+          </div>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active">All Requests</button>
+          <button class="segment-btn">Pending</button>
+          <button class="segment-btn">Approved</button>
+          <button class="segment-btn">Rejected</button>
+          <button class="segment-btn">Cancelled</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search by employee name or ID...">
+          </div>
+          <select class="filter-select">
+            <option>All Departments</option>
+          </select>
+          <select class="filter-select">
+            <option>All Leave Types</option>
+          </select>
+          <select class="filter-select">
+            <option>All Status</option>
+          </select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <div class="date-picker-btn">
+            <i class="fa-regular fa-calendar"></i>
+            <span>01 May 2025 - 31 May 2025</span>
+          </div>
+          <button class="btn-action btn-primary" style="margin-left: auto;" id="openHrLeaveModalBtn"><i class="fa-solid fa-plus"></i> Apply for Leave</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="leave-table">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Days</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Applied On</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="leaveTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading leave requests...</td></tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 8 of 45 requests</span>
+            <div class="pagination">
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
+              <a href="#" class="page-link active">1</a>
+              <a href="#" class="page-link">2</a>
+              <a href="#" class="page-link">3</a>
+              <span style="padding: 4px 6px;">...</span>
+              <a href="#" class="page-link">6</a>
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-leave-panel">
+          <div class="panel-title-row">
+            <h3>My Leave Requests</h3>
+          </div>
+          <div class="table-wrap" style="border:none;">
+            <table class="leave-table">
+              <thead>
+                <tr>
+                  <th>Leave Type</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Days</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Applied On</th>
+                </tr>
+              </thead>
+              <tbody id="myLeaveTableBody">
+                <tr><td colspan="7" style="text-align:center; padding:16px; color:#8898aa;">Loading your leave requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="balance-panel-header">
+          <h3>Leave Balance Overview</h3>
+          <button class="btn-action" style="background:none; border:none; color:#4299e1; font-weight:600; font-size:12px;">View All</button>
+        </div>
+        
+        <div class="balance-grid">
+          <div class="balance-card">
+            <div class="balance-card-meta"><i class="fa-regular fa-calendar"></i><span>Annual Leave</span></div>
+            <h4>15 <span>/ 20</span></h4><small>Days Left</small>
+            <div class="progress-track"><div class="progress-bar" style="width: 75%; background: #4ade80;"></div></div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-meta"><i class="fa-solid fa-stethoscopes"></i><span>Sick Leave</span></div>
+            <h4>10 <span>/ 12</span></h4><small>Days Left</small>
+            <div class="progress-track"><div class="progress-bar" style="width: 83%; background: #fbbf24;"></div></div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-meta"><i class="fa-regular fa-user"></i><span>Casual Leave</span></div>
+            <h4>6 <span>/ 10</span></h4><small>Days Left</small>
+            <div class="progress-track"><div class="progress-bar" style="width: 60%; background: #4299e1;"></div></div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-meta"><i class="fa-solid fa-briefcase"></i><span>Personal Leave</span></div>
+            <h4>5 <span>/ 6</span></h4><small>Days Left</small>
+            <div class="progress-track"><div class="progress-bar" style="width: 83%; background: #a855f7;"></div></div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-meta"><i class="fa-solid fa-baby-carriage"></i><span>Maternity Leave</span></div>
+            <h4>60 <span>/ 90</span></h4><small>Days Left</small>
+            <div class="progress-track"><div class="progress-bar" style="width: 66%; background: #00b5d8;"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Leave Request Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar"><i class="fa-regular fa-user"></i></div>
+          <div class="hero-meta">
+            <h2>John Doe <span class="status-badge approved" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; min-width:auto; padding:2px 6px;">Approved</span></h2>
+            <p>Software Engineer • Engineering</p>
+            <span>EMP001 • john.doe@example.com</span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-grid">
+            <span class="info-label">Leave Type</span><span class="info-value" style="font-weight:600;">Annual Leave</span>
+            <span class="info-label">From</span><span class="info-value">20 May 2025</span>
+            <span class="info-label">To</span><span class="info-value">24 May 2025</span>
+            <span class="info-label">Total Days</span><span class="info-value">5 Days</span>
+            <span class="info-label">Reason</span><span class="info-value">Family Vacation</span>
+            <span class="info-label">Applied On</span><span class="info-value">10 May 2025, 10:30 AM</span>
+            <span class="info-label">Status</span><span class="info-value"><span class="status-badge approved" style="min-width:auto; padding:2px 6px;">Approved</span></span>
+            <span class="info-label">Approved By</span><span class="info-value">Jane Smith (HR Manager)</span>
+            <span class="info-label">Approved On</span><span class="info-value">10 May 2025, 02:15 PM</span>
+            <span class="info-label">Comment</span><span class="info-value" style="font-style:italic; color:#cbd5e1;">Have a nice vacation!</span>
+          </div>
+        </div>
+
+        <div class="info-section" style="padding:10px;">
+          <div class="section-title" style="margin-bottom:8px; font-size:12px;">Attachment</div>
+          <div class="attachment-pill">
+            <div class="attach-info-block">
+              <i class="fa-regular fa-file-pdf"></i>
+              <div>
+                <span>Vacation_Plan.pdf</span>
+                <small>245 KB</small>
+              </div>
+            </div>
+            <button class="attach-dl-btn"><i class="fa-solid fa-download"></i></button>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" style="margin-bottom:12px;">Request Timeline</div>
+          <div class="timeline-track-wrap">
+            <div class="timeline-node complete">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Leave Requested</span>
+              <span class="timeline-node-time">10 May 2025, 10:30 AM</span>
+              <span class="timeline-node-desc">John Doe</span>
+            </div>
+            <div class="timeline-node complete">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Under Review</span>
+              <span class="timeline-node-time">10 May 2025, 11:00 AM</span>
+              <span class="timeline-node-desc">Jane Smith (HR Manager)</span>
+            </div>
+            <div class="timeline-node active">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Approved</span>
+              <span class="timeline-node-time">10 May 2025, 02:15 PM</span>
+              <span class="timeline-node-desc">Jane Smith (HR Manager)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-footer-half">Edit Request</button>
+        <button class="btn-footer-half danger">Delete Request</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="hrLeaveModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Apply for Leave</h3>
+      <button class="modal-close" id="closeHrLeaveModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="hrLeaveForm">
+      <div class="modal-form-group">
+        <label>Leave Type</label>
+        <select id="hrLeaveType" required>
+          <option value="" selected disabled>Select Leave Type</option>
+          <option>Annual Leave</option>
+          <option>Sick Leave</option>
+          <option>Comp Off</option>
+          <option>Personal Leave</option>
+        </select>
+      </div>
+      <div class="modal-form-row">
+        <div class="modal-form-group">
+          <label>From Date</label>
+          <input type="date" id="hrLeaveFromDate" required>
+        </div>
+        <div class="modal-form-group">
+          <label>To Date</label>
+          <input type="date" id="hrLeaveToDate" required>
+        </div>
+      </div>
+      <div class="modal-form-group">
+        <label>Reason</label>
+        <textarea id="hrLeaveReason" rows="3" placeholder="Reason for leave (optional)"></textarea>
+      </div>
+      <div class="modal-form-actions">
+        <button type="button" class="btn-action" id="cancelHrLeaveModalBtn">Cancel</button>
+        <button type="submit" class="btn-action btn-primary">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+
+  // Slideout right pane close listener configuration
+  closePanelBtn.addEventListener('click', () => {
+    detailsPanel.classList.add('d-none');
+  });
+</script>
+
+<script type="module">
+  import { collection, getDocs, addDoc, query, where, doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  let myDepartment = "";
+
+  const leaveTableBody = document.getElementById('leaveTableBody');
+  const myLeaveTableBody = document.getElementById('myLeaveTableBody');
+  const leaveCache = new Map();
+
+  const STATUS_CLASSES = ['approved', 'pending', 'rejected'];
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function renderRow(id, data) {
+    const statusLabel = data.status || 'Pending';
+    const statusClass = STATUS_CLASSES.includes(String(statusLabel).toLowerCase()) ? String(statusLabel).toLowerCase() : 'pending';
+
+    return `
+      <tr data-id="${id}">
+        <td>
+          <div class="user-cell">
+            <div class="user-avatar-mini"><i class="fa-regular fa-user"></i></div>
+            <div class="user-meta-info"><strong>${escapeHtml(data.employeeName || 'Unknown')}</strong><small>${escapeHtml(data.department || '—')}</small></div>
+          </div>
+        </td>
+        <td>${escapeHtml(data.leaveType || '—')}</td>
+        <td>${escapeHtml(data.fromDate || '—')}</td>
+        <td>${escapeHtml(data.toDate || '—')}</td>
+        <td>${escapeHtml(data.totalDays ?? '—')}</td>
+        <td>${escapeHtml(data.reason || '—')}</td>
+        <td class="status-cell"><span class="status-badge ${statusClass}">${escapeHtml(statusLabel)}</span></td>
+        <td>${escapeHtml(data.appliedOn || '—')}</td>
+        <td class="action-cell">
+          <button class="btn-icon approve-btn" data-id="${id}" title="Approve"><i class="fa-solid fa-check" style="color:#4ade80;"></i></button>
+          <button class="btn-icon reject-btn" data-id="${id}" title="Reject"><i class="fa-solid fa-xmark" style="color:#f87171;"></i></button>
+        </td>
+      </tr>`;
+  }
+
+  // HR/manager submitted their own leave requests via this same collection. Those
+  // should never show up in the HR approval queue (HR cannot approve their own leave),
+  // so we exclude requesterRole "hr"/"manager" client-side. Missing requesterRole is
+  // treated as legacy "employee" data and is kept in the approval queue.
+  function isApprovableByHr(data) {
+    const role = (data.requesterRole || '').toLowerCase();
+    if (!role) return true;
+    return role === 'employee' || role === 'intern';
+  }
+
+  async function loadLeaves() {
+    try {
+      const snapshot = await getDocs(collection(db, "leaveRequests"));
+      leaveCache.clear();
+      leaveTableBody.innerHTML = '';
+      const approvableDocs = snapshot.docs.filter((docSnap) => isApprovableByHr(docSnap.data()));
+      if (approvableDocs.length === 0) {
+        leaveTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No leave requests found.</td></tr>';
+        return;
+      }
+      approvableDocs.forEach((docSnap) => {
+        leaveCache.set(docSnap.id, docSnap.data());
+        leaveTableBody.insertAdjacentHTML('beforeend', renderRow(docSnap.id, docSnap.data()));
+      });
+    } catch (err) {
+      console.error('Failed to load leave requests:', err);
+      leaveTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load leave requests.</td></tr>';
+    }
+  }
+
+  async function loadMyLeaveRequests() {
+    try {
+      const q = query(collection(db, "leaveRequests"), where("uid", "==", currentUser.uid));
+      const snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        myLeaveTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:16px; color:#8898aa;">You have not applied for any leave yet.</td></tr>';
+        return;
+      }
+      const rows = [];
+      snapshot.forEach((docSnap) => rows.push(docSnap.data()));
+      rows.sort((a, b) => (b.fromDate || '').localeCompare(a.fromDate || ''));
+      myLeaveTableBody.innerHTML = '';
+      rows.forEach((data) => {
+        const statusLabel = data.status || 'Pending';
+        const statusClass = STATUS_CLASSES.includes(String(statusLabel).toLowerCase()) ? String(statusLabel).toLowerCase() : 'pending';
+        myLeaveTableBody.insertAdjacentHTML('beforeend', `
+          <tr>
+            <td>${escapeHtml(data.leaveType || '—')}</td>
+            <td>${escapeHtml(data.fromDate || '—')}</td>
+            <td>${escapeHtml(data.toDate || '—')}</td>
+            <td>${escapeHtml(data.totalDays ?? '—')}</td>
+            <td>${escapeHtml(data.reason || '—')}</td>
+            <td><span class="status-badge ${statusClass}">${escapeHtml(statusLabel)}</span></td>
+            <td>${escapeHtml(data.appliedOn || '—')}</td>
+          </tr>`);
+      });
+    } catch (err) {
+      console.error('Failed to load your leave requests:', err);
+      myLeaveTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:16px; color:#f87171;">Failed to load your leave requests.</td></tr>';
+    }
+  }
+
+  async function setLeaveStatus(id, newStatus) {
+    try {
+      await updateDoc(doc(db, "leaveRequests", id), { status: newStatus });
+      const cached = leaveCache.get(id);
+      if (cached) cached.status = newStatus;
+      const row = leaveTableBody.querySelector(`tr[data-id="${id}"]`);
+      if (row) {
+        const statusClass = STATUS_CLASSES.includes(newStatus.toLowerCase()) ? newStatus.toLowerCase() : 'pending';
+        row.querySelector('.status-cell').innerHTML = `<span class="status-badge ${statusClass}">${escapeHtml(newStatus)}</span>`;
+      }
+    } catch (err) {
+      console.error('Failed to update leave status:', err);
+      alert('Failed to update leave request. Please try again.');
+    }
+  }
+
+  leaveTableBody.addEventListener('click', (e) => {
+    const approveBtn = e.target.closest('.approve-btn');
+    const rejectBtn = e.target.closest('.reject-btn');
+    if (approveBtn) setLeaveStatus(approveBtn.dataset.id, 'Approved');
+    if (rejectBtn) setLeaveStatus(rejectBtn.dataset.id, 'Rejected');
+  });
+
+  // Apply for Leave (HR's own leave request)
+  const hrLeaveModal = document.getElementById('hrLeaveModal');
+  const openHrLeaveModalBtn = document.getElementById('openHrLeaveModalBtn');
+  const closeHrLeaveModalBtn = document.getElementById('closeHrLeaveModalBtn');
+  const cancelHrLeaveModalBtn = document.getElementById('cancelHrLeaveModalBtn');
+  const hrLeaveForm = document.getElementById('hrLeaveForm');
+
+  const hideHrLeaveModal = () => { hrLeaveModal.classList.remove('show'); hrLeaveForm.reset(); };
+  openHrLeaveModalBtn.addEventListener('click', () => hrLeaveModal.classList.add('show'));
+  closeHrLeaveModalBtn.addEventListener('click', hideHrLeaveModal);
+  cancelHrLeaveModalBtn.addEventListener('click', hideHrLeaveModal);
+
+  hrLeaveForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const leaveType = document.getElementById('hrLeaveType').value;
+    const fromDate = document.getElementById('hrLeaveFromDate').value;
+    const toDate = document.getElementById('hrLeaveToDate').value;
+    const reason = document.getElementById('hrLeaveReason').value;
+
+    const fromD = new Date(fromDate);
+    const toD = new Date(toDate);
+    const totalDays = Math.round((toD - fromD) / (1000 * 60 * 60 * 24)) + 1;
+    if (!leaveType || !fromDate || !toDate || totalDays < 1) {
+      alert('Please select a valid leave type and date range.');
+      return;
+    }
+
+    try {
+      if (!myDepartment) {
+        const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+        myDepartment = meSnap.exists() ? (meSnap.data().department || '') : '';
+      }
+      await addDoc(collection(db, "leaveRequests"), {
+        uid: currentUser.uid,
+        employeeName: currentUser.name,
+        department: myDepartment,
+        leaveType: leaveType,
+        fromDate: fromDate,
+        toDate: toDate,
+        totalDays: totalDays,
+        reason: reason || "",
+        status: "Pending",
+        requesterRole: "hr",
+        appliedOn: serverTimestamp()
+      });
+      alert('Leave request submitted successfully.');
+      hideHrLeaveModal();
+      loadMyLeaveRequests();
+    } catch (err) {
+      alert('Failed to submit leave request: ' + err.message);
+    }
+  });
+
+  loadLeaves();
+  loadMyLeaveRequests();
+</script>
+
+</body>
+</html>

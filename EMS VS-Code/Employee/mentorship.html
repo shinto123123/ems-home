@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentorship - Employee Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-top:4px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs i{font-size:10px;color:#1b2e6e;}
+
+/* ── BUTTONS ── */
+.btn-primary{background:#4299e1;border:none;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px;justify-content:center;}
+.btn-primary:hover{background:#2b7fd1;}
+.btn-outline{background:transparent;border:1px solid #1b2e6e;color:#e2e8f0;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s;}
+.btn-outline:hover{border-color:#4299e1;color:#4299e1;}
+.btn-sm-action{background:transparent;border:1px solid #1b2e6e;color:#fff;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s;}
+.btn-sm-action:hover{border-color:#4299e1;color:#4299e1;}
+
+/* ── 4-COLUMN TOP SUMMARY METRICS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;transform:translateY(-2px);}
+.metric-icon{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#4299e1;flex-shrink:0;}
+.metric-info p{font-size:12px;color:#8898aa;font-weight:600;margin-bottom:2px;}
+.metric-info h2{font-size:22px;font-weight:700;color:#fff;line-height:1.2;}
+.metric-info span{font-size:11px;color:#8898aa;}
+
+/* ── MODULE SUB NAVIGATION TABS ── */
+.tabs-nav-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;margin-bottom:4px;padding:0 4px;}
+.tabs-nav{display:flex;}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;padding:5px 10px;border-radius:8px;font-size:12.5px;outline:none;cursor:pointer;margin-bottom:6px;}
+
+/* ── SPLIT MAIN WORKSPACE LAYOUT ── */
+.mentorship-layout-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.panel-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+.link-btn{color:#4299e1;font-size:12px;text-decoration:none;font-weight:600;}
+.link-btn:hover{text-decoration:underline;}
+
+/* 1. LEFT REGION: MENTOR DIRECTORY CATALOG */
+.catalog-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.mentor-list-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:.2s;}
+.mentor-list-card:hover{border-color:#4299e1;}
+
+.mentor-profile-header{display:flex;align-items:center;gap:12px;}
+.mentor-avatar{width:42px;height:42px;border-radius:50%;background:#111c44;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:16px;flex-shrink:0;}
+.mentor-meta h4{font-size:13.5px;color:#fff;font-weight:600;}
+.mentor-meta p{font-size:11.5px;color:#8898aa;margin-top:1px;}
+
+.skills-tags-wrap{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-badge{background:#111c44;border:1px solid #1b2e6e;color:#cbd5e1;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:500;}
+
+.mentor-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(17,28,68,0.5);border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;}
+.stat-box span{font-size:10px;color:#8898aa;display:block;}
+.stat-box strong{font-size:12.5px;color:#fff;display:block;margin-top:2px;font-weight:600;}
+
+/* 2. RIGHT REGION: SIDEBAR ACTION STATUS STACK */
+.right-sidebar-stack{display:flex;flex-direction:column;gap:16px;}
+
+.active-engagement-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:12px;}
+.engagement-user-row{display:flex;align-items:center;gap:12px;}
+.engagement-avatar{width:36px;height:36px;border-radius:50%;background:#111c44;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:14px;}
+.engagement-info h4{font-size:13px;color:#fff;font-weight:600;}
+.engagement-info p{font-size:11px;color:#8898aa;}
+
+.progress-container{margin-top:4px;}
+.progress-meta-text{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:5px;}
+.progress-meta-text span:first-child{color:#8898aa;}
+.progress-meta-text span:last-child{color:#fff;font-weight:600;}
+.progress-track{width:100%;height:5px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;overflow:hidden;}
+.progress-fill{height:100%;background:#4299e1;border-radius:10px;}
+
+.list-item-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #1b2e6e;font-size:13px;}
+.list-item-row:last-child{border-bottom:none;}
+.list-item-row i{font-size:14px;color:#4299e1;width:16px;text-align:center;}
+.item-content{flex:1;color:#e2e8f0;line-height:1.4;}
+.item-time-stamp{font-size:11px;color:#8898aa;white-space:nowrap;}
+
+/* ── LOWER REGION: INTERACTIVE SESSION TRACKS ── */
+.lower-full-width-panel{grid-column: span 2;}
+.sessions-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
+.sessions-table th{color:#8898aa;font-weight:600;padding:10px 8px;border-bottom:1px solid #1b2e6e;}
+.sessions-table td{color:#e2e8f0;padding:12px 8px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.sessions-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+
+.status-badge-pill{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge-pill.scheduled{background:rgba(66,153,225,0.15);color:#4299e1;}
+.status-badge-pill.completed{background:rgba(74,222,128,0.15);color:#4ade80;}
+
+/* Responsive Framework Variations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+    .mentorship-layout-grid{grid-template-columns:1fr;}
+    .lower-full-width-panel{grid-column: span 1;}
+}
+@media(max-width:900px){
+    .catalog-cards-grid{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .tabs-nav-row{flex-direction:column;align-items:stretch;gap:8px;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">Employee Portal</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, documents...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li ><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li class="active"><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>Mentorship</h1>
+          <div class="breadcrumbs">
+            <a href="#">Dashboard</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Mentorship</span>
+          </div>
+        </div>
+        <button class="btn-primary"><i class="fa-solid fa-graduation-cap"></i>Become a Mentor</button>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="metric-info">
+            <p>My Mentors</p>
+            <h2>1</h2>
+            <span>Active Connection</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="metric-info">
+            <p>My Mentees</p>
+            <h2>2</h2>
+            <span>Active Connections</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-regular fa-clock"></i></div>
+          <div class="metric-info">
+            <p>Mentoring Hours</p>
+            <h2>24 hrs</h2>
+            <span>Logged Total</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-regular fa-calendar-check"></i></div>
+          <div class="metric-info">
+            <p>Next Session</p>
+            <h2>Tomorrow</h2>
+            <span>10:00 AM · Online</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs-nav-row">
+        <div class="tabs-nav">
+          <button class="tab-btn active">Find a Mentor</button>
+          <button class="tab-btn">My Connections</button>
+          <button class="tab-btn">Goals & Tasks</button>
+          <button class="tab-btn">Resources</button>
+        </div>
+        <select class="select-sm"><option>All Departments</option></select>
+      </div>
+
+      <div class="mentorship-layout-grid">
+        
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Recommended Mentors</h3>
+          </div>
+          
+          <div class="catalog-cards-grid">
+            
+            <div class="mentor-list-card">
+              <div class="mentor-profile-header">
+                <div class="mentor-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="mentor-meta">
+                  <h4>Jane Smith</h4>
+                  <p>Principal Architect · Engineering</p>
+                </div>
+              </div>
+              <div class="skills-tags-wrap">
+                <span class="skill-badge">System Design</span>
+                <span class="skill-badge">Cloud Architecture</span>
+                <span class="skill-badge">Java</span>
+              </div>
+              <div class="mentor-stats-row">
+                <div class="stat-box"><span>Experience</span><strong>8+ Years</strong></div>
+                <div class="stat-box"><span>Mentees Slots</span><strong>1 Available</strong></div>
+              </div>
+              <button class="btn-primary" style="padding:7px 0; font-size:12px; margin-top:4px;">Request Connection</button>
+            </div>
+
+            <div class="mentor-list-card">
+              <div class="mentor-profile-header">
+                <div class="mentor-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="mentor-meta">
+                  <h4>Robert Brown</h4>
+                  <p>Engineering Manager · Devops</p>
+                </div>
+              </div>
+              <div class="skills-tags-wrap">
+                <span class="skill-badge">CI/CD Automation</span>
+                <span class="skill-badge">Kubernetes</span>
+                <span class="skill-badge">Agile</span>
+              </div>
+              <div class="mentor-stats-row">
+                <div class="stat-box"><span>Experience</span><strong>10+ Years</strong></div>
+                <div class="stat-box"><span>Mentees Slots</span><strong>Full</strong></div>
+              </div>
+              <button class="btn-outline" style="padding:7px 0; font-size:12px; margin-top:4px;" disabled>View Profile</button>
+            </div>
+
+          </div></div>
+
+        <div class="right-sidebar-stack">
+          
+          <div class="card-panel">
+            <div class="panel-header"><h3>Active Engagement</h3></div>
+            <div class="active-engagement-box">
+              <div class="engagement-user-row">
+                <div class="engagement-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+                <div class="engagement-info">
+                  <h4>Jane Smith</h4>
+                  <p>My Professional Guide</p>
+                </div>
+              </div>
+              <div class="progress-container">
+                <div class="progress-meta-text"><span>Milestone Progress</span><span>60%</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width: 60%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-panel">
+            <div class="panel-header">
+              <h3>Recent Objectives</h3>
+              <a href="#" class="link-btn">View All</a>
+            </div>
+            
+            <div class="list-item-row">
+              <i class="fa-regular fa-circle-check"></i>
+              <div class="item-content">Complete cloud architecture study setup module</div>
+              <div class="item-time-stamp">Done</div>
+            </div>
+            
+            <div class="list-item-row">
+              <i class="fa-regular fa-circle"></i>
+              <div class="item-content">Draft and present prototype system diagram layout sheet</div>
+              <div class="item-time-stamp">Due Fri</div>
+            </div>
+
+            <div class="list-item-row">
+              <i class="fa-regular fa-circle"></i>
+              <div class="item-content">Schedule architecture framework review checkin discussion</div>
+              <div class="item-time-stamp">1 wk left</div>
+            </div>
+          </div>
+
+        </div><div class="card-panel lower-full-width-panel">
+          <div class="panel-header">
+            <h3>Upcoming & Recent Sessions</h3>
+            <button class="btn-sm-action">Schedule Session</button>
+          </div>
+          
+          <div class="data-table-container">
+            <table class="sessions-table">
+              <thead>
+                <tr>
+                  <th>Topic</th>
+                  <th>Mentor / Mentee</th>
+                  <th>Date & Time</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th style="text-align:right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="mentorshipSessionsTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">Loading sessions...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div></div></div></div></div>
+
+<script type="module">
+    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["employee"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const sessionsTableBody = document.getElementById('mentorshipSessionsTableBody');
+
+    function statusClassFor(status) {
+        const s = (status || '').toLowerCase();
+        if (s === 'completed') return 'completed';
+        return 'scheduled';
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '-';
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function renderSessions(records) {
+        if (records.length === 0) {
+            sessionsTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">No mentorship sessions found yet.</td></tr>`;
+            return;
+        }
+        sessionsTableBody.innerHTML = "";
+        records.forEach((r) => {
+            const isMentor = r.mentorUid === currentUser.uid;
+            const counterpart = isMentor ? `${r.menteeName || '-'} (Mentee)` : `${r.mentorName || '-'} (Mentor)`;
+            const dateRange = r.startDate ? `${formatDate(r.startDate)}${r.endDate ? ' - ' + formatDate(r.endDate) : ''}` : '-';
+            const statusClass = statusClassFor(r.status);
+            sessionsTableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${r.programName || '-'}</td>
+                    <td>${counterpart}</td>
+                    <td>${dateRange}</td>
+                    <td>${r.department || '-'}</td>
+                    <td><span class="status-badge-pill ${statusClass}">${r.status || '-'}</span></td>
+                    <td style="text-align:right;"><button class="btn-sm-action">View Details</button></td>
+                </tr>
+            `);
+        });
+    }
+
+    async function loadMentorshipSessions() {
+        try {
+            const menteeQuery = query(collection(db, "mentorship"), where("menteeUid", "==", currentUser.uid));
+            const mentorQuery = query(collection(db, "mentorship"), where("mentorUid", "==", currentUser.uid));
+            const [menteeSnap, mentorSnap] = await Promise.all([getDocs(menteeQuery), getDocs(mentorQuery)]);
+
+            const recordsById = {};
+            menteeSnap.forEach(docSnap => { recordsById[docSnap.id] = { id: docSnap.id, ...docSnap.data() }; });
+            mentorSnap.forEach(docSnap => { recordsById[docSnap.id] = { id: docSnap.id, ...docSnap.data() }; });
+
+            const records = Object.values(recordsById);
+            records.sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
+            renderSessions(records);
+        } catch (err) {
+            console.error("Failed to load mentorship sessions: ", err);
+            sessionsTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${err.message}</td></tr>`;
+        }
+    }
+
+    async function paintSidebarProfile() {
+        try {
+            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+            const me = meSnap.exists() ? meSnap.data() : {};
+            document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = currentUser.name);
+            document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = me.designation || currentUser.role);
+        } catch {
+            // non-critical, ignore
+        }
+    }
+
+    paintSidebarProfile();
+    loadMentorshipSessions();
+</script>
+
+</body>
+</html>

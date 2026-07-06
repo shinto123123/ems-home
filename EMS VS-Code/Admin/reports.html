@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports & Analytics</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#8898aa;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+    padding:13px 22px;
+    transition: .2s;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show{
+    display:block;
+}
+
+.nav-profile-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover{
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i{
+    width:14px;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    overflow-y:auto;
+    background:#0b1437;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header h1{
+    font-size:24px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.export-btn{
+    padding:10px 18px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.export-btn:hover{
+    background:#3182ce;
+}
+
+.export-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   TABS
+========================= */
+.tabs{
+    display:flex;
+    gap:28px;
+    border-bottom:1px solid #1b2e6e;
+    margin-bottom:5px;
+    flex-shrink:0;
+}
+
+.tab{
+    padding-bottom:12px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+    position:relative;
+    font-size:14px;
+}
+
+.tab:hover{
+    color:#ffffff;
+}
+
+.tab.active{
+    color:#4299e1;
+    font-weight:600;
+}
+
+.tab.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-1px;
+    width:100%;
+    height:3px;
+    background:#4299e1;
+    border-radius:10px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+.filter-box{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.filter-box input,
+.filter-box select{
+    min-width:190px;
+    padding:11px 14px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    color:#ffffff;
+    font-size:13px;
+    transition:.3s;
+}
+
+.filter-box input::placeholder{
+    color:#8898aa;
+}
+
+.filter-box input:focus,
+.filter-box select:focus{
+    border-color:#4299e1;
+}
+
+.filter-box select{
+    cursor:pointer;
+}
+
+.filter-btn{
+    padding:11px 22px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.filter-btn:hover{
+    background:#3182ce;
+}
+
+.filter-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   STATISTICS CARDS
+========================= */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    border-color:#4299e1;
+}
+
+.icon{
+    width:55px;
+    height:55px;
+    background:#0b1437;
+    border:2px solid #4299e1;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.card h4{
+    color:#8898aa;
+    font-size:13px;
+    font-weight:500;
+    margin-bottom:5px;
+}
+
+.card h2{
+    color:#ffffff;
+    font-size:28px;
+    margin-bottom:4px;
+}
+
+.card p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   ANALYTICS GRID
+========================= */
+.analytics-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.chart-card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.chart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.chart-header h3{
+    color:#ffffff;
+    font-size:16px;
+    font-weight:600;
+}
+
+.chart-header select{
+    padding:8px 12px;
+    background:#0b1437;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    outline:none;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.chart-header select:focus{
+    border-color:#4299e1;
+}
+
+.chart-content{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    gap:30px;
+}
+
+/* =========================
+   DONUT CHART
+========================= */
+.circle-chart{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:conic-gradient(
+        #4299e1 0% 30%,
+        #60a5fa 30% 55%,
+        #22c55e 55% 75%,
+        #fbbf24 75% 90%,
+        #f87171 90% 100%
+    );
+    position:relative;
+    flex-shrink:0;
+}
+
+.circle-chart::after{
+    content:"";
+    position:absolute;
+    width:60px;
+    height:60px;
+    background:#111c44;
+    border-radius:50%;
+    top:30px;
+    left:30px;
+}
+
+.chart-legend p{
+    color:#d7dfef;
+    margin:10px 0;
+    font-size:13px;
+}
+
+.dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-right:8px;
+    background:#4299e1;
+}
+
+/* =========================
+   BAR CHART
+========================= */
+.bar-chart{
+    height:180px;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    gap:12px;
+    margin-top:20px;
+}
+
+.bar{
+    width:40px;
+    background:linear-gradient(to top,#4299e1,#60a5fa);
+    border-radius:8px 8px 0 0;
+    transition:.3s;
+}
+
+.bar/hover{
+    opacity:.85;
+    transform:translateY(-4px);
+}
+
+.months{
+    display:flex;
+    justify-content:space-around;
+    margin-top:15px;
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   BOTTOM GRID PANELS
+========================= */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.report-table, .quick-report {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.30);
+}
+
+.report-table h3, .quick-report h3 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.report-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-table th {
+    padding: 12px;
+    text-align: left;
+    color: #8898aa;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.report-table td {
+    padding: 12px;
+    color: #d7dfef;
+    font-size: 13px;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.report-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.report-table i {
+    color: #4299e1;
+    cursor: pointer;
+    transition: .2s;
+}
+.report-table i:hover { transform: scale(1.1); }
+
+.quick-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: .3s;
+}
+
+.quick-item:last-child { margin-bottom: 0; }
+.quick-item:hover {
+    border-color: #4299e1;
+    background: #16265c;
+}
+.quick-item i { color: #8898aa; }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:1400px){
+    .cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media(max-width:1200px){
+    .analytics-grid, .bottom-grid { grid-template-columns: 1fr; }
+    .filter-box { flex-wrap:wrap; }
+}
+
+@media(max-width:768px){
+    body { overflow:auto; }
+    .sidebar { width:200px; }
+    .main { margin-left:200px; width:calc(100% - 200px); }
+    .header { flex-direction:column; align-items:flex-start; gap:15px; }
+    .header-buttons, .filter-box input, .filter-box select, .filter-btn { width:100%; }
+    .cards { grid-template-columns: 1fr; }
+    .filter-box { flex-direction:column; align-items:stretch; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Reports & Analytics</h1>
+            <button class="export-btn"><i class="fa-solid fa-download"></i> Export Report</button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active">Overview</div>
+            <div class="tab">Employee Reports</div>
+            <div class="tab">Attendance Reports</div>
+            <div class="tab">Leave Reports</div>
+            <div class="tab">Performance Reports</div>
+            <div class="tab">Payroll Reports</div>
+        </div>
+
+        <div class="filter-box">
+            <input type="text" value="01 May 2025 - 31 May 2025">
+            <select>
+                <option>All Departments</option>
+            </select>
+            <select>
+                <option>All Locations</option>
+            </select>
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <h4>Total Employees</h4>
+                    <h2 id="kpiTotalEmployees">--</h2>
+                    <p>↑ 5 this month</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-briefcase"></i></div>
+                <div>
+                    <h4>Active Employees</h4>
+                    <h2 id="kpiActiveEmployees">--</h2>
+                    <p>↑ 3 this month</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-user-plus"></i></div>
+                <div>
+                    <h4>New Hires</h4>
+                    <h2>8</h2>
+                    <p>↑ 2 this month</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <div>
+                    <h4>Resignations</h4>
+                    <h2>3</h2>
+                    <p>↓ 1 this month</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div>
+                    <h4>Attendance Rate</h4>
+                    <h2>94%</h2>
+                    <p>↑ 2% this month</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Employees by Department</h3>
+                    <select><option>All Departments</option></select>
+                </div>
+                <div class="chart-content">
+                    <div class="circle-chart"></div>
+                    <div class="chart-legend">
+                        <p><span class="dot"></span> HR &nbsp;&nbsp;20 (13%)</p>
+                        <p><span class="dot"></span> IT &nbsp;&nbsp;45 (30%)</p>
+                        <p><span class="dot"></span> Finance &nbsp;&nbsp;25 (16%)</p>
+                        <p><span class="dot"></span> Marketing &nbsp;&nbsp;22 (14%)</p>
+                        <p><span class="dot"></span> Operations &nbsp;&nbsp;30 (20%)</p>
+                        <p><span class="dot"></span> Others &nbsp;&nbsp;10 (7%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Monthly Payroll Trend</h3>
+                    <select><option>Last 6 Months</option></select>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar" style="height:90px"></div>
+                    <div class="bar" style="height:90px"></div>
+                    <div class="bar" style="height:130px"></div>
+                    <div class="bar" style="height:120px"></div>
+                    <div class="bar" style="height:130px"></div>
+                    <div class="bar" style="height:120px"></div>
+                </div>
+                <div class="months">
+                    <span>Dec 2024</span>
+                    <span>Jan 2025</span>
+                    <span>Feb 2025</span>
+                    <span>Mar 2025</span>
+                    <span>Apr 2025</span>
+                    <span>May 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Leave Summary</h3>
+                    <select><option>This Month</option></select>
+                </div>
+                <div class="chart-content">
+                    <div class="circle-chart"></div>
+                    <div class="chart-legend">
+                        <p><span class="dot"></span> Approved &nbsp;45 (45%)</p>
+                        <p><span class="dot"></span> Pending &nbsp;25 (25%)</p>
+                        <p><span class="dot"></span> Rejected &nbsp;15 (15%)</p>
+                        <p><span class="dot"></span> Cancelled &nbsp;15 (15%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Performance Rating Distribution</h3>
+                    <select><option>This Month</option></select>
+                </div>
+                <div class="bar-chart ratings">
+                    <div class="bar" style="height:70px"></div>
+                    <div class="bar" style="height:110px"></div>
+                    <div class="bar" style="height:60px"></div>
+                    <div class="bar" style="height:40px"></div>
+                    <div class="bar" style="height:20px"></div>
+                </div>
+                <div class="months">
+                    <span>Excellent</span>
+                    <span>Good</span>
+                    <span>Average</span>
+                    <span>Below Avg</span>
+                    <span>Poor</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="report-table">
+                <h3>Recent Reports</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Report Name</th>
+                            <th>Type</th>
+                            <th>Generated By</th>
+                            <th>Generated On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Employee Attendance Report - May 2025</td>
+                            <td>Attendance</td>
+                            <td>John Doe</td>
+                            <td>31 May 2025 10:30 AM</td>
+                            <td><i class="fa-solid fa-download"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Payroll Summary - May 2025</td>
+                            <td>Payroll</td>
+                            <td>John Doe</td>
+                            <td>31 May 2025 09:15 AM</td>
+                            <td><i class="fa-solid fa-download"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quick-report">
+                <h3>Quick Reports</h3>
+                <div class="quick-item">Employee Directory <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item">Attendance Summary <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item">Leave Summary <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item">Payroll Summary <i class="fa-solid fa-angle-right"></i></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    async function loadKpis() {
+        try {
+            const allEmployees = await getDocs(collection(db, "employees"));
+            document.getElementById('kpiTotalEmployees').textContent = allEmployees.size;
+
+            const activeSnap = await getDocs(query(collection(db, "employees"), where("status", "==", "Active")));
+            document.getElementById('kpiActiveEmployees').textContent = activeSnap.size;
+        } catch (error) {
+            console.error("Failed to load report KPIs: ", error);
+        }
+    }
+
+    loadKpis();
+</script>
+</body>
+</html>

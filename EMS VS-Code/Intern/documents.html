@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documents - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:4px;}
+
+/* ── TOP KPI METRICS ROW ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+.metric-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.metric-card:hover{border-color:#4299e1;}
+.metric-icon-box{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4299e1;flex-shrink:0;}
+.kpi-info-block{display:flex;flex-direction:column;gap:2px;}
+.kpi-title{font-size:11.5px;color:#8898aa;font-weight:600;}
+.kpi-val{font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.kpi-subtext{font-size:11px;color:#8898aa;margin-top:2px;}
+
+/* ── DOCUMENTS MAIN PANEL ── */
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+
+/* Sub Tab Bar Structure + Upload Layout Row */
+.panel-utilities-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:2px;margin-bottom:16px;gap:16px;flex-wrap:wrap;}
+.tabs-nav{display:flex;gap:4px;}
+.tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
+
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#4299e1;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm-outline:hover{background:rgba(66,153,225,0.05);border-color:#4299e1;}
+
+/* Intermediate Filter Selector Row Matrix */
+.filter-controls-row{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
+.filters-left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;padding:8px 14px;border-radius:10px;font-size:12.5px;outline:none;cursor:pointer;}
+.select-sm option{background:#111c44;}
+
+.panel-search-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;width:260px;}
+.panel-search-box i{color:#4a5568;font-size:12px;}
+.panel-search-box input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:12.5px;}
+
+/* ── DATA LOG TABLE ── */
+.data-table-container{width:100%;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
+.data-table th{color:#8898aa;font-weight:600;padding:12px 10px;border-bottom:1px solid #1b2e6e;}
+.data-table td{color:#e2e8f0;padding:14px 10px;border-bottom:1px solid #1b2e6e;vertical-align:middle;line-height:1.4;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+
+/* Compound Document Component Wrapper */
+.doc-name-wrapper{display:flex;align-items:center;gap:12px;}
+.doc-icon{font-size:22px;color:#a0aec0;}
+.doc-meta-info strong{display:block;color:#fff;font-weight:600;}
+.doc-meta-info span{font-size:11px;color:#8898aa;}
+
+/* Category Tags Styles */
+.badge-category{background:rgba(27,46,110,0.6);color:#cbd5e1;border:1px solid #1b2e6e;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:500;}
+
+/* File Type Label Badges */
+.badge-type{color:#a0aec0;font-weight:700;font-size:11.5px;letter-spacing:0.4px;}
+
+/* Custom Upload Timestamp Component Typography */
+.date-time-block strong{display:block;color:#fff;font-weight:500;}
+.date-time-block span{font-size:11px;color:#8898aa;}
+
+/* Action Controls Buttons styling */
+.btn-row-action{background:transparent;border:1px solid #1b2e6e;color:#8898aa;width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
+.btn-row-action:hover{border-color:#4299e1;color:#4299e1;}
+
+/* Pagination footer design block */
+.pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
+.pagination-controls{display:flex;gap:4px;align-items:center;}
+.page-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:600;font-size:11.5px;transition:.2s;}
+.page-nav-btn:hover, .page-nav-btn.active{border-color:#4299e1;background:#4299e1;color:#fff;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .metrics-grid{grid-template-columns:repeat(2, 1fr);}
+}
+@media(max-width:850px){
+    .metrics-grid{grid-template-columns:1fr;}
+    .panel-utilities-row, .filter-controls-row{flex-direction:column;align-items:stretch;gap:12px;}
+    .tabs-nav{overflow-x:auto;}
+    .panel-search-box, .filters-left-group{width:100%;}
+    .filters-left-group .select-sm{flex:1;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+     <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li class="active"><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <h1>Documents</h1>
+        <p>Access and manage all your internship-related documents.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-file"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">All Documents</span>
+            <span class="kpi-val" id="kpiAllDocuments">0</span>
+            <span class="kpi-subtext">Total Documents</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #48bb78;"><i class="fa-regular fa-circle-up"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Uploaded By Me</span>
+            <span class="kpi-val" id="kpiUploadedByMe">0</span>
+            <span class="kpi-subtext">Documents</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box" style="color: #fbbf24;"><i class="fa-regular fa-user"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Shared With Me</span>
+            <span class="kpi-val" id="kpiSharedWithMe">0</span>
+            <span class="kpi-subtext">Documents</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon-box"><i class="fa-regular fa-clock"></i></div>
+          <div class="kpi-info-block">
+            <span class="kpi-title">Recent Documents</span>
+            <span class="kpi-val" id="kpiRecentDocuments">0</span>
+            <span class="kpi-subtext">Recently Updated</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        
+        <div class="panel-utilities-row">
+          <div class="tabs-nav">
+            <button class="tab-btn active">All Documents</button>
+            <button class="tab-btn">Uploaded By Me</button>
+            <button class="tab-btn">Shared With Me</button>
+            <button class="tab-btn">Trash</button>
+          </div>
+          <button class="btn-sm-outline"><i class="fa-solid fa-cloud-arrow-up"></i>Upload Document</button>
+        </div>
+
+        <div class="filter-controls-row">
+          <div class="filters-left-group">
+            <select class="select-sm">
+              <option>All Categories</option>
+            </select>
+            <select class="select-sm">
+              <option>All Types</option>
+            </select>
+            <select class="select-sm">
+              <option>Sort: Newest First</option>
+            </select>
+          </div>
+          <div class="panel-search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search documents...">
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 32%;">Document Name</th>
+                <th style="width: 14%;">Category</th>
+                <th style="width: 10%;">Type</th>
+                <th style="width: 16%;">Uploaded On</th>
+                <th style="width: 10%;">Size</th>
+                <th style="width: 10%;">Uploaded By</th>
+                <th style="text-align: center; width: 8%;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="documentsTableBody">
+              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading documents...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <span id="documentsCountLabel">Showing 0 of 0 documents</span>
+          <div class="pagination-controls">
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px;"></i></button>
+            <button class="page-nav-btn active">1</button>
+            <button class="page-nav-btn">2</button>
+            <button class="page-nav-btn">3</button>
+            <button class="page-nav-btn">4</button>
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px;"></i></button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  const fileIconMap = {
+    pdf: { icon: "fa-file-pdf", color: "#e53e3e" },
+    doc: { icon: "fa-file-word", color: "#4299e1" },
+    docx: { icon: "fa-file-word", color: "#4299e1" },
+    xls: { icon: "fa-file-excel", color: "#48bb78" },
+    xlsx: { icon: "fa-file-excel", color: "#48bb78" },
+    ppt: { icon: "fa-file-powerpoint", color: "#dd6b20" },
+    pptx: { icon: "fa-file-powerpoint", color: "#dd6b20" },
+    default: { icon: "fa-file", color: "#a0aec0" }
+  };
+
+  function getFileMeta(fileName) {
+    const ext = (fileName || "").split(".").pop().toLowerCase();
+    const meta = fileIconMap[ext] || fileIconMap.default;
+    return { ext: ext ? ext.toUpperCase() : "FILE", icon: meta.icon, color: meta.color };
+  }
+
+  function formatUploadedOn(uploadedOn) {
+    try {
+      const d = uploadedOn && uploadedOn.toDate ? uploadedOn.toDate() : new Date(uploadedOn);
+      if (isNaN(d.getTime())) return { date: uploadedOn || "-", time: "" };
+      return {
+        date: d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" }),
+        time: d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+      };
+    } catch {
+      return { date: uploadedOn || "-", time: "" };
+    }
+  }
+
+  function updateDocumentsWidgets(docsArray) {
+    const total = docsArray.length;
+    const uploadedByMe = docsArray.filter((d) => d.uploadedBy === currentUser.name).length;
+    const sharedWithMe = total - uploadedByMe;
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const recentCount = docsArray.filter((d) => {
+      try {
+        const uploaded = d.uploadedOn && d.uploadedOn.toDate ? d.uploadedOn.toDate() : new Date(d.uploadedOn);
+        return !isNaN(uploaded.getTime()) && uploaded >= sevenDaysAgo;
+      } catch {
+        return false;
+      }
+    }).length;
+
+    document.getElementById("kpiAllDocuments").textContent = total;
+    document.getElementById("kpiUploadedByMe").textContent = uploadedByMe;
+    document.getElementById("kpiSharedWithMe").textContent = sharedWithMe;
+    document.getElementById("kpiRecentDocuments").textContent = recentCount;
+    document.getElementById("documentsCountLabel").textContent = `Showing ${total} of ${total} documents`;
+  }
+
+  function renderDocuments(docsArray) {
+    const tbody = document.getElementById("documentsTableBody");
+    tbody.innerHTML = "";
+
+    updateDocumentsWidgets(docsArray || []);
+
+    if (!docsArray || docsArray.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No documents available.</td></tr>`;
+      return;
+    }
+
+    docsArray.forEach((d) => {
+      const fileMeta = getFileMeta(d.fileName);
+      const uploaded = formatUploadedOn(d.uploadedOn);
+      const rowTemplate = `
+        <tr>
+          <td>
+            <div class="doc-name-wrapper">
+              <div class="doc-icon" style="color:${fileMeta.color};"><i class="fa-regular ${fileMeta.icon}"></i></div>
+              <div class="doc-meta-info"><strong>${d.fileName || "Untitled Document"}</strong><span>${d.category || "-"}</span></div>
+            </div>
+          </td>
+          <td><span class="badge-category">${d.category || "-"}</span></td>
+          <td><span class="badge-type">${fileMeta.ext}</span></td>
+          <td><div class="date-time-block"><strong>${uploaded.date}</strong><span>${uploaded.time}</span></div></td>
+          <td style="color: #cbd5e1;">${d.size || "-"}</td>
+          <td style="color: #cbd5e1;">${d.uploadedBy || "-"}</td>
+          <td style="text-align: center; white-space: nowrap;">
+            <button class="btn-row-action"><i class="fa-solid fa-download"></i></button>
+          </td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML("beforeend", rowTemplate);
+    });
+  }
+
+  async function loadDocuments() {
+    try {
+      // Interns view shared documents relevant to their own department, plus any not tied to a department.
+      let deptValue = null;
+      try {
+        const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+        if (meSnap.exists()) deptValue = meSnap.data().department || null;
+      } catch {
+        // ignore, fall back to showing all documents
+      }
+
+      const querySnapshot = await getDocs(collection(db, "documents"));
+      let docsArray = [];
+      querySnapshot.forEach((docSnap) => {
+        docsArray.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      if (deptValue) {
+        docsArray = docsArray.filter((d) => !d.department || d.department === deptValue);
+      }
+
+      renderDocuments(docsArray);
+    } catch (err) {
+      console.error("Error loading documents: ", err);
+      const tbody = document.getElementById("documentsTableBody");
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load documents.</td></tr>`;
+      alert("Could not load documents: " + err.message);
+    }
+  }
+
+  loadDocuments();
+</script>
+
+</body>
+</html>

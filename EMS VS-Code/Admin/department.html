@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department & Designation Management</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* ================= Sidebar ================= */
+
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow:auto;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    padding:13px 22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    color:#8898aa;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* ================= Main ================= */
+
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ================= Topbar ================= */
+
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show{
+    display:block;
+}
+
+.nav-profile-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover{
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i{
+    width:14px;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* ================= Content ================= */
+
+.content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    padding:20px;
+    background:#0b1437;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header h1{
+    font-size:28px;
+    color:#ffffff;
+}
+
+.add-btn{
+    padding:12px 22px;
+    background:#4299e1;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#3182ce;
+}
+
+/* ================= Tabs ================= */
+
+.tabs{
+    display:flex;
+    gap:30px;
+    margin-top:18px;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.tab{
+    color:#8898aa;
+    padding-bottom:14px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.tab.active{
+    color:#4299e1;
+    border-bottom:3px solid #4299e1;
+    font-weight:600;
+}
+
+/* ================= Search ================= */
+
+.search-section{
+    display:flex;
+    gap:15px;
+    margin:18px 0;
+}
+
+.search-box{
+    width:340px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:12px 15px;
+    color:#8898aa;
+}
+
+.search-box input{
+    border:none;
+    outline:none;
+    background:none;
+    width:90%;
+    color:#ffffff;
+}
+
+.search-box input::placeholder{
+    color:#8898aa;
+}
+
+.filter-btn{
+    padding:12px 22px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    color:#ffffff;
+    cursor:pointer;
+}
+
+/* ================= Table ================= */
+
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+}
+
+td{
+    padding:15px;
+    color:#d7dfef;
+    border-top:1px solid #1b2e6e;
+    font-size:14px;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+.manager{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.manager img{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.manager-placeholder-avatar {
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+}
+
+.action{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.edit-btn{
+    padding:8px 16px;
+    background:#4299e1;
+    border:none;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.edit-btn:hover{
+    background:#3182ce;
+}
+
+.delete-btn {
+    padding:8px 16px;
+    background:#f87171;
+    border:none;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.delete-btn:hover {
+    background:#ef4444;
+}
+
+/* ================= Footer ================= */
+
+.footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+}
+
+.pages{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =====================================
+   MODAL COMPONENT DIALOG BACKDROPS
+===================================== */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 10, 30, 0.82);
+    backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-backdrop.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    transform: translateY(-30px);
+    transition: transform 0.3s ease;
+}
+
+.modal-backdrop.open .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 20px 25px;
+    background: #16265c;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-group input, .form-group textarea {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group textarea {
+    resize: none;
+    height: 80px;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #4299e1;
+}
+
+.modal-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.cancel-modal-btn {
+    background: #1b2e6e;
+    color: #e2e8f0;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.submit-modal-btn {
+    background: #4299e1;
+    color: #ffffff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li class="active"><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Department & Designation Management</h1>
+            <button class="add-btn" id="openAddModalBtn"><i class="fa-solid fa-plus"></i> Add Department</button>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active"><i class="fa-solid fa-building"></i> Departments</div>
+            <div class="tab"><i class="fa-solid fa-id-card"></i> Designations</div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search Department...">
+            </div>
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Department Name</th>
+                        <th>Manager</th>
+                        <th>Employees</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="departmentTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <div id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
+            <div class="pages">
+                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="page active">1</div>
+                <div class="page">2</div>
+                <div class="page">...</div>
+                <div class="page">8</div>
+                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="addDeptModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Add New Department</h3>
+            <button class="close-modal-btn" id="closeAddIcon"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addDeptForm">
+            <div class="modal-body">
+                <div class="form-layout">
+                    <div class="form-group">
+                        <label for="deptName">Department Name</label>
+                        <input type="text" id="deptName" placeholder="e.g. Human Resources (HR)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deptManager">Manager Name</label>
+                        <input type="text" id="deptManager" placeholder="e.g. Sarah Johnson" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deptSize">Employee Count</label>
+                        <input type="number" id="deptSize" placeholder="e.g. 15" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deptDesc">Description</label>
+                        <textarea id="deptDesc" placeholder="Brief details about scope..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-modal-btn" id="closeAddBtn">Cancel</button>
+                    <button type="submit" class="submit-modal-btn">Save Department</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="editDeptModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Modify Department Details</h3>
+            <button class="close-modal-btn" id="closeEditIcon"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="editDeptForm">
+            <input type="hidden" id="editDocId">
+            <div class="modal-body">
+                <div class="form-layout">
+                    <div class="form-group">
+                        <label for="editDeptName">Department Name</label>
+                        <input type="text" id="editDeptName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDeptManager">Manager Name</label>
+                        <input type="text" id="editDeptManager" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDeptSize">Employee Count</label>
+                        <input type="number" id="editDeptSize" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDeptDesc">Description</label>
+                        <textarea id="editDeptDesc" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-modal-btn" id="closeEditBtn">Cancel</button>
+                    <button type="submit" class="submit-modal-btn">Update Details</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    // Modal UI Target Bind Hooks
+    const addModal = document.getElementById('addDeptModal');
+    const openAddBtn = document.getElementById('openAddModalBtn');
+    const closeAddIcon = document.getElementById('closeAddIcon');
+    const closeAddBtn = document.getElementById('closeAddBtn');
+    const addForm = document.getElementById('addDeptForm');
+
+    const editModal = document.getElementById('editDeptModal');
+    const closeEditIcon = document.getElementById('closeEditIcon');
+    const closeEditBtn = document.getElementById('closeEditBtn');
+    const editForm = document.getElementById('editDeptForm');
+
+    const tableBody = document.getElementById('departmentTableBody');
+    const entriesCounter = document.getElementById('tableEntriesCounter');
+
+    let loadedDepartmentsCache = {};
+
+    // Modal Control Logic
+    openAddBtn.addEventListener('click', () => addModal.classList.add('open'));
+    const closeAddModal = () => { addModal.classList.remove('open'); addForm.reset(); };
+    closeAddIcon.addEventListener('click', closeAddModal);
+    closeAddBtn.addEventListener('click', closeAddModal);
+
+    const closeEditModal = () => { editModal.classList.remove('open'); editForm.reset(); };
+    closeEditIcon.addEventListener('click', closeEditModal);
+    closeEditBtn.addEventListener('click', closeEditModal);
+
+    window.addEventListener('click', (e) => {
+        if(e.target === addModal) closeAddModal();
+        if(e.target === editModal) closeEditModal();
+    });
+
+    // Cloud Firestore Live Database Sync Fetcher
+    async function fetchDepartmentRecords() {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px; color: #8898aa;">Loading department assets...</td></tr>`;
+        
+        try {
+            const querySnapshot = await getDocs(collection(db, "departments"));
+            tableBody.innerHTML = "";
+            loadedDepartmentsCache = {};
+            let recordCounter = 0;
+
+            if (querySnapshot.empty) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px; color: #8898aa;">No departments setup. Click 'Add Department' to populate.</td></tr>`;
+                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const id = docSnap.id;
+                const dept = docSnap.data();
+                
+                loadedDepartmentsCache[id] = { id, ...dept };
+                recordCounter++;
+
+                const managerAvatarHTML = `<div class="manager-placeholder-avatar"><i class="fa-regular fa-user"></i></div>`;
+
+                const rowTemplate = `
+                    <tr>
+                        <td><strong>${dept.name}</strong></td>
+                        <td>
+                            <div class="manager">
+                                ${managerAvatarHTML}
+                                ${dept.manager}
+                            </div>
+                        </td>
+                        <td>${dept.size}</td>
+                        <td>${dept.description}</td>
+                        <td>
+                            <div class="action">
+                                <button class="edit-btn trigger-edit-opt" data-id="${id}"><i class="fa-solid fa-pen"></i> Edit</button>
+                                <button class="delete-btn trigger-delete-opt" data-id="${id}"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            });
+
+            entriesCounter.innerText = `Showing 1 to ${recordCounter} of ${recordCounter} entries`;
+            bindActionRowTriggers();
+
+        } catch (error) {
+            console.error("Firestore loading failure context: ", error);
+            tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px; color: #f87171;">Failed reading collection: ${error.message}</td></tr>`;
+        }
+    }
+
+    // Attach row events listeners dynamically
+    function bindActionRowTriggers() {
+        // Edit Button Handler
+        document.querySelectorAll('.trigger-edit-opt').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const docId = btn.getAttribute('data-id');
+                const cacheData = loadedDepartmentsCache[docId];
+                
+                if (cacheData) {
+                    document.getElementById('editDocId').value = docId;
+                    document.getElementById('editDeptName').value = cacheData.name;
+                    document.getElementById('editDeptManager').value = cacheData.manager;
+                    document.getElementById('editDeptSize').value = cacheData.size;
+                    document.getElementById('editDeptDesc').value = cacheData.description;
+                    
+                    editModal.classList.add('open');
+                }
+            });
+        });
+
+        // Delete Button Handler
+        document.querySelectorAll('.trigger-delete-opt').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const docId = btn.getAttribute('data-id');
+                const cacheData = loadedDepartmentsCache[docId];
+                
+                if (confirm(`Are you absolutely sure you want to drop the ${cacheData.name} department collection group?`)) {
+                    try {
+                        await deleteDoc(doc(db, "departments", docId));
+                        alert("Department successfully dropped from system repository indexes.");
+                        fetchDepartmentRecords();
+                    } catch (err) {
+                        alert("Deletion error: " + err.message);
+                    }
+                }
+            });
+        });
+    }
+
+    // Capture ADD Form Commit Post Submissions
+    addForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const newDept = {
+            name: document.getElementById('deptName').value,
+            manager: document.getElementById('deptManager').value,
+            size: parseInt(document.getElementById('deptSize').value, 10),
+            description: document.getElementById('deptDesc').value,
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, "departments"), newDept);
+            alert(`Department "${newDept.name}" successfully established.`);
+            closeAddModal();
+            fetchDepartmentRecords();
+        } catch (err) {
+            alert("Error committing document structure configuration: " + err.message);
+        }
+    });
+
+    // Capture EDIT Form Update Put Submissions
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const docId = document.getElementById('editDocId').value;
+        
+        const updatedDept = {
+            name: document.getElementById('editDeptName').value,
+            manager: document.getElementById('editDeptManager').value,
+            size: parseInt(document.getElementById('editDeptSize').value, 10),
+            description: document.getElementById('editDeptDesc').value
+        };
+
+        try {
+            await updateDoc(doc(db, "departments", docId), updatedDept);
+            alert("Department properties updated cleanly.");
+            closeEditModal();
+            fetchDepartmentRecords();
+        } catch (err) {
+            alert("Error modifying document updates: " + err.message);
+        }
+    });
+
+    // Initialize Page Loop Data Fetch instantly
+    fetchDepartmentRecords();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Management - Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    overflow:hidden;
+    height:100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#8898aa;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+    padding:13px 22px;
+    transition: .2s;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show{
+    display:block;
+}
+
+.nav-profile-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover{
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i{
+    width:14px;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:#0b1437;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.header h1{
+    font-size:24px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.add-btn{
+    padding:10px 18px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#3182ce;
+}
+
+.add-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+.filter-box{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    flex-wrap:wrap;
+}
+
+.search-project{
+    width:280px;
+    padding:12px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    color:#8898aa;
+    transition:.3s;
+}
+
+.search-project:focus-within{
+    border-color:#4299e1;
+}
+
+.search-project input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:#ffffff;
+    font-size:14px;
+}
+
+.search-project input::placeholder{
+    color:#8898aa;
+}
+
+.filter-box select{
+    min-width:170px;
+    padding:11px 14px;
+    background:#0b1437;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+}
+
+.filter-box select:hover,
+.filter-box select:focus{
+    border-color:#4299e1;
+}
+
+.filter-btn{
+    padding:11px 22px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.filter-btn:hover{
+    background:#3182ce;
+}
+
+.filter-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.table-box::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+    border-bottom:1px solid #1b2e6e;
+}
+
+td{
+    padding:15px;
+    border-top:1px solid #1b2e6e;
+    color:#d7dfef;
+    font-size:13px;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.3s;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+.project-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.project-info img{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:#0b1437;
+    padding:5px;
+    border:1px solid #1b2e6e;
+}
+
+.project-info span{
+    color:#ffffff;
+    font-weight:500;
+}
+
+.manager{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.manager img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.manager span{
+    color:#ffffff;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.ongoing{
+    background:rgba(59,130,246,.18);
+    color:#60a5fa;
+}
+
+.completed{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+.planning{
+    background:rgba(251,191,36,.18);
+    color:#fbbf24;
+}
+
+.action{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.action i{
+    color:#8898aa;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.action i.fa-regular:hover{
+    color:#4299e1;
+    transform:scale(1.1);
+}
+
+.action i.fa-trash-can:hover {
+    color: #f87171;
+    transform:scale(1.1);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+    font-size:13px;
+}
+
+.pagination{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:8px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =========================
+   MODAL OVERLAYS & FORMS
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #f87171;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
+}
+
+.btn-cancel {
+    background: #16265c;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #1b2e6e;
+}
+
+.btn-submit {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-submit:hover {
+    background: #3182ce;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li class="active"><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search projects, endpoints...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Project Management</h1>
+            <button class="add-btn" id="openModalBtn"><i class="fa-solid fa-plus"></i> Add Project</button>
+        </div>
+
+        <div class="filter-box">
+            <div class="search-project">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search projects by name or manager...">
+            </div>
+            <select id="statusFilter">
+                <option value="All Status">All Status</option>
+                <option value="Planning">Planning</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button class="filter-btn" id="filterBtn"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Department</th>
+                        <th>Manager</th>
+                        <th>Team Size</th>
+                        <th>Assigned</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="projectTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <div class="entries" id="entriesCount">Showing 0 entries</div>
+            <div class="pagination">
+                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="page active">1</div>
+                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="projectModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Add New Project</h3>
+            <button class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addProjectForm">
+            <div class="form-group">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" required placeholder="e.g., Website EMS">
+            </div>
+            <div class="form-group">
+                <label for="managerName">Manager Name</label>
+                <input type="text" id="managerName" required placeholder="e.g., David Brown">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="projectDept">Department</label>
+                    <select id="projectDept" required>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="teamSize">Team Size</label>
+                    <input type="number" id="teamSize" min="1" required placeholder="e.g., 5">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="Planning">Planning</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date (Optional)</label>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelModalBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Save Project</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>View / Edit Project Info</h3>
+            <button class="modal-close" id="closeEditModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="editProjectForm">
+            <input type="hidden" id="editProjectId">
+            <div class="form-group">
+                <label for="editProjectName">Project Name</label>
+                <input type="text" id="editProjectName" required>
+            </div>
+            <div class="form-group">
+                <label for="editManagerName">Manager Name</label>
+                <input type="text" id="editManagerName" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProjectDept">Department</label>
+                    <select id="editProjectDept">
+                        <option value="Engineering">Engineering</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editTeamSize">Team Size</label>
+                    <input type="number" id="editTeamSize" min="1" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus">
+                        <option value="Planning">Planning</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Assigned Employees</label>
+                <p id="editAssignedInfo" style="color:#8898aa; font-size:13px; margin:0;">-</p>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editStartDate">Start Date</label>
+                    <input type="text" id="editStartDate" required placeholder="DD/MM/YYYY">
+                </div>
+                <div class="form-group">
+                    <label for="editEndDate">End Date</label>
+                    <input type="text" id="editEndDate" placeholder="DD/MM/YYYY or -">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelEditModalBtn">Close</button>
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["admin"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  let localProjectsCache = [];
+  const fallbackIcon = 'https://cdn-icons-png.flaticon.com/512/3767/3767084.png';
+  const fallbackAvatar = 'https://i.pravatar.cc/50?img=11';
+
+  // Modal Setup Connectors
+  const modal = document.getElementById('projectModal');
+  const editModal = document.getElementById('editModal');
+  const openModalBtn = document.getElementById('openModalBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const addProjectForm = document.getElementById('addProjectForm');
+  const editProjectForm = document.getElementById('editProjectForm');
+
+  openModalBtn.addEventListener('click', () => modal.classList.add('show'));
+  const hideModal = () => { modal.classList.remove('show'); addProjectForm.reset(); };
+  closeModalBtn.addEventListener('click', hideModal);
+  cancelModalBtn.addEventListener('click', hideModal);
+
+  const hideEditModal = () => { editModal.classList.remove('show'); editProjectForm.reset(); };
+  document.getElementById('closeEditModalBtn').addEventListener('click', hideEditModal);
+  document.getElementById('cancelEditModalBtn').addEventListener('click', hideEditModal);
+
+  // Form input conversion handles standard date formats strings
+  function formatDate(dateString) {
+    if (!dateString || dateString.trim() === "") return '-';
+    if (dateString.includes('/')) return dateString; // Already formatted
+    try {
+        const parts = dateString.split('-');
+        if (parts.length !== 3) return dateString; 
+        const [year, month, day] = parts;
+        return `${day}/${month}/${year}`;
+    } catch (e) {
+        return dateString;
+    }
+  }
+
+  // RENDER INTERFACE ARRAY RUNTIME
+  function renderTable(projectsArray) {
+    const tableBody = document.getElementById('projectTableBody');
+    const countDisplay = document.getElementById('entriesCount');
+    tableBody.innerHTML = '';
+
+    if(!projectsArray || projectsArray.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#8898aa;">No projects discovered. Click "Add Project" to begin.</td></tr>`;
+        countDisplay.textContent = `Showing 0 entries`;
+        return;
+    }
+
+    projectsArray.forEach((project) => {
+        const endFormatted = project.endDate ? project.endDate : '-';
+        const statusClass = project.status ? project.status.toLowerCase() : 'planning';
+        const teamUids = Array.isArray(project.teamUids) ? project.teamUids : [];
+
+        const rowTemplate = `
+            <tr>
+                <td>
+                    <div class="project-info">
+                        <img src="${project.projectIcon || fallbackIcon}" alt="Icon">
+                        <span>${project.projectName || 'Unnamed Project'}</span>
+                    </div>
+                </td>
+                <td>${project.department || '-'}</td>
+                <td>
+                    <div class="manager">
+                        <img src="${project.managerAvatar || fallbackAvatar}" alt="Avatar">
+                        <span>${project.managerName || 'Unassigned'}</span>
+                    </div>
+                </td>
+                <td>${project.teamSize || 0}</td>
+                <td>${teamUids.length ? teamUids.length + ' assigned' : 'Unassigned'}</td>
+                <td><span class="status ${statusClass}">${project.status || 'Planning'}</span></td>
+                <td>${project.startDate || '-'}</td>
+                <td>${endFormatted}</td>
+                <td>
+                    <div class="action">
+                        <i class="fa-regular fa-eye view-btn" data-id="${project.id}"></i>
+                        <i class="fa-regular fa-trash-can delete-btn" data-id="${project.id}"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+    });
+
+    countDisplay.textContent = `Showing ${projectsArray.length} of ${localProjectsCache.length} entries`;
+    attachActionListeners();
+  }
+
+  // ATTACH ACTION BUTTON HOOKS DETECTORS
+  function attachActionListeners() {
+      // Dynamic presentation loader loads target properties inside view fields
+      document.querySelectorAll('.view-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              const pId = e.target.getAttribute('data-id');
+              const targetProj = localProjectsCache.find(p => p.id === pId);
+              if(targetProj) {
+                  const teamUids = Array.isArray(targetProj.teamUids) ? targetProj.teamUids : [];
+                  document.getElementById('editProjectId').value = targetProj.id;
+                  document.getElementById('editProjectName').value = targetProj.projectName || '';
+                  document.getElementById('editManagerName').value = targetProj.managerName || '';
+                  document.getElementById('editProjectDept').value = targetProj.department || 'Engineering';
+                  document.getElementById('editTeamSize').value = targetProj.teamSize || 0;
+                  document.getElementById('editStatus').value = targetProj.status || 'Planning';
+                  document.getElementById('editStartDate').value = targetProj.startDate || '';
+                  document.getElementById('editEndDate').value = targetProj.endDate || '-';
+                  document.getElementById('editAssignedInfo').textContent = teamUids.length
+                      ? `${teamUids.length} employee(s) assigned. Distribute/reassign from the HR or Manager Projects page.`
+                      : 'Not yet assigned. HR or a manager can distribute this project to employees.';
+
+                  editModal.classList.add('show');
+              }
+          });
+      });
+
+      // Interactive clean document target removal transaction block
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+              const pId = e.target.getAttribute('data-id');
+              if(confirm("Confirm action deletion parameter? This drop log cannot be reverted.")) {
+                  try {
+                      await deleteDoc(doc(db, "projects", pId));
+                      localProjectsCache = localProjectsCache.filter(p => p.id !== pId);
+                      renderTable(localProjectsCache);
+                  } catch (err) {
+                      console.error("Failed to delete record document node item log: ", err);
+                  }
+              }
+          });
+      });
+  }
+
+  // INTEGRATED LOCAL CACHE ENGINE TRACKER SEARCH FILTERS
+  function runSearchFilter() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const selectedStatus = document.getElementById('statusFilter').value;
+
+      const filteredList = localProjectsCache.filter(project => {
+          const nameMatch = project.projectName ? project.projectName.toLowerCase().includes(searchTerm) : false;
+          const managerMatch = project.managerName ? project.managerName.toLowerCase().includes(searchTerm) : false;
+          const matchesSearch = nameMatch || managerMatch;
+          
+          const matchesStatus = (selectedStatus === "All Status") || (project.status === selectedStatus);
+          return matchesSearch && matchesStatus;
+      });
+
+      renderTable(filteredList);
+  }
+
+  document.getElementById('searchInput').addEventListener('input', runSearchFilter);
+  document.getElementById('statusFilter').addEventListener('change', runSearchFilter);
+  document.getElementById('filterBtn').addEventListener('click', runSearchFilter);
+
+  // READ TRANSACTION FLOW LOGS LOADERS
+  async function loadProjectsFromFirestore() {
+    try {
+        const querySnapshot = await getDocs(collection(db, "projects"));
+        localProjectsCache = [];
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            localProjectsCache.push({ id: doc.id, ...data });
+        });
+
+        renderTable(localProjectsCache);
+    } catch (err) {
+        console.error("Critical error mapping reading log references: ", err);
+    }
+  }
+
+  // FORM WRITE INTERFACES ROUTER POST OPERATIONS (ADD NEW)
+  addProjectForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    try {
+        const pName = document.getElementById('projectName').value;
+        const mName = document.getElementById('managerName').value;
+        const pDept = document.getElementById('projectDept').value;
+        const tSize = parseInt(document.getElementById('teamSize').value, 10) || 0;
+        const pStatus = document.getElementById('status').value;
+        const rawStart = document.getElementById('startDate').value;
+        const rawEnd = document.getElementById('endDate').value;
+
+        const newProject = {
+            projectName: pName,
+            managerName: mName,
+            department: pDept,
+            teamSize: tSize,
+            status: pStatus,
+            startDate: formatDate(rawStart),
+            endDate: rawEnd ? formatDate(rawEnd) : '-',
+            projectIcon: fallbackIcon,
+            managerAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 10}`,
+            teamUids: [],
+            createdByRole: "admin"
+        };
+
+        await addDoc(collection(db, "projects"), newProject);
+        hideModal();
+        await loadProjectsFromFirestore(); 
+    } catch (error) {
+        console.error("Exception handling input creation context metrics: ", error);
+        alert("Action interrupted. Inspect configuration console references.");
+    }
+  });
+
+  // UPDATE TRANSACTION: Save edited field inputs back to Firebase
+  editProjectForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const pId = document.getElementById('editProjectId').value;
+      const updatedFields = {
+          projectName: document.getElementById('editProjectName').value,
+          managerName: document.getElementById('editManagerName').value,
+          department: document.getElementById('editProjectDept').value,
+          teamSize: parseInt(document.getElementById('editTeamSize').value, 10) || 0,
+          status: document.getElementById('editStatus').value,
+          startDate: formatDate(document.getElementById('editStartDate').value),
+          endDate: document.getElementById('editEndDate').value || '-'
+      };
+
+      try {
+          const docRef = doc(db, "projects", pId);
+          await updateDoc(docRef, updatedFields);
+          hideEditModal();
+          await loadProjectsFromFirestore(); // Refresh the grid
+      } catch (error) {
+          console.error("Error updating project: ", error);
+          alert("Failed to update project records.");
+      }
+  });
+
+  window.addEventListener('DOMContentLoaded', loadProjectsFromFirestore);
+</script>
+</body>
+</html>

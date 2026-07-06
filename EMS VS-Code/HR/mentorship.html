@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Mentorship Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE MULTIPANEL ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 5 Column Metric Counter Blocks */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#8898aa;}
+
+/* Filters Controls Bar Panel */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Sub Navigation Category Tabs Link row */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Data Roster Mentorship Table View */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.mentorship-table{width:100%;border-collapse:collapse;text-align:left;}
+.mentorship-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.mentorship-table td{padding:10px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.mentorship-table tr:last-child td{border-bottom:none;}
+.mentorship-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.mentorship-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+/* Double Profile User cell layout elements */
+.pairing-profile-cell{display:flex;align-items:center;gap:8px;}
+.pairing-avatar{width:26px;height:26px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:10px;font-weight:600;flex-shrink:0;}
+.pairing-info strong{display:block;color:#fff;font-size:12.5px;font-weight:500;}
+.pairing-info small{display:block;color:#8898aa;font-size:11px;}
+
+/* Linear Progress Bar component styles */
+.linear-progress-wrapper{display:flex;align-items:center;gap:8px;min-width:100px;}
+.linear-progress-track{flex:1;height:5px;background:#0b1437;border-radius:3px;position:relative;overflow:hidden;}
+.linear-progress-bar{height:100%;background:#4299e1;border-radius:3px;position:absolute;left:0;top:0;}
+.linear-progress-text{font-size:11.5px;font-weight:600;color:#fff;width:28px;text-align:right;}
+
+/* Status Flag Tags */
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;}
+.status-badge.active{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.completed{background:rgba(66,153,225,0.1);color:#4299e1;}
+.status-badge.pending{background:rgba(251,191,36,0.1);color:#fbbf24;}
+
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
+.btn-icon:hover{color:#fff;}
+
+/* Pagination Panel Footer Layout Row */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* Lower Segment Overview Analytics Panel Row Section Layout */
+.analytics-section-title{color:#fff;font-size:14px;font-weight:600;margin-top:6px;}
+.analytics-dashboard-row{display:grid;grid-template-columns:1.1fr 1.1fr 1fr 0.8fr;gap:12px;}
+.analytics-card-node{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.analytics-card-node h4{color:#cbd5e1;font-size:12.5px;font-weight:600;border-bottom:1px solid #162256;padding-bottom:6px;}
+
+/* Donut Chart Block Layout Grid with Side Metrics legends */
+.chart-donut-wrapper{display:flex;align-items:center;gap:12px;height:100%;}
+.chart-donut-graphic{width:80px;height:80px;flex-shrink:0;}
+.chart-donut-legends-list{flex:1;display:flex;flex-direction:column;gap:6px;}
+.legend-row-item{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#cbd5e1;}
+.legend-bullet-text{display:flex;align-items:center;gap:6px;}
+.legend-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend-row-item strong{color:#fff;}
+
+/* List node components upcoming data schedules items */
+.upcoming-schedules-stack{display:flex;flex-direction:column;gap:8px;}
+.schedule-node-item{display:flex;align-items:center;gap:10px;background:#0b1437;border:1px solid #1b2e6e;padding:8px 10px;border-radius:8px;}
+.schedule-icon-wrap{color:#4299e1;font-size:13px;flex-shrink:0;}
+.schedule-details-text strong{display:block;color:#fff;font-size:11.5px;font-weight:500;}
+.schedule-details-text small{display:block;color:#8898aa;font-size:10.5px;margin-top:1px;}
+
+/* Radial Ring Health Component element view */
+.health-wheel-container{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:4px;text-align:center;}
+.health-wheel-graphic{position:relative;width:68px;height:68px;}
+.health-wheel-graphic svg{width:68px;height:68px;transform:rotate(-90deg);}
+.health-wheel-center-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:700;color:#fff;}
+.health-wheel-container span{font-size:11.5px;color:#4ade80;font-weight:600;}
+.health-wheel-container p{font-size:10.5px;color:#8898aa;margin-top:2px;line-height:1.3;}
+
+/* ── DETAILS PANEL (RIGHT): TARGET INDIVIDUAL MONITOR INSPECTOR ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Hero Info Overview layout sector components */
+.profile-hero{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:16px;color:#7dd3fc;font-weight:600;}
+.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
+.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:11px;color:#cbd5e1;display:block;margin-top:2px;}
+
+/* Navigation sub-tabs components menu row */
+.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;}
+.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.tab-link:hover{color:#fff;}
+
+/* Segment blocks layout details data section containers */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;}
+.section-title{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
+.section-paragraph-desc{font-size:12.5px;color:#cbd5e1;line-height:1.5;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* Vertical Progress Audit Node Milestones Timeline Component Track */
+.timeline-track-wrap{display:flex;flex-direction:column;gap:16px;position:relative;padding-left:16px;margin-top:4px;}
+.timeline-track-wrap::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:#1b2e6e;}
+.timeline-node{position:relative;}
+.timeline-dot{width:10px;height:10px;border-radius:50%;position:absolute;left:-16px;top:4px;background:#1b2e6e;border:2px solid #0b1437;box-sizing:content-box;}
+.timeline-node.complete .timeline-dot{background:#4ade80;}
+.timeline-node.active .timeline-dot{background:#4299e1;}
+.timeline-node.pending .timeline-dot{background:#fbbf24;}
+.timeline-node-title{font-size:12.5px;font-weight:600;color:#fff;}
+.timeline-node-time{font-size:11px;color:#8898aa;margin-top:2px;display:block;}
+.timeline-node-desc{font-size:11.5px;color:#cbd5e1;margin-top:4px;display:block;}
+
+/* Form Console Drawer Control Bar footer layout actions buttons */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;gap:10px;}
+.btn-footer-half{flex:1;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;transition:.2s;}
+.btn-footer-half:hover{border-color:#8898aa;color:#fff;}
+.btn-footer-half.primary{background:#4299e1;color:#fff;border-color:#4299e1;}
+.btn-footer-half.primary:hover{background:#2b7fd1;}
+
+.d-none{display:none !important;}
+
+/* ── EDIT MENTORSHIP MODAL (additive, matches Admin/internship.html modal house style) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,10,30,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:500px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:14px;margin-bottom:20px;}
+.modal-header h3{color:#ffffff;font-size:18px;font-weight:600;}
+.modal-close{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:#f87171;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;color:#8898aa;font-size:12px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#ffffff;font-size:14px;outline:none;transition:border-color 0.2s;}
+.form-group input:focus,.form-group select:focus{border-color:#4299e1;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;border-top:1px solid #1b2e6e;padding-top:16px;}
+.btn-cancel{background:#16265c;border:1px solid #1b2e6e;color:#d7dfef;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
+.btn-cancel:hover{background:#1b2e6e;}
+.btn-submit{background:#4299e1;border:none;color:#ffffff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
+.btn-submit:hover{background:#3182ce;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li class="active"><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <div>
+          <h2>Mentorship Management</h2>
+          <div class="breadcrumb">Dashboard &gt; <span>Mentorship</span></div>
+        </div>
+        <button class="btn-action btn-primary" style="font-weight:600;" id="createMentorshipBtn"><i class="fa-solid fa-plus"></i> Create Mentorship Program</button>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="mini-info"><p>Total Programs</p><h3>8</h3><small>Active Programs</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
+            <div class="mini-info"><p>Active Mentorships</p><h3>46</h3><small>Ongoing</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Completed Mentorships</p><h3>18</h3><small>Completed</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div class="mini-info"><p>Total Mentors</p><h3>25</h3><small>Active Mentors</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div>
+            <div class="mini-info"><p>Total Mentees</p><h3>46</h3><small>Active Mentees</small></div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search by program, mentor or mentee...">
+          </div>
+          <select class="filter-select"><option>All Departments</option></select>
+          <select class="filter-select"><option>All Status</option></select>
+          <select class="filter-select"><option>All Program Status</option></select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active">All Mentorships</button>
+          <button class="segment-btn">Active</button>
+          <button class="segment-btn">Pending</button>
+          <button class="segment-btn">Completed</button>
+          <button class="segment-btn">Cancelled</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="mentorship-table">
+            <thead>
+              <tr>
+                <th>Program Name</th>
+                <th>Mentor</th>
+                <th>Mentee</th>
+                <th>Department</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th style="text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="mentorshipTableBody">
+              <tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading mentorships...</td></tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 8 of 8 mentorships</span>
+            <div class="pagination">
+              <a href="#" class="page-link active">1</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-section-title">Mentorship Overview</div>
+        
+        <div class="analytics-dashboard-row">
+          
+          <div class="analytics-card-node">
+            <h4>Mentees by Department</h4>
+            <div class="chart-donut-wrapper">
+              <div class="chart-donut-graphic">
+                <svg viewBox="0 0 36 36" style="width:100%; height:100%;">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4" stroke-dasharray="39 61" stroke-dashoffset="25"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="4" stroke-dasharray="17 83" stroke-dashoffset="-14"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-dasharray="22 78" stroke-dashoffset="-31"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a855f7" stroke-width="4" stroke-dasharray="15 85" stroke-dashoffset="-53"/>
+                </svg>
+              </div>
+              <div class="chart-donut-legends-list">
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4299e1;"></div>Engineering</div><strong>18 (39%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#00b5d8;"></div>Design</div><strong>8 (17%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#7dd3fc;"></div>Marketing</div><strong>10 (22%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#a855f7;"></div>Product</div><strong>7 (15%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#8898aa;"></div>Others</div><strong>3 (7%)</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-card-node">
+            <h4>Mentorship Status</h4>
+            <div class="chart-donut-wrapper">
+              <div class="chart-donut-graphic">
+                <svg viewBox="0 0 36 36" style="width:100%; height:100%;">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="57 43" stroke-dashoffset="25"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="4" stroke-dasharray="12 88" stroke-dashoffset="-32"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4" stroke-dasharray="22 78" stroke-dashoffset="-44"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f87171" stroke-width="4" stroke-dasharray="7 93" stroke-dashoffset="-66"/>
+                </svg>
+              </div>
+              <div class="chart-donut-legends-list">
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4ade80;"></div>Active</div><strong>46 (57%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#fbbf24;"></div>Pending</div><strong>10 (12%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4299e1;"></div>Completed</div><strong>18 (22%)</strong></div>
+                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#f87171;"></div>Cancelled</div><strong>6 (7%)</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-card-node">
+            <h4 style="border:none; padding-bottom:0; display:flex; justify-content:space-between; align-items:center;">Upcoming End Dates <button style="background:none; border:none; color:#4299e1; font-size:11px; cursor:pointer;">View All</button></h4>
+            <div class="upcoming-schedules-stack">
+              <div class="schedule-node-item">
+                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+                <div class="schedule-details-text"><strong>UI/UX Design Mentorship</strong><small>31 Jul 2025</small></div>
+              </div>
+              <div class="schedule-node-item">
+                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+                <div class="schedule-details-text"><strong>Software Engineering Mentorship</strong><small>10 Jul 2025</small></div>
+              </div>
+              <div class="schedule-node-item">
+                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+                <div class="schedule-details-text"><strong>Data Analytics Mentorship</strong><small>15 Jul 2025</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-card-node">
+            <h4>Mentorship Health</h4>
+            <div class="health-wheel-container">
+              <div class="health-wheel-graphic">
+                <svg>
+                  <circle cx="34" cy="34" r="28" fill="none" stroke="#0b1437" stroke-width="4"/>
+                  <circle cx="34" cy="34" r="28" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="136 175"/>
+                </svg>
+                <div class="health-wheel-center-text">78%</div>
+              </div>
+              <span>Good</span>
+              <p>Based on feedback & progress</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Mentorship Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar" id="detailMentorshipAvatar">AS</div>
+          <div class="hero-meta">
+            <h2 id="detailMentorshipName">Amit Sharma <span class="status-badge active" id="detailMentorshipStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">Active</span></h2>
+            <p id="detailMentorshipSub">UI/UX Intern • Design Department</p>
+            <span id="detailMentorshipMeta">INT001 • amit.sharma@email.com</span>
+          </div>
+        </div>
+
+        <div class="tab-nav">
+          <a href="#" class="tab-link active">Overview</a>
+          <a href="#" class="tab-link">Goals</a>
+          <a href="#" class="tab-link">Meetings</a>
+          <a href="#" class="tab-link">Feedback</a>
+          <a href="#" class="tab-link">Documents</a>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Mentorship Information</div>
+          <div class="info-grid">
+            <span class="info-label">Program Name</span><span class="info-value" style="font-weight:500;" id="detailProgramName">UI/UX Design Mentorship Program</span>
+            <span class="info-label">Mentor</span><span class="info-value" style="font-weight:500; color:#fff;" id="detailMentorName">Jane Smith</span>
+            <span class="info-label">Mentee</span><span class="info-value" id="detailMenteeName">—</span>
+            <span class="info-label">Department</span><span class="info-value" id="detailMentorshipDept">—</span>
+            <span class="info-label">Start Date</span><span class="info-value" id="detailStartDate">01 May 2025</span>
+            <span class="info-label">End Date</span><span class="info-value" id="detailEndDate">31 Jul 2025</span>
+            <span class="info-label">Status</span><span class="info-value"><span class="status-badge active" style="padding:2px 6px;" id="detailMentorshipStatusVal">Active</span></span>
+            <span class="info-label">Progress</span>
+            <span class="info-value">
+              <div class="linear-progress-wrapper" style="width:100%;">
+                <div class="linear-progress-track"><div class="linear-progress-bar" style="width: 60%;" id="detailProgressBar"></div></div>
+                <span class="linear-progress-text" style="width:auto;" id="detailProgressText">60%</span>
+              </div>
+            </span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Program Description</div>
+          <p class="section-paragraph-desc">This program aims to guide interns in UI/UX design principles, tools, and real-world project execution.</p>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">Recent Activity <button style="background:none; border:none; color:#4299e1; font-size:11px; cursor:pointer;">View All Activity</button></div>
+          <div class="timeline-track-wrap">
+            <div class="timeline-node complete">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Goal Updated</span>
+              <span class="timeline-node-time">22 May 2025</span>
+              <span class="timeline-node-desc">Design system task completed</span>
+            </div>
+            <div class="timeline-node active">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Feedback Submitted</span>
+              <span class="timeline-node-time">15 May 2025</span>
+              <span class="timeline-node-desc">Great progress in wireframing!</span>
+            </div>
+            <div class="timeline-node pending">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Meeting Conducted</span>
+              <span class="timeline-node-time">08 May 2025</span>
+              <span class="timeline-node-desc">Weekly sync-up meeting</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-footer-half" id="editMentorshipBtn">Edit Mentorship</button>
+        <button class="btn-footer-half primary">View Full Profile</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="editMentorshipModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit Mentorship</h3>
+      <button class="modal-close" id="closeEditMentorshipModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="editMentorshipForm">
+      <input type="hidden" id="editMentorshipId">
+      <div class="form-group">
+        <label for="editProgramName">Program Name</label>
+        <input type="text" id="editProgramName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editMentorNameInput">Mentor</label>
+          <input type="text" id="editMentorNameInput" required>
+        </div>
+        <div class="form-group">
+          <label for="editMenteeNameInput">Mentee</label>
+          <input type="text" id="editMenteeNameInput" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editMentorshipDeptInput">Department</label>
+          <input type="text" id="editMentorshipDeptInput">
+        </div>
+        <div class="form-group">
+          <label for="editMentorshipStatusInput">Status</label>
+          <select id="editMentorshipStatusInput">
+            <option value="Active">Active</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editMentorshipStartDate">Start Date</label>
+          <input type="text" id="editMentorshipStartDate" placeholder="e.g. 01 May 2025">
+        </div>
+        <div class="form-group">
+          <label for="editMentorshipEndDate">End Date</label>
+          <input type="text" id="editMentorshipEndDate" placeholder="e.g. 31 Jul 2025">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="editMentorshipProgress">Progress (%)</label>
+        <input type="number" id="editMentorshipProgress" min="0" max="100">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelEditMentorshipBtn">Cancel</button>
+        <button type="submit" class="btn-submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+
+  // Slideout workspace inspector layout container visibility toggle configuration click handler
+  closePanelBtn.addEventListener('click', () => {
+    detailsPanel.classList.add('d-none');
+  });
+
+  const tableBody = document.getElementById('mentorshipTableBody');
+  let mentorshipCache = {};
+  let currentMentorshipId = null;
+
+  async function loadMentorships() {
+    try {
+      const snap = await getDocs(collection(db, "mentorship"));
+      if (snap.empty) {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No mentorship programs found.</td></tr>`;
+        mentorshipCache = {};
+        return;
+      }
+      tableBody.innerHTML = "";
+      mentorshipCache = {};
+      snap.forEach((docSnap) => {
+        const m = { id: docSnap.id, ...docSnap.data() };
+        mentorshipCache[m.id] = m;
+        const statusClass = (m.status || 'Active').toLowerCase();
+        tableBody.insertAdjacentHTML('beforeend', `
+          <tr class="mentorship-row" data-id="${m.id}">
+            <td>${m.programName || '-'}</td>
+            <td>${m.mentorName || '-'}</td>
+            <td>${m.menteeName || '-'}</td>
+            <td>${m.department || '-'}</td>
+            <td>${m.startDate || '-'}</td>
+            <td>${m.endDate || '-'}</td>
+            <td><span class="status-badge ${statusClass}">${m.status || 'Active'}</span></td>
+            <td>${m.progress || 0}%</td>
+            <td style="text-align:center;"><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+          </tr>
+        `);
+      });
+      bindMentorshipRowClicks();
+    } catch (error) {
+      console.error("Failed to load mentorship programs: ", error);
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+    }
+  }
+
+  // Row click -> populate the details inspector with the real mentorship record
+  function bindMentorshipRowClicks() {
+    document.querySelectorAll('.mentorship-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const m = mentorshipCache[row.getAttribute('data-id')];
+        if (!m) return;
+        currentMentorshipId = m.id;
+
+        const statusText = m.status || 'Active';
+        const statusClass = statusText.toLowerCase();
+        const progress = m.progress || 0;
+        const initials = (m.mentorName || '?').split(' ').map(n => n[0] || '').slice(0, 2).join('').toUpperCase();
+
+        document.getElementById('detailMentorshipAvatar').textContent = initials;
+        document.getElementById('detailMentorshipName').innerHTML = `${m.programName || 'Untitled Program'} <span class="status-badge ${statusClass}" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">${statusText}</span>`;
+        document.getElementById('detailMentorshipSub').textContent = `Mentor: ${m.mentorName || '-'} • Mentee: ${m.menteeName || '-'}`;
+        document.getElementById('detailMentorshipMeta').textContent = `${m.department || '-'} Department`;
+
+        document.getElementById('detailProgramName').textContent = m.programName || '-';
+        document.getElementById('detailMentorName').textContent = m.mentorName || '-';
+        document.getElementById('detailMenteeName').textContent = m.menteeName || '-';
+        document.getElementById('detailMentorshipDept').textContent = m.department || '-';
+        document.getElementById('detailStartDate').textContent = m.startDate || '-';
+        document.getElementById('detailEndDate').textContent = m.endDate || '-';
+        document.getElementById('detailMentorshipStatusVal').textContent = statusText;
+        document.getElementById('detailMentorshipStatusVal').className = `status-badge ${statusClass}`;
+        document.getElementById('detailProgressBar').style.width = `${progress}%`;
+        document.getElementById('detailProgressText').textContent = `${progress}%`;
+
+        detailsPanel.classList.remove('d-none');
+      });
+    });
+  }
+
+  // Edit Mentorship modal wiring
+  const editMentorshipModal = document.getElementById('editMentorshipModal');
+  const editMentorshipForm = document.getElementById('editMentorshipForm');
+
+  document.getElementById('editMentorshipBtn').addEventListener('click', () => {
+    if (!currentMentorshipId) { alert('Select a mentorship program first.'); return; }
+    const m = mentorshipCache[currentMentorshipId];
+    if (!m) return;
+    document.getElementById('editMentorshipId').value = m.id;
+    document.getElementById('editProgramName').value = m.programName || '';
+    document.getElementById('editMentorNameInput').value = m.mentorName || '';
+    document.getElementById('editMenteeNameInput').value = m.menteeName || '';
+    document.getElementById('editMentorshipDeptInput').value = m.department || '';
+    document.getElementById('editMentorshipStatusInput').value = m.status || 'Active';
+    document.getElementById('editMentorshipStartDate').value = m.startDate || '';
+    document.getElementById('editMentorshipEndDate').value = m.endDate || '';
+    document.getElementById('editMentorshipProgress').value = m.progress || 0;
+    editMentorshipModal.classList.remove('d-none');
+  });
+
+  const closeEditMentorshipModal = () => { editMentorshipModal.classList.add('d-none'); editMentorshipForm.reset(); };
+  document.getElementById('closeEditMentorshipModalBtn').addEventListener('click', closeEditMentorshipModal);
+  document.getElementById('cancelEditMentorshipBtn').addEventListener('click', closeEditMentorshipModal);
+
+  editMentorshipForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('editMentorshipId').value;
+    try {
+      await updateDoc(doc(db, "mentorship", id), {
+        programName: document.getElementById('editProgramName').value,
+        mentorName: document.getElementById('editMentorNameInput').value,
+        menteeName: document.getElementById('editMenteeNameInput').value,
+        department: document.getElementById('editMentorshipDeptInput').value,
+        status: document.getElementById('editMentorshipStatusInput').value,
+        startDate: document.getElementById('editMentorshipStartDate').value,
+        endDate: document.getElementById('editMentorshipEndDate').value,
+        progress: Number(document.getElementById('editMentorshipProgress').value) || 0
+      });
+      closeEditMentorshipModal();
+      detailsPanel.classList.add('d-none');
+      await loadMentorships();
+    } catch (error) {
+      alert("Failed to update mentorship program: " + error.message);
+    }
+  });
+
+  document.getElementById('createMentorshipBtn').addEventListener('click', async () => {
+    const programName = prompt("Program name:");
+    if (!programName) return;
+    const mentorName = prompt("Mentor name:") || "";
+    const menteeName = prompt("Mentee name:") || "";
+    const department = prompt("Department:") || "";
+
+    try {
+      await addDoc(collection(db, "mentorship"), {
+        programName, mentorName, menteeName, department,
+        startDate: new Date().toLocaleDateString(), endDate: "-",
+        status: "Active", progress: 0
+      });
+      loadMentorships();
+    } catch (error) {
+      alert("Failed to create mentorship program: " + error.message);
+    }
+  });
+
+  loadMentorships();
+</script>
+
+</body>
+</html>

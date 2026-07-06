@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li{padding:0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.page-header{padding:16px 22px 0;background:#0b1437;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+
+/* ── CONTENT ── */
+.content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── WELCOME ── */
+.welcome{background:#111c44;padding:16px 22px;border-radius:14px;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 18px rgba(0,0,0,.25);}
+.welcome-left h1{font-size:20px;font-weight:700;color:#fff;}
+.welcome-left p{color:#8898aa;margin-top:4px;font-size:13px;}
+.date-box{display:flex;align-items:center;gap:9px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 16px;color:#e2e8f0;font-size:13px;cursor:pointer;}
+.date-box i:first-child{color:#4299e1;}
+.date-box .fa-chevron-down{color:#8898aa;font-size:11px;}
+
+/* ── KPI CARDS — 4 cols × 2 rows ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.kpi-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:15px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;cursor:default;}
+.kpi-card:hover{transform:translateY(-3px);border-color:#4299e1;box-shadow:0 8px 24px rgba(66,153,225,.15);}
+.kpi-icon{width:46px;height:46px;border-radius:12px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#4299e1;flex-shrink:0;}
+.kpi-info p{font-size:12px;color:#8898aa;margin-bottom:4px;}
+.kpi-info h2{font-size:22px;font-weight:700;color:#fff;line-height:1;}
+.kpi-info small{font-size:11px;color:#4ade80;margin-top:3px;display:block;}
+.kpi-info small.neutral{color:#8898aa;}
+.kpi-info small.warn{color:#fbbf24;}
+
+/* ── MIDDLE ── */
+.middle{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;}
+
+/* ── CHART CARD ── */
+.chart-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.chart-card:hover{border-color:#4299e1;}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.card-header-left h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:3px;}
+.card-header-left span{font-size:12px;color:#8898aa;}
+.view-btn{background:#4299e1;color:#fff;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s;white-space:nowrap;}
+.view-btn:hover{background:#2b7fd1;}
+
+/* ── LINE CHART ── */
+.line-chart-wrap{position:relative;height:170px;display:flex;gap:12px;}
+.lc-y-axis{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding-bottom:22px;min-width:36px;}
+.lc-y-axis span{font-size:10px;color:#8898aa;}
+.lc-area{flex:1;position:relative;display:flex;flex-direction:column;}
+.lc-svg-wrap{flex:1;border-left:1px solid #1b2e6e;border-bottom:1px solid #1b2e6e;position:relative;overflow:hidden;}
+.lc-svg-wrap svg{width:100%;height:100%;position:absolute;top:0;left:0;}
+.lc-x-labels{display:grid;grid-template-columns:repeat(6,1fr);margin-top:8px;}
+.lc-x-labels span{font-size:11px;color:#8898aa;text-align:center;}
+
+/* ── DONUT CARD ── */
+.donut-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.donut-card:hover{border-color:#4299e1;}
+.donut-body{display:flex;align-items:center;gap:18px;}
+.donut-svg-wrap{position:relative;flex-shrink:0;width:140px;height:140px;}
+.donut-svg-wrap svg{width:140px;height:140px;}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.donut-center strong{display:block;font-size:24px;font-weight:700;color:#fff;line-height:1;}
+.donut-center span{font-size:11px;color:#8898aa;}
+.donut-legend{flex:1;display:flex;flex-direction:column;gap:10px;}
+.leg-row{display:flex;align-items:center;gap:10px;}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.leg-label{flex:1;font-size:13px;color:#cbd5e1;}
+.leg-val{font-size:13px;font-weight:600;color:#fff;}
+.leg-divider{border-top:1px solid #1b2e6e;padding-top:10px;margin-top:2px;display:flex;justify-content:space-between;font-size:13px;}
+.leg-divider span:first-child{color:#8898aa;}
+.leg-divider span:last-child{color:#fff;font-weight:600;}
+
+/* ── BOTTOM ── */
+.bottom{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;}
+.panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.panel:hover{border-color:#4299e1;}
+.panel h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;}
+
+/* ── ACTIVITY ROWS ── */
+.act-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #1b2e6e;transition:.2s;}
+.act-row:last-child{border-bottom:none;}
+.act-row:hover{padding-left:6px;}
+.act-icon{width:34px;height:34px;border-radius:9px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:13px;flex-shrink:0;}
+.act-info{flex:1;}
+.act-info p{font-size:13px;color:#e2e8f0;line-height:1.4;}
+.act-time{font-size:11px;color:#8898aa;white-space:nowrap;}
+
+/* ── EVENT ROWS ── */
+.evt-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #1b2e6e;transition:.2s;}
+.evt-row:last-child{border-bottom:none;}
+.evt-row:hover{padding-left:6px;}
+.evt-date-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:9px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:46px;}
+.evt-date-box strong{display:block;font-size:15px;font-weight:700;color:#4299e1;line-height:1;}
+.evt-date-box span{font-size:10px;color:#8898aa;}
+.evt-info{flex:1;}
+.evt-info p{font-size:13px;color:#e2e8f0;}
+.evt-info small{font-size:11px;color:#8898aa;}
+
+@media(max-width:1300px){.kpi-grid{grid-template-columns:repeat(4,1fr);}.middle{grid-template-columns:1fr;}.bottom{grid-template-columns:1fr;}}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY WRAP -->
+<div class="body-wrap">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <ul>
+      <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="#"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header"><h2>Dashboard</h2></div>
+
+    <div class="content">
+
+      <!-- WELCOME -->
+      <div class="welcome">
+        <div class="welcome-left">
+          <h1>Welcome Back, John Doe 👋</h1>
+          <p>Monitor your organization, employees and daily activities from one place.</p>
+        </div>
+        <div class="date-box">
+          <i class="fa-regular fa-calendar"></i>
+          <span>26 June 2026</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+
+      <!-- KPI CARDS — 4 × 2 -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-info">
+            <p>Total Employees</p>
+            <h2>256</h2>
+            <small>+12 this month</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-building"></i></div>
+          <div class="kpi-info">
+            <p>Departments</p>
+            <h2>12</h2>
+            <small class="neutral">Across all offices</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="kpi-info">
+            <p>Open Positions</p>
+            <h2>8</h2>
+            <small>3 urgent</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
+          <div class="kpi-info">
+            <p>Active Hires</p>
+            <h2>22</h2>
+            <small>+5 this week</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+          <div class="kpi-info">
+            <p>Pending Leaves</p>
+            <h2>15</h2>
+            <small class="warn">+5 today</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="kpi-info">
+            <p>Attendance Today</p>
+            <h2>92%</h2>
+            <small class="neutral">Present</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-user-plus"></i></div>
+          <div class="kpi-info">
+            <p>Onboarding</p>
+            <h2>3</h2>
+            <small class="warn">In Progress</small>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <div class="kpi-info">
+            <p>Payroll Status</p>
+            <h2>Jun 2026</h2>
+            <small class="warn">Processing</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE: Line Chart + Donut -->
+      <div class="middle">
+
+        <!-- Employee Trend Line Chart -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>Employee Trend</h3>
+              <span>Employee Growth (Last 6 Months)</span>
+            </div>
+            <button class="view-btn">View Report</button>
+          </div>
+          <div class="line-chart-wrap">
+            <div class="lc-y-axis">
+              <span>300</span>
+              <span>250</span>
+              <span>200</span>
+              <span>150</span>
+              <span>100</span>
+              <span>0</span>
+            </div>
+            <div class="lc-area">
+              <div class="lc-svg-wrap">
+                <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#4299e1" stop-opacity="0.25"/>
+                      <stop offset="100%" stop-color="#4299e1" stop-opacity="0.02"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Grid lines -->
+                  <line x1="0" y1="40" x2="600" y2="40" stroke="#1b2e6e" stroke-width="1"/>
+                  <line x1="0" y1="80" x2="600" y2="80" stroke="#1b2e6e" stroke-width="1"/>
+                  <line x1="0" y1="120" x2="600" y2="120" stroke="#1b2e6e" stroke-width="1"/>
+                  <line x1="0" y1="160" x2="600" y2="160" stroke="#1b2e6e" stroke-width="1"/>
+                  <!-- Area fill -->
+                  <polygon points="50,160 150,130 250,110 350,100 450,80 550,60 550,200 50,200" fill="url(#areaGrad)"/>
+                  <!-- Line -->
+                  <polyline points="50,160 150,130 250,110 350,100 450,80 550,60" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                  <!-- Dots -->
+                  <circle cx="50"  cy="160" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
+                  <circle cx="150" cy="130" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
+                  <circle cx="250" cy="110" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
+                  <circle cx="350" cy="100" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
+                  <circle cx="450" cy="80"  r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
+                  <circle cx="550" cy="60"  r="7" fill="#4299e1" stroke="#4299e1" stroke-width="2"/>
+                  <!-- Value labels -->
+                  <text x="50"  y="150" fill="#8898aa" font-size="11" text-anchor="middle">110</text>
+                  <text x="150" y="120" fill="#8898aa" font-size="11" text-anchor="middle">175</text>
+                  <text x="250" y="100" fill="#8898aa" font-size="11" text-anchor="middle">210</text>
+                  <text x="350" y="90"  fill="#8898aa" font-size="11" text-anchor="middle">230</text>
+                  <text x="450" y="70"  fill="#8898aa" font-size="11" text-anchor="middle">248</text>
+                  <text x="550" y="48"  fill="#4299e1" font-size="11" text-anchor="middle" font-weight="700">256</text>
+                </svg>
+              </div>
+              <div class="lc-x-labels">
+                <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Department Wise Headcount Donut -->
+        <div class="donut-card">
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>Department Wise Headcount</h3>
+            </div>
+            <button class="view-btn">Details</button>
+          </div>
+          <div class="donut-body">
+            <div class="donut-svg-wrap">
+              <svg viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
+                <!-- Engineering 47% -->
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4"
+                  stroke-dasharray="47 53" stroke-dashoffset="25" stroke-linecap="round"/>
+                <!-- Marketing 18% -->
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="4"
+                  stroke-dasharray="18 82" stroke-dashoffset="-22" stroke-linecap="round"/>
+                <!-- Sales 16% -->
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7dd3fc" stroke-width="4"
+                  stroke-dasharray="16 84" stroke-dashoffset="-40" stroke-linecap="round"/>
+                <!-- HR 10% -->
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2d4a8a" stroke-width="4"
+                  stroke-dasharray="10 90" stroke-dashoffset="-56" stroke-linecap="round"/>
+                <!-- Finance 8% -->
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e40af" stroke-width="4"
+                  stroke-dasharray="8 92" stroke-dashoffset="-66" stroke-linecap="round"/>
+              </svg>
+              <div class="donut-center"><strong>256</strong><span>Total</span></div>
+            </div>
+            <div class="donut-legend">
+              <div class="leg-row"><div class="leg-dot" style="background:#4299e1"></div><span class="leg-label">Engineering</span><span class="leg-val">120</span></div>
+              <div class="leg-row"><div class="leg-dot" style="background:#00b5d8"></div><span class="leg-label">Marketing</span><span class="leg-val">45</span></div>
+              <div class="leg-row"><div class="leg-dot" style="background:#7dd3fc"></div><span class="leg-label">Sales</span><span class="leg-val">40</span></div>
+              <div class="leg-row"><div class="leg-dot" style="background:#2d4a8a"></div><span class="leg-label">HR</span><span class="leg-val">25</span></div>
+              <div class="leg-row"><div class="leg-dot" style="background:#1e40af"></div><span class="leg-label">Finance</span><span class="leg-val">26</span></div>
+              <div class="leg-divider"><span>Total Employees</span><span>256</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end middle -->
+
+      <!-- BOTTOM: Recent Activities + Upcoming Events -->
+      <div class="bottom">
+
+        <!-- Recent Activities -->
+        <div class="panel">
+          <div class="card-header">
+            <h3>Recent Activities</h3>
+            <button class="view-btn">View All Activities</button>
+          </div>
+          <div class="act-row">
+            <div class="act-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="act-info"><p>New employee John Doe has joined the Engineering team.</p></div>
+            <span class="act-time">1 hour ago</span>
+          </div>
+          <div class="act-row">
+            <div class="act-icon"><i class="fa-solid fa-plane-departure"></i></div>
+            <div class="act-info"><p>Leave request from Jane Smith is pending review.</p></div>
+            <span class="act-time">2 hours ago</span>
+          </div>
+          <div class="act-row">
+            <div class="act-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="act-info"><p>Performance review for 5 employees is pending submission.</p></div>
+            <span class="act-time">3 hours ago</span>
+          </div>
+          <div class="act-row">
+            <div class="act-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div class="act-info"><p>Payroll processing for June 2026 has been initiated.</p></div>
+            <span class="act-time">Today</span>
+          </div>
+          <div class="act-row">
+            <div class="act-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="act-info"><p>Project "ERP Upgrade" has been marked as completed.</p></div>
+            <span class="act-time">Yesterday</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="panel">
+          <div class="card-header">
+            <h3>Upcoming Events</h3>
+            <button class="view-btn">View All Events</button>
+          </div>
+          <div class="evt-row">
+            <div class="evt-date-box"><strong>27</strong><span>Jun</span></div>
+            <div class="evt-info"><p>Monthly HR Meeting</p><small>10:00 AM · Conference Room A</small></div>
+          </div>
+          <div class="evt-row">
+            <div class="evt-date-box"><strong>29</strong><span>Jun</span></div>
+            <div class="evt-info"><p>Campus Recruitment Drive</p><small>09:00 AM · Main Hall</small></div>
+          </div>
+          <div class="evt-row">
+            <div class="evt-date-box"><strong>30</strong><span>Jun</span></div>
+            <div class="evt-info"><p>Quarterly Performance Review</p><small>02:00 PM · Online</small></div>
+          </div>
+          <div class="evt-row">
+            <div class="evt-date-box"><strong>01</strong><span>Jul</span></div>
+            <div class="evt-info"><p>Payroll Processing Deadline</p><small>06:00 PM · Finance Dept</small></div>
+          </div>
+          <div class="evt-row">
+            <div class="evt-date-box"><strong>03</strong><span>Jul</span></div>
+            <div class="evt-info"><p>Internship Orientation</p><small>10:00 AM · Training Room</small></div>
+          </div>
+        </div>
+
+      </div><!-- end bottom -->
+
+    </div><!-- content -->
+  </div><!-- main -->
+</div><!-- body-wrap -->
+
+<script type="module">
+  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  function setKpiValue(labelText, value) {
+    const cards = document.querySelectorAll('.kpi-card');
+    for (const card of cards) {
+      const p = card.querySelector('.kpi-info p');
+      if (p && p.textContent.trim() === labelText) {
+        const h2 = card.querySelector('.kpi-info h2');
+        if (h2) h2.textContent = value;
+        return;
+      }
+    }
+  }
+
+  async function loadKpis() {
+    try {
+      const employeesSnap = await getDocs(collection(db, "employees"));
+      setKpiValue('Total Employees', employeesSnap.size);
+    } catch (err) {
+      console.error('Failed to load employee count:', err);
+    }
+
+    try {
+      const departmentsSnap = await getDocs(collection(db, "departments"));
+      setKpiValue('Departments', departmentsSnap.size);
+    } catch (err) {
+      console.error('Failed to load department count:', err);
+    }
+
+    try {
+      const pendingLeavesSnap = await getDocs(query(collection(db, "leaveRequests"), where("status", "==", "Pending")));
+      setKpiValue('Pending Leaves', pendingLeavesSnap.size);
+    } catch (err) {
+      console.error('Failed to load pending leave count:', err);
+    }
+  }
+
+  loadKpis();
+</script>
+
+</body>
+</html>

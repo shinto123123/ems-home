@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── TOP NAVBAR ── */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-left .hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
+}
+
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-search i {
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+
+.nav-search input::placeholder {
+    color: #4a5568;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+}
+
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    position: relative;
+}
+
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
+}
+
+.nav-profile-dropdown.show {
+    display: block;
+}
+
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
+}
+
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
+}
+
+.nav-profile-dropdown a i {
+    width: 14px;
+}
+
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+
+.nav-profile-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.nav-profile-info small {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.nav-profile i.fa-chevron-down {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+/* ── BODY BELOW NAVBAR ── */
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ── SIDEBAR (Shrinks cleanly on smaller screens) ── */
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background: #1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    color: #ffffff;
+}
+
+/* ── MAIN ── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+    padding: 18px 20px 0 20px;
+    background: #0b1437;
+}
+
+.page-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ── CONTENT ── */
+.content {
+    flex: 1;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    overflow-x: auto; /* Fallback safe horizontal scrolling if layout gets incredibly tight */
+    background: #0b1437;
+}
+
+.welcome {
+    background: #111c44;
+    padding: 18px 25px;
+    border-radius: 15px;
+    border: 1px solid #1b2e6e;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.welcome-left h1 {
+    font-size: 22px;
+    color: #ffffff;
+}
+
+.welcome-left p {
+    color: #8898aa;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.date-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 10px 18px;
+    color: #e2e8f0;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.date-box i {
+    color: #4299e1;
+    font-size: 14px;
+}
+
+.date-box i.fa-chevron-down {
+    color: #8898aa;
+    font-size: 11px;
+}
+
+/* ── FIXED 5-COLUMN ROW ── */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Locked at 5 columns */
+    gap: 15px;
+}
+
+.card {
+    background: #111c44;
+    padding: 18px;
+    border-radius: 15px;
+    border: 1px solid #1b2e6e;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 0; /* Let column contract properly */
+}
+
+.card i {
+    font-size: 24px;
+    color: #4299e1;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #8898aa;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card h2 {
+    margin-top: 6px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+/* ── FIXED HORIZONTAL MIDDLE ROW ── */
+.bottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Retains structure on all breakpoints */
+    gap: 15px;
+}
+
+.chart {
+    background: #111c44;
+    padding: 18px;
+    border-radius: 15px;
+    border: 1px solid #1b2e6e;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 0;
+}
+
+.chart h3, .leave h3, .box h3 {
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.chart h3 span {
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.chart-inner {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+}
+
+.chart-graph {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+}
+
+.chart-y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 22px;
+    min-width: 36px;
+}
+
+.chart-y-axis span {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.chart-bars-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.chart-bars {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    border-left: 1px solid #1b2e6e;
+    border-bottom: 1px solid #1b2e6e;
+    padding: 8px 8px 0 8px;
+    height: 120px;
+}
+
+.bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.bar-col .bar-fill {
+    width: 100%;
+    max-width: 32px;
+    border-radius: 4px 4px 0 0;
+    background: #4299e1;
+}
+
+.bar-col:nth-child(even) .bar-fill {
+    background: #00b5d8;
+}
+
+.chart-x-labels {
+    display: flex;
+    gap: 8px;
+    padding: 6px 8px 0 8px;
+}
+
+.chart-x-labels span {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.chart-stats {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 130px;
+}
+
+.chart-stats .stat-label {
+    font-size: 12px;
+    color: #8898aa;
+    text-align: center;
+}
+
+.chart-stats .stat-big {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.chart-stats-row {
+    display: flex;
+    gap: 12px;
+}
+
+.chart-stats-row .stat-item text {
+    text-align: center;
+}
+
+.chart-stats-row .stat-item p {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.chart-stats-row .stat-item h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ── LEAVE ── */
+.leave {
+    background: #111c44;
+    padding: 18px;
+    border-radius: 15px;
+    border: 1px solid #1b2e6e;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 0;
+}
+
+.leave-inner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.donut-wrap {
+    flex-shrink: 0;
+}
+
+.donut-wrap svg {
+    width: 95px;
+    height: 95px;
+}
+
+.leave-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    color: #8898aa;
+    min-width: 0;
+}
+
+.leave-legend .leg-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.leg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.leg-label {
+    flex: 1;
+    color: #8898aa;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leg-val {
+    color: #e2e8f0;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.leave-total {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #1b2e6e;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.leave-total span:first-child { color: #8898aa; }
+.leave-total span:last-child { color: #e2e8f0; font-weight: 600; }
+
+/* ── FIXED 3-COLUMN SECTIONS ROW ── */
+.sections {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr; /* Retains 3 horizontal boxes always */
+    gap: 15px;
+}
+
+.box {
+    background: #111c44;
+    padding: 18px;
+    border-radius: 15px;
+    border: 1px solid #1b2e6e;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 0;
+}
+
+.activity {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #8898aa;
+    font-size: 13px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1b2e6e;
+    gap: 10px;
+}
+
+.activity span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activity span:last-child {
+    flex-shrink: 0;
+}
+
+.activity:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* ── CONDITIONAL BREAKPOINTS FOR RESPONSIVENESS (No vertical wrapping) ── */
+@media (max-width: 1024px) {
+    .navbar-center { display: none; } /* Drop layout center input space */
+    .sidebar { width: 70px; }
+    .sidebar ul li { padding: 15px 0; justify-content: center; }
+    .sidebar ul li a { justify-content: center; gap: 0; }
+    .sidebar ul li a span { display: none; } /* Hide sidebar descriptive text labels */
+    .sidebar ul li i { font-size: 18px; }
+}
+
+@media(max-width: 768px) {
+    .navbar-title { display: none; } /* Drop title to save horizontal header area */
+    .nav-profile-info { display: none; }
+    .welcome-left h1 { font-size: 18px; }
+    .welcome-left p { font-size: 12px; }
+    .chart-stats { display: none; } /* Safely drops stats panel to preserve primary analytics space */
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">LOGO</div>
+        <span class="navbar-title">EMS</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </div>
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+    <div class="sidebar">
+        <ul>
+            <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <div class="page-header">
+            <h2>Admin Dashboard</h2>
+        </div>
+
+        <div class="content">
+
+            <div class="welcome">
+                <div class="welcome-left">
+                    <h1>Welcome Back, <span id="welcomeUserName">John Doe</span> 👋</h1>
+                    <p>Here's what's happening in your organization today.</p>
+                </div>
+                <div class="date-box">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>June 25, 2026</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="cards">
+                <div class="card"><i class="fa-solid fa-users"></i><p>Total Employees</p><h2 id="kpiTotalEmployees">--</h2></div>
+                <div class="card"><i class="fa-solid fa-building"></i><p>Departments</p><h2 id="kpiTotalDepartments">--</h2></div>
+                <div class="card"><i class="fa-solid fa-calendar-days"></i><p>Pending Leaves</p><h2 id="kpiPendingLeaves">--</h2></div>
+                <div class="card"><i class="fa-solid fa-user-check"></i><p>Attendance</p><h2>92%</h2></div>
+                <div class="card"><i class="fa-solid fa-folder-open"></i><p>Active Projects</p><h2 id="kpiActiveProjects">--</h2></div>
+            </div>
+
+            <div class="bottom">
+                <div class="chart">
+                    <h3>Attendance Overview <span>(This Week)</span></h3>
+                    <div class="chart-inner">
+                        <div class="chart-graph">
+                            <div class="chart-y-axis">
+                                <span>100%</span>
+                                <span>75%</span>
+                                <span>50%</span>
+                                <span>25%</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="chart-bars-wrap">
+                                <div class="chart-bars">
+                                    <div class="bar-col"><div class="bar-fill" style="height:80%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:85%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:75%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:90%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:88%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:65%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" style="height:20%"></div></div>
+                                </div>
+                                <div class="chart-x-labels">
+                                    <span>Mon</span>
+                                    <span>Tue</span>
+                                    <span>Wed</span>
+                                    <span>Thu</span>
+                                    <span>Fri</span>
+                                    <span>Sat</span>
+                                    <span>Sun</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-stats">
+                            <p class="stat-label">Average Attendance</p>
+                            <div class="stat-big">92%</div>
+                            <div class="chart-stats-row">
+                                <div class="stat-item">
+                                    <p>Present</p>
+                                    <h4>236</h4>
+                                </div>
+                                <div class="stat-item">
+                                    <p>Absent</p>
+                                    <h4>20</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leave">
+                    <h3>Leave Overview</h3>
+                    <div class="leave-inner">
+                        <div class="donut-wrap">
+                            <svg viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1b2e6e" stroke-width="3.5"/>
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="3.5" stroke-dasharray="50 50" stroke-dashoffset="25" stroke-linecap="round"/>
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="3.5" stroke-dasharray="30 70" stroke-dashoffset="-25" stroke-linecap="round"/>
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2d4a8a" stroke-width="3.5" stroke-dasharray="20 80" stroke-dashoffset="-55" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="leave-legend">
+                            <div class="leg-row">
+                                <div class="leg-dot" style="background:#4299e1"></div>
+                                <span class="leg-label">Approved</span>
+                                <span class="leg-val">25 (50%)</span>
+                            </div>
+                            <div class="leg-row">
+                                <div class="leg-dot" style="background:#00b5d8"></div>
+                                <span class="leg-label">Pending</span>
+                                <span class="leg-val">15 (30%)</span>
+                            </div>
+                            <div class="leg-row">
+                                <div class="leg-dot" style="background:#2d4a8a"></div>
+                                <span class="leg-label">Rejected</span>
+                                <span class="leg-val">10 (20%)</span>
+                            </div>
+                            <div class="leave-total">
+                                <span>Total Leaves</span>
+                                <span>50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sections">
+                <div class="box">
+                    <h3>Recent Activities</h3>
+                    <div class="activity"><span>Leave Request Submitted</span><span>10:30 AM</span></div>
+                    <div class="activity"><span>Project Updated</span><span>09:15 AM</span></div>
+                    <div class="activity"><span>Document Uploaded</span><span>Yesterday</span></div>
+                    <div class="activity"><span>New Employee Added</span><span>2 days ago</span></div>
+                </div>
+                <div class="box">
+                    <h3>Upcoming Events</h3>
+                    <div class="activity"><span>Performance Review</span><span>10 May</span></div>
+                    <div class="activity"><span>Project Deadline</span><span>12 May</span></div>
+                    <div class="activity"><span>Team Building</span><span>15 May</span></div>
+                </div>
+                <div class="box">
+                    <h3>Notifications</h3>
+                    <div class="activity"><span>Leave Request from Emma</span><span>10:30 AM</span></div>
+                    <div class="activity"><span>New Project Assigned</span><span>09:20 AM</span></div>
+                    <div class="activity"><span>Policy Update</span><span>Yesterday</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const welcomeNameEl = document.getElementById('welcomeUserName');
+    if (welcomeNameEl && currentUser) welcomeNameEl.textContent = currentUser.name;
+
+    async function loadDashboardKPIs() {
+        try {
+            const [employeesSnap, deptSnap, leaveSnap, projectsSnap] = await Promise.all([
+                getDocs(collection(db, "employees")),
+                getDocs(collection(db, "departments")),
+                getDocs(query(collection(db, "leaveRequests"), where("status", "==", "Pending"))),
+                getDocs(collection(db, "projects"))
+            ]);
+
+            document.getElementById('kpiTotalEmployees').textContent = employeesSnap.size;
+            document.getElementById('kpiTotalDepartments').textContent = deptSnap.size;
+            document.getElementById('kpiPendingLeaves').textContent = leaveSnap.size;
+            document.getElementById('kpiActiveProjects').textContent = projectsSnap.size;
+        } catch (err) {
+            console.error("Failed to load dashboard KPIs: ", err);
+        }
+    }
+
+    loadDashboardKPIs();
+</script>
+
+</body>
+</html>

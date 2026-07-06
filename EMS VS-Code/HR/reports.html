@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Reports & Analytics</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;position:relative;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE MULTIPANEL ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.5;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:center;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.btn-top-action{background:#1b2e6e;color:#fff;border:1px solid #233a82;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-top-action:hover{background:#233a82;}
+.btn-top-action.primary{background:#4299e1;border-color:#4299e1;}
+.btn-top-action.primary:hover{background:#2b7fd1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Filters Configuration Panel Toolbar Row */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.date-picker-btn{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+
+/* 6 Column High-Level Performance Metrics Grid */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:34px;height:34px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:13px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:10.5px;color:#8898aa;margin-bottom:2px;white-space:nowrap;}
+.mini-info h3{font-size:14.5px;font-weight:700;color:#fff;white-space:nowrap;}
+.mini-info small{font-size:10px;display:flex;align-items:center;gap:2px;margin-top:2px;white-space:nowrap;}
+.trend-up{color:#4ade80;}
+.trend-down{color:#f87171;}
+
+/* Mid Charts Core Side-by-Side Split Containers Layout */
+.mid-charts-split-container{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;}
+.chart-card-node{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.chart-card-header{display:flex;justify-content:space-between;align-items:center;}
+.chart-card-header h4{color:#fff;font-size:13.5px;font-weight:600;}
+
+/* SVGs Native Visualizations Containers */
+.line-chart-svg-wrap{position:relative;height:160px;display:flex;gap:10px;}
+.lc-y-axis{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding-bottom:18px;min-width:28px;font-size:10px;color:#8898aa;}
+.lc-area{flex:1;display:flex;flex-direction:column;}
+.lc-svg-wrap{flex:1;border-left:1px solid #1b2e6e;border-bottom:1px solid #1b2e6e;position:relative;}
+.lc-svg-wrap svg{width:100%;height:100%;position:absolute;top:0;left:0;}
+.lc-x-labels{display:grid;grid-template-columns:repeat(6,1fr);margin-top:6px;font-size:10px;color:#8898aa;text-align:center;}
+
+/* Distribution Donut & Legends layout grids */
+.donut-chart-split-layout{display:flex;align-items:center;gap:16px;flex:1;}
+.donut-graphic-panel{position:relative;width:110px;height:110px;flex-shrink:0;}
+.donut-graphic-panel svg{width:110px;height:110px;transform:rotate(-90deg);}
+.donut-center-overlay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;}
+.donut-center-overlay strong{display:block;font-size:18px;color:#fff;font-weight:700;}
+.donut-center-overlay span{display:block;font-size:10px;color:#8898aa;}
+.donut-legends-stack{flex:1;display:flex;flex-direction:column;gap:5px;}
+.legend-item-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#cbd5e1;}
+.legend-bullet-prefix{display:flex;align-items:center;gap:6px;}
+.legend-bullet-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.legend-item-row span{color:#8898aa;}
+
+/* Lower Micro-Analytics Row Layout Panels Grid */
+.lower-micro-metrics-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:12px;}
+.micro-card-footer{border-top:1px solid #162256;padding-top:10px;margin-top:auto;text-align:center;}
+.btn-micro-details{background:none;border:1px solid #1b2e6e;color:#4299e1;padding:6px;width:100%;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-micro-details:hover{background:rgba(66,153,225,0.03);border-color:#4299e1;}
+
+/* Custom Histogram Attrition Bar Pillars Canvas styling */
+.histogram-canvas-wrapper{display:flex;align-items:flex-end;justify-content:space-between;height:110px;border-bottom:1px solid #1b2e6e;padding:0 10px;gap:14px;}
+.histogram-pillar-node{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;position:relative;}
+.histogram-bar-fill{width:22px;background:#4299e1;border-radius:4px 4px 0 0;min-height:4px;position:relative;}
+.histogram-bar-fill:hover{background:#2b7fd1;}
+.histogram-bar-val{font-size:9.5px;color:#fff;position:absolute;top:-16px;width:100%;text-anchor:center;text-align:center;}
+.histogram-axis-lbl{font-size:9.5px;color:#8898aa;margin-top:6px;}
+
+/* Custom Modular Multi-Query Builder Panel */
+.custom-report-generation-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.custom-report-generation-panel p{font-size:12px;color:#cbd5e1;}
+.custom-report-generation-panel p strong{display:block;color:#fff;font-size:13px;margin-bottom:2px;}
+
+/* ── INSPECTOR CANVAS PANEL (RIGHT) ── */
+.inspector-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.inspector-content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.inspector-content::-webkit-scrollbar{width:6px;}
+.inspector-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+.inspector-card-node{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.inspector-card-node h4{color:#fff;font-size:13.5px;font-weight:600;border-bottom:1px solid #162256;padding-bottom:6px;}
+
+/* Quick Nav Shortcuts elements grid stack link layout */
+.shortcuts-links-stack{display:flex;flex-direction:column;gap:8px;}
+.shortcut-nav-row{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;color:#cbd5e1;font-size:12.5px;font-weight:500;cursor:pointer;transition:.2s;}
+.shortcut-nav-row:hover{border-color:#4299e1;color:#fff;background:rgba(66,153,225,0.01);}
+.shortcut-nav-label{display:flex;align-items:center;gap:10px;}
+.shortcut-nav-label i{color:#8898aa;width:14px;text-align:center;}
+.shortcut-nav-row .fa-chevron-right{font-size:10px;color:#4a5568;}
+
+/* Highlights Bulletin nodes summaries lists */
+.insights-bulletin-list{display:flex;flex-direction:column;gap:12px;}
+.insight-bulletin-row{display:flex;gap:12px;align-items:flex-start;font-size:12px;color:#cbd5e1;line-height:1.4;}
+.insight-bulletin-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;}
+.insight-bulletin-icon.up{background:rgba(74,222,128,0.1);color:#4ade80;}
+.insight-bulletin-icon.down{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.insight-bulletin-icon.blue{background:rgba(66,153,225,0.1);color:#4299e1;}
+.insight-bulletin-row strong{color:#fff;}
+
+/* Vertical Schedule Management Node Components List grid elements */
+.schedules-stack-list{display:flex;flex-direction:column;gap:10px;}
+.schedule-node-row{display:flex;justify-content:space-between;align-items:center;background:#0b1437;border:1px solid #1b2e6e;padding:10px 12px;border-radius:8px;}
+.schedule-meta-details strong{display:block;color:#fff;font-size:12.5px;font-weight:500;}
+.schedule-meta-details small{display:block;color:#8898aa;font-size:11px;margin-top:2px;}
+.active-status-flag{background:rgba(74,222,128,0.1);color:#4ade80;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;}
+
+.d-none{display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <div>
+          <h2>Reports & Analytics</h2>
+          <div class="breadcrumb">Dashboard &gt; <span>Reports & Analytics</span></div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-top-action"><i class="fa-solid fa-download"></i> Export Report</button>
+          <button class="btn-top-action primary"><i class="fa-regular fa-calendar-days"></i> Scheduled Reports</button>
+        </div>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="filter-bar">
+          <div class="date-picker-btn">
+            <i class="fa-regular fa-calendar"></i>
+            <span>01 May 2025 - 31 May 2025</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:10px; color:#8898aa; margin-left:4px;"></i>
+          </div>
+          <select class="filter-select"><option>All Departments</option></select>
+          <select class="filter-select"><option>All Locations</option></select>
+          <select class="filter-select"><option>All Employment Types</option></select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="mini-info"><p>Total Employees</p><h3 id="kpiTotalEmployees">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> 5.3% <span style="color:#8898aa;">vs Apr</span></small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="mini-info"><p>New Hires</p><h3 id="kpiNewHires">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> This month</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-minus"></i></div>
+            <div class="mini-info"><p>Attrition Rate</p><h3 id="kpiAttritionRate">--</h3><small class="trend-down"><i class="fa-solid fa-arrow-trend-down"></i> Inactive / Total</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Average Attendance</p><h3>92.6%</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> 2.1% <span style="color:#8898aa;">vs Apr</span></small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-plane-departure"></i></div>
+            <div class="mini-info"><p>Leaves Taken</p><h3 id="kpiLeavesTaken">--</h3><small class="trend-down"><i class="fa-solid fa-arrow-trend-down"></i> Approved requests</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div class="mini-info"><p>Payroll Cost</p><h3 id="kpiPayrollCost">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Net pay total</small></div>
+          </div>
+        </div>
+
+        <div class="mid-charts-split-container">
+          
+          <div class="chart-card-node">
+            <div class="chart-card-header">
+              <h4>Employee Trend</h4>
+              <select class="filter-select" style="padding:4px 8px; font-size:11.5px;"><option>Total Employees</option></select>
+            </div>
+            
+            <div class="line-chart-svg-wrap">
+              <div class="lc-y-axis"><span>300</span><span>200</span><span>150</span><span>100</span><span>50</span><span>0</span></div>
+              <div class="lc-area">
+                <div class="lc-svg-wrap">
+                  <svg viewBox="0 0 500 130" preserveAspectRatio="none">
+                    <line x1="0" y1="26" x2="500" y2="26" stroke="#1b2e6e" stroke-width="0.7"/>
+                    <line x1="0" y1="52" x2="500" y2="52" stroke="#1b2e6e" stroke-width="0.7"/>
+                    <line x1="0" y1="78" x2="500" y2="78" stroke="#1b2e6e" stroke-width="0.7"/>
+                    <line x1="0" y1="104" x2="500" y2="104" stroke="#1b2e6e" stroke-width="0.7"/>
+                    <polyline points="20,100 110,88 200,82 290,75 380,70 470,60" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                    <circle cx="20" cy="100" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
+                    <circle cx="110" cy="88" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
+                    <circle cx="200" cy="82" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
+                    <circle cx="290" cy="75" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
+                    <circle cx="380" cy="70" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
+                    <circle cx="470" cy="60" r="5" fill="#4299e1" stroke="#4299e1"/>
+                  </svg>
+                </div>
+                <div class="lc-x-labels"><span>Dec '24</span><span>Jan '25</span><span>Feb '25</span><span>Mar '25</span><span>Apr '25</span><span>May '25</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card-node">
+            <div class="chart-card-header">
+              <h4>Employee Distribution by Department</h4>
+              <select class="filter-select" style="padding:4px 8px; font-size:11.5px;"><option>Department</option></select>
+            </div>
+            
+            <div class="donut-chart-split-layout">
+              <div class="donut-graphic-panel" id="deptDonutGraphic">
+                <svg viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4.2"/>
+                </svg>
+                <div class="donut-center-overlay"><strong>0</strong><span>Total</span></div>
+              </div>
+
+              <div class="donut-legends-stack" id="deptDonutLegend">
+              </div>
+            </div>
+          </div>
+
+        </div><div class="lower-micro-metrics-grid">
+          
+          <div class="chart-card-node">
+            <div class="chart-card-header"><h4>Attendance Overview</h4></div>
+            <div class="donut-chart-split-layout" style="margin-top:4px;">
+              <div class="donut-graphic-panel" style="width:90px; height:90px;">
+                <svg viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="92.6 7.4" stroke-dashoffset="25"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="4" stroke-dasharray="4.2 95.8" stroke-dashoffset="-67.6"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f87171" stroke-width="4" stroke-dasharray="3.2 96.8" stroke-dashoffset="-71.8"/>
+                </svg>
+                <div class="donut-center-overlay"><strong>92.6%</strong><span style="font-size:8px;">Avg Attendance</span></div>
+              </div>
+              <div class="donut-legends-stack">
+                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#4ade80;"></div>Present</div><span>92.6%</span></div>
+                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#fbbf24;"></div>Late</div><span>4.2%</span></div>
+                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#f87171;"></div>Absent</div><span>3.2%</span></div>
+              </div>
+            </div>
+            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
+          </div>
+
+          <div class="chart-card-node">
+            <div class="chart-card-header"><h4>Leave Overview</h4></div>
+            <div class="donut-chart-split-layout" style="margin-top:4px;">
+              <div class="donut-graphic-panel" style="width:90px; height:90px;" id="leaveDonutGraphic">
+                <svg viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
+                </svg>
+                <div class="donut-center-overlay"><strong>0</strong><span style="font-size:8px;">Total Leaves</span></div>
+              </div>
+              <div class="donut-legends-stack" id="leaveDonutLegend">
+              </div>
+            </div>
+            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
+          </div>
+
+          <div class="chart-card-node">
+            <div class="chart-card-header">
+              <h4>Attrition Rate</h4>
+              <select class="filter-select" style="padding:2px 6px; font-size:11px;"><option>Monthly</option></select>
+            </div>
+            
+            <div class="histogram-canvas-wrapper">
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 62%;"><span class="histogram-bar-val">6.2%</span></div>
+                <span class="histogram-axis-lbl">Dec '24</span>
+              </div>
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 68%;"><span class="histogram-bar-val">6.8%</span></div>
+                <span class="histogram-axis-lbl">Jan '25</span>
+              </div>
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 61%;"><span class="histogram-bar-val">6.1%</span></div>
+                <span class="histogram-axis-lbl">Feb '25</span>
+              </div>
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 56%;"><span class="histogram-bar-val">5.6%</span></div>
+                <span class="histogram-axis-lbl">Mar '25</span>
+              </div>
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 60%;"><span class="histogram-bar-val">6.0%</span></div>
+                <span class="histogram-axis-lbl">Apr '25</span>
+              </div>
+              <div class="histogram-pillar-node">
+                <div class="histogram-bar-fill" style="height: 48%; background:#4299e1;"><span class="histogram-bar-val">4.8%</span></div>
+                <span class="histogram-axis-lbl">May '25</span>
+              </div>
+            </div>
+            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
+          </div>
+
+        </div><div class="custom-report-generation-panel">
+          <p>
+            <strong>Custom Reports</strong>
+            Create custom reports with the data and metrics that matter to you.
+          </p>
+          <div style="display:flex; gap:10px; flex:1; justify-content:flex-end;">
+            <select class="filter-select" style="max-width:240px; width:100%;"><option hidden>Select Report Type</option><option>Employee Lifecycle Report</option><option>Department Expense Analysis</option></select>
+            <button class="btn-action btn-primary" style="font-weight:600;"><i class="fa-solid fa-gears"></i> Generate Report</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="inspector-panel">
+      <div class="inspector-content">
+        
+        <div class="inspector-card-node">
+          <h4>Report Shortcuts</h4>
+          <div class="shortcuts-links-stack">
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-user"></i> Employee Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-calendar-check"></i> Attendance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-file-lines"></i> Leave Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-money-bill-wave"></i> Payroll Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-chart-line"></i> Performance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-user-plus"></i> Recruitment Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+          </div>
+          <button class="btn-inspector-action-trigger" style="margin-top:4px;">View All Reports</button>
+        </div>
+
+        <div class="inspector-card-node">
+          <h4>Insights</h4>
+          <div class="insights-bulletin-list">
+            <div class="insight-bulletin-row">
+              <div class="insight-bulletin-icon up"><i class="fa-solid fa-arrow-up"></i></div>
+              <div>Employee count has increased by <strong>5.3%</strong> compared to last month.</div>
+            </div>
+            <div class="insight-bulletin-row">
+              <div class="insight-bulletin-icon down"><i class="fa-solid fa-arrow-down"></i></div>
+              <div>Attrition rate decreased by <strong>1.2%</strong> compared to last month.</div>
+            </div>
+            <div class="insight-bulletin-row">
+              <div class="insight-bulletin-icon blue"><i class="fa-solid fa-chart-pie"></i></div>
+              <div>Average attendance improved by <strong>2.1%</strong> compared to last month.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="inspector-card-node" style="flex:1;">
+          <h4>Reports Schedule</h4>
+          <div class="schedules-stack-list">
+            <div class="schedule-node-row">
+              <div class="schedule-meta-details"><strong>Monthly HR Overview</strong><small>Every 1st of the month</small></div>
+              <span class="active-status-flag">Active</span>
+            </div>
+            <div class="schedule-node-row">
+              <div class="schedule-meta-details"><strong>Attendance Report</strong><small>Every Monday</small></div>
+              <span class="active-status-flag">Active</span>
+            </div>
+            <div class="schedule-node-row">
+              <div class="schedule-meta-details"><strong>Payroll Summary</strong><small>Every Month End</small></div>
+              <span class="active-status-flag">Active</span>
+            </div>
+          </div>
+          <button class="btn-inspector-action-trigger" style="margin-top:auto;">Manage Schedules</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+    document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  const DONUT_PALETTE = ['#4299e1', '#00b5d8', '#fbbf24', '#a855f7', '#ec4899', '#71717a'];
+
+  // Groups an array of docs by a key and returns a Map<label, count>
+  function tallyBy(items, keyFn, fallbackLabel) {
+    const map = new Map();
+    items.forEach(item => {
+      const key = keyFn(item) || fallbackLabel;
+      map.set(key, (map.get(key) || 0) + 1);
+    });
+    return map;
+  }
+
+  // Builds donut arc circles + legend rows from a tally Map, following the same
+  // "circumference = 100, cumulative dashoffset starting at 25" convention already
+  // used by the static markup on this page.
+  function buildDonut(map, strokeWidth) {
+    const entries = Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((s, [, c]) => s + c, 0);
+    const top = entries.slice(0, 5);
+    const rest = entries.slice(5);
+    if (rest.length) {
+      top.push(['Others', rest.reduce((s, [, c]) => s + c, 0)]);
+    }
+
+    let cumulative = 0;
+    let circles = `<circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="${strokeWidth}"/>`;
+    let legend = '';
+    top.forEach(([label, count], i) => {
+      const percent = total ? (count / total * 100) : 0;
+      const offset = (25 - cumulative).toFixed(1);
+      const color = DONUT_PALETTE[i % DONUT_PALETTE.length];
+      circles += `<circle cx="18" cy="18" r="15.9" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-dasharray="${percent.toFixed(1)} ${(100 - percent).toFixed(1)}" stroke-dashoffset="${offset}"/>`;
+      legend += `<div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:${color};"></div>${label}</div><span>${count} (${percent.toFixed(0)}%)</span></div>`;
+      cumulative += percent;
+    });
+
+    return { svg: `<svg viewBox="0 0 36 36">${circles}</svg>`, legend, total };
+  }
+
+  async function loadKpis() {
+    try {
+      // ── Employees: total, new hires this month, attrition (inactive ratio), department mix ──
+      const empSnap = await getDocs(collection(db, "employees"));
+      const employees = empSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      document.getElementById('kpiTotalEmployees').textContent = employees.length;
+
+      const now = new Date();
+      const newHires = employees.filter(emp => {
+        if (!emp.timestamp || typeof emp.timestamp.toDate !== 'function') return false;
+        const created = emp.timestamp.toDate();
+        return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+      }).length;
+      document.getElementById('kpiNewHires').textContent = newHires;
+
+      const inactiveCount = employees.filter(emp => (emp.status || 'Active') !== 'Active').length;
+      const attritionRate = employees.length ? (inactiveCount / employees.length * 100) : 0;
+      document.getElementById('kpiAttritionRate').textContent = `${attritionRate.toFixed(1)}%`;
+
+      const deptTally = tallyBy(employees, emp => emp.department, 'Unassigned');
+      const deptDonut = buildDonut(deptTally, 4.2);
+      document.getElementById('deptDonutGraphic').innerHTML = `${deptDonut.svg}<div class="donut-center-overlay"><strong>${deptDonut.total}</strong><span>Total</span></div>`;
+      document.getElementById('deptDonutLegend').innerHTML = deptDonut.legend;
+
+      // ── Leave Requests: leaves taken (approved), leave-type mix ──
+      const leaveSnap = await getDocs(collection(db, "leaveRequests"));
+      const leaveRequests = leaveSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const approvedLeaves = leaveRequests.filter(req => req.status === 'Approved');
+      document.getElementById('kpiLeavesTaken').textContent = approvedLeaves.length;
+
+      const leaveTypeTally = tallyBy(approvedLeaves, req => req.leaveType, 'Other');
+      const leaveDonut = buildDonut(leaveTypeTally, 4);
+      document.getElementById('leaveDonutGraphic').innerHTML = `${leaveDonut.svg}<div class="donut-center-overlay"><strong>${leaveDonut.total}</strong><span style="font-size:8px;">Total Leaves</span></div>`;
+      document.getElementById('leaveDonutLegend').innerHTML = leaveDonut.legend;
+
+      // ── Payroll: total net pay cost ──
+      const payrollSnap = await getDocs(collection(db, "payroll"));
+      const totalPayroll = payrollSnap.docs.reduce((sum, d) => sum + (Number(d.data().netPay) || 0), 0);
+      document.getElementById('kpiPayrollCost').textContent = `₹${totalPayroll.toLocaleString('en-IN')}`;
+
+    } catch (error) {
+      console.error("Failed to load report KPIs: ", error);
+    }
+  }
+
+  loadKpis();
+</script>
+</body>
+</html>

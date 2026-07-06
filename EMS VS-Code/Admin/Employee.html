@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Management</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+ * {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body {
+    background:#0b1437;
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow:auto;
+}
+
+.logo {
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul {
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li {
+    padding:13px 22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    color:#8898aa;
+    font-size:14px;
+}
+
+.sidebar ul li a {
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.navbar {
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left {
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger {
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo {
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title {
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center {
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search {
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i {
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input {
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder {
+    color:#4a5568;
+}
+
+.navbar-right {
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn {
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover {
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge {
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown {
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show {
+    display:block;
+}
+
+.nav-profile-dropdown a {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover {
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i {
+    width:14px;
+}
+
+.nav-profile-avatar {
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4 {
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small {
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down {
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+    flex:1;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+    background:#0b1437;
+}
+
+.header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.header h1 {
+    color:#ffffff;
+    font-size:28px;
+}
+
+.add-btn {
+    background:#4299e1;
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+.add-btn:hover {
+    background:#3182ce;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-filter {
+    display:flex;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.search-box {
+    width:400px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:12px 18px;
+    color:#8898aa;
+}
+
+.search-box input {
+    border:none;
+    outline:none;
+    background:none;
+    width:90%;
+    color:#ffffff;
+}
+
+.search-box input::placeholder {
+    color:#8898aa;
+}
+
+.filter-btn {
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    color:#ffffff;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-container {
+    flex:1;
+    background:#111c44;
+    border-radius:15px;
+    border:1px solid #1b2e6e;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead {
+    background:#16265c;
+}
+
+th {
+    padding:16px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+}
+
+td {
+    padding:15px;
+    color:#d7dfef;
+    border-top:1px solid #1b2e6e;
+    font-size:14px;
+}
+
+tbody tr:hover {
+    background:#16265c;
+}
+
+.employee {
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.employee img {
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.employee-avatar-placeholder {
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background: #1b2e6e;
+    border:2px solid #4299e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+}
+
+.status {
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.status.active {
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+.status.inactive {
+    background:rgba(239,68,68,.18);
+    color:#f87171;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.edit-btn-icon {
+    color:#4299e1;
+    cursor:pointer;
+    font-size:16px;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+}
+
+.edit-btn-icon:hover {
+    color: #3182ce;
+}
+
+.delete-btn-icon {
+    color: #f87171;
+    cursor: pointer;
+    font-size: 16px;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+}
+
+.delete-btn-icon:hover {
+    color: #ef4444;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+}
+
+.pagination {
+    display:flex;
+    gap:8px;
+}
+
+.page {
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover {
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active {
+    background:#4299e1;
+    color:#ffffff;
+    border-color:#4299e1;
+}
+
+/* =====================================
+   MODAL STYLES (COMMON BACKDROP)
+===================================== */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 10, 30, 0.82);
+    backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-backdrop.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    width: 100%;
+    max-width: 540px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    transform: translateY(-30px);
+    transition: transform 0.3s ease;
+}
+
+.modal-backdrop.open .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 20px 25px;
+    background: #16265c;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal-btn:hover {
+    color: #f87171;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-group input, .form-group select {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-group input::placeholder {
+    color: #4a5568;
+}
+
+.modal-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.cancel-modal-btn {
+    background: #1b2e6e;
+    color: #e2e8f0;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.cancel-modal-btn:hover {
+    background: #243b82;
+}
+
+.submit-modal-btn {
+    background: #4299e1;
+    color: #ffffff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.submit-modal-btn:hover {
+    background: #3182ce;
+}
+</style>
+</head>
+<body>
+
+
+<div class="sidebar">
+
+<div class="logo">
+EMS ADMIN
+</div>
+
+<ul>
+ <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li class="active"><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+ </ul>
+
+</div>
+
+
+
+<div class="main">
+
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="navbar-logo">
+            LOGO
+        </div>
+
+        <span class="navbar-title">
+            EMPLOYEE MANAGEMENT SYSTEM
+        </span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </div>
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+
+        <div class="nav-profile" id="navProfileToggle">
+
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="content">
+
+<div class="header">
+<h1>Employee Management</h1>
+
+<button class="add-btn" id="openModalBtn">
+<i class="fa-solid fa-plus"></i> Add Employee
+</button>
+</div>
+
+
+<div class="search-filter">
+
+<div class="search-box">
+<i class="fa fa-search"></i>
+<input type="text" placeholder="Search Employee">
+</div>
+
+<button class="filter-btn">
+<i class="fa-solid fa-filter"></i> Filter
+</button>
+
+</div>
+
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Department</th>
+<th>Designation</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Role</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="employeeTableBody">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="footer">
+
+<div id="tableEntriesCounter">
+Showing 0 to 0 of 0 entries
+</div>
+
+<div class="pagination">
+
+<div class="page">
+<i class="fa-solid fa-angle-left"></i>
+</div>
+
+<div class="page active">1</div>
+<div class="page">2</div>
+<div class="page">3</div>
+<div class="page">4</div>
+
+<div class="page">
+<i class="fa-solid fa-angle-right"></i>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="modal-backdrop" id="addEmployeeModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Add New Employee</h3>
+            <button class="close-modal-btn" id="closeModalIcon"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addEmployeeForm">
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="empName">Full Name</label>
+                        <input type="text" id="empName" placeholder="e.g. John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empEmail">Email Address</label>
+                        <input type="email" id="empEmail" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empPassword">Account Password</label>
+                        <input type="password" id="empPassword" placeholder="Min 6 characters" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empDept">Department</label>
+                        <input type="text" id="empDept" placeholder="e.g. IT, HR, Marketing" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empDesignation">Designation</label>
+                        <input type="text" id="empDesignation" placeholder="e.g. Developer, Lead" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empPhone">Phone Number</label>
+                        <input type="tel" id="empPhone" placeholder="e.g. 9876543210" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empRole">Login Role</label>
+                        <select id="empRole">
+                            <option value="employee">Employee</option>
+                            <option value="manager">Manager</option>
+                            <option value="hr">HR</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="empStatus">Status</label>
+                        <select id="empStatus">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-modal-btn" id="closeModalBtn">Cancel</button>
+                    <button type="submit" class="submit-modal-btn">Save Employee</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="editEmployeeModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Modify Employee Details</h3>
+            <button class="close-modal-btn" id="closeEditModalIcon"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="editEmployeeForm">
+            <input type="hidden" id="editDocId">
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="editEmpName">Full Name</label>
+                        <input type="text" id="editEmpName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpEmail">Email Address</label>
+                        <input type="email" id="editEmpEmail" disabled style="background:#16265c; opacity:0.6; cursor:not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpPassword">Change Password (Optional)</label>
+                        <input type="password" id="editEmpPassword" placeholder="Leave blank to keep current" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpDept">Department</label>
+                        <input type="text" id="editEmpDept" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpDesignation">Designation</label>
+                        <input type="text" id="editEmpDesignation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpPhone">Phone Number</label>
+                        <input type="tel" id="editEmpPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpRole">Login Role</label>
+                        <select id="editEmpRole">
+                            <option value="employee">Employee</option>
+                            <option value="manager">Manager</option>
+                            <option value="hr">HR</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmpStatus">Status</label>
+                        <select id="editEmpStatus">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-modal-btn" id="closeEditModalBtn">Cancel</button>
+                    <button type="submit" class="submit-modal-btn">Update Details</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { db, auth } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    // Helper: SHA-256 Client-Side String Hashing Algorithm
+    async function hashPassword(string) {
+        const utf8 = new TextEncoder().encode(string);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Add Modal DOM Hooks
+    const modal = document.getElementById('addEmployeeModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeIcon = document.getElementById('closeModalIcon');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const form = document.getElementById('addEmployeeForm');
+
+    // Edit Modal DOM Hooks
+    const editModal = document.getElementById('editEmployeeModal');
+    const closeEditIcon = document.getElementById('closeEditModalIcon');
+    const closeEditBtn = document.getElementById('closeEditModalBtn');
+    const editForm = document.getElementById('editEmployeeForm');
+
+    const tableBody = document.getElementById('employeeTableBody');
+    const entriesCounter = document.getElementById('tableEntriesCounter');
+
+    let loadedEmployeesCache = {};
+
+    // Add Modal Controllers
+    openBtn.addEventListener('click', () => modal.classList.add('open'));
+    const closeModal = () => { modal.classList.remove('open'); form.reset(); };
+    closeIcon.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Edit Modal Controllers
+    const closeEditModal = () => { editModal.classList.remove('open'); editForm.reset(); };
+    closeEditIcon.addEventListener('click', closeEditModal);
+    closeEditBtn.addEventListener('click', closeEditModal);
+
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) closeModal();
+        if(e.target === editModal) closeEditModal();
+    });
+
+    // Read Records from Cloud Firestore
+    async function loadEmployeeRecords() {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">Loading remote database files...</td></tr>`;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "employees"));
+            tableBody.innerHTML = "";
+            loadedEmployeesCache = {};
+            let counter = 1;
+
+            if (querySnapshot.empty) {
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No records found. Click '+ Add Employee' to populate.</td></tr>`;
+                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const id = docSnap.id;
+                const emp = docSnap.data();
+                
+                loadedEmployeesCache[id] = { id, ...emp };
+
+                const formattedId = String(counter).padStart(3, '0');
+                const statusClass = emp.status.toLowerCase() === 'active' ? 'active' : 'inactive';
+                const profileAvatarHTML = emp.avatarUrl
+                    ? `<img src="${emp.avatarUrl}" alt="User">`
+                    : `<div class="employee-avatar-placeholder"><i class="fa-regular fa-user"></i></div>`;
+                const role = emp.role || 'employee';
+
+                const rowTemplate = `
+                    <tr>
+                        <td>${formattedId}</td>
+                        <td>
+                            <div class="employee">
+                                ${profileAvatarHTML}
+                                ${emp.name}
+                            </div>
+                        </td>
+                        <td>${emp.department}</td>
+                        <td>${emp.designation}</td>
+                        <td>${emp.email}</td>
+                        <td>${emp.phone}</td>
+                        <td>${role.charAt(0).toUpperCase() + role.slice(1)}</td>
+                        <td><span class="status ${statusClass}">${emp.status}</span></td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="edit-btn-icon action-edit-trigger" data-id="${id}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="delete-btn-icon action-delete-trigger" data-id="${id}"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+                counter++;
+            });
+
+            entriesCounter.innerText = `Showing 1 to ${counter - 1} of ${counter - 1} entries`;
+            bindActionRowListeners();
+
+        } catch (err) {
+            console.error("Database query processing error: ", err);
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
+        }
+    }
+
+    // Row Operations Bindings
+    function bindActionRowListeners() {
+        document.querySelectorAll('.action-edit-trigger').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const docId = btn.getAttribute('data-id');
+                const targetData = loadedEmployeesCache[docId];
+                
+                if(targetData) {
+                    document.getElementById('editDocId').value = docId;
+                    document.getElementById('editEmpName').value = targetData.name;
+                    document.getElementById('editEmpEmail').value = targetData.email;
+                    document.getElementById('editEmpDept').value = targetData.department;
+                    document.getElementById('editEmpDesignation').value = targetData.designation;
+                    document.getElementById('editEmpPhone').value = targetData.phone;
+                    document.getElementById('editEmpRole').value = targetData.role || 'employee';
+                    document.getElementById('editEmpStatus').value = targetData.status;
+                    document.getElementById('editEmpPassword').value = ""; // Always start empty
+
+                    editModal.classList.add('open');
+                }
+            });
+        });
+
+        document.querySelectorAll('.action-delete-trigger').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const docId = btn.getAttribute('data-id');
+                const targetData = loadedEmployeesCache[docId];
+                
+                if (confirm(`Are you sure you want to delete the profile record for ${targetData.name}?`)) {
+                    try {
+                        await deleteDoc(doc(db, "employees", docId));
+                        alert("Employee record successfully removed.");
+                        loadEmployeeRecords();
+                    } catch (error) {
+                        alert("Deletion process error: " + error.message);
+                    }
+                }
+            });
+        });
+    }
+
+    // CREATE Action Form Interception Logic
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('empName').value;
+        const email = document.getElementById('empEmail').value;
+        const password = document.getElementById('empPassword').value;
+        const department = document.getElementById('empDept').value;
+        const designation = document.getElementById('empDesignation').value;
+        const phone = document.getElementById('empPhone').value;
+        const role = document.getElementById('empRole').value;
+        const status = document.getElementById('empStatus').value;
+
+        try {
+            // 1. Authenticate with Firebase Authentication Engine
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 2. Hash raw text string securely before storage delivery
+            const securedPasswordHash = await hashPassword(password);
+
+            // 3. Commit profile document structure data into Firestore Database
+            await addDoc(collection(db, "employees"), {
+                uid: user.uid,
+                name: name,
+                email: email,
+                password: securedPasswordHash, // Stored encrypted inside Firestore
+                department: department,
+                designation: designation,
+                phone: phone,
+                role: role,
+                status: status,
+                avatarUrl: "",
+                timestamp: serverTimestamp()
+            });
+
+            alert(`Successfully authenticated and created profile for ${name}!`);
+            closeModal();
+            loadEmployeeRecords();
+
+        } catch (error) {
+            alert(`Execution error failure: ${error.message}`);
+        }
+    });
+
+    // UPDATE Action Form Interception Logic
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const docId = document.getElementById('editDocId').value;
+        const passwordValue = document.getElementById('editEmpPassword').value;
+        
+        const updatedProfile = {
+            name: document.getElementById('editEmpName').value,
+            department: document.getElementById('editEmpDept').value,
+            designation: document.getElementById('editEmpDesignation').value,
+            phone: document.getElementById('editEmpPhone').value,
+            role: document.getElementById('editEmpRole').value,
+            status: document.getElementById('editEmpStatus').value
+        };
+
+        try {
+            // If admin has supplied a new string into the optional input, process hash transformation updates
+            if (passwordValue.trim() !== "") {
+                const newHash = await hashPassword(passwordValue);
+                updatedProfile.password = newHash; // Pushes updated hash to Firestore doc
+            }
+
+            const employeeDocRef = doc(db, "employees", docId);
+            await updateDoc(employeeDocRef, updatedProfile);
+            
+            alert("Employee parameters successfully updated!");
+            closeEditModal();
+            loadEmployeeRecords();
+        } catch (error) {
+            alert("Error updating repository profile documents: " + error.message);
+        }
+    });
+
+    loadEmployeeRecords();
+</script>
+
+</body>
+</html>

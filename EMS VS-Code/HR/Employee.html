@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Employees</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN SPLIT CONTAINER ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── EMPLOYEES DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Mini KPI Micro-cards */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:15px;color:#4299e1;}
+.mini-info p{font-size:11px;color:#8898aa;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#4ade80;}
+
+/* Filters Bar */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:between;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:180px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Table Styling */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.emp-table{width:100%;border-collapse:collapse;text-align:left;}
+.emp-table th{background:#162256;color:#8898aa;font-size:12px;font-weight:600;padding:12px 16px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.emp-table td{padding:12px 16px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.emp-table tr:last-child td{border-bottom:none;}
+.emp-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.emp-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+.status-badge.active{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.leave{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;transition:.2s;}
+.btn-icon:hover{color:#fff;}
+
+/* Pagination */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+.page-link:hover:not(.active){border-color:#4299e1;color:#fff;}
+
+/* ── DETAILS PANEL (RIGHT) ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:20px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Profile Overview block */
+.profile-hero{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;}
+.hero-meta h2{font-size:18px;color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;}
+.hero-meta p{font-size:13px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:12px;color:#cbd5e1;display:block;margin-top:4px;}
+
+/* Tabs styling */
+.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;transition:.2s;}
+.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.tab-link:hover{color:#fff;}
+
+/* Profile Fields blocks */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:16px;}
+.section-title-wrap{display:flex;justify-content:between;align-items:center;margin-bottom:14px;}
+.section-title-wrap h4{color:#fff;font-size:14px;font-weight:600;}
+.btn-edit-text{background:none;border:none;color:#4299e1;font-size:12.5px;cursor:pointer;font-weight:600;}
+.btn-edit-text:hover{text-decoration:underline;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:12px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* Bottom Footer controls */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;justify-content:flex-end;gap:10px;}
+.btn-split{background:#4299e1;color:#fff;border:none;padding:9px 16px;border-radius:8px 0 0 8px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-split-arrow{background:#2b7fd1;color:#fff;border:none;padding:9px 12px;border-radius:0 8px 8px 0;font-size:13px;cursor:pointer;border-left:1px solid rgba(255,255,255,0.1);}
+
+/* ── ADD EMPLOYEE MODAL OVERLAY ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,9,28,0.75);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;width:100%;max-width:520px;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;}
+.modal-header{padding:16px 20px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.modal-header h3{color:#fff;font-size:15px;font-weight:600;}
+.modal-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full-width{grid-column: span 2;}
+.form-group label{font-size:12px;color:#cbd5e1;font-weight:500;}
+.form-group label span{color:#f56565;margin-left:2px;}
+.form-group input, .form-group select{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;outline:none;width:100%;}
+.form-group input:focus, .form-group select:focus{border-color:#4299e1;}
+.form-group input::placeholder{color:#4a5568;}
+.modal-footer{padding:14px 20px;border-top:1px solid #1b2e6e;background:#0b1437;display:flex;justify-content:flex-end;gap:10px;}
+
+.d-none{display:none !important;}
+
+.actions-dropdown-wrapper{position:relative;}
+.actions-dropdown-menu{position:absolute; bottom:110%; right:0; background:#111c44; border:1px solid #1b2e6e; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.4); min-width:170px; overflow:hidden; z-index:250;}
+.actions-dropdown-menu button{width:100%; background:none; border:none; color:#f56565; padding:10px 14px; font-size:12.5px; font-weight:600; text-align:left; cursor:pointer;}
+.actions-dropdown-menu button:hover{background:rgba(245,101,101,0.1);}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#8898aa;"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li class="active"><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="#"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header"><h2>Employees</h2></div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="mini-info"><p>Total Employees</p><h3>250</h3><small>+12 this month</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-check"></i></div>
+            <div class="mini-info"><p>Active Employees</p><h3>235</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-calendar-minus"></i></div>
+            <div class="mini-info"><p>On Leave</p><h3>10</h3></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-xmark"></i></div>
+            <div class="mini-info"><p>Resigned</p><h3>5</h3></div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search by name, email, department...">
+          </div>
+          <select class="filter-select">
+            <option>All Departments</option>
+            <option>Engineering</option>
+            <option>Marketing</option>
+            <option>Sales</option>
+          </select>
+          <select class="filter-select">
+            <option>All Status</option>
+            <option>Active</option>
+            <option>On Leave</option>
+          </select>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <button class="btn-action btn-primary" id="openModalBtn"><i class="fa-solid fa-plus"></i> Add Employee</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="emp-table">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+              <tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading employees...</td></tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 8 of 250 employees</span>
+            <div class="pagination">
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
+              <a href="#" class="page-link active">1</a>
+              <a href="#" class="page-link">2</a>
+              <a href="#" class="page-link">3</a>
+              <span style="padding: 4px 6px;">...</span>
+              <a href="#" class="page-link">32</a>
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Employee Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar" id="detailAvatar"><i class="fa-regular fa-user"></i></div>
+          <div class="hero-meta">
+            <h2 id="detailName">Select an employee <span class="status-badge active" id="detailStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px;"></span></h2>
+            <p id="detailRoleDept">—</p>
+            <span id="detailContact">—</span>
+          </div>
+        </div>
+
+        <div class="tab-nav">
+          <a href="#" class="tab-link active">Profile</a>
+          <a href="#" class="tab-link">Job Details</a>
+          <a href="#" class="tab-link">Documents</a>
+          <a href="#" class="tab-link">Attendance</a>
+          <a href="#" class="tab-link">Leave</a>
+          <a href="#" class="tab-link">Payroll</a>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title-wrap">
+            <h4>Personal Information</h4>
+            <button class="btn-edit-text" id="editPersonalInfoBtn">Edit</button>
+          </div>
+          <div class="info-grid">
+            <span class="info-label">Employee ID</span><span class="info-value" id="detailEmpId">—</span>
+            <span class="info-label">Full Name</span><span class="info-value" id="detailFullName">—</span>
+            <span class="info-label">Email</span><span class="info-value" id="detailEmail">—</span>
+            <span class="info-label">Phone</span><span class="info-value" id="detailPhone">—</span>
+            <span class="info-label">Date of Birth</span><span class="info-value" id="detailDOB">N/A</span>
+            <span class="info-label">Gender</span><span class="info-value" id="detailGender">N/A</span>
+            <span class="info-label">Marital Status</span><span class="info-value" id="detailMarital">N/A</span>
+            <span class="info-label">Address</span><span class="info-value" id="detailAddress">N/A</span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title-wrap">
+            <h4>Job Information</h4>
+            <button class="btn-edit-text" id="editJobInfoBtn">Edit</button>
+          </div>
+          <div class="info-grid">
+            <span class="info-label">Department</span><span class="info-value" id="detailDept">—</span>
+            <span class="info-label">Designation</span><span class="info-value" id="detailDesignation">—</span>
+            <span class="info-label">Reporting To</span><span class="info-value" id="detailReportingTo">N/A</span>
+            <span class="info-label">Date of Joining</span><span class="info-value" id="detailDOJ">N/A</span>
+            <span class="info-label">Employment Type</span><span class="info-value" id="detailEmploymentType">N/A</span>
+            <span class="info-label">Work Location</span><span class="info-value" id="detailWorkLocation">N/A</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-action" style="background:#1b2e6e; color:#cbd5e1;" id="detailsFooterCloseBtn">Close</button>
+        <div style="display:flex;" class="actions-dropdown-wrapper" id="employeeActionsWrapper">
+          <button class="btn-split" id="editEmployeeBtn">Edit Employee</button>
+          <button class="btn-split-arrow" id="employeeActionsToggle"><i class="fa-solid fa-chevron-down"></i></button>
+          <div class="actions-dropdown-menu d-none" id="employeeActionsMenu">
+            <button id="deleteEmployeeBtn" type="button"><i class="fa-solid fa-trash" style="margin-right:6px;"></i>Delete Employee</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Employee</h3>
+      <button class="close-panel-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="addEmployeeForm">
+    <div class="modal-body">
+      <div class="form-group">
+        <label>First Name<span>*</span></label>
+        <input type="text" id="empFirstName" placeholder="Enter first name" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name<span>*</span></label>
+        <input type="text" id="empLastName" placeholder="Enter last name" required>
+      </div>
+      <div class="form-group">
+        <label>Role<span>*</span></label>
+        <select id="empRole" required>
+          <option value="employee">Employee</option>
+          <option value="manager">Manager</option>
+          <option value="hr">HR</option>
+          <option value="admin">Admin</option>
+          <option value="intern">Intern</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Email<span>*</span></label>
+        <input type="email" id="empEmail" placeholder="Enter email address" required>
+      </div>
+      <div class="form-group">
+        <label>Password<span>*</span></label>
+        <input type="password" id="empPassword" placeholder="Min 6 characters" minlength="6" required>
+      </div>
+      <div class="form-group" id="empPhoneGroup">
+        <label>Phone<span>*</span></label>
+        <input type="text" id="empPhone" placeholder="Enter phone number" required>
+      </div>
+      <div class="form-group">
+        <label>Department<span>*</span></label>
+        <select id="empDept" required>
+          <option hidden>Select department</option>
+          <option>Engineering</option>
+          <option>Marketing</option>
+          <option>Sales</option>
+          <option>IT</option>
+          <option>HR</option>
+          <option>Finance</option>
+        </select>
+      </div>
+      <div class="form-group employee-only-field">
+        <label>Designation<span>*</span></label>
+        <select id="empDesignation">
+          <option hidden>Select designation</option>
+          <option>Software Engineer</option>
+          <option>Marketing Manager</option>
+          <option>Sales Executive</option>
+        </select>
+      </div>
+      <div class="form-group employee-only-field">
+        <label>Date of Joining<span>*</span></label>
+        <input type="date" id="empDOJ">
+      </div>
+      <div class="form-group employee-only-field">
+        <label>Employment Type<span>*</span></label>
+        <select id="empEmploymentType">
+          <option hidden>Select type</option>
+          <option>Full Time</option>
+          <option>Part Time</option>
+          <option>Contractor</option>
+        </select>
+      </div>
+      <div class="form-group intern-only-field" style="display:none;">
+        <label>University / College<span>*</span></label>
+        <input type="text" id="empUniversity" placeholder="e.g., ABC University">
+      </div>
+      <div class="form-group intern-only-field" style="display:none;">
+        <label>Mentor Name<span>*</span></label>
+        <input type="text" id="empMentorName" placeholder="e.g., David Brown">
+      </div>
+      <div class="form-group intern-only-field" style="display:none;">
+        <label>Internship Start Date<span>*</span></label>
+        <input type="date" id="empInternStartDate">
+      </div>
+      <div class="form-group intern-only-field" style="display:none;">
+        <label>Internship End Date<span>*</span></label>
+        <input type="date" id="empInternEndDate">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-action" style="background:transparent; color:#8898aa;" id="cancelModalBtn">Cancel</button>
+      <button type="submit" class="btn-action btn-primary">Save Employee</button>
+    </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="editModalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit Employee</h3>
+      <button class="close-panel-btn" id="closeEditModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="editEmployeeForm">
+    <input type="hidden" id="editEmpDocId">
+    <div class="modal-body">
+      <div class="form-group full-width">
+        <label>Full Name<span>*</span></label>
+        <input type="text" id="editEmpName" required>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="editEmpEmail" disabled style="background:#0b1437; opacity:0.6; cursor:not-allowed;">
+      </div>
+      <div class="form-group">
+        <label>Change Password (Optional)</label>
+        <input type="password" id="editEmpPassword" placeholder="Leave blank to keep current" minlength="6">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="editEmpPhone" placeholder="Enter phone number">
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" id="editEmpDept" placeholder="Enter department">
+      </div>
+      <div class="form-group">
+        <label>Designation</label>
+        <input type="text" id="editEmpDesignation" placeholder="Enter designation">
+      </div>
+      <div class="form-group">
+        <label>Employment Type</label>
+        <select id="editEmpEmploymentType">
+          <option value="Full Time">Full Time</option>
+          <option value="Part Time">Part Time</option>
+          <option value="Contractor">Contractor</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date of Joining</label>
+        <input type="date" id="editEmpDOJ">
+      </div>
+      <div class="form-group">
+        <label>Login Role</label>
+        <select id="editEmpRole">
+          <option value="employee">Employee</option>
+          <option value="manager">Manager</option>
+          <option value="hr">HR</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="editEmpStatus">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-action" style="background:transparent; color:#8898aa;" id="cancelEditModalBtn">Cancel</button>
+      <button type="submit" class="btn-action btn-primary">Update Details</button>
+    </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { db, auth } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  // Helper: SHA-256 Client-Side String Hashing Algorithm (copied from Admin/Employee.html)
+  async function hashPassword(string) {
+      const utf8 = new TextEncoder().encode(string);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  const openModalBtn = document.getElementById('openModalBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsFooterCloseBtn = document.getElementById('detailsFooterCloseBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+  const addEmployeeForm = document.getElementById('addEmployeeForm');
+  const tableBody = document.getElementById('employeeTableBody');
+
+  // Edit Modal DOM Hooks
+  const editModalOverlay = document.getElementById('editModalOverlay');
+  const closeEditModalBtn = document.getElementById('closeEditModalBtn');
+  const cancelEditModalBtn = document.getElementById('cancelEditModalBtn');
+  const editEmployeeForm = document.getElementById('editEmployeeForm');
+  const editEmployeeBtn = document.getElementById('editEmployeeBtn');
+  const editPersonalInfoBtn = document.getElementById('editPersonalInfoBtn');
+  const editJobInfoBtn = document.getElementById('editJobInfoBtn');
+  const employeeActionsToggle = document.getElementById('employeeActionsToggle');
+  const employeeActionsMenu = document.getElementById('employeeActionsMenu');
+  const deleteEmployeeBtn = document.getElementById('deleteEmployeeBtn');
+
+  let loadedEmployeesCache = {};
+  let currentDetailId = null; // id of the employee currently shown in the details panel
+
+  // Modal Open/Close handlers
+  const closeAddModal = () => { modalOverlay.classList.add('d-none'); addEmployeeForm.reset(); toggleRoleFields(); };
+  openModalBtn.addEventListener('click', () => modalOverlay.classList.remove('d-none'));
+  closeModalBtn.addEventListener('click', closeAddModal);
+  cancelModalBtn.addEventListener('click', closeAddModal);
+
+  function formatDate(dateString) {
+      if (!dateString || dateString.trim() === "") return '-';
+      if (dateString.includes('/')) return dateString;
+      try {
+          const parts = dateString.split('-');
+          if (parts.length !== 3) return dateString;
+          const [year, month, day] = parts;
+          return `${day}/${month}/${year}`;
+      } catch (e) {
+          return dateString;
+      }
+  }
+
+  // Swap between employee-only and intern-only fields based on the selected role
+  const empRoleSelect = document.getElementById('empRole');
+  function toggleRoleFields() {
+      const isIntern = empRoleSelect.value === 'intern';
+      document.querySelectorAll('.employee-only-field').forEach(el => el.style.display = isIntern ? 'none' : '');
+      document.querySelectorAll('.intern-only-field').forEach(el => el.style.display = isIntern ? '' : 'none');
+
+      document.getElementById('empDesignation').required = !isIntern;
+      document.getElementById('empDOJ').required = !isIntern;
+      document.getElementById('empEmploymentType').required = !isIntern;
+      document.getElementById('empUniversity').required = isIntern;
+      document.getElementById('empMentorName').required = isIntern;
+      document.getElementById('empInternStartDate').required = isIntern;
+      document.getElementById('empInternEndDate').required = isIntern;
+  }
+  empRoleSelect.addEventListener('change', toggleRoleFields);
+  toggleRoleFields();
+
+  // Toggle Profile Details Right Flyout
+  closePanelBtn.addEventListener('click', () => detailsPanel.classList.add('d-none'));
+  if (detailsFooterCloseBtn) {
+      detailsFooterCloseBtn.addEventListener('click', () => detailsPanel.classList.add('d-none'));
+  }
+
+  // Edit Modal Open/Close handlers
+  const closeEditModal = () => { editModalOverlay.classList.add('d-none'); editEmployeeForm.reset(); };
+  closeEditModalBtn.addEventListener('click', closeEditModal);
+  cancelEditModalBtn.addEventListener('click', closeEditModal);
+
+  function openEditModal(id) {
+      const emp = loadedEmployeesCache[id];
+      if (!emp) return;
+      document.getElementById('editEmpDocId').value = id;
+      document.getElementById('editEmpName').value = emp.name || '';
+      document.getElementById('editEmpEmail').value = emp.email || '';
+      document.getElementById('editEmpPhone').value = emp.phone || '';
+      document.getElementById('editEmpDept').value = emp.department || '';
+      document.getElementById('editEmpDesignation').value = emp.designation || '';
+      document.getElementById('editEmpEmploymentType').value = emp.employmentType || 'Full Time';
+      document.getElementById('editEmpDOJ').value = emp.dateOfJoining || '';
+      document.getElementById('editEmpRole').value = emp.role || 'employee';
+      document.getElementById('editEmpStatus').value = emp.status || 'Active';
+      document.getElementById('editEmpPassword').value = '';
+      editModalOverlay.classList.remove('d-none');
+  }
+
+  // "Edit Employee" split button + the two section "Edit" shortcuts all open the same edit modal
+  editEmployeeBtn.addEventListener('click', () => {
+      if (!currentDetailId) { alert('Select an employee first.'); return; }
+      openEditModal(currentDetailId);
+  });
+  editPersonalInfoBtn.addEventListener('click', () => {
+      if (!currentDetailId) { alert('Select an employee first.'); return; }
+      openEditModal(currentDetailId);
+  });
+  editJobInfoBtn.addEventListener('click', () => {
+      if (!currentDetailId) { alert('Select an employee first.'); return; }
+      openEditModal(currentDetailId);
+  });
+
+  // Split-button dropdown (Delete Employee action)
+  employeeActionsToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      employeeActionsMenu.classList.toggle('d-none');
+  });
+  window.addEventListener('click', (e) => {
+      if (!employeeActionsMenu.classList.contains('d-none') && !e.target.closest('#employeeActionsWrapper')) {
+          employeeActionsMenu.classList.add('d-none');
+      }
+  });
+
+  deleteEmployeeBtn.addEventListener('click', async () => {
+      if (!currentDetailId) return;
+      const emp = loadedEmployeesCache[currentDetailId];
+      if (!emp) return;
+      employeeActionsMenu.classList.add('d-none');
+      if (confirm(`Are you sure you want to delete the profile record for ${emp.name}?`)) {
+          try {
+              await deleteDoc(doc(db, "employees", currentDetailId));
+              alert("Employee record successfully removed.");
+              detailsPanel.classList.add('d-none');
+              currentDetailId = null;
+              loadEmployeeRecords();
+          } catch (error) {
+              alert("Deletion process error: " + error.message);
+          }
+      }
+  });
+
+  // READ: org-wide employee directory (HR sees everyone, unlike Manager's department-scoped view)
+  async function loadEmployeeRecords() {
+      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading employees...</td></tr>`;
+
+      try {
+          const querySnapshot = await getDocs(collection(db, "employees"));
+          tableBody.innerHTML = "";
+          loadedEmployeesCache = {};
+
+          if (querySnapshot.empty) {
+              tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">No employees found. Click 'Add Employee' to create one.</td></tr>`;
+              return;
+          }
+
+          let counter = 1;
+          querySnapshot.forEach((docSnap) => {
+              const id = docSnap.id;
+              const emp = docSnap.data();
+              loadedEmployeesCache[id] = { id, ...emp };
+
+              const formattedId = `EMP${String(counter).padStart(3, '0')}`;
+              const statusText = emp.status || 'Active';
+              const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
+
+              const rowHtml = `
+                  <tr data-id="${id}" class="emp-row-trigger">
+                      <td>${formattedId}</td>
+                      <td><strong>${emp.name || ''}</strong></td>
+                      <td>${emp.department || ''}</td>
+                      <td>${emp.designation || ''}</td>
+                      <td>${emp.email || ''}</td>
+                      <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                      <td><button class="btn-icon action-view-trigger" data-id="${id}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                  </tr>
+              `;
+              tableBody.insertAdjacentHTML('beforeend', rowHtml);
+              counter++;
+          });
+
+          bindRowListeners();
+
+      } catch (err) {
+          console.error("Failed to load employees: ", err);
+          tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#f56565;">Failed to load records: ${err.message}</td></tr>`;
+      }
+  }
+
+  // Row click / view-details action -> populate #detailsPanel from cached record
+  function bindRowListeners() {
+      document.querySelectorAll('.emp-row-trigger').forEach(row => {
+          row.addEventListener('click', () => {
+              const id = row.getAttribute('data-id');
+              showEmployeeDetails(id);
+          });
+      });
+  }
+
+  function showEmployeeDetails(id) {
+      const emp = loadedEmployeesCache[id];
+      if (!emp) return;
+
+      currentDetailId = id;
+
+      const statusText = emp.status || 'Active';
+      const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
+
+      document.getElementById('detailAvatar').innerHTML = emp.avatarUrl
+          ? `<img src="${emp.avatarUrl}" alt="${emp.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+          : `<i class="fa-regular fa-user"></i>`;
+
+      document.getElementById('detailName').innerHTML = `${emp.name || '—'} <span class="status-badge ${statusClass}" id="detailStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px;">${statusText}</span>`;
+      document.getElementById('detailRoleDept').textContent = `${emp.designation || '—'} • ${emp.department || '—'}`;
+      document.getElementById('detailContact').innerHTML = `<i class="fa-regular fa-envelope" style="margin-right:4px;"></i> ${emp.email || '—'} • <i class="fa-solid fa-phone" style="margin-right:4px;"></i> ${emp.phone || '—'}`;
+
+      document.getElementById('detailEmpId').textContent = id;
+      document.getElementById('detailFullName').textContent = emp.name || '—';
+      document.getElementById('detailEmail').textContent = emp.email || '—';
+      document.getElementById('detailPhone').textContent = emp.phone || '—';
+      document.getElementById('detailDOB').textContent = 'N/A';
+      document.getElementById('detailGender').textContent = 'N/A';
+      document.getElementById('detailMarital').textContent = 'N/A';
+      document.getElementById('detailAddress').textContent = 'N/A';
+
+      document.getElementById('detailDept').textContent = emp.department || '—';
+      document.getElementById('detailDesignation').textContent = emp.designation || '—';
+      document.getElementById('detailReportingTo').textContent = 'N/A';
+      document.getElementById('detailDOJ').textContent = emp.dateOfJoining || 'N/A';
+      document.getElementById('detailEmploymentType').textContent = emp.employmentType || 'N/A';
+      document.getElementById('detailWorkLocation').textContent = 'N/A';
+
+      detailsPanel.classList.remove('d-none');
+  }
+
+  // CREATE: new hire, either a regular employee/manager/hr/admin login or an intern
+  addEmployeeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById('empFirstName').value.trim();
+      const lastName = document.getElementById('empLastName').value.trim();
+      const role = empRoleSelect.value;
+      const email = document.getElementById('empEmail').value.trim();
+      const password = document.getElementById('empPassword').value;
+      const department = document.getElementById('empDept').value;
+
+      try {
+          if (role === 'intern') {
+              // Interns live in their own "interns" collection (see HR\internship.html for the canonical CRUD)
+              const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+              const internsSnap = await getDocs(collection(db, "interns"));
+              const assignedCustomId = `INTR${String(internsSnap.size + 1).padStart(3, '0')}`;
+
+              await addDoc(collection(db, "interns"), {
+                  uid: userCredential.user.uid,
+                  internName: `${firstName} ${lastName}`,
+                  email: email,
+                  customId: assignedCustomId,
+                  department: department,
+                  status: "Active",
+                  university: document.getElementById('empUniversity').value.trim(),
+                  mentorName: document.getElementById('empMentorName').value.trim(),
+                  startDate: formatDate(document.getElementById('empInternStartDate').value),
+                  endDate: formatDate(document.getElementById('empInternEndDate').value),
+                  internAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 1}`
+              });
+
+              alert(`Intern "${firstName} ${lastName}" created successfully.`);
+          } else {
+              const phone = document.getElementById('empPhone').value.trim();
+              const designation = document.getElementById('empDesignation').value;
+              const dateOfJoining = document.getElementById('empDOJ').value;
+              const employmentType = document.getElementById('empEmploymentType').value;
+
+              // 1. Create the real Firebase Auth account
+              const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+
+              // 2. Hash the password before storing it in Firestore
+              const securedPasswordHash = await hashPassword(password);
+
+              // 3. Write the employee profile document
+              await addDoc(collection(db, "employees"), {
+                  uid: user.uid,
+                  name: `${firstName} ${lastName}`,
+                  email: email,
+                  password: securedPasswordHash,
+                  department: department,
+                  designation: designation,
+                  phone: phone,
+                  role: role,
+                  status: "Active",
+                  avatarUrl: "",
+                  employmentType: employmentType,
+                  dateOfJoining: dateOfJoining,
+                  timestamp: serverTimestamp()
+              });
+
+              alert(`Employee "${firstName} ${lastName}" created successfully.`);
+          }
+
+          closeAddModal();
+          loadEmployeeRecords();
+
+      } catch (error) {
+          alert(`Failed to create record: ${error.message}`);
+      }
+  });
+
+  // UPDATE: save edits made in the edit modal back to Firestore
+  editEmployeeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const docId = document.getElementById('editEmpDocId').value;
+      const passwordValue = document.getElementById('editEmpPassword').value;
+
+      const updatedProfile = {
+          name: document.getElementById('editEmpName').value,
+          phone: document.getElementById('editEmpPhone').value,
+          department: document.getElementById('editEmpDept').value,
+          designation: document.getElementById('editEmpDesignation').value,
+          employmentType: document.getElementById('editEmpEmploymentType').value,
+          dateOfJoining: document.getElementById('editEmpDOJ').value,
+          role: document.getElementById('editEmpRole').value,
+          status: document.getElementById('editEmpStatus').value
+      };
+
+      try {
+          if (passwordValue.trim() !== "") {
+              updatedProfile.password = await hashPassword(passwordValue);
+          }
+
+          await updateDoc(doc(db, "employees", docId), updatedProfile);
+
+          alert("Employee parameters successfully updated!");
+          closeEditModal();
+          loadEmployeeRecords();
+      } catch (error) {
+          alert("Error updating employee record: " + error.message);
+      }
+  });
+
+  loadEmployeeRecords();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intern Dashboard - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+
+/* ── TOP THREE WIDGETS ROW ── */
+.top-widgets-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;}
+.widget-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.widget-card:hover{border-color:#4299e1;}
+.widget-left{display:flex;align-items:center;gap:14px;}
+.widget-avatar-box{width:48px;height:48px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#8898aa;}
+.widget-details span{font-size:11px;color:#8898aa;display:block;}
+.widget-details h3{font-size:15px;font-weight:700;color:#fff;margin:1px 0;}
+.widget-details p{font-size:12px;color:#8898aa;}
+.widget-count-block h2{font-size:22px;font-weight:700;color:#fff;}
+
+/* Buttons style inside widgets/panels */
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#4299e1;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;}
+.btn-sm-outline:hover{background:rgba(66,153,225,0.1);border-color:#4299e1;}
+.btn-center-panel{align-self:center;margin-top:auto;padding:8px 18px;}
+
+/* ── MIDDLE GRID LAYOUT ── */
+.middle-layout-grid{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:16px;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;min-height:270px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.panel-header h3{font-size:14px;font-weight:700;color:#fff;}
+.panel-header .view-all{font-size:11.5px;color:#8898aa;text-decoration:none;}
+.panel-header .view-all:hover{color:#4299e1;}
+
+/* 1. Recent Activities Styling */
+.activity-list{display:flex;flex-direction:column;gap:12px;}
+.activity-item{display:flex;gap:12px;align-items:flex-start;}
+.activity-dot{width:8px;height:8px;border-radius:50%;background:#4299e1;margin-top:5px;flex-shrink:0;}
+.activity-info{flex:1;}
+.activity-info p{font-size:12.5px;color:#e2e8f0;line-height:1.4;}
+.activity-info p strong{color:#fff;font-weight:600;}
+.activity-info span{font-size:11px;color:#4a5568;display:block;margin-top:1px;}
+
+/* 2 & 3. Structured Data Tables */
+.panel-table{width:100%;border-collapse:collapse;text-align:left;}
+.panel-table th{font-size:11px;color:#8898aa;font-weight:600;padding-bottom:8px;border-bottom:1px solid #1b2e6e;}
+.panel-table td{font-size:12.5px;color:#e2e8f0;padding:10px 0;border-bottom:1px solid rgba(27,46,110,0.5);vertical-align:middle;}
+.panel-table tr:last-child td{border-bottom:none;}
+.badge-status{background:rgba(66,153,225,0.1);color:#4299e1;border:1px solid rgba(66,153,225,0.2);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+
+/* ── LOWER GRID LAYOUT ── */
+.lower-layout-grid{display:grid;grid-template-columns:1.2fr 1.8fr;gap:16px;}
+
+/* Progress Overview Radial Section */
+.progress-container{display:flex;align-items:center;justify-content:space-around;gap:16px;height:100%;padding:10px 0;}
+.progress-radial{position:relative;width:110px;height:110px;flex-shrink:0;}
+.progress-radial svg{width:110px;height:110px;transform:rotate(-90deg);}
+.radial-bg{fill:none;stroke:#0b1437;stroke-width:8;}
+
+/* Multi-segmented circle fills matching the legend colors */
+.radial-fill-completed{fill:none;stroke:#4299e1;stroke-width:5;}
+.radial-fill-progress{fill:none;stroke:#fbbf24;stroke-width:5;}
+.radial-fill-notstart{fill:none;stroke:#4a5568;stroke-width:5;}
+
+.radial-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.radial-text h2{font-size:18px;color:#fff;font-weight:700;}
+.radial-text span{font-size:10px;color:#8898aa;}
+
+.progress-legend-list{display:flex;flex-direction:column;gap:8px;}
+.legend-item{display:flex;align-items:center;justify-content:space-between;width:160px;font-size:12px;}
+.legend-lbl-group{display:flex;align-items:center;gap:8px;color:#cbd5e1;}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+.legend-dot.completed{background:#4299e1;}
+.legend-dot.progress{background:#fbbf24;}
+.legend-dot.notstart{background:#4a5568;}
+.legend-val{color:#8898aa;}
+
+/* ── BOTTOM FEEDBACK ROW ── */
+.feedback-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.feedback-panel:hover{border-color:#4299e1;}
+.feedback-left-content{display:flex;align-items:center;gap:14px;}
+.feedback-icon-box{width:42px;height:42px;border-radius:10px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4299e1;}
+.feedback-quote blockquote{font-size:13px;color:#cbd5e1;font-style:italic;}
+.feedback-quote span{font-size:11px;color:#8898aa;display:block;margin-top:2px;}
+
+/* Responsive Adaptations */
+@media(max-width:1300px){
+    .top-widgets-grid{grid-template-columns:1fr 1fr; grid-gap:16px;}
+    .widget-card:first-child{grid-column: span 2;}
+    .middle-layout-grid{grid-template-columns:1fr 1fr;}
+    .middle-layout-grid .card-panel:last-child{grid-column: span 2;}
+    .lower-layout-grid{grid-template-columns:1fr;}
+}
+@media(max-width:850px){
+    .top-widgets-grid, .middle-layout-grid, .lower-layout-grid{grid-template-columns:1fr;}
+    .widget-card:first-child, .middle-layout-grid .card-panel:last-child{grid-column: span 1;}
+    .feedback-panel{flex-direction:column;align-items:stretch;gap:12px;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <h1>Dashboard</h1>
+      </div>
+
+      <div class="top-widgets-grid">
+        <div class="widget-card">
+          <div class="widget-left">
+            <div class="widget-avatar-box"><i class="fa-regular fa-user"></i></div>
+            <div class="widget-details">
+              <span>Assigned Mentor</span>
+              <h3>David Brown</h3>
+              <p>Senior Developer</p>
+            </div>
+          </div>
+          <button class="btn-sm-outline">Message</button>
+        </div>
+
+        <div class="widget-card">
+          <div class="widget-left">
+            <div class="widget-avatar-box"><i class="fa-regular fa-calendar-check"></i></div>
+            <div class="widget-details">
+              <span>Pending Tasks</span>
+              <h3 id="pendingTasksVal">0</h3>
+              <p>Tasks to Complete</p>
+            </div>
+          </div>
+          <div class="widget-count-block"><h2 id="pendingTasksVal2">0</h2></div>
+        </div>
+
+        <div class="widget-card">
+          <div class="widget-left">
+            <div class="widget-avatar-box"><i class="fa-regular fa-star"></i></div>
+            <div class="widget-details">
+              <span>Reviews Due</span>
+              <h3 id="reviewsDueVal">0</h3>
+              <p>Review Pending</p>
+            </div>
+          </div>
+          <div class="widget-count-block"><h2 id="reviewsDueVal2">0</h2></div>
+        </div>
+      </div>
+
+      <div class="middle-layout-grid">
+        
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Recent Activities</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-info">
+                <p><strong>Mentor approved your work log</strong><br>API Integration Module</p>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-info">
+                <p><strong>New task assigned</strong><br>Dashboard UI Design</p>
+                <span>1 day ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-info">
+                <p><strong>Feedback received from mentor</strong><br>Good progress on the project</p>
+                <span>2 days ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Assigned Projects</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <table class="panel-table">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Status</th>
+                <th>Deadline</th>
+              </tr>
+            </thead>
+            <tbody id="dashAssignedProjectsBody">
+              <tr><td colspan="3" style="text-align:center;color:#8898aa;">Loading...</td></tr>
+            </tbody>
+          </table>
+          <button class="btn-sm-outline btn-center-panel">View All Projects</button>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Pending Work Logs</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <table class="panel-table">
+            <thead>
+              <tr>
+                <th>Task / Module</th>
+                <th>Due Date</th>
+              </tr>
+            </thead>
+            <tbody id="dashPendingWorkLogsBody">
+              <tr><td colspan="2" style="text-align:center;color:#8898aa;">Loading...</td></tr>
+            </tbody>
+          </table>
+          <button class="btn-sm-outline btn-center-panel">Submit Work Log</button>
+        </div>
+
+      </div>
+
+      <div class="lower-layout-grid">
+        
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Upcoming Reviews</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <table class="panel-table" style="margin-bottom: auto;">
+            <thead>
+              <tr>
+                <th>Review Type</th>
+                <th>Project</th>
+                <th>Review Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mid-Term Review</td>
+                <td>Employee Management System</td>
+                <td style="color:#8898aa;">20/05/2025</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn-sm-outline btn-center-panel">View All Reviews</button>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Internship Progress Overview</h3>
+          </div>
+          <div class="progress-container">
+            <div class="progress-radial">
+              <svg viewBox="0 0 36 36">
+                <circle class="radial-bg" cx="18" cy="18" r="15.9"/>
+
+                <circle id="radialFillCompleted" class="radial-fill-completed" cx="18" cy="18" r="15.9" stroke-dasharray="0 100" stroke-dashoffset="0"/>
+
+                <circle id="radialFillProgress" class="radial-fill-progress" cx="18" cy="18" r="15.9" stroke-dasharray="0 100" stroke-dashoffset="0"/>
+
+                <circle id="radialFillNotStart" class="radial-fill-notstart" cx="18" cy="18" r="15.9" stroke-dasharray="0 100" stroke-dashoffset="0"/>
+              </svg>
+              <div class="radial-text">
+                <h2 id="radialCompletedPct">0%</h2>
+                <span>Completed</span>
+              </div>
+            </div>
+
+            <div class="progress-legend-list">
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot completed"></div>Completed</div>
+                <span class="legend-val" id="legendCompletedVal">0% (0/0)</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot progress"></div>In Progress</div>
+                <span class="legend-val" id="legendProgressVal">0% (0/0)</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-lbl-group"><div class="legend-dot notstart"></div>Not Started</div>
+                <span class="legend-val" id="legendNotStartVal">0% (0/0)</span>
+              </div>
+            </div>
+          </div>
+          <button class="btn-sm-outline btn-center-panel" style="margin-top: 10px;">View Progress Details</button>
+        </div>
+
+      </div>
+
+      <div class="feedback-panel">
+        <div class="feedback-left-content">
+          <div class="feedback-icon-box"><i class="fa-regular fa-comment-dots"></i></div>
+          <div class="feedback-quote">
+            blockquote>"Good progress on the project. Keep up the quality of your work."</blockquote>
+            <span>— David Brown, 3 days ago</span>
+          </div>
+        </div>
+        <button class="btn-sm-outline">View All Feedback</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  function formatDate(value) {
+    if (!value) return "-";
+    try {
+      const d = value && value.toDate ? value.toDate() : new Date(value);
+      if (isNaN(d.getTime())) return value;
+      return d.toLocaleDateString("en-GB");
+    } catch {
+      return value;
+    }
+  }
+
+  function updateProjectsWidgets(projectsArray) {
+    const total = projectsArray.length;
+    const completedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "completed").length;
+    const notStartedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "not started").length;
+    const inProgressCount = total - completedCount - notStartedCount;
+
+    const pct = (n) => (total > 0 ? Math.round((n / total) * 100) : 0);
+    const completedPct = pct(completedCount);
+    const inProgressPct = pct(inProgressCount);
+    const notStartedPct = pct(notStartedCount);
+
+    document.getElementById("pendingTasksVal").textContent = total - completedCount;
+    document.getElementById("pendingTasksVal2").textContent = total - completedCount;
+
+    document.getElementById("radialCompletedPct").textContent = completedPct + "%";
+    document.getElementById("radialFillCompleted").setAttribute("stroke-dasharray", completedPct + " 100");
+    document.getElementById("radialFillCompleted").setAttribute("stroke-dashoffset", "0");
+    document.getElementById("radialFillProgress").setAttribute("stroke-dasharray", inProgressPct + " 100");
+    document.getElementById("radialFillProgress").setAttribute("stroke-dashoffset", "-" + completedPct);
+    document.getElementById("radialFillNotStart").setAttribute("stroke-dasharray", notStartedPct + " 100");
+    document.getElementById("radialFillNotStart").setAttribute("stroke-dashoffset", "-" + (completedPct + inProgressPct));
+
+    document.getElementById("legendCompletedVal").textContent = `${completedPct}% (${completedCount}/${total})`;
+    document.getElementById("legendProgressVal").textContent = `${inProgressPct}% (${inProgressCount}/${total})`;
+    document.getElementById("legendNotStartVal").textContent = `${notStartedPct}% (${notStartedCount}/${total})`;
+  }
+
+  async function loadAssignedProjects() {
+    const tbody = document.getElementById("dashAssignedProjectsBody");
+    try {
+      const q = query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      const projectsArray = [];
+      querySnapshot.forEach((docSnap) => projectsArray.push(docSnap.data()));
+      updateProjectsWidgets(projectsArray);
+
+      tbody.innerHTML = "";
+      if (projectsArray.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8898aa;">No assigned projects.</td></tr>`;
+        return;
+      }
+      projectsArray.forEach((p) => {
+        tbody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${p.name || "Untitled Project"}</td>
+            <td><span class="badge-status">${p.status || "In Progress"}</span></td>
+            <td style="color:#8898aa;">${formatDate(p.endDate)}</td>
+          </tr>
+        `);
+      });
+    } catch (err) {
+      console.error("Error loading assigned projects: ", err);
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8898aa;">Failed to load projects.</td></tr>`;
+    }
+  }
+
+  async function loadPendingWorkLogs() {
+    const tbody = document.getElementById("dashPendingWorkLogsBody");
+    try {
+      const q = query(
+        collection(db, "workLogs"),
+        where("uid", "==", currentUser.uid),
+        where("status", "==", "Pending Review")
+      );
+      const querySnapshot = await getDocs(q);
+      const logsArray = [];
+      querySnapshot.forEach((docSnap) => logsArray.push(docSnap.data()));
+
+      document.getElementById("reviewsDueVal").textContent = logsArray.length;
+      document.getElementById("reviewsDueVal2").textContent = logsArray.length;
+
+      tbody.innerHTML = "";
+      if (logsArray.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#8898aa;">No pending work logs.</td></tr>`;
+        return;
+      }
+      logsArray.forEach((w) => {
+        tbody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${w.task || w.project || "Work Log"}</td>
+            <td style="color:#8898aa;">${formatDate(w.date)}</td>
+          </tr>
+        `);
+      });
+    } catch (err) {
+      console.error("Error loading pending work logs: ", err);
+      tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#8898aa;">Failed to load work logs.</td></tr>`;
+    }
+  }
+
+  loadAssignedProjects();
+  loadPendingWorkLogs();
+</script>
+
+</body>
+</html>

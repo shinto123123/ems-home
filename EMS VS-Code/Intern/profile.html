@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - Internship Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+/* ── MAIN CONTENT AREA ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:center;}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+
+/* Buttons style */
+.btn-sm-outline{background:transparent;border:1px solid #1b2e6e;color:#4299e1;padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-sm-outline:hover{background:rgba(66,153,225,0.1);border-color:#4299e1;}
+
+/* ── PROFILE CARD HERO BLOCK ── */
+.profile-hero-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:20px;display:grid;grid-template-columns:1.2fr 2fr;gap:24px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.profile-hero-card:hover{border-color:#4299e1;}
+
+.hero-left-meta{display:flex;gap:18px;align-items:center;border-right:1px solid #1b2e6e;padding-right:16px;}
+.profile-big-avatar-box{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.big-avatar{width:80px;height:80px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:32px;color:#8898aa;}
+.hero-details-block{display:flex;flex-direction:column;gap:6px;}
+.hero-details-block h2{font-size:18px;color:#fff;font-weight:700;}
+.hero-details-block p{font-size:13px;color:#4299e1;font-weight:600;}
+.meta-contact-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cbd5e1;margin-top:2px;}
+.meta-contact-item i{color:#8898aa;width:14px;}
+
+.hero-right-details{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;align-content:center;}
+.info-snippet span{font-size:11px;color:#8898aa;display:block;text-transform:uppercase;letter-spacing:0.3px;}
+.info-snippet strong{font-size:13.5px;color:#fff;font-weight:600;display:block;margin-top:2px;}
+
+/* ── PROFILE INFORMATION MATRIX GRID ── */
+.info-panels-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
+.card-panel:hover{border-color:#4299e1;}
+.panel-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;border-bottom:1px solid rgba(27,46,110,0.6);padding-bottom:8px;}
+
+/* Properties Details List Structure */
+.details-list{display:flex;flex-direction:column;gap:12px;}
+.details-row{display:grid;grid-template-columns:1.2fr 1.8fr;font-size:13px;align-items:center;}
+.details-label{color:#8898aa;}
+.details-value{color:#e2e8f0;font-weight:500;}
+
+/* Full Width Bottom Block Section */
+.full-width-panel{grid-column: span 2;}
+.about-text{font-size:13px;color:#cbd5e1;line-height:1.6;}
+.about-text p+p{margin-top:10px;}
+
+/* Responsive Adaptations */
+@media(max-width:1200px) {
+    .profile-hero-card{grid-template-columns:1fr;}
+    .hero-left-meta{border-right:none; padding-right:0; border-bottom:1px solid #1b2e6e; padding-bottom:16px;}
+    .info-panels-grid{grid-template-columns:1fr;}
+    .full-width-panel{grid-column: span 1;}
+}
+@media(max-width:850px) {
+    .hero-right-details{grid-template-columns:1fr;}
+    .body-wrap{flex-direction:column;}
+    .sidebar{width:100%;height:auto;}
+    .sidebar-top{display:none;}
+    .sidebar-menu{padding:12px 0; display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <span class="navbar-title">INTERNSHIP PORTAL</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-profile">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Intern User</h3>
+        <p>Software Intern</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li class="active"><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+        <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li ><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li ><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>My Profile</h1>
+          <p>View and manage your personal and internship details.</p>
+        </div>
+        <button class="btn-sm-outline"><i class="fa-regular fa-pen-to-square"></i>Edit Profile</button>
+      </div>
+
+      <div class="profile-hero-card">
+        <div class="hero-left-meta">
+          <div class="profile-big-avatar-box">
+            <div class="big-avatar"><i class="fa-regular fa-user"></i></div>
+            <button class="btn-sm-outline" style="padding:4px 10px; font-size:11px;"><i class="fa-solid fa-camera"></i>Change Photo</button>
+          </div>
+          <div class="hero-details-block">
+            <h2 id="profName">Intern User</h2>
+            <p id="profRole">Software Intern</p>
+            <div class="meta-contact-item" style="margin-top:6px;"><i class="fa-regular fa-envelope"></i><span id="profEmail">-</span></div>
+          </div>
+        </div>
+
+        <div class="hero-right-details">
+          <div class="info-snippet"><span>Intern ID</span><strong id="profCustomId">-</strong></div>
+          <div class="info-snippet"><span>Department</span><strong id="profDepartment">-</strong></div>
+          <div class="info-snippet"><span>Status</span><strong id="profStatus">-</strong></div>
+          <div class="info-snippet"><span>Mentor</span><strong id="profMentorName">-</strong></div>
+          <div class="info-snippet"><span>Start Date</span><strong id="profStartDate">-</strong></div>
+          <div class="info-snippet"><span>End Date</span><strong id="profEndDate">-</strong></div>
+        </div>
+      </div>
+
+      <div class="info-panels-grid">
+        
+        <div class="card-panel">
+          <div class="panel-title">Personal Information</div>
+          <div class="details-list">
+            <div class="details-row"><div class="details-label">Full Name</div><div class="details-value" id="profFullName">-</div></div>
+            <div class="details-row"><div class="details-label">Email</div><div class="details-value" id="profEmail2">-</div></div>
+            <div class="details-row"><div class="details-label">Date of Birth</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Gender</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Address</div><div class="details-value">Not provided</div></div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-title">Academic Information</div>
+          <div class="details-list">
+            <div class="details-row"><div class="details-label">College / University</div><div class="details-value" id="profUniversity">-</div></div>
+            <div class="details-row"><div class="details-label">Degree</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Branch / Major</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Year of Study</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Enrollment No.</div><div class="details-value">Not provided</div></div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-title">Emergency Contact</div>
+          <div class="details-list">
+            <div class="details-row"><div class="details-label">Contact Name</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Relationship</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Phone Number</div><div class="details-value">Not provided</div></div>
+            <div class="details-row"><div class="details-label">Email</div><div class="details-value">Not provided</div></div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-title">Internship Information</div>
+          <div class="details-list">
+            <div class="details-row"><div class="details-label">Role</div><div class="details-value">Software Intern</div></div>
+            <div class="details-row"><div class="details-label">Work Location</div><div class="details-value">Hyderabad (Remote)</div></div>
+            <div class="details-row"><div class="details-label">Working Days</div><div class="details-value">Monday - Friday</div></div>
+            <div class="details-row"><div class="details-label">Reporting Manager</div><div class="details-value" id="profMentorName2">-</div></div>
+          </div>
+        </div>
+
+        <div class="card-panel full-width-panel">
+          <div class="panel-title">About Me</div>
+          <div class="about-text">
+            <p>Not provided.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["intern"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout("../");
+  });
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || "-";
+  }
+
+  async function loadProfile() {
+    try {
+      const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+      if (!meSnap.exists()) {
+        alert("Could not find your intern profile record.");
+        return;
+      }
+      const me = meSnap.data();
+
+      setText("profName", me.internName);
+      setText("profRole", me.department ? me.department + " Intern" : "Intern");
+      setText("profEmail", me.email);
+      setText("profEmail2", me.email);
+      setText("profCustomId", me.customId);
+      setText("profDepartment", me.department);
+      setText("profStatus", me.status);
+      setText("profMentorName", me.mentorName);
+      setText("profMentorName2", me.mentorName);
+      setText("profStartDate", me.startDate);
+      setText("profEndDate", me.endDate);
+      setText("profFullName", me.internName);
+      setText("profUniversity", me.university);
+    } catch (err) {
+      console.error("Error loading profile: ", err);
+      alert("Could not load your profile: " + err.message);
+    }
+  }
+
+  loadProfile();
+</script>
+
+</body>
+</html>

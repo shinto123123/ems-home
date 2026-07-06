@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payroll Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    color:#d7dfef;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#8898aa;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+    padding:13px 22px;
+    transition: .2s;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show{
+    display:block;
+}
+
+.nav-profile-dropdown a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover{
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i{
+    width:14px;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.content{
+    flex:1;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    overflow:hidden;
+    background:#0b1437;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header h1{
+    font-size:24px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.header-buttons{
+    display:flex;
+    gap:12px;
+}
+
+.export-btn,
+.run-btn{
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid #1b2e6e;
+    background:#111c44;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.export-btn:hover{
+    background:#1b2e6e;
+}
+
+.run-btn{
+    background:#4299e1;
+    border-color:#4299e1;
+}
+
+.run-btn:hover{
+    background:#3182ce;
+}
+
+.export-btn i,
+.run-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   TABS
+========================= */
+.tabs{
+    display:flex;
+    gap:28px;
+    border-bottom:1px solid #1b2e6e;
+    margin-bottom:18px;
+}
+
+.tab{
+    padding-bottom:12px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+    position:relative;
+    font-size:14px;
+}
+
+.tab:hover{
+    color:#ffffff;
+}
+
+.tab.active{
+    color:#4299e1;
+    font-weight:600;
+}
+
+.tab.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-1px;
+    width:100%;
+    height:3px;
+    background:#4299e1;
+    border-radius:10px;
+}
+
+/* =========================
+   PAYROLL CARDS
+========================= */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    border-color:#4299e1;
+}
+
+.card-icon{
+    width:55px;
+    height:55px;
+    background:#0b1437;
+    border:2px solid #4299e1;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.card h4{
+    color:#8898aa;
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:5px;
+}
+
+.card h2{
+    color:#ffffff;
+    font-size:28px;
+    margin-bottom:4px;
+}
+
+.card p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+.filter-box{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.search-employee{
+    width:260px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:11px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#8898aa;
+    transition:.3s;
+}
+
+.search-employee:focus-within{
+    border-color:#4299e1;
+}
+
+.search-employee input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:#ffffff;
+    font-size:14px;
+}
+
+.search-employee input::placeholder{
+    color:#8898aa;
+}
+
+.filter-box input[type="month"]{
+    padding:11px 14px;
+    background:#0b1437;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    cursor:pointer;
+    font-size:13px;
+    transition:.3s;
+}
+
+.filter-box input[type="month"]:focus{
+    border-color:#4299e1;
+}
+
+.filter-box select{
+    min-width:180px;
+    padding:11px 14px;
+    background:#0b1437;
+    color:#ffffff;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    outline:none;
+    cursor:pointer;
+    font-size:13px;
+    transition:.3s;
+}
+
+.filter-box select:hover,
+.filter-box select:focus{
+    border-color:#4299e1;
+}
+
+.filter-btn{
+    padding:11px 22px;
+    background:#4299e1;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.filter-btn:hover{
+    background:#3182ce;
+}
+
+.filter-btn i{
+    margin-right:6px;
+}
+
+/* =========================
+   PAYROLL TABLE
+========================= */
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.table-box::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.table-box::-webkit-scrollbar-track{
+    background:#0b1437;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1200px;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+    border-bottom:1px solid #1b2e6e;
+}
+
+td{
+    padding:15px;
+    color:#d7dfef;
+    font-size:13px;
+    border-top:1px solid #1b2e6e;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.3s;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+.employee{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.employee img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.employee h4{
+    color:#ffffff;
+    font-size:14px;
+    margin-bottom:3px;
+}
+
+.employee p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+.salary{
+    font-weight:600;
+    color:#4ade80;
+    font-size:14px;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.status.paid{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+.status.pending{
+    background:rgba(251,191,36,.18);
+    color:#fbbf24;
+}
+
+.action{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.action i{
+    color:#8898aa;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.action i:hover{
+    color:#4299e1;
+    transform:scale(1.1);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+    font-size:13px;
+}
+
+.pagination{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =========================
+   MODAL OVERLAYS & FORMS
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover { color: #f87171; }
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #4299e1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
+}
+
+.btn-cancel {
+    background: #16265c;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover { background: #1b2e6e; }
+
+.btn-submit {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-submit:hover { background: #3182ce; }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:1200px){
+    .cards{ grid-template-columns:repeat(2,1fr); }
+    .filter-box{ flex-wrap:wrap; }
+    .search-employee{ width:100%; }
+}
+
+@media(max-width:768px){
+    body{ overflow:auto; }
+    .sidebar{ width:200px; }
+    .main{ margin-left:200px; width:calc(100% - 200px); }
+    .header{ flex-direction:column; align-items:flex-start; gap:15px; }
+    .header-buttons{ width:100%; flex-wrap:wrap; }
+    .cards{ grid-template-columns:1fr; }
+    .filter-box{ flex-direction:column; align-items:stretch; }
+    .search-employee, .filter-box input[type="month"], .filter-box select, .filter-btn{ width:100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">EMS ADMIN</div>
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+        <li class="active"><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+</div>
+
+<div class="main">
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <div class="navbar-logo">LOGO</div>
+            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+        </div>
+        <div class="navbar-center">
+            <div class="nav-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+            <div class="nav-profile" id="navProfileToggle">
+                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="nav-profile-dropdown" id="navProfileDropdown">
+                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Payroll Management</h1>
+            <div class="header-buttons">
+                <button class="export-btn"><i class="fa-solid fa-download"></i> Export</button>
+                <button class="run-btn"><i class="fa-solid fa-plus"></i> Run Payroll</button>
+                <button class="run-btn" id="openAddPayrollBtn"><i class="fa-solid fa-plus"></i> Add Payroll Record</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active">Payroll Overview</div>
+            <div class="tab">Employee Payslip</div>
+            <div class="tab">Salary Components</div>
+            <div class="tab">Tax Management</div>
+            <div class="tab">Payroll History</div>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                <div>
+                    <h4>Total Payroll</h4>
+                    <h2>$125,000</h2>
+                    <p>May 2025</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <h4>Total Employees</h4>
+                    <h2>52</h2>
+                    <p>May 2025</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div>
+                    <h4>Total Deductions</h4>
+                    <h2>$18,500</h2>
+                    <p>May 2025</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-building-columns"></i></div>
+                <div>
+                    <h4>Net Payroll</h4>
+                    <h2>$106,500</h2>
+                    <p>May 2025</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-box">
+            <div class="search-employee">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search employee...">
+            </div>
+            <input type="month" value="2025-05">
+            <select>
+                <option>All Departments</option>
+            </select>
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Department</th>
+                        <th>Basic Salary</th>
+                        <th>Allowances</th>
+                        <th>Deductions</th>
+                        <th>Net Pay</th>
+                        <th>Status</th>
+                        <th>Receipt</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="payrollTableBody">
+                    <tr><td colspan="10" style="text-align:center; padding:24px; color:#8898aa;">Loading payroll records...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <div class="entries">Showing 1 to 5 of 52 entries</div>
+            <div class="pagination">
+                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                <div class="page active">1</div>
+                <div class="page">2</div>
+                <div class="page">3</div>
+                <div class="page">...</div>
+                <div class="page">11</div>
+                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="addPayrollModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Add Payroll Record</h3>
+            <button class="modal-close" id="closeAddPayrollModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addPayrollForm">
+            <div class="form-group">
+                <label for="payEmployeeSelect">Employee</label>
+                <select id="payEmployeeSelect" required>
+                    <option value="">Loading employees...</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="payBasicSalary">Basic Salary</label>
+                    <input type="number" id="payBasicSalary" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="payAllowances">Allowances</label>
+                    <input type="number" id="payAllowances" min="0" step="0.01" value="0">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="payDeductions">Deductions</label>
+                    <input type="number" id="payDeductions" min="0" step="0.01" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="payStatus">Status</label>
+                    <select id="payStatus">
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="payReceipt">Payment Receipt (image or PDF, optional)</label>
+                <input type="file" id="payReceipt" accept="image/*,.pdf">
+                <small style="color:#8898aa; display:block; margin-top:4px;">Max 700KB. Visible to HR, managers, and the employee once saved.</small>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelAddPayrollBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Save Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('payrollTableBody');
+    let employeesCache = {};
+    let payrollCacheById = {};
+
+    const MAX_RECEIPT_BYTES = 700 * 1024;
+    function readFileAsDataUrl(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Add Payroll Modal DOM Hooks
+    const addPayrollModal = document.getElementById('addPayrollModal');
+    const addPayrollForm = document.getElementById('addPayrollForm');
+    const payEmployeeSelect = document.getElementById('payEmployeeSelect');
+
+    document.getElementById('openAddPayrollBtn').addEventListener('click', () => addPayrollModal.classList.add('show'));
+    const hideAddPayrollModal = () => { addPayrollModal.classList.remove('show'); addPayrollForm.reset(); };
+    document.getElementById('closeAddPayrollModalBtn').addEventListener('click', hideAddPayrollModal);
+    document.getElementById('cancelAddPayrollBtn').addEventListener('click', hideAddPayrollModal);
+
+    // Populate employee picker from the employees collection
+    async function loadEmployeesForPicker() {
+        try {
+            const snap = await getDocs(collection(db, "employees"));
+            employeesCache = {};
+            payEmployeeSelect.innerHTML = '<option value="">Select an employee</option>';
+            snap.forEach((docSnap) => {
+                const emp = docSnap.data();
+                employeesCache[docSnap.id] = { id: docSnap.id, ...emp };
+                payEmployeeSelect.insertAdjacentHTML('beforeend', `<option value="${docSnap.id}">${emp.name || 'Unnamed'}</option>`);
+            });
+        } catch (error) {
+            console.error("Failed to load employees for payroll picker: ", error);
+            payEmployeeSelect.innerHTML = '<option value="">Failed to load employees</option>';
+        }
+    }
+
+    async function loadPayroll() {
+        try {
+            const snap = await getDocs(collection(db, "payroll"));
+            if (snap.empty) {
+                tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#8898aa;">No payroll records found.</td></tr>`;
+                return;
+            }
+            tableBody.innerHTML = "";
+            payrollCacheById = {};
+            snap.forEach((docSnap) => {
+                const p = docSnap.data();
+                payrollCacheById[docSnap.id] = p;
+                const statusClass = (p.status || 'Pending').toLowerCase();
+                tableBody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${docSnap.id.slice(0, 8)}</td>
+                        <td><div class="employee"><div><h4>${p.employeeName || '-'}</h4><p>${p.designation || ''}</p></div></div></td>
+                        <td>${p.department || '-'}</td>
+                        <td>${p.basicSalary ?? '-'}</td>
+                        <td>${p.allowances ?? '-'}</td>
+                        <td>${p.deductions ?? '-'}</td>
+                        <td class="salary">${p.netPay ?? '-'}</td>
+                        <td><span class="status ${statusClass}">${p.status || 'Pending'}</span></td>
+                        <td>${p.receiptData ? `<a href="#" class="view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1;">View</a>` : '<span style="color:#8898aa;">-</span>'}</td>
+                        <td><div class="action"><i class="fa-solid fa-check toggle-paid-btn" data-id="${docSnap.id}" data-status="${p.status || 'Pending'}" style="cursor:pointer;" title="Toggle Paid/Pending"></i></div></td>
+                    </tr>
+                `);
+            });
+
+            document.querySelectorAll('.view-receipt-btn').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const record = payrollCacheById[link.getAttribute('data-id')];
+                    if (record && record.receiptData) {
+                        const win = window.open();
+                        if (record.receiptType && record.receiptType.startsWith('image/')) {
+                            win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
+                        } else {
+                            win.location.href = record.receiptData;
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.toggle-paid-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const newStatus = btn.getAttribute('data-status') === 'Paid' ? 'Pending' : 'Paid';
+                    await updateDoc(doc(db, "payroll", btn.getAttribute('data-id')), { status: newStatus });
+                    loadPayroll();
+                });
+            });
+
+        } catch (error) {
+            console.error("Failed to load payroll: ", error);
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+        }
+    }
+
+    // CREATE Action Form Interception Logic
+    addPayrollForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const selectedEmployee = employeesCache[payEmployeeSelect.value];
+        if (!selectedEmployee) {
+            alert("Please select an employee.");
+            return;
+        }
+
+        const basicSalary = Number(document.getElementById('payBasicSalary').value) || 0;
+        const allowances = Number(document.getElementById('payAllowances').value) || 0;
+        const deductions = Number(document.getElementById('payDeductions').value) || 0;
+        const status = document.getElementById('payStatus').value;
+        const receiptFile = document.getElementById('payReceipt').files[0];
+
+        if (receiptFile && receiptFile.size > MAX_RECEIPT_BYTES) {
+            alert("Receipt file is too large. Please upload a file under 700KB.");
+            return;
+        }
+
+        try {
+            const record = {
+                employeeUid: selectedEmployee.uid || selectedEmployee.id,
+                employeeName: selectedEmployee.name || '-',
+                designation: selectedEmployee.designation || '',
+                department: selectedEmployee.department || '',
+                basicSalary: basicSalary,
+                allowances: allowances,
+                deductions: deductions,
+                netPay: basicSalary + allowances - deductions,
+                status: status
+            };
+
+            if (receiptFile) {
+                record.receiptData = await readFileAsDataUrl(receiptFile);
+                record.receiptFileName = receiptFile.name;
+                record.receiptType = receiptFile.type;
+            }
+
+            await addDoc(collection(db, "payroll"), record);
+
+            alert(`Payroll record successfully created for ${selectedEmployee.name}!`);
+            hideAddPayrollModal();
+            loadPayroll();
+        } catch (error) {
+            alert("Error creating payroll record: " + error.message);
+        }
+    });
+
+    loadEmployeesForPicker();
+    loadPayroll();
+</script>
+</body>
+</html>

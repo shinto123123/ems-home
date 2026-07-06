@@ -1,0 +1,852 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Internship Management</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN WORKSPACE CONSOLE MULTIPANEL ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* 5 Column Metric Counter Cards Deck */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#cbd5e1;}
+
+/* Filters Panel Configuration Controls Toolbar row */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.date-picker-btn{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Sub Navigation Inline Directory Filter sub-tabs */
+.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
+.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+.segment-btn:hover{color:#fff;}
+.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+
+/* Data Roster Spreadsheet Matrix Table Grid */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.intern-table{width:100%;border-collapse:collapse;text-align:left;}
+.intern-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.intern-table td{padding:10px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.intern-table tr:last-child td{border-bottom:none;}
+.intern-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.intern-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+
+/* Table Inline Profiling Avatar and identity cell component */
+.profile-cell{display:flex;align-items:center;gap:10px;}
+.profile-avatar-mini{width:28px;height:28px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:10px;font-weight:600;}
+.profile-info strong{display:block;color:#fff;font-size:13px;font-weight:500;}
+.profile-info small{display:block;color:#8898aa;font-size:11px;}
+
+/* Status Variable Indicators Badges tags */
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;}
+.status-badge.active{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.evaluation{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.status-badge.completed{background:rgba(66,153,225,0.1);color:#4299e1;}
+.status-badge.converted{background:rgba(168,85,247,0.1);color:#a855f7;}
+
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
+.btn-icon:hover{color:#fff;}
+
+/* Pagination panel footer block bar row element */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* Lower Segment: Interns by Department Graphical Bar Chart Component Container */
+.chart-panel-container{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;margin-top:4px;}
+.chart-panel-header{display:flex;justify-content:space-between;align-items:center;}
+.chart-panel-header h3{color:#fff;font-size:14px;font-weight:600;}
+.chart-bar-canvas{display:flex;align-items:flex-end;justify-content:space-between;height:140px;padding:10px 20px 0;border-bottom:1px solid #1b2e6e;gap:20px;}
+.chart-column-node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;height:100%;justify-content:flex-end;}
+.chart-pillar-bar{width:32px;background:#4299e1;border-radius:6px 6px 0 0;position:relative;transition:height 0.4s ease;min-height:4px;}
+.chart-pillar-bar:hover{background:#2b7fd1;}
+.chart-pillar-val{font-size:10.5px;color:#fff;font-weight:600;margin-bottom:4px;position:absolute;top:-18px;width:100%;text-align:center;}
+.chart-axis-lbl{font-size:11.5px;color:#8898aa;margin-top:8px;text-align:center;white-space:nowrap;}
+
+/* ── DETAILS PANEL (RIGHT): INDIVIDUAL PORTFOLIO MONITOR INSPECTOR ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Profile block context overview info header structural elements */
+.profile-hero{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:16px;color:#7dd3fc;font-weight:600;}
+.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
+.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:11px;color:#cbd5e1;display:block;margin-top:2px;}
+
+/* Section Navigation tab links row */
+.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;}
+.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.tab-link:hover{color:#fff;}
+
+/* Details data parameter information container segment blocks layout */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;}
+.section-title{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
+.section-paragraph-desc{font-size:12.5px;color:#cbd5e1;line-height:1.5;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* Vertical Progress Node Milestones Timeline Component Track */
+.timeline-track-wrap{display:flex;flex-direction:column;gap:16px;position:relative;padding-left:16px;margin-top:4px;}
+.timeline-track-wrap::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:#1b2e6e;}
+.timeline-node{position:relative;}
+.timeline-dot{width:10px;height:10px;border-radius:50%;position:absolute;left:-16px;top:4px;background:#1b2e6e;border:2px solid #0b1437;box-sizing:content-box;}
+.timeline-node.complete .timeline-dot{background:#4ade80;}
+.timeline-node.active .timeline-dot{background:#fbbf24;}
+.timeline-node-title{font-size:12.5px;font-weight:600;color:#fff;}
+.timeline-node-time{font-size:11px;color:#8898aa;margin-top:2px;display:block;}
+.timeline-node-desc{font-size:11.5px;color:#cbd5e1;margin-top:4px;display:block;}
+
+/* Action Form Controller operational bar buttons footer layout */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;gap:10px;}
+.btn-footer-half{flex:1;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;transition:.2s;}
+.btn-footer-half:hover{border-color:#8898aa;color:#fff;}
+.btn-footer-half.primary{background:#4299e1;color:#fff;border-color:#4299e1;}
+.btn-footer-half.primary:hover{background:#2b7fd1;}
+
+.d-none{display:none !important;}
+
+/* ── ADD / EDIT INTERN MODALS (additive, matches Admin/internship.html modal house style) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,10,30,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:500px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.5);max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:14px;margin-bottom:20px;}
+.modal-header h3{color:#ffffff;font-size:18px;font-weight:600;}
+.modal-close{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:color 0.2s;}
+.modal-close:hover{color:#f87171;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;color:#8898aa;font-size:12px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#ffffff;font-size:14px;outline:none;transition:border-color 0.2s;}
+.form-group input:focus,.form-group select:focus{border-color:#4299e1;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;border-top:1px solid #1b2e6e;padding-top:16px;}
+.btn-cancel{background:#16265c;border:1px solid #1b2e6e;color:#d7dfef;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
+.btn-cancel:hover{background:#1b2e6e;}
+.btn-submit{background:#4299e1;border:none;color:#ffffff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
+.btn-submit:hover{background:#3182ce;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li class="active"><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <div>
+          <h2>Internship Management</h2>
+          <div class="breadcrumb">Dashboard &gt; <span>Internship Management</span></div>
+        </div>
+        <button class="btn-action btn-primary" style="font-weight:600;" id="openAddInternModalBtn"><i class="fa-solid fa-plus"></i> Add Intern</button>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div>
+            <div class="mini-info"><p>Total Interns</p><h3 id="kpiTotalInterns">--</h3><small>All Time</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-clock"></i></div>
+            <div class="mini-info"><p>Active Interns</p><h3 id="kpiActiveInterns">--</h3><small>Currently Active</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Under Evaluation</p><h3>16</h3><small>In Progress</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="mini-info"><p>Completed</p><h3 id="kpiCompletedInterns">--</h3><small>Completed Internships</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <div class="mini-info"><p>Converted</p><h3>8</h3><small>Full-time Offers</small></div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search by intern name or ID...">
+          </div>
+          <select class="filter-select"><option>All Departments</option></select>
+          <select class="filter-select"><option>All Internship Roles</option></select>
+          <select class="filter-select"><option>All Status</option></select>
+          <div class="date-picker-btn">
+            <i class="fa-regular fa-calendar"></i>
+            <span>01 May 2025 - 31 May 2025</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:10px; color:#8898aa;"></i>
+          </div>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+
+        <div class="segment-filter-row">
+          <button class="segment-btn active">All Interns</button>
+          <button class="segment-btn">Active</button>
+          <button class="segment-btn">Under Evaluation</button>
+          <button class="segment-btn">Completed</button>
+          <button class="segment-btn">Converted</button>
+          <button class="segment-btn">Dropped</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="intern-table">
+            <thead>
+              <tr>
+                <th>Intern ID</th>
+                <th>Intern Name</th>
+                <th>Role / Domain</th>
+                <th>Department</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Mentor</th>
+                <th>Status</th>
+                <th style="text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="internTableBody"><tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading interns...</td></tr></tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 8 of 72 interns</span>
+            <div class="pagination">
+              <a href="#" class="page-link active">1</a>
+              <a href="#" class="page-link">2</a>
+              <a href="#" class="page-link">3</a>
+              <span style="padding: 4px 6px;">...</span>
+              <a href="#" class="page-link">9</a>
+              <a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel-container">
+          <div class="chart-panel-header">
+            <h3>Interns by Department</h3>
+            <button class="btn-action" style="background:transparent; border:none; color:#4299e1; font-weight:600; font-size:12px;">View Report</button>
+          </div>
+          
+          <div class="chart-bar-canvas">
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 100%;"><span class="chart-pillar-val">22</span></div>
+              <span class="chart-axis-lbl">Engineering</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 55%;"><span class="chart-pillar-val">12</span></div>
+              <span class="chart-axis-lbl">Design</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 45%;"><span class="chart-pillar-val">10</span></div>
+              <span class="chart-axis-lbl">Marketing</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 36%;"><span class="chart-pillar-val">8</span></div>
+              <span class="chart-axis-lbl">Analytics</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 32%;"><span class="chart-pillar-val">7</span></div>
+              <span class="chart-axis-lbl">Product</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 27%;"><span class="chart-pillar-val">6</span></div>
+              <span class="chart-axis-lbl">HR</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 22%;"><span class="chart-pillar-val">5</span></div>
+              <span class="chart-axis-lbl">Finance</span>
+            </div>
+            <div class="chart-column-node">
+              <div class="chart-pillar-bar" style="height: 9%;"><span class="chart-pillar-val">2</span></div>
+              <span class="chart-axis-lbl">Others</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Intern Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar" style="background:#1b2e6e; border-color:#4299e1;" id="detailInternAvatar">AS</div>
+          <div class="hero-meta">
+            <h2 id="detailInternName">Amit Sharma <span class="status-badge active" id="detailInternStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">Active</span></h2>
+            <p id="detailInternRoleDept">UI/UX Design Intern • Design Department</p>
+            <span id="detailInternMeta">INT001 • amit.sharma@email.com</span>
+          </div>
+        </div>
+
+        <div class="tab-nav">
+          <a href="#" class="tab-link active">Overview</a>
+          <a href="#" class="tab-link">Performance</a>
+          <a href="#" class="tab-link">Mentorship</a>
+          <a href="#" class="tab-link">Documents</a>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Intern Information</div>
+          <div class="info-grid">
+            <span class="info-label">Intern ID</span><span class="info-value" id="detailInternId">INT001</span>
+            <span class="info-label">Phone</span><span class="info-value" id="detailInternPhone">N/A</span>
+            <span class="info-label">Start Date</span><span class="info-value" id="detailInternStartDate">05 May 2025</span>
+            <span class="info-label">End Date</span><span class="info-value" id="detailInternEndDate">04 Aug 2025</span>
+            <span class="info-label">Duration</span><span class="info-value" id="detailInternDuration">N/A</span>
+            <span class="info-label">Stipend</span><span class="info-value" id="detailInternStipend">N/A</span>
+            <span class="info-label">Location</span><span class="info-value" id="detailInternLocation">N/A</span>
+            <span class="info-label">College / University</span><span class="info-value" id="detailInternUniversity">IIT Bangalore</span>
+            <span class="info-label">Status</span><span class="info-value"><span class="status-badge active" id="detailInternStatusVal" style="padding:2px 6px;">Active</span></span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Role & Responsibilities</div>
+          <p class="section-paragraph-desc">Assisting in UI/UX design projects, creating wireframes, prototypes and conducting user research.</p>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title" style="margin-bottom:12px;">Internship Timeline</div>
+          <div class="timeline-track-wrap">
+            <div class="timeline-node complete">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Onboarded</span>
+              <span class="timeline-node-time">05 May 2025</span>
+              <span class="timeline-node-desc">Intern onboarded and orientation completed</span>
+            </div>
+            <div class="timeline-node complete">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Mid Review</span>
+              <span class="timeline-node-time">02 Jun 2025</span>
+              <span class="timeline-node-desc">Performance review conducted</span>
+            </div>
+            <div class="timeline-node active">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">Next Review</span>
+              <span class="timeline-node-time">02 Jul 2025</span>
+              <span class="timeline-node-desc">Upcoming performance review</span>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+              <span class="timeline-node-title">End Date</span>
+              <span class="timeline-node-time">04 Aug 2025</span>
+              <span class="timeline-node-desc">Internship end date</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-footer-half" id="editInternBtn">Edit Intern</button>
+        <button class="btn-footer-half primary">View Full Profile</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="addInternModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add New Intern</h3>
+      <button class="modal-close" id="closeAddInternModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="addInternForm">
+      <div class="form-group">
+        <label for="internName">Intern Name</label>
+        <input type="text" id="internName" required placeholder="e.g., Aarav Sharma">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="internEmail">Email Address</label>
+          <input type="email" id="internEmail" required placeholder="name@company.com">
+        </div>
+        <div class="form-group">
+          <label for="internPassword">Account Password</label>
+          <input type="password" id="internPassword" required minlength="6" placeholder="Min 6 characters">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="internDept">Department</label>
+          <select id="internDept">
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Finance">Finance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="internStatus">Status</label>
+          <select id="internStatus">
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Upcoming">Upcoming</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="university">University / College</label>
+        <input type="text" id="university" required placeholder="e.g., ABC University">
+      </div>
+      <div class="form-group">
+        <label for="mentorName">Mentor Name</label>
+        <input type="text" id="mentorName" required placeholder="e.g., David Brown">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" required>
+        </div>
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" required>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelAddInternModalBtn">Cancel</button>
+        <button type="submit" class="btn-submit">Save Intern</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="editInternModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit Intern Info</h3>
+      <button class="modal-close" id="closeEditInternModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="editInternForm">
+      <input type="hidden" id="editInternId">
+      <div class="form-group">
+        <label for="editInternName">Intern Name</label>
+        <input type="text" id="editInternName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editInternDept">Department</label>
+          <select id="editInternDept">
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Finance">Finance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editInternStatus">Status</label>
+          <select id="editInternStatus">
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Upcoming">Upcoming</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="editUniversity">University / College</label>
+        <input type="text" id="editUniversity" required>
+      </div>
+      <div class="form-group">
+        <label for="editMentorName">Mentor Name</label>
+        <input type="text" id="editMentorName" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editStartDate">Start Date</label>
+          <input type="text" id="editStartDate" required placeholder="DD/MM/YYYY">
+        </div>
+        <div class="form-group">
+          <label for="editEndDate">End Date</label>
+          <input type="text" id="editEndDate" required placeholder="DD/MM/YYYY">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelEditInternModalBtn">Close</button>
+        <button type="submit" class="btn-submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { db, auth } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+
+  // Dismiss inspector flyout layout container trigger layer event click handler
+  closePanelBtn.addEventListener('click', () => {
+    detailsPanel.classList.add('d-none');
+  });
+
+  const tableBody = document.getElementById('internTableBody');
+  let localInternsCache = [];
+  let currentInternId = null;
+  const fallbackAvatar = 'https://i.pravatar.cc/50?img=1';
+
+  // Form input date conversion helper (copied from Admin/internship.html)
+  function formatDate(dateString) {
+    if (!dateString || dateString.trim() === "") return '-';
+    if (dateString.includes('/')) return dateString;
+    try {
+      const parts = dateString.split('-');
+      if (parts.length !== 3) return dateString;
+      const [year, month, day] = parts;
+      return `${day}/${month}/${year}`;
+    } catch (e) {
+      return dateString;
+    }
+  }
+
+  async function loadInterns() {
+    try {
+      const snap = await getDocs(collection(db, "interns"));
+      localInternsCache = [];
+      snap.forEach((docSnap) => {
+        localInternsCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      renderInterns();
+    } catch (error) {
+      console.error("Failed to load interns: ", error);
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+    }
+  }
+
+  function renderInterns() {
+    if (localInternsCache.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No interns found. Click "Add Intern" to begin.</td></tr>`;
+      document.getElementById('kpiTotalInterns').textContent = '0';
+      document.getElementById('kpiActiveInterns').textContent = '0';
+      document.getElementById('kpiCompletedInterns').textContent = '0';
+      return;
+    }
+
+    tableBody.innerHTML = "";
+    let active = 0, completed = 0;
+    localInternsCache.forEach((i) => {
+      const status = i.status || 'Active';
+      if (status === 'Active') active++;
+      if (status === 'Completed') completed++;
+      const statusClass = status.toLowerCase();
+
+      tableBody.insertAdjacentHTML('beforeend', `
+        <tr class="intern-row" data-id="${i.id}">
+          <td>${i.customId || '-'}</td>
+          <td><div class="profile-cell"><div class="profile-info"><strong>${i.internName || 'Unnamed'}</strong></div></div></td>
+          <td>${i.mentorName ? 'Mentee of ' + i.mentorName : '-'}</td>
+          <td>${i.department || '-'}</td>
+          <td>${i.startDate || '-'}</td>
+          <td>${i.endDate || '-'}</td>
+          <td>${i.mentorName || 'Unassigned'}</td>
+          <td><span class="status-badge ${statusClass}">${status}</span></td>
+          <td style="text-align:center;">
+            <div style="display:flex; gap:10px; justify-content:center;">
+              <button class="btn-icon view-intern-btn" data-id="${i.id}" title="View / Edit"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              <button class="btn-icon delete-intern-btn" data-id="${i.id}" title="Delete"><i class="fa-solid fa-trash" style="color:#f87171;"></i></button>
+            </div>
+          </td>
+        </tr>
+      `);
+    });
+
+    document.getElementById('kpiTotalInterns').textContent = String(localInternsCache.length);
+    document.getElementById('kpiActiveInterns').textContent = String(active);
+    document.getElementById('kpiCompletedInterns').textContent = String(completed);
+
+    bindInternRowActions();
+  }
+
+  function showInternDetails(id) {
+    const intern = localInternsCache.find(i => i.id === id);
+    if (!intern) return;
+    currentInternId = id;
+
+    const statusText = intern.status || 'Active';
+    const statusClass = statusText.toLowerCase();
+    const initials = (intern.internName || '?').split(' ').map(n => n[0] || '').slice(0, 2).join('').toUpperCase();
+
+    document.getElementById('detailInternAvatar').textContent = initials;
+    document.getElementById('detailInternName').innerHTML = `${intern.internName || 'Unnamed Intern'} <span class="status-badge ${statusClass}" id="detailInternStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">${statusText}</span>`;
+    document.getElementById('detailInternRoleDept').textContent = `Intern • ${intern.department || '-'} Department`;
+    document.getElementById('detailInternMeta').textContent = `${intern.customId || '-'} • ${intern.email || '-'}`;
+
+    document.getElementById('detailInternId').textContent = intern.customId || '-';
+    document.getElementById('detailInternPhone').textContent = 'N/A';
+    document.getElementById('detailInternStartDate').textContent = intern.startDate || '-';
+    document.getElementById('detailInternEndDate').textContent = intern.endDate || '-';
+    document.getElementById('detailInternDuration').textContent = 'N/A';
+    document.getElementById('detailInternStipend').textContent = 'N/A';
+    document.getElementById('detailInternLocation').textContent = 'N/A';
+    document.getElementById('detailInternUniversity').textContent = intern.university || '-';
+    document.getElementById('detailInternStatusVal').textContent = statusText;
+    document.getElementById('detailInternStatusVal').className = `status-badge ${statusClass}`;
+
+    detailsPanel.classList.remove('d-none');
+  }
+
+  function bindInternRowActions() {
+    document.querySelectorAll('.intern-row').forEach(row => {
+      row.addEventListener('click', () => showInternDetails(row.getAttribute('data-id')));
+    });
+    document.querySelectorAll('.view-intern-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showInternDetails(btn.getAttribute('data-id'));
+      });
+    });
+    document.querySelectorAll('.delete-intern-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const internId = btn.getAttribute('data-id');
+        if (confirm("Confirm action deletion parameter? This intern record will be permanently deleted.")) {
+          try {
+            await deleteDoc(doc(db, "interns", internId));
+            if (currentInternId === internId) { detailsPanel.classList.add('d-none'); currentInternId = null; }
+            await loadInterns();
+          } catch (err) {
+            console.error("Failed to delete record: ", err);
+            alert("Failed to delete intern: " + err.message);
+          }
+        }
+      });
+    });
+  }
+
+  // Add Intern modal wiring
+  const addInternModal = document.getElementById('addInternModal');
+  const addInternForm = document.getElementById('addInternForm');
+  const openAddInternModal = () => addInternModal.classList.remove('d-none');
+  const closeAddInternModal = () => { addInternModal.classList.add('d-none'); addInternForm.reset(); };
+
+  document.getElementById('openAddInternModalBtn').addEventListener('click', openAddInternModal);
+  document.getElementById('closeAddInternModalBtn').addEventListener('click', closeAddInternModal);
+  document.getElementById('cancelAddInternModalBtn').addEventListener('click', closeAddInternModal);
+
+  addInternForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const email = document.getElementById('internEmail').value;
+      const password = document.getElementById('internPassword').value;
+
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      const nextNum = localInternsCache.length + 1;
+      const assignedCustomId = `INTR${String(nextNum).padStart(3, '0')}`;
+
+      const newIntern = {
+        uid: userCredential.user.uid,
+        internName: document.getElementById('internName').value,
+        email: email,
+        customId: assignedCustomId,
+        department: document.getElementById('internDept').value,
+        status: document.getElementById('internStatus').value,
+        university: document.getElementById('university').value,
+        mentorName: document.getElementById('mentorName').value,
+        startDate: formatDate(document.getElementById('startDate').value),
+        endDate: formatDate(document.getElementById('endDate').value),
+        internAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 1}`
+      };
+
+      await addDoc(collection(db, "interns"), newIntern);
+      closeAddInternModal();
+      await loadInterns();
+    } catch (error) {
+      console.error("Exception handling input creation context metrics: ", error);
+      alert("Could not create intern account: " + error.message);
+    }
+  });
+
+  // Edit Intern modal wiring
+  const editInternModal = document.getElementById('editInternModal');
+  const editInternForm = document.getElementById('editInternForm');
+  const closeEditInternModal = () => { editInternModal.classList.add('d-none'); editInternForm.reset(); };
+
+  document.getElementById('editInternBtn').addEventListener('click', () => {
+    if (!currentInternId) { alert('Select an intern first.'); return; }
+    const intern = localInternsCache.find(i => i.id === currentInternId);
+    if (!intern) return;
+    document.getElementById('editInternId').value = intern.id;
+    document.getElementById('editInternName').value = intern.internName || '';
+    document.getElementById('editInternDept').value = intern.department || 'IT';
+    document.getElementById('editInternStatus').value = intern.status || 'Active';
+    document.getElementById('editUniversity').value = intern.university || '';
+    document.getElementById('editMentorName').value = intern.mentorName || '';
+    document.getElementById('editStartDate').value = intern.startDate || '';
+    document.getElementById('editEndDate').value = intern.endDate || '';
+    editInternModal.classList.remove('d-none');
+  });
+  document.getElementById('closeEditInternModalBtn').addEventListener('click', closeEditInternModal);
+  document.getElementById('cancelEditInternModalBtn').addEventListener('click', closeEditInternModal);
+
+  editInternForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const internId = document.getElementById('editInternId').value;
+    const updatedFields = {
+      internName: document.getElementById('editInternName').value,
+      department: document.getElementById('editInternDept').value,
+      status: document.getElementById('editInternStatus').value,
+      university: document.getElementById('editUniversity').value,
+      mentorName: document.getElementById('editMentorName').value,
+      startDate: formatDate(document.getElementById('editStartDate').value),
+      endDate: formatDate(document.getElementById('editEndDate').value)
+    };
+
+    try {
+      await updateDoc(doc(db, "interns", internId), updatedFields);
+      closeEditInternModal();
+      detailsPanel.classList.add('d-none');
+      await loadInterns();
+    } catch (error) {
+      console.error("Error updating intern: ", error);
+      alert("Failed to update intern records.");
+    }
+  });
+
+  loadInterns();
+</script>
+
+</body>
+</html>

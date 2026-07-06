@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager - Attendance Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;width:100%;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;transition: width 0.2s ease;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── MAIN SECTION ── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;}
+
+/* Page Header Utilities */
+.page-header{padding:16px 22px 0;background:#0b1437;}
+.breadcrumbs{display:flex;align-items:center;gap:6px;font-size:12px;color:#8898aa;margin-bottom:8px;}
+.breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
+.breadcrumbs a:hover{color:#4299e1;}
+.breadcrumbs span{color:#1b2e6e;}
+.header-action-container{display:flex;justify-content:space-between;align-items:center;}
+.page-header h2{font-size:22px;font-weight:700;color:#fff;}
+.page-header p{color:#8898aa;font-size:13px;margin-top:2px;}
+.header-controls{display:flex;align-items:center;gap:12px;}
+
+/* Global Component Framework Elements */
+.date-box{display:flex;align-items:center;gap:9px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;padding:9px 16px;color:#e2e8f0;font-size:13px;cursor:pointer;transition:.2s;}
+.date-box:hover{border-color:#4299e1;}
+.date-box i:first-child{color:#4299e1;}
+.date-box .fa-chevron-down{color:#8898aa;font-size:11px;}
+
+.btn-outline{background:none;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px;}
+.btn-outline:hover{border-color:#4299e1;color:#4299e1;background:rgba(66,153,225,0.05);}
+.btn-primary{background:#4299e1;color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:600;transition:.2s;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* ── CONTENT CONTAINER ── */
+.content{flex:1;padding:16px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+.content::-webkit-scrollbar{width:6px;}
+.content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* ── KPI STATISTICS GRID (Fixed Fluid 5 Columns) ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5, minmax(0, 1fr));gap:12px;width:100%;}
+.kpi-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:12px 10px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;min-width:0;overflow:hidden;}
+.kpi-card:hover{border-color:#4299e1;transform:translateY(-2px);}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
+.kpi-info{min-width:0;}
+.kpi-info p{font-size:11px;color:#8898aa;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kpi-info h3{font-size:calc(15px + 0.3vw);font-weight:700;color:#fff;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kpi-info small{font-size:10.5px;color:#8898aa;margin-top:4px;display:block;white-space:nowrap;}
+
+/* ── GRAPH SECTIONS WRAPPER ── */
+.charts-grid{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px;width:100%;}
+.chart-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.2);min-width:0;}
+.chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.chart-header h3{font-size:14.5px;font-weight:600;color:#fff;}
+
+/* Multi Line Chart Elements Architecture */
+.line-chart-area{position:relative;height:160px;display:flex;gap:12px;margin-bottom:8px;}
+.lc-y-axis{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding-bottom:20px;min-width:24px;}
+.lc-y-axis span{font-size:10px;color:#8898aa;}
+.lc-canvas{flex:1;display:flex;flex-direction:column;min-width:0;}
+.lc-svg-box{flex:1;border-left:1px solid #1b2e6e;border-bottom:1px solid #1b2e6e;position:relative;}
+.lc-svg-box svg{width:100%;height:100%;position:absolute;top:0;left:0;}
+.lc-x-axis{display:flex;justify-content:space-between;margin-top:6px;gap:2px;}
+.lc-x-axis span{font-size:10px;color:#8898aa;text-align:center;flex:1;white-space:nowrap;}
+
+/* Legend configurations */
+.chart-legends-footer{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:8px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#cbd5e1;}
+.legend-line-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+/* Donut Panel Layout */
+.donut-layout{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;}
+.donut-graphic{position:relative;width:125px;height:125px;flex-shrink:0;}
+.donut-graphic svg{width:125px;height:125px;}
+.donut-legend-column{flex:1;display:flex;flex-direction:column;gap:10px;}
+.dl-row{display:flex;align-items:center;gap:8px;font-size:12.5px;}
+.dl-dot{width:9px;height:9px;border-radius:50%;}
+.dl-label{color:#cbd5e1;flex:1;}
+.dl-value{color:#fff;font-weight:600;}
+
+/* ── FLUID COMPACT CALENDAR LAYOUT ── */
+.calendar-layout {display: flex; flex-direction: column; gap: 8px;}
+.cal-days-grid {display: grid; grid-template-columns: repeat(7, 1fr); text-align: center;}
+.cal-days-grid span {font-size: 11px; font-weight: 600; color: #4a5568; padding-bottom: 6px;}
+.cal-dates-grid {display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center;}
+.cal-cell {background: #0b1437; border: 1px solid #1b2e6e; border-radius: 6px; padding: 4px 1px; min-height: 32px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; position: relative;}
+.cal-cell.empty {background: transparent; border: none;}
+.cal-num {font-size: 10.5px; font-weight: 600; color: #e2e8f0;}
+.cal-cell.empty .cal-num {color: #4a5568;}
+.cal-dots {display: flex; gap: 2px; justify-content: center; width: 100%; margin-top: 2px;}
+.dot {width: 4px; height: 4px; border-radius: 50%; display: inline-block;}
+.dot.p {background: #4ade80;} /* Present */
+.dot.a {background: #f87171;} /* Absent */
+.dot.l {background: #fbbf24;} /* Late */
+
+/* ── FILTER UTILITIES PANEL ── */
+.filter-container{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:12px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;box-shadow:0 4px 18px rgba(0,0,0,.2);}
+.search-input-wrap{position:relative;flex:2 1 200px;display:flex;align-items:center;}
+.search-input-wrap i{position:absolute;left:12px;color:#4a5568;font-size:13px;}
+.search-input-wrap input{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px 8px 34px;color:#e2e8f0;font-size:12.5px;outline:none;transition:.2s;}
+.search-input-wrap input:focus{border-color:#4299e1;}
+.search-input-wrap input::placeholder{color:#4a5568;}
+
+.select-input-wrap{position:relative;width:180px;flex:1 1 140px;display:flex;align-items:center;}
+.select-input-wrap select{width:100%;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 30px 8px 12px;color:#e2e8f0;font-size:12.5px;outline:none;appearance:none;cursor:pointer;transition:.2s;}
+.select-input-wrap select:focus{border-color:#4299e1;}
+.select-input-wrap i{position:absolute;right:12px;color:#8898aa;font-size:10px;pointer-events:none;}
+
+/* ── MATRIX DATA TABLE PANEL ── */
+.table-container{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.2);overflow:hidden;}
+.responsive-table-scroller{overflow-x:auto;}
+.matrix-table{width:100%;border-collapse:collapse;text-align:left;}
+.matrix-table th{background:rgba(11,20,55,0.4);border-bottom:1px solid #1b2e6e;color:#8898aa;font-size:11.5px;font-weight:600;padding:12px 14px;white-space:nowrap;}
+.matrix-table th.sub-day-header{font-size:10px;color:#4a5568;font-weight:700;text-align:center;}
+.matrix-table td{border-bottom:1px solid #1b2e6e;padding:10px 14px;color:#e2e8f0;font-size:13px;vertical-align:middle;white-space:nowrap;}
+.matrix-table tr:last-child td{border-bottom:none;}
+.matrix-table tr:hover td{background:rgba(66,153,225,0.01);}
+
+/* Table Content Substructures styling */
+.id-text{font-weight:600;color:#8898aa;}
+.user-meta-cell{display:flex;align-items:center;gap:10px;}
+.user-mini-avatar{width:26px;height:26px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:11px;}
+.user-fullname{font-weight:600;color:#fff;}
+
+/* Check/Status Indicators Cells Inside Matrix Row */
+.matrix-status-cell{text-align:center;}
+.matrix-status-cell i{font-size:14px;}
+.matrix-status-cell i.fa-circle-check{color:#4ade80;}
+.matrix-status-cell i.fa-clock{color:#fbbf24;}
+.matrix-status-cell span.absent-dash{color:#4a5568;font-weight:700;}
+
+/* Badge Status Styles */
+.status-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge.present{background:rgba(74,222,128,0.15);color:#4ade80;}
+.status-badge.late{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.status-badge.absent{background:rgba(248,113,113,0.15);color:#f87171;}
+
+/* Pagination footer design rules */
+.pagination-footer{border-top:1px solid #1b2e6e;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,20,55,0.2);}
+.pagination-info-text{font-size:12.5px;color:#8898aa;}
+.page-controls-wrap{display:flex;align-items:center;gap:4px;}
+.p-btn{min-width:28px;height:28px;padding:0 8px;border-radius:6px;background:#0b1437;border:1px solid #1b2e6e;color:#8898aa;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;text-decoration:none;}
+.p-btn:hover{border-color:#4299e1;color:#4299e1;}
+.p-btn.active{background:#4299e1;border-color:#4299e1;color:#fff;}
+
+.footer-text{text-align:center;color:#4a5568;font-size:11px;padding:4px 0 10px;}
+
+/* ── RE-ARCHITECTED SAFE RESPONSIVENESS ── */
+@media(max-width:1150px){
+  .sidebar { width: 72px; overflow-x: hidden; }
+  .sidebar ul li a { justify-content: center; padding: 15px 0; gap: 0; }
+  .sidebar ul li a span, .sidebar ul li a text { display: none; }
+  .sidebar ul li a { font-size: 0; }
+  .sidebar ul li a i { font-size: 16px; width: auto; }
+  
+  /* Stacks panels on smaller layout settings cleanly */
+  .charts-grid { grid-template-columns: 1fr; }
+}
+
+@media(max-width:750px){
+  .navbar-title { display: none; }
+  .header-action-container { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">Manager</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search anything...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
+      <i class="fa-solid fa-chevron-down"></i>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
+      <li><a href="team-members.html"><i class="fa-solid fa-users"></i>Team Members</a></li>
+      <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
+      <li><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+      <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <div class="breadcrumbs">
+        <a href="#">Dashboard</a> <span>/</span> <a href="#" style="color:#e2e8f0">Attendance</a>
+      </div>
+      <div class="header-action-container">
+        <div>
+          <h2>Attendance</h2>
+          <p>View and monitor your team members' attendance and working hours.</p>
+        </div>
+        <div class="header-controls">
+          <div class="date-box">
+            <i class="fa-regular fa-calendar"></i>
+            <span>20 May – 26 May 2024</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <button class="btn-outline"><i class="fa-solid fa-download"></i>Export</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-info"><p>Total Members</p><h3>18</h3><small>Team Members</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
+          <div class="kpi-info"><p>Present</p><h3>15</h3><small style="color: #4ade80">83.3%</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-user-slash"></i></div>
+          <div class="kpi-info"><p>Absent</p><h3>2</h3><small style="color: #f87171">11.1%</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="kpi-info"><p>Late</p><h3>1</h3><small style="color: #fbbf24">5.6%</small></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i class="fa-solid fa-business-time"></i></div>
+          <div class="kpi-info"><p>Avg Hours</p><h3>8h 15m</h3><small>This Week</small></div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        
+        <div class="chart-panel">
+          <div class="chart-header"><h3>Attendance Overview</h3></div>
+          
+          <div class="line-chart-area">
+            <div class="lc-y-axis"><span>20</span><span>15</span><span>10</span><span>5</span><span>0</span></div>
+            <div class="lc-canvas">
+              <div class="lc-svg-box">
+                <svg viewBox="0 0 600 130" preserveAspectRatio="none">
+                  <polyline points="40,30 130,22 220,18 310,26 400,26 490,120 570,120" fill="none" stroke="#4299e1" stroke-width="2"/>
+                  <polyline points="40,95 130,90 220,95 310,100 400,105 490,120 570,120" fill="none" stroke="#f87171" stroke-width="1.5"/>
+                  <polyline points="40,115 130,112 220,118 310,115 400,112 490,120 570,120" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+                  
+                  <circle cx="40" cy="30" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="130" cy="22" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="220" cy="18" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="310" cy="26" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="400" cy="26" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="490" cy="120" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                  <circle cx="570" cy="120" r="3" fill="#111c44" stroke="#4299e1" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="lc-x-axis">
+                <span>Mon 20</span><span>Tue 21</span><span>Wed 22</span><span>Thu 23</span><span>Fri 24</span><span>Sat 25</span><span>Sun 26</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-legends-footer">
+            <span class="legend-item"><span class="legend-line-dot" style="background:#4299e1"></span>Present</span>
+            <span class="legend-item"><span class="legend-line-dot" style="background:#f87171"></span>Absent</span>
+            <span class="legend-item"><span class="legend-line-dot" style="background:#fbbf24"></span>Late</span>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-header">
+            <h3>Monthly Roster Log</h3>
+            <span style="font-size:12px; color:#4299e1; font-weight:600;">May 2024</span>
+          </div>
+          <div class="calendar-layout">
+            <div class="cal-days-grid">
+              <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+            </div>
+            <div class="cal-dates-grid">
+              <span class="cal-cell empty"></span><span class="cal-cell empty"></span>
+              <span class="cal-cell empty"></span><span class="cal-cell empty"></span>
+              
+              <div class="cal-cell"><span class="cal-num">1</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">2</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">3</span><div class="cal-dots"><span class="dot l"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">4</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">5</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">6</span><div class="cal-dots"><span class="dot a"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">7</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">8</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">9</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">10</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">11</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">12</span><div class="cal-dots"><span class="dot l"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">13</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">14</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">15</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">16</span><div class="cal-dots"><span class="dot a"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">17</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">18</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">19</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">20</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">21</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">22</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">23</span><div class="cal-dots"><span class="dot p"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">24</span><div class="cal-dots"><span class="dot l"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">25</span><div class="cal-dots"><span class="dot a"></span></div></div>
+              <div class="cal-cell" style="border-color:#4299e1;"><span class="cal-num" style="color:#4299e1">26</span><div class="cal-dots"><span class="dot a"></span></div></div>
+              <div class="cal-cell"><span class="cal-num">27</span><div class="cal-dots"></div></div>
+              <div class="cal-cell"><span class="cal-num">28</span><div class="cal-dots"></div></div>
+              <div class="cal-cell"><span class="cal-num">29</span><div class="cal-dots"></div></div>
+              <div class="cal-cell"><span class="cal-num">30</span><div class="cal-dots"></div></div>
+              <div class="cal-cell"><span class="cal-num">31</span><div class="cal-dots"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="filter-container">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search by name or ID...">
+        </div>
+        <div class="select-input-wrap">
+          <select><option>All Departments</option></select>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="select-input-wrap">
+          <select><option>All Status</option></select>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <button class="btn-outline" style="padding:8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+      </div>
+
+      <div class="table-container">
+        <div class="responsive-table-scroller">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Employee ID</th>
+                <th rowspan="2">Name</th>
+                <th rowspan="2">Department</th>
+                <th colspan="7" style="text-align: center; border-bottom: 1px solid #1b2e6e; padding: 6px 0;">Weekly Logs Matrix</th>
+                <th rowspan="2">Total Hours</th>
+                <th rowspan="2" style="text-align: center;">Status</th>
+              </tr>
+              <tr>
+                <th class="sub-day-header">Mon<br><small>20 May</small></th>
+                <th class="sub-day-header">Tue<br><small>21 May</small></th>
+                <th class="sub-day-header">Wed<br><small>22 May</small></th>
+                <th class="sub-day-header">Thu<br><small>23 May</small></th>
+                <th class="sub-day-header">Fri<br><small>24 May</small></th>
+                <th class="sub-day-header">Sat<br><small>25 May</small></th>
+                <th class="sub-day-header">Sun<br><small>26 May</small></th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              <tr><td colspan="12" style="text-align:center; padding:30px; color:#8898aa;">Loading attendance matrix...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-footer">
+          <div class="pagination-info-text" id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
+          <div class="page-controls-wrap">
+            <a href="#" class="p-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px"></i></a>
+            <a href="#" class="p-btn active">1</a>
+            <a href="#" class="p-btn">2</a>
+            <a href="#" class="p-btn">3</a>
+            <a href="#" class="p-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["manager"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('attendanceTableBody');
+    const entriesCounter = document.getElementById('tableEntriesCounter');
+
+    // Build the current Mon-Sun week as ISO date strings (YYYY-MM-DD)
+    function getCurrentWeekDates() {
+        const today = new Date();
+        const day = today.getDay(); // 0 = Sun
+        const diffToMonday = day === 0 ? -6 : 1 - day;
+        const monday = new Date(today);
+        monday.setDate(today.getDate() + diffToMonday);
+        monday.setHours(0, 0, 0, 0);
+
+        const dates = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(monday);
+            d.setDate(monday.getDate() + i);
+            const iso = d.toISOString().slice(0, 10);
+            dates.push(iso);
+        }
+        return dates;
+    }
+
+    function normalizeDate(value) {
+        if (!value) return null;
+        if (typeof value.toDate === 'function') return value.toDate().toISOString().slice(0, 10);
+        if (typeof value === 'string') return value.slice(0, 10);
+        return null;
+    }
+
+    // Accepts numeric hours or strings like "8h 30m" and returns decimal hours
+    function parseHours(value) {
+        if (value == null) return 0;
+        if (typeof value === 'number') return value;
+        const str = String(value);
+        const hMatch = str.match(/(\d+(\.\d+)?)\s*h/i);
+        const mMatch = str.match(/(\d+)\s*m/i);
+        if (hMatch || mMatch) {
+            const h = hMatch ? parseFloat(hMatch[1]) : 0;
+            const m = mMatch ? parseInt(mMatch[1], 10) : 0;
+            return h + (m / 60);
+        }
+        const num = parseFloat(str);
+        return isNaN(num) ? 0 : num;
+    }
+
+    function formatHours(decimalHours) {
+        const h = Math.floor(decimalHours);
+        const m = Math.round((decimalHours - h) * 60);
+        return `${h}h ${String(m).padStart(2, '0')}m`;
+    }
+
+    function statusCellHtml(record) {
+        if (!record) return `<span class="absent-dash">—</span>`;
+        const status = (record.status || '').toLowerCase();
+        if (status === 'present') return `<i class="fa-solid fa-circle-check"></i>`;
+        if (status === 'late') return `<i class="fa-solid fa-clock"></i>`;
+        return `<span class="absent-dash">—</span>`;
+    }
+
+    async function loadAttendanceMatrix() {
+        try {
+            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+            const myDept = meSnap.exists() ? meSnap.data().department : null;
+
+            const weekDates = getCurrentWeekDates();
+
+            const [employeesSnap, attendanceSnap] = await Promise.all([
+                getDocs(query(collection(db, "employees"), where("department", "==", myDept))),
+                getDocs(query(collection(db, "attendance"), where("department", "==", myDept)))
+            ]);
+
+            // Group attendance records by employeeUid -> { dateStr: record }
+            const attendanceByUid = {};
+            attendanceSnap.forEach((snap) => {
+                const rec = snap.data();
+                const dateStr = normalizeDate(rec.date);
+                if (!dateStr || !weekDates.includes(dateStr)) return;
+                if (!attendanceByUid[rec.employeeUid]) attendanceByUid[rec.employeeUid] = {};
+                attendanceByUid[rec.employeeUid][dateStr] = rec;
+            });
+
+            tableBody.innerHTML = "";
+            let counter = 0;
+
+            if (employeesSnap.empty) {
+                tableBody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 30px; color: #8898aa;">No team members found in your department.</td></tr>`;
+                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+                return;
+            }
+
+            employeesSnap.forEach((empSnap) => {
+                const emp = empSnap.data();
+                counter++;
+                const formattedId = `EMP${String(counter).padStart(3, '0')}`;
+                const recordsByDate = attendanceByUid[emp.uid] || {};
+
+                let totalHours = 0;
+                let hasPresent = false, hasLate = false, hasAbsentMarked = false;
+                const dayCells = weekDates.map((dateStr) => {
+                    const rec = recordsByDate[dateStr];
+                    if (rec) {
+                        totalHours += parseHours(rec.workingHours);
+                        const status = (rec.status || '').toLowerCase();
+                        if (status === 'present') hasPresent = true;
+                        else if (status === 'late') hasLate = true;
+                        else if (status === 'absent') hasAbsentMarked = true;
+                    }
+                    return `<td class="matrix-status-cell">${statusCellHtml(rec)}</td>`;
+                }).join('');
+
+                let overallStatus = 'Absent';
+                let overallClass = 'absent';
+                if (hasLate) { overallStatus = 'Late'; overallClass = 'late'; }
+                else if (hasPresent) { overallStatus = 'Present'; overallClass = 'present'; }
+                else if (hasAbsentMarked) { overallStatus = 'Absent'; overallClass = 'absent'; }
+
+                const rowTemplate = `
+                    <tr>
+                        <td><span class="id-text">${formattedId}</span></td>
+                        <td><div class="user-meta-cell"><div class="user-mini-avatar"><i class="fa-regular fa-user"></i></div><span class="user-fullname">${emp.name || ''}</span></div></td>
+                        <td>${emp.department || '-'}</td>
+                        ${dayCells}
+                        <td><strong>${formatHours(totalHours)}</strong></td>
+                        <td style="text-align: center;"><span class="status-badge ${overallClass}">${overallStatus}</span></td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            });
+
+            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
+
+        } catch (err) {
+            console.error("Failed to load attendance matrix: ", err);
+            tableBody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
+            alert("Error loading attendance: " + err.message);
+        }
+    }
+
+    loadAttendanceMatrix();
+</script>
+
+</body>
+</html>

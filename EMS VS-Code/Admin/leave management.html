@@ -1,0 +1,1330 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Leave Management - Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+ *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1437;
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+    color:#d7dfef;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+.logo{
+    padding:18px 25px;
+    font-size:20px;
+    font-weight:700;
+    color:#ffffff;
+    border-bottom:1px solid #1b2e6e;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li{
+    padding:13px 22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    color:#8898aa;
+    font-size:14px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    width:100%;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:230px;
+    width:calc(100% - 230px);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+/* =========================
+   TOPBAR
+========================= */
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ TOP NAVBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.navbar{
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger{
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo{
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title{
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search{
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i{
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input{
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#4a5568;
+}
+
+.navbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn{
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+}
+
+.nav-icon-btn:hover{
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge{
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+}
+
+.nav-profile-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4{
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down{
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    flex:1;
+    padding:18px 20px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    background:#0b1437;
+}
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.breadcrumb{
+    color:#8898aa;
+    font-size:13px;
+}
+
+.breadcrumb i{
+    margin:0 8px;
+    color:#4299e1;
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.page-header h1{
+    font-size:28px;
+    color:#ffffff;
+    margin-bottom:5px;
+}
+
+.page-header p{
+    color:#8898aa;
+    font-size:13px;
+}
+
+.header-buttons{
+    display:flex;
+    gap:10px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+    padding:10px 18px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    background:#111c44;
+    color:#ffffff;
+    cursor:pointer;
+    transition:.3s;
+    font-size:13px;
+}
+
+.btn:hover{
+    background:#1b2e6e;
+}
+
+.btn.add{
+    background:#4299e1;
+    border-color:#4299e1;
+}
+
+.btn.add:hover{
+    background:#3182ce;
+    border-color:#3182ce;
+}
+/* =========================
+   CARDS
+========================= */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+}
+
+.card{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+    transition:.3s;
+}
+
+.card:hover{
+    border-color:#4299e1;
+    transform:translateY(-2px);
+}
+
+.icon{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#0b1437;
+    border:2px solid #4299e1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4299e1;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.card h4{
+    color:#8898aa;
+    font-size:14px;
+    font-weight:500;
+}
+
+.card h2{
+    color:#ffffff;
+    font-size:28px;
+    margin:4px 0;
+}
+
+.card p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   FILTER PANEL
+========================= */
+
+.filter-box{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.filter-box input,
+.filter-box select{
+    min-width:180px;
+    padding:11px 14px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    background:#0b1437;
+    color:#ffffff;
+    font-size:13px;
+    outline:none;
+    transition:.3s;
+}
+
+.filter-box input::placeholder{
+    color:#8898aa;
+}
+
+.filter-box input:focus,
+.filter-box select:focus{
+    border-color:#4299e1;
+}
+
+.filter-box select{
+    cursor:pointer;
+}
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+.filter-box .btn{
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    color:#ffffff;
+    padding:10px 18px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.filter-box .btn:hover{
+    background:#1b2e6e;
+}
+
+.filter-box .btn:first-of-type{
+    background:#4299e1;
+    border-color:#4299e1;
+}
+
+.filter-box .btn:first-of-type:hover{
+    background:#3182ce;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs{
+    display:flex;
+    gap:28px;
+    border-bottom:1px solid #1b2e6e;
+    padding-bottom:12px;
+}
+
+.tab{
+    color:#8898aa;
+    font-size:14px;
+    cursor:pointer;
+    padding-bottom:12px;
+    transition:.3s;
+    position:relative;
+}
+
+.tab:hover{
+    color:#ffffff;
+}
+
+.tab.active{
+    color:#4299e1;
+    font-weight:600;
+}
+
+.tab.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-13px;
+    width:100%;
+    height:3px;
+    background:#4299e1;
+    border-radius:10px;
+}
+/* =========================
+   TABLE
+========================= */
+
+.table-box{
+    flex:1;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:auto;
+    box-shadow:0 4px 20px rgba(0,0,0,.30);
+}
+
+.table-box::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#1b2e6e;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1200px;
+}
+
+thead{
+    background:#16265c;
+}
+
+th{
+    padding:15px;
+    text-align:left;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:600;
+    border-bottom:1px solid #1b2e6e;
+}
+
+td{
+    padding:14px 15px;
+    color:#d7dfef;
+    font-size:13px;
+    border-top:1px solid #1b2e6e;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.3s;
+}
+
+tbody tr:hover{
+    background:#16265c;
+}
+
+/* =========================
+   EMPLOYEE
+========================= */
+
+.employee{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.employee img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px solid #4299e1;
+}
+
+.employee h4{
+    color:#ffffff;
+    font-size:14px;
+    margin-bottom:3px;
+}
+
+.employee p{
+    color:#8898aa;
+    font-size:12px;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* Approved */
+
+.status.approved{
+    background:rgba(34,197,94,.18);
+    color:#4ade80;
+}
+
+/* Pending */
+
+.status.pending{
+    background:rgba(251,191,36,.18);
+    color:#fbbf24;
+}
+
+/* Rejected */
+
+.status.rejected{
+    background:rgba(239,68,68,.18);
+    color:#f87171;
+}
+
+/* Cancelled */
+
+.status.cancelled{
+    background:rgba(107,114,128,.18);
+    color:#9ca3af;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.action{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.action i{
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+    font-size:15px;
+}
+
+.action i:hover{
+    color:#4299e1;
+}
+
+/* Checkbox */
+
+input[type="checkbox"]{
+    accent-color:#4299e1;
+    cursor:pointer;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#8898aa;
+    font-size:13px;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pages{
+    display:flex;
+    gap:8px;
+}
+
+.page{
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#8898aa;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.page:hover{
+    background:#1b2e6e;
+    color:#ffffff;
+}
+
+.page.active{
+    background:#4299e1;
+    border-color:#4299e1;
+    color:#ffffff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1400px){
+
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:1100px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .filter-box{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-box input,
+    .filter-box select,
+    .filter-box .btn{
+        width:100%;
+    }
+
+}
+
+@media(max-width:768px){
+
+    body{
+        overflow:auto;
+    }
+
+    .sidebar{
+        width:200px;
+    }
+
+    .main{
+        margin-left:200px;
+        width:calc(100% - 200px);
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .search{
+        width:220px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .header-buttons{
+        width:100%;
+        flex-wrap:wrap;
+    }
+
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        EMS ADMIN
+    </div>
+
+<ul>
+ <li ><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li ><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li ><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li class="active"><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li ><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li ><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+ </ul>
+</div>
+
+
+
+<!-- Main -->
+
+<div class="main">
+
+<!-- Topbar -->
+
+<!-- TOP NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="navbar-logo">
+            LOGO
+        </div>
+
+        <span class="navbar-title">
+            EMPLOYEE MANAGEMENT SYSTEM
+        </span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </div>
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+
+        <div class="nav-profile" id="navProfileToggle">
+
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="content">
+
+<div class="breadcrumb">
+
+Dashboard
+<i class="fa-solid fa-angle-right"></i>
+
+Leave Management
+
+</div>
+
+
+<div class="page-header">
+
+<div>
+
+<h1>Leave Management</h1>
+
+<p>
+Manage and review leave requests submitted by employees.
+</p>
+
+</div>
+
+<div class="header-buttons">
+
+<button class="btn">
+
+<i class="fa-solid fa-download"></i>
+
+Export
+
+</button>
+
+<button class="btn">
+
+<i class="fa-solid fa-file"></i>
+
+Leave Reports
+
+</button>
+
+<button class="btn add">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Leave
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- Cards -->
+
+<div class="cards">
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-regular fa-calendar"></i>
+</div>
+
+<div>
+
+<h4>Total Requests</h4>
+
+<h2 id="cardTotalRequests">--</h2>
+
+<p>This Month</p>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="icon">
+
+<i class="fa-solid fa-check"></i>
+
+</div>
+
+<div>
+
+<h4>Approved</h4>
+
+<h2 id="cardApproved">--</h2>
+
+<p>42.86% of total</p>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="icon">
+
+<i class="fa-regular fa-clock"></i>
+
+</div>
+
+<div>
+
+<h4>Pending</h4>
+
+<h2 id="cardPending">--</h2>
+
+<p>33.33% of total</p>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="icon">
+
+<i class="fa-solid fa-xmark"></i>
+
+</div>
+
+<div>
+
+<h4>Rejected</h4>
+
+<h2 id="cardRejected">--</h2>
+
+<p>23.81% of total</p>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="icon">
+
+<i class="fa-regular fa-calendar"></i>
+
+</div>
+
+<div>
+
+<h4>Today's Requests</h4>
+
+<h2>3</h2>
+
+<p>View today's requests</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Filters -->
+
+<div class="filter-box">
+
+<input type="text"
+placeholder="Search employee name or ID">
+
+<input type="text"
+value="May 01, 2025 - May 31, 2025">
+
+<select>
+<option>All Departments</option>
+</select>
+
+<select>
+<option>All Leave Types</option>
+</select>
+
+<select>
+<option>All Status</option>
+</select>
+
+<button class="btn">
+Filter
+</button>
+
+<button class="btn">
+Reset
+</button>
+
+</div>
+
+
+
+<!-- Tabs -->
+
+<div class="tabs">
+
+<div class="tab active">
+All Requests
+</div>
+
+<div class="tab">
+Pending
+</div>
+
+<div class="tab">
+Approved
+</div>
+
+<div class="tab">
+Rejected
+</div>
+
+<div class="tab">
+Cancelled
+</div>
+
+</div>
+<!-- Table -->
+
+<div class="table-box">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+<input type="checkbox">
+</th>
+
+<th>Request ID</th>
+
+<th>Employee</th>
+
+<th>Department</th>
+
+<th>Requested By</th>
+
+<th>Leave Type</th>
+
+<th>Dates</th>
+
+<th>Days</th>
+
+<th>Reason</th>
+
+<th>Applied On</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="leaveTableBody">
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- Footer -->
+
+<div class="footer">
+
+<div>
+
+Showing 1 to 7 of 42 entries
+
+</div>
+
+<div class="pages">
+
+<div class="page">
+<i class="fa-solid fa-angle-left"></i>
+</div>
+
+<div class="page active">
+1
+</div>
+
+<div class="page">
+2
+</div>
+
+<div class="page">
+3
+</div>
+
+<div class="page">
+4
+</div>
+
+<div class="page">
+5
+</div>
+
+<div class="page">
+...
+</div>
+
+<div class="page">
+6
+</div>
+
+<div class="page">
+
+<i class="fa-solid fa-angle-right"></i>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+<script type="module">
+    import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const tableBody = document.getElementById('leaveTableBody');
+    let cachedRequests = {};
+
+    async function loadLeaveRequests() {
+        tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#8898aa;">Loading leave requests...</td></tr>`;
+        try {
+            const snap = await getDocs(collection(db, "leaveRequests"));
+            tableBody.innerHTML = "";
+            cachedRequests = {};
+
+            if (snap.empty) {
+                tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#8898aa;">No leave requests found.</td></tr>`;
+                updateCards([]);
+                return;
+            }
+
+            const allRequests = [];
+            snap.forEach((docSnap) => {
+                const req = { id: docSnap.id, ...docSnap.data() };
+                cachedRequests[req.id] = req;
+                allRequests.push(req);
+
+                const statusClass = (req.status || 'Pending').toLowerCase();
+                tableBody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>${req.id.slice(0, 8)}</td>
+                        <td><div class="employee"><div><h4>${req.employeeName || 'Unknown'}</h4></div></div></td>
+                        <td>${req.department || '-'}</td>
+                        <td>${(req.requesterRole || 'employee').charAt(0).toUpperCase() + (req.requesterRole || 'employee').slice(1)}</td>
+                        <td>${req.leaveType || '-'}</td>
+                        <td>${req.fromDate || '-'} to ${req.toDate || '-'}</td>
+                        <td>${req.totalDays || '-'}</td>
+                        <td>${req.reason || '-'}</td>
+                        <td>${req.appliedOn || '-'}</td>
+                        <td><span class="status ${statusClass}">${req.status || 'Pending'}</span></td>
+                        <td>
+                            <div class="action">
+                                <i class="fa-solid fa-check approve-btn" data-id="${req.id}" title="Approve"></i>
+                                <i class="fa-solid fa-xmark reject-btn" data-id="${req.id}" title="Reject"></i>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            updateCards(allRequests);
+            bindActionListeners();
+
+        } catch (error) {
+            console.error("Failed to load leave requests: ", error);
+            tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateCards(requests) {
+        document.getElementById('cardTotalRequests').textContent = requests.length;
+        document.getElementById('cardApproved').textContent = requests.filter(r => r.status === 'Approved').length;
+        document.getElementById('cardPending').textContent = requests.filter(r => r.status === 'Pending').length;
+        document.getElementById('cardRejected').textContent = requests.filter(r => r.status === 'Rejected').length;
+    }
+
+    function bindActionListeners() {
+        document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                await updateDoc(doc(db, "leaveRequests", btn.getAttribute('data-id')), { status: "Approved" });
+                loadLeaveRequests();
+            });
+        });
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                await updateDoc(doc(db, "leaveRequests", btn.getAttribute('data-id')), { status: "Rejected" });
+                loadLeaveRequests();
+            });
+        });
+    }
+
+    loadLeaveRequests();
+</script>
+
+</body>
+
+</html>

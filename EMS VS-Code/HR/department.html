@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Dashboard - Departments</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ── NAVBAR ── */
+.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:14px;}
+.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
+.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
+.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:13px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:16px;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
+.nav-profile:hover{border-color:#4299e1;}
+.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile{position:relative;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+/* ── BODY WRAP ── */
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
+.sidebar ul{list-style:none;padding:8px 0;}
+.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar ul li a i{width:16px;font-size:14px;}
+
+/* ── WORKSPACE SPLIT ── */
+.main-workspace{flex:1;display:flex;overflow:hidden;}
+
+/* ── DIRECTORY PANEL (LEFT) ── */
+.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
+.page-header{padding:16px 22px 0;}
+.page-header h2{font-size:20px;font-weight:700;color:#fff;}
+.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
+.breadcrumb span{color:#4299e1;}
+
+.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.directory-content::-webkit-scrollbar{width:6px;}
+.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Mini KPI Dashboard row */
+.mini-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:15px;color:#4299e1;}
+.mini-info p{font-size:11px;color:#8898aa;}
+.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
+.mini-info small{font-size:10px;color:#4ade80;}
+
+/* Search & Actions Toolbar */
+.filter-bar{display:flex;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
+.search-box{flex:1;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
+.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
+.search-box i{color:#4a5568;font-size:12px;}
+.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-action:hover{background:#2a449c;}
+.btn-primary{background:#4299e1;}
+.btn-primary:hover{background:#2b7fd1;}
+
+/* Table Elements */
+.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
+.dept-table{width:100%;border-collapse:collapse;text-align:left;}
+.dept-table th{background:#162256;color:#8898aa;font-size:12px;font-weight:600;padding:12px 16px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
+.dept-table td{padding:12px 16px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.dept-table tr:last-child td{border-bottom:none;}
+.dept-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
+.dept-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+.dept-name-cell{display:flex;align-items:center;gap:10px;font-weight:600;color:#fff;}
+.dept-icon-box{width:28px;height:28px;background:#0b1437;border:1px solid #1b2e6e;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:12px;}
+
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;}
+.status-badge.active{background:rgba(74,222,128,0.1);color:#4ade80;}
+.status-badge.inactive{background:rgba(148,163,184,0.1);color:#94a3b8;}
+.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
+.btn-icon:hover{color:#fff;}
+
+/* Pagination footer */
+.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
+.pagination{display:flex;gap:4px;}
+.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
+.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+
+/* ── DETAILS PANEL (RIGHT) ── */
+.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
+.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.details-header h3{color:#fff;font-size:16px;font-weight:600;}
+.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
+.close-panel-btn:hover{color:#fff;}
+
+.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:18px;}
+.details-content::-webkit-scrollbar{width:6px;}
+.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+
+/* Profile Overview block */
+.profile-hero{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
+.hero-avatar{width:56px;height:56px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:20px;color:#4299e1;}
+.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;}
+.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
+.hero-meta span{font-size:11.5px;color:#cbd5e1;display:block;margin-top:2px;}
+
+/* Navigation Tabs */
+.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
+.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;transition:.2s;}
+.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.tab-link:hover{color:#fff;}
+
+/* Profile Blocks Section Content */
+.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:16px;}
+.section-title{color:#fff;font-size:13.5px;font-weight:600;margin-bottom:10px;}
+.section-desc{font-size:12.5px;color:#cbd5e1;line-height:1.5;margin-bottom:14px;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
+.info-label{font-size:12.5px;color:#8898aa;}
+.info-value{font-size:12.5px;color:#e2e8f0;}
+
+/* Micro Lists Metrics Blocks */
+.metrics-list{display:flex;flex-direction:column;gap:12px;margin-top:6px;}
+.metric-row{display:flex;align-items:center;justify-content:between;padding-bottom:10px;border-bottom:1px solid #1b2e6e;}
+.metric-row:last-child{border-bottom:none;padding-bottom:0;}
+.metric-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#cbd5e1;}
+.metric-meta i{color:#8898aa;width:14px;font-size:13px;text-align:center;}
+.metric-val{font-size:12.5px;color:#fff;font-weight:600;}
+
+/* Action Drawer Footer */
+.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;justify-content:flex-end;gap:10px;}
+.btn-outline{background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-outline:hover{border-color:#8898aa;color:#fff;}
+.btn-danger-outline{background:none;border:1px solid #f56565;color:#f56565;padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-danger-outline:hover{background:rgba(245,101,101,0.1);}
+
+.d-none{display:none !important;}
+
+/* ── ADD DEPARTMENT MODAL OVERLAY (additive, matches Employee.html house style) ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,9,28,0.75);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;width:100%;max-width:480px;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;flex-direction:column;overflow:hidden;}
+.modal-header{padding:16px 20px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
+.modal-header h3{color:#fff;font-size:15px;font-weight:600;}
+.modal-body{padding:20px;display:flex;flex-direction:column;gap:14px;}
+.modal-body .form-group{display:flex;flex-direction:column;gap:6px;}
+.modal-body .form-group label{font-size:12px;color:#cbd5e1;font-weight:500;}
+.modal-body .form-group label span{color:#f56565;margin-left:2px;}
+.modal-body .form-group input, .modal-body .form-group select, .modal-body .form-group textarea{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;outline:none;width:100%;font-family:inherit;}
+.modal-body .form-group textarea{resize:none;height:70px;}
+.modal-body .form-group input:focus, .modal-body .form-group select:focus, .modal-body .form-group textarea:focus{border-color:#4299e1;}
+.modal-body .form-group input::placeholder, .modal-body .form-group textarea::placeholder{color:#4a5568;}
+.modal-footer{padding:14px 20px;border-top:1px solid #1b2e6e;background:#0b1437;display:flex;justify-content:flex-end;gap:10px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    <div class="navbar-logo">HR</div>
+    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+  </div>
+  <div class="navbar-center">
+    <div class="nav-search">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" placeholder="Search employees, documents, departments...">
+    </div>
+  </div>
+  <div class="navbar-right">
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-profile" id="navProfileToggle">
+      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
+      <div class="nav-profile-dropdown" id="navProfileDropdown">
+        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="sidebar">
+    <ul>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
+      <li class="active"><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+      <li><a href="#"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-workspace">
+
+    <div class="directory-panel">
+      <div class="page-header">
+        <h2>Departments</h2>
+        <div class="breadcrumb">Dashboard &gt; <span>Departments</span></div>
+      </div>
+      
+      <div class="directory-content">
+        
+        <div class="mini-kpi-grid">
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-sitemap"></i></div>
+            <div class="mini-info"><p>Total Departments</p><h3>10</h3><small>+1 this month</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="mini-info"><p>Total Employees</p><h3>250</h3><small>Across all sectors</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
+            <div class="mini-info"><p>Avg. Employees / Dept.</p><h3>25</h3><small>Across all sectors</small></div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="mini-info"><p>Active Departments</p><h3>10</h3><small>100% operational</small></div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search departments...">
+          </div>
+          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <button class="btn-action btn-primary" id="openAddDeptModalBtn"><i class="fa-solid fa-plus"></i> Add Department</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="dept-table">
+            <thead>
+              <tr>
+                <th>Department Name</th>
+                <th>Department Head</th>
+                <th>Employees</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="departmentTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">Loading departments...</td></tr>
+            </tbody>
+          </table>
+          
+          <div class="table-footer">
+            <span>Showing 1 to 10 of 10 departments</span>
+            <div class="pagination">
+              <a href="#" class="page-link active">1</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+      <div class="details-header">
+        <h3>Department Details</h3>
+        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="details-content">
+        <div class="profile-hero">
+          <div class="hero-avatar"><i class="fa-solid fa-building" id="detailDeptIcon"></i></div>
+          <div class="hero-meta">
+            <h2 id="detailDeptName">Select a department <span class="status-badge active" id="detailDeptStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px;"></span></h2>
+            <p>Department Head: <strong id="detailDeptManager">—</strong></p>
+            <span id="detailDeptEmail"><i class="fa-regular fa-envelope" style="margin-right:4px;"></i> N/A</span>
+          </div>
+        </div>
+
+        <div class="tab-nav">
+          <a href="#" class="tab-link active">Overview</a>
+          <a href="#" class="tab-link" id="detailDeptEmployeesTab">Employees (0)</a>
+          <a href="#" class="tab-link">Documents</a>
+          <a href="#" class="tab-link">Settings</a>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">About Department</div>
+          <p class="section-desc" id="detailDeptDescription">—</p>
+
+          <div class="info-grid">
+            <span class="info-label">Department ID</span><span class="info-value" id="detailDeptId">—</span>
+            <span class="info-label">Established On</span><span class="info-value">N/A</span>
+            <span class="info-label">Location</span><span class="info-value">N/A</span>
+            <span class="info-label">Email</span><span class="info-value" style="color:#4299e1;">N/A</span>
+            <span class="info-label">Phone</span><span class="info-value">N/A</span>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-title">Key Metrics</div>
+          <div class="metrics-list">
+            <div class="metric-row">
+              <div class="metric-meta"><i class="fa-solid fa-users"></i> Total Employees</div>
+              <div class="metric-val" id="detailDeptSize">0</div>
+            </div>
+            <div class="metric-row">
+              <div class="metric-meta"><i class="fa-solid fa-mars"></i> Male</div>
+              <div class="metric-val">N/A</div>
+            </div>
+            <div class="metric-row">
+              <div class="metric-meta"><i class="fa-solid fa-venus"></i> Female</div>
+              <div class="metric-val">N/A</div>
+            </div>
+            <div class="metric-row">
+              <div class="metric-meta"><i class="fa-solid fa-hourglass-half"></i> Avg. Tenure</div>
+              <div class="metric-val">N/A</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-footer">
+        <button class="btn-outline" id="editDeptBtn">Edit Department</button>
+        <button class="btn-danger-outline" id="deleteDeptBtn">Delete Department</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="addDeptModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Add Department</h3></div>
+    <form id="addDeptForm">
+      <div class="modal-body">
+        <div class="form-group"><label>Department Name<span>*</span></label><input type="text" id="deptNameInput" required></div>
+        <div class="form-group"><label>Department Head<span>*</span></label><input type="text" id="deptHeadInput" required></div>
+        <div class="form-group"><label>Description</label><textarea id="deptDescInput"></textarea></div>
+        <div class="form-group"><label>Status</label>
+          <select id="deptStatusInput"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-action" id="closeAddDeptModalBtn">Cancel</button>
+        <button type="submit" class="btn-action btn-primary">Save Department</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay d-none" id="editDeptModal">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Edit Department</h3></div>
+    <form id="editDeptForm">
+      <input type="hidden" id="editDeptId">
+      <div class="modal-body">
+        <div class="form-group"><label>Department Name<span>*</span></label><input type="text" id="editDeptNameInput" required></div>
+        <div class="form-group"><label>Department Head<span>*</span></label><input type="text" id="editDeptHeadInput" required></div>
+        <div class="form-group"><label>Description</label><textarea id="editDeptDescInput"></textarea></div>
+        <div class="form-group"><label>Status</label>
+          <select id="editDeptStatusInput"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-action" id="closeEditDeptModalBtn">Cancel</button>
+        <button type="submit" class="btn-action btn-primary">Update Department</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+  import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { db } from "../assets/js/firebase-config.js";
+  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+  const closePanelBtn = document.getElementById('closePanelBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+
+  // Slideout inspector trigger handler
+  closePanelBtn.addEventListener('click', () => {
+    detailsPanel.classList.add('d-none');
+  });
+
+  const currentUser = requireRole(["hr"]);
+  paintNavProfile(currentUser);
+
+  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('navProfileDropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+      document.getElementById('navProfileDropdown').classList.remove('show');
+  });
+  document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout("../");
+  });
+
+  const tableBody = document.getElementById('departmentTableBody');
+  let cachedDepartments = {};
+  let currentDeptId = null;
+
+  async function loadDepartments() {
+    try {
+      const snap = await getDocs(collection(db, "departments"));
+      if (snap.empty) {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">No departments found.</td></tr>`;
+        return;
+      }
+      tableBody.innerHTML = "";
+      cachedDepartments = {};
+      snap.forEach((docSnap) => {
+        const d = { id: docSnap.id, ...docSnap.data() };
+        cachedDepartments[d.id] = d;
+        const statusClass = (d.status || 'Active').toLowerCase();
+        tableBody.insertAdjacentHTML('beforeend', `
+          <tr class="dept-row" data-id="${d.id}" style="cursor:pointer;">
+            <td>${d.name || '-'}</td>
+            <td>${d.head || '-'}</td>
+            <td>${d.employeeCount || 0}</td>
+            <td>${d.description || '-'}</td>
+            <td><span class="status-badge ${statusClass}">${d.status || 'Active'}</span></td>
+            <td><i class="fa-solid fa-chevron-right"></i></td>
+          </tr>
+        `);
+      });
+      bindRowClicks();
+    } catch (error) {
+      console.error("Failed to load departments: ", error);
+      tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+    }
+  }
+
+  function bindRowClicks() {
+    document.querySelectorAll('.dept-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const d = cachedDepartments[row.getAttribute('data-id')];
+        if (!d) return;
+        currentDeptId = d.id;
+        document.getElementById('detailDeptName').textContent = d.name || '-';
+        document.getElementById('detailDeptManager').textContent = d.head || '-';
+        document.getElementById('detailDeptDescription').textContent = d.description || '-';
+        document.getElementById('detailDeptId').textContent = d.id;
+        document.getElementById('detailDeptSize').textContent = d.employeeCount || 0;
+        document.getElementById('detailDeptEmployeesTab').textContent = `Employees (${d.employeeCount || 0})`;
+        detailsPanel.classList.remove('d-none');
+      });
+    });
+  }
+
+  // Edit Department modal wiring
+  const editDeptModal = document.getElementById('editDeptModal');
+  document.getElementById('editDeptBtn').addEventListener('click', () => {
+    if (!currentDeptId) { alert('Select a department first.'); return; }
+    const d = cachedDepartments[currentDeptId];
+    if (!d) return;
+    document.getElementById('editDeptId').value = d.id;
+    document.getElementById('editDeptNameInput').value = d.name || '';
+    document.getElementById('editDeptHeadInput').value = d.head || '';
+    document.getElementById('editDeptDescInput').value = d.description || '';
+    document.getElementById('editDeptStatusInput').value = d.status || 'Active';
+    editDeptModal.classList.remove('d-none');
+  });
+  document.getElementById('closeEditDeptModalBtn').addEventListener('click', () => editDeptModal.classList.add('d-none'));
+
+  document.getElementById('editDeptForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const docId = document.getElementById('editDeptId').value;
+    try {
+      await updateDoc(doc(db, "departments", docId), {
+        name: document.getElementById('editDeptNameInput').value,
+        head: document.getElementById('editDeptHeadInput').value,
+        description: document.getElementById('editDeptDescInput').value,
+        status: document.getElementById('editDeptStatusInput').value
+      });
+      editDeptModal.classList.add('d-none');
+      detailsPanel.classList.add('d-none');
+      await loadDepartments();
+    } catch (error) {
+      alert("Failed to update department: " + error.message);
+    }
+  });
+
+  // Delete Department wiring
+  document.getElementById('deleteDeptBtn').addEventListener('click', async () => {
+    if (!currentDeptId) return;
+    const d = cachedDepartments[currentDeptId];
+    if (!d) return;
+    if (confirm(`Are you sure you want to delete the "${d.name}" department?`)) {
+      try {
+        await deleteDoc(doc(db, "departments", currentDeptId));
+        currentDeptId = null;
+        detailsPanel.classList.add('d-none');
+        await loadDepartments();
+      } catch (error) {
+        alert("Failed to delete department: " + error.message);
+      }
+    }
+  });
+
+  const addModal = document.getElementById('addDeptModal');
+  document.getElementById('openAddDeptModalBtn').addEventListener('click', () => addModal.classList.remove('d-none'));
+  document.getElementById('closeAddDeptModalBtn').addEventListener('click', () => addModal.classList.add('d-none'));
+
+  document.getElementById('addDeptForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "departments"), {
+        name: document.getElementById('deptNameInput').value,
+        head: document.getElementById('deptHeadInput').value,
+        description: document.getElementById('deptDescInput').value,
+        status: document.getElementById('deptStatusInput').value,
+        employeeCount: 0
+      });
+      addModal.classList.add('d-none');
+      e.target.reset();
+      loadDepartments();
+    } catch (error) {
+      alert("Failed to create department: " + error.message);
+    }
+  });
+
+  loadDepartments();
+</script>
+
+</body>
+</html>
