@@ -148,6 +148,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .row-icon{width:34px;height:34px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:13px;flex-shrink:0;}
 .badge-status.progress{background:rgba(66,153,225,0.15);color:#4299e1;}
 .badge-status.hold{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.badge-status.completed{background:rgba(74,222,128,0.15);color:#4ade80;}
+.badge-status.not-started{background:rgba(139,148,170,0.15);color:#8898aa;}
 .badge-status{padding:4px 8px;border-radius:6px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0;}
 .time-stamp{font-size:11px;color:#8898aa;white-space:nowrap;flex-shrink:0;}
 
@@ -210,7 +212,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     </div>
   </div>
   <div class="navbar-right">
-    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge" id="navBellBadge">0</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
@@ -247,12 +249,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
       <div class="welcome">
         <div class="welcome-left">
-          <h1>Welcome back, Manager!</h1>
+          <h1>Welcome back, <span id="welcomeMgrName">Manager</span>!</h1>
           <p>Here's what's happening with your team today.</p>
         </div>
         <div class="date-box">
           <i class="fa-regular fa-calendar"></i>
-          <span>May 20 – May 26, 2024</span>
+          <span id="welcomeDateRange">–</span>
           <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
@@ -261,7 +263,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="kpi-card">
           <div class="kpi-main">
             <div class="kpi-icon"><i class="fa-solid fa-user-group"></i></div>
-            <div class="kpi-info"><p>Team Members</p><h2>18</h2><small>Total Members</small></div>
+            <div class="kpi-info"><p>Team Members</p><h2 id="kpiTeamMembers">0</h2><small>Total Members</small></div>
           </div>
           <a href="#" class="kpi-action-link"><span>View all</span><i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -269,7 +271,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="kpi-card">
           <div class="kpi-main">
             <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
-            <div class="kpi-info"><p>Present Today</p><h2>15</h2><small style="color:#4ade80">83% Present</small></div>
+            <div class="kpi-info"><p>Present Today</p><h2 id="kpiPresentToday">0</h2><small style="color:#4ade80" id="kpiPresentPct">0% Present</small></div>
           </div>
           <a href="#" class="kpi-action-link"><span>View attendance</span><i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -277,7 +279,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="kpi-card">
           <div class="kpi-main">
             <div class="kpi-icon"><i class="fa-solid fa-calendar-minus"></i></div>
-            <div class="kpi-info"><p>Leave Requests</p><h2>4</h2><small style="color:#fbbf24">Pending Approval</small></div>
+            <div class="kpi-info"><p>Leave Requests</p><h2 id="kpiLeaveRequests">0</h2><small style="color:#fbbf24">Pending Approval</small></div>
           </div>
           <a href="#" class="kpi-action-link"><span>Review requests</span><i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -285,7 +287,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="kpi-card">
           <div class="kpi-main">
             <div class="kpi-icon"><i class="fa-solid fa-folder-tree"></i></div>
-            <div class="kpi-info"><p>Active Projects</p><h2>6</h2><small>In Progress</small></div>
+            <div class="kpi-info"><p>Active Projects</p><h2 id="kpiActiveProjects">0</h2><small>In Progress</small></div>
           </div>
           <a href="#" class="kpi-action-link"><span>View projects</span><i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -293,7 +295,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="kpi-card">
           <div class="kpi-main">
             <div class="kpi-icon"><i class="fa-solid fa-list-check"></i></div>
-            <div class="kpi-info"><p>Tasks Due</p><h2>7</h2><small style="color:#fbbf24">Due this week</small></div>
+            <div class="kpi-info"><p>Tasks Due</p><h2 id="kpiTasksDue">0</h2><small style="color:#fbbf24">Due this week</small></div>
           </div>
           <a href="#" class="kpi-action-link"><span>View tasks</span><i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -308,24 +310,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             </div>
             
             <div class="donut-body">
-              <div class="donut-svg-wrap">
+              <div class="donut-svg-wrap" id="projectDonutWrap">
   <svg viewBox="0 0 36 36">
     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="9.5"/>
-    
-    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2b9c33" stroke-width="9.5" stroke-dasharray="50 50" stroke-dashoffset="25"/>
-    
-    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#eab308" stroke-width="9.5" stroke-dasharray="28 72" stroke-dashoffset="-25"/>
-    
-    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#ec4899" stroke-width="9.5" stroke-dasharray="14 86" stroke-dashoffset="-53"/>
-    
-    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="9.5" stroke-dasharray="8 100" stroke-dashoffset="-67"/>
+    <g id="projectDonutSegments"></g>
   </svg>
 </div>
-              <div class="donut-legend-row">
-                <div class="leg-item"><div class="leg-dot" style="background:#2b9c33"></div><span>Completed<span class="leg-val">3</span></span></div>
-                <div class="leg-item"><div class="leg-dot" style="background:#eab308"></div><span>In Progress<span class="leg-val">2</span></span></div>
-                <div class="leg-item"><div class="leg-dot" style="background:#ec4899"></div><span>On Hold<span class="leg-val">1</span></span></div>
-                <div class="leg-item"><div class="leg-dot" style="background:#3b82f6"></div><span>Not Started<span class="leg-val">0</span></span></div>
+              <div class="donut-legend-row" id="projectDonutLegend">
+                <div class="leg-item"><div class="leg-dot" style="background:#2b9c33"></div><span>Completed<span class="leg-val" id="legCompleted">0</span></span></div>
+                <div class="leg-item"><div class="leg-dot" style="background:#eab308"></div><span>In Progress<span class="leg-val" id="legInProgress">0</span></span></div>
+                <div class="leg-item"><div class="leg-dot" style="background:#ec4899"></div><span>On Hold<span class="leg-val" id="legOnHold">0</span></span></div>
+                <div class="leg-item"><div class="leg-dot" style="background:#3b82f6"></div><span>Not Started<span class="leg-val" id="legNotStarted">0</span></span></div>
               </div>
             </div>
           </div>
@@ -352,15 +347,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             </div>
             <div class="lc-area">
               <div class="lc-svg-wrap">
-                <svg viewBox="0 0 700 180" preserveAspectRatio="none">
-                  <polyline points="50,45 150,35 250,28 350,25 450,40 550,155 650,160" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round"/>
-                  <circle cx="50" cy="45" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="150" cy="35" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="250" cy="28" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="350" cy="25" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="450" cy="40" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="550" cy="155" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
-                  <circle cx="650" cy="160" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>
+                <svg viewBox="0 0 700 180" preserveAspectRatio="none" id="attendanceLineChart">
+                  <polyline id="attendanceLinePoly" points="50,180 150,180 250,180 350,180 450,180 550,180 650,180" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round"/>
+                  <g id="attendanceLineDots"></g>
                 </svg>
               </div>
               <div class="lc-x-labels">
@@ -370,10 +359,10 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           </div>
 
           <div class="graph-summary">
-            <div class="summary-item"><p>Average Attendance</p><h4>86%</h4></div>
-            <div class="summary-item"><p>Present</p><h4>15</h4></div>
-            <div class="summary-item"><p>Absent</p><h4>3</h4></div>
-            <div class="summary-item"><p>Late</p><h4>2</h4></div>
+            <div class="summary-item"><p>Average Attendance</p><h4 id="sumAvgAttendance">0%</h4></div>
+            <div class="summary-item"><p>Present</p><h4 id="sumPresent">0</h4></div>
+            <div class="summary-item"><p>Absent</p><h4 id="sumAbsent">0</h4></div>
+            <div class="summary-item"><p>Late</p><h4 id="sumLate">0</h4></div>
           </div>
         </div>
 
@@ -396,27 +385,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Upcoming Deadlines</h3>
             <a href="#" class="text-link">View all</a>
           </div>
-          <div class="panel-list">
-            <div class="list-row">
-              <div class="row-icon"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="user-info"><h4>Website Redesign</h4><p>May 29, 2024</p></div>
-              <span class="badge-status progress">In Progress</span>
-            </div>
-            <div class="list-row">
-              <div class="row-icon"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="user-info"><h4>Mobile App Development</h4><p>Jun 02, 2024</p></div>
-              <span class="badge-status progress">In Progress</span>
-            </div>
-            <div class="list-row">
-              <div class="row-icon"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="user-info"><h4>Marketing Campaign</h4><p>Jun 05, 2024</p></div>
-              <span class="badge-status hold">On Hold</span>
-            </div>
-            <div class="list-row">
-              <div class="row-icon"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="user-info"><h4>Client Dashboard</h4><p>Jun 10, 2024</p></div>
-              <span class="badge-status progress">In Progress</span>
-            </div>
+          <div class="panel-list" id="upcomingDeadlinesList">
+            <div class="list-row"><div class="user-info"><p>Loading deadlines...</p></div></div>
           </div>
         </div>
 
@@ -425,33 +395,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Recent Notifications</h3>
             <a href="#" class="text-link">View all</a>
           </div>
-          <div class="panel-list">
-            <div class="list-row">
-              <div class="row-icon" style="color:#fbbf24"><i class="fa-regular fa-calendar-minus"></i></div>
-              <div class="user-info"><h4>New leave request submitted</h4><p>by Alex Johnson</p></div>
-              <span class="time-stamp">10 min ago</span>
-            </div>
-            <div class="list-row">
-              <div class="fa-solid fa-file-pen row-icon"></div>
-              <div class="user-info"><h4>Project "Website Redesign" updated</h4><p>by Sarah Williams</p></div>
-              <span class="time-stamp">35 min ago</span>
-            </div>
-            <div class="list-row">
-              <div class="row-icon"><i class="fa-regular fa-comment"></i></div>
-              <div class="user-info"><h4>You have a new message</h4><p>from Michael Brown</p></div>
-              <span class="time-stamp">1 hour ago</span>
-            </div>
-            <div class="list-row">
-              <div class="row-icon" style="color:#4ade80"><i class="fa-regular fa-clock"></i></div>
-              <div class="user-info"><h4>Team meeting scheduled</h4><p>May 28, 2024 at 11:00 AM</p></div>
-              <span class="time-stamp">2 hours ago</span>
-            </div>
+          <div class="panel-list" id="recentNotificationsList">
+            <div class="list-row"><div class="user-info"><p>Loading notifications...</p></div></div>
           </div>
         </div>
 
       </div>
       
-      <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+      <div class="footer-text">© <span id="footerYear">2024</span> Employee Management System. All rights reserved.</div>
 
     </div>
   </div>
@@ -503,6 +454,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             const querySnapshot = await getDocs(q);
             pendingLeaveList.innerHTML = "";
 
+            const pendingCount = querySnapshot.size;
+            const kpiLeaveEl = document.getElementById('kpiLeaveRequests');
+            if (kpiLeaveEl) kpiLeaveEl.textContent = pendingCount;
+            const bellBadge = document.getElementById('navBellBadge');
+            if (bellBadge) bellBadge.textContent = pendingCount;
+
             if (querySnapshot.empty) {
                 pendingLeaveList.innerHTML = `<div class="list-row"><div class="user-info"><p>No pending leave requests.</p></div></div>`;
                 return;
@@ -533,6 +490,10 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         } catch (err) {
             console.error("Failed to load pending leave requests: ", err);
             pendingLeaveList.innerHTML = `<div class="list-row"><div class="user-info"><p style="color:#f87171;">Failed to load: ${err.message}</p></div></div>`;
+            const kpiLeaveEl = document.getElementById('kpiLeaveRequests');
+            if (kpiLeaveEl) kpiLeaveEl.textContent = 0;
+            const bellBadge = document.getElementById('navBellBadge');
+            if (bellBadge) bellBadge.textContent = 0;
         }
     }
 
@@ -563,6 +524,292 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
 
     loadPendingLeaveRequests();
+
+    // ── Welcome header: name + current week date range ──
+    document.getElementById('welcomeMgrName').textContent = currentUser.name || 'Manager';
+
+    function getCurrentWeekDates() {
+        const today = new Date();
+        const day = today.getDay(); // 0 = Sun
+        const diffToMonday = day === 0 ? -6 : 1 - day;
+        const monday = new Date(today);
+        monday.setDate(today.getDate() + diffToMonday);
+        monday.setHours(0, 0, 0, 0);
+
+        const dates = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(monday);
+            d.setDate(monday.getDate() + i);
+            dates.push(d);
+        }
+        return dates;
+    }
+
+    const weekDates = getCurrentWeekDates();
+    const weekDateStrs = weekDates.map(d => d.toISOString().slice(0, 10));
+    (function renderWeekRange() {
+        const opts = { month: 'short', day: 'numeric' };
+        const start = weekDates[0].toLocaleDateString('en-US', opts);
+        const end = weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('welcomeDateRange').textContent = `${start} – ${end}`;
+    })();
+
+    // ── Footer year ──
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+    function normalizeDate(value) {
+        if (!value) return null;
+        if (typeof value.toDate === 'function') return value.toDate().toISOString().slice(0, 10);
+        if (typeof value === 'string') return value.slice(0, 10);
+        return null;
+    }
+
+    function statusClass(status) {
+        const s = (status || '').toLowerCase();
+        if (s.includes('hold')) return 'hold';
+        if (s.includes('complete')) return 'completed';
+        if (s.includes('plan')) return 'not-started';
+        return 'progress';
+    }
+
+    function statusLabel(status) {
+        const s = (status || '').toLowerCase();
+        if (s.includes('hold')) return 'On Hold';
+        if (s.includes('complete')) return 'Completed';
+        if (s.includes('plan')) return 'Not Started';
+        return 'In Progress';
+    }
+
+    // ── KPIs, donut, deadlines: employees + projects for this department ──
+    async function loadDeptStats() {
+        try {
+            if (!myDept) {
+                const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+                myDept = meSnap.exists() ? meSnap.data().department : null;
+            }
+
+            const [employeesSnap, projectsSnap] = await Promise.all([
+                getDocs(query(collection(db, "employees"), where("department", "==", myDept))),
+                getDocs(query(collection(db, "projects"), where("department", "==", myDept)))
+            ]);
+
+            document.getElementById('kpiTeamMembers').textContent = employeesSnap.size;
+
+            const projects = [];
+            projectsSnap.forEach((s) => projects.push({ id: s.id, ...s.data() }));
+
+            document.getElementById('kpiActiveProjects').textContent =
+                projects.filter(p => statusClass(p.status) !== 'completed').length;
+
+            // Tasks Due: no tasks collection in this project.
+            document.getElementById('kpiTasksDue').textContent = 0;
+
+            // Donut: bucket by status
+            const buckets = { completed: 0, progress: 0, hold: 0, 'not-started': 0 };
+            projects.forEach(p => { buckets[statusClass(p.status)]++; });
+            const total = projects.length;
+
+            document.getElementById('legCompleted').textContent = buckets.completed;
+            document.getElementById('legInProgress').textContent = buckets.progress;
+            document.getElementById('legOnHold').textContent = buckets.hold;
+            document.getElementById('legNotStarted').textContent = buckets['not-started'];
+
+            const segmentsG = document.getElementById('projectDonutSegments');
+            segmentsG.innerHTML = '';
+            if (total > 0) {
+                const order = [
+                    { key: 'completed', color: '#2b9c33' },
+                    { key: 'progress', color: '#eab308' },
+                    { key: 'hold', color: '#ec4899' },
+                    { key: 'not-started', color: '#3b82f6' }
+                ];
+                let offsetAccum = 0;
+                order.forEach(({ key, color }) => {
+                    const count = buckets[key];
+                    if (!count) return;
+                    const pct = (count / total) * 100;
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', '18');
+                    circle.setAttribute('cy', '18');
+                    circle.setAttribute('r', '15.9');
+                    circle.setAttribute('fill', 'none');
+                    circle.setAttribute('stroke', color);
+                    circle.setAttribute('stroke-width', '9.5');
+                    circle.setAttribute('stroke-dasharray', `${pct} ${100 - pct}`);
+                    circle.setAttribute('stroke-dashoffset', `${-offsetAccum}`);
+                    segmentsG.appendChild(circle);
+                    offsetAccum += pct;
+                });
+            }
+
+            // Upcoming Deadlines: future endDate, ascending
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const upcoming = projects
+                .filter(p => {
+                    const d = normalizeDate(p.endDate);
+                    return d && d >= todayStr;
+                })
+                .sort((a, b) => normalizeDate(a.endDate).localeCompare(normalizeDate(b.endDate)))
+                .slice(0, 4);
+
+            const deadlinesList = document.getElementById('upcomingDeadlinesList');
+            if (upcoming.length === 0) {
+                deadlinesList.innerHTML = `<div class="list-row"><div class="user-info"><p>No upcoming deadlines.</p></div></div>`;
+            } else {
+                deadlinesList.innerHTML = upcoming.map(p => {
+                    const name = p.projectName || p.name || 'Untitled Project';
+                    const dateLabel = new Date(p.endDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+                    return `
+                        <div class="list-row">
+                          <div class="row-icon"><i class="fa-solid fa-briefcase"></i></div>
+                          <div class="user-info"><h4>${name}</h4><p>${dateLabel}</p></div>
+                          <span class="badge-status ${statusClass(p.status)}">${statusLabel(p.status)}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+        } catch (err) {
+            console.error("Failed to load department stats: ", err);
+            document.getElementById('kpiTeamMembers').textContent = 0;
+            document.getElementById('kpiActiveProjects').textContent = 0;
+            document.getElementById('kpiTasksDue').textContent = 0;
+            document.getElementById('upcomingDeadlinesList').innerHTML = `<div class="list-row"><div class="user-info"><p>No upcoming deadlines.</p></div></div>`;
+        }
+    }
+
+    // ── Attendance: today's presence, week trend, summary ──
+    async function loadAttendanceStats() {
+        try {
+            if (!myDept) {
+                const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+                myDept = meSnap.exists() ? meSnap.data().department : null;
+            }
+
+            const [employeesSnap, attendanceSnap] = await Promise.all([
+                getDocs(query(collection(db, "employees"), where("department", "==", myDept))),
+                getDocs(query(collection(db, "attendance"), where("department", "==", myDept)))
+            ]);
+
+            const totalMembers = employeesSnap.size;
+
+            // Group attendance by date -> counts
+            const byDate = {};
+            weekDateStrs.forEach(d => { byDate[d] = { present: 0, late: 0, absent: 0 }; });
+
+            attendanceSnap.forEach((snap) => {
+                const rec = snap.data();
+                const dateStr = normalizeDate(rec.date);
+                if (!dateStr || !byDate[dateStr]) return;
+                const status = (rec.status || '').toLowerCase();
+                if (status === 'present') byDate[dateStr].present++;
+                else if (status === 'late') byDate[dateStr].late++;
+                else byDate[dateStr].absent++;
+            });
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayCounts = byDate[todayStr] || { present: 0, late: 0, absent: 0 };
+            const presentToday = todayCounts.present + todayCounts.late;
+            const presentPct = totalMembers > 0 ? Math.round((presentToday / totalMembers) * 100) : 0;
+
+            document.getElementById('kpiPresentToday').textContent = presentToday;
+            document.getElementById('kpiPresentPct').textContent = `${presentPct}% Present`;
+
+            // Weekly summary totals
+            let sumPresent = 0, sumAbsent = 0, sumLate = 0, dayPcts = [];
+            weekDateStrs.forEach(d => {
+                const c = byDate[d];
+                sumPresent += c.present;
+                sumLate += c.late;
+                sumAbsent += c.absent;
+                const dayPresent = c.present + c.late;
+                dayPcts.push(totalMembers > 0 ? (dayPresent / totalMembers) * 100 : 0);
+            });
+            const avgAttendance = dayPcts.length > 0
+                ? Math.round(dayPcts.reduce((a, b) => a + b, 0) / dayPcts.length)
+                : 0;
+
+            document.getElementById('sumAvgAttendance').textContent = `${avgAttendance}%`;
+            document.getElementById('sumPresent').textContent = sumPresent;
+            document.getElementById('sumAbsent').textContent = sumAbsent;
+            document.getElementById('sumLate').textContent = sumLate;
+
+            // Line chart: plot daily present percentage across the week
+            const chartWidth = 700, chartHeight = 180, marginX = 50;
+            const usableWidth = chartWidth - marginX * 2;
+            const stepX = usableWidth / (dayPcts.length - 1);
+            const points = dayPcts.map((pct, i) => {
+                const x = marginX + stepX * i;
+                const y = chartHeight - (Math.max(0, Math.min(100, pct)) / 100) * chartHeight;
+                return { x, y };
+            });
+
+            const poly = document.getElementById('attendanceLinePoly');
+            poly.setAttribute('points', points.map(p => `${p.x},${p.y}`).join(' '));
+
+            const dotsG = document.getElementById('attendanceLineDots');
+            dotsG.innerHTML = points.map(p =>
+                `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#111c44" stroke="#4299e1" stroke-width="2"/>`
+            ).join('');
+
+        } catch (err) {
+            console.error("Failed to load attendance stats: ", err);
+            document.getElementById('kpiPresentToday').textContent = 0;
+            document.getElementById('kpiPresentPct').textContent = '0% Present';
+            document.getElementById('sumAvgAttendance').textContent = '0%';
+            document.getElementById('sumPresent').textContent = 0;
+            document.getElementById('sumAbsent').textContent = 0;
+            document.getElementById('sumLate').textContent = 0;
+            const poly = document.getElementById('attendanceLinePoly');
+            poly.setAttribute('points', '50,180 150,180 250,180 350,180 450,180 550,180 650,180');
+            document.getElementById('attendanceLineDots').innerHTML = '';
+        }
+    }
+
+    // ── Recent notifications ──
+    async function loadRecentNotifications() {
+        const list = document.getElementById('recentNotificationsList');
+        try {
+            const q = query(collection(db, "notifications"), where("audience", "in", ["All", "Managers"]));
+            const snap = await getDocs(q);
+            const items = [];
+            snap.forEach((s) => items.push({ id: s.id, ...s.data() }));
+
+            items.sort((a, b) => {
+                const at = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
+                const bt = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
+                return bt - at;
+            });
+
+            const top4 = items.slice(0, 4);
+
+            if (top4.length === 0) {
+                list.innerHTML = `<div class="list-row"><div class="user-info"><p>No notifications.</p></div></div>`;
+                return;
+            }
+
+            list.innerHTML = top4.map(n => {
+                const when = n.createdAt && typeof n.createdAt.toDate === 'function'
+                    ? n.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+                    : '-';
+                return `
+                    <div class="list-row">
+                      <div class="row-icon"><i class="fa-solid fa-bell"></i></div>
+                      <div class="user-info"><h4>${n.title || '-'}</h4><p>${n.body || ''}</p></div>
+                      <span class="time-stamp">${when}</span>
+                    </div>
+                `;
+            }).join('');
+
+        } catch (err) {
+            console.error("Failed to load notifications: ", err);
+            list.innerHTML = `<div class="list-row"><div class="user-info"><p>No notifications.</p></div></div>`;
+        }
+    }
+
+    loadDeptStats();
+    loadAttendanceStats();
+    loadRecentNotifications();
 </script>
 
 </body>

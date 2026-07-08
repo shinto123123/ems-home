@@ -163,8 +163,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     </div>
   </div>
   <div class="navbar-right">
-    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge" id="navBellBadge">0</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge" id="navEnvelopeBadge">0</span></div>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
@@ -213,7 +213,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         </div>
         <div class="date-badge">
           <i class="fa-regular fa-calendar"></i>
-          <span>20 May 2025, Tuesday</span>
+          <span id="currentDateBadge">-</span>
         </div>
       </div>
 
@@ -222,7 +222,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-calendar"></i></div>
           <div class="metric-info">
             <p>Attendance</p>
-            <h2>95%</h2>
+            <h2 id="metricAttendanceValue">0%</h2>
             <span>This Month</span>
           </div>
         </div>
@@ -230,7 +230,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-calendar-minus"></i></div>
           <div class="metric-info">
             <p>Leave Balance</p>
-            <h2>12 Days</h2>
+            <h2 id="metricLeaveBalance">0 Days</h2>
             <span>Available</span>
           </div>
         </div>
@@ -238,7 +238,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-solid fa-briefcase"></i></div>
           <div class="metric-info">
             <p>Active Projects</p>
-            <h2>3</h2>
+            <h2 id="metricActiveProjects">0</h2>
             <span>Ongoing</span>
           </div>
         </div>
@@ -249,7 +249,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-clipboard"></i></div>
           <div class="metric-info">
             <p>Pending Tasks</p>
-            <h2>4</h2>
+            <h2 id="metricPendingTasks">0</h2>
             <span>Tasks Awaiting Completion</span>
           </div>
         </div>
@@ -257,7 +257,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-bell"></i></div>
           <div class="metric-info">
             <p>Notifications</p>
-            <h2>6</h2>
+            <h2 id="metricNotifications">0</h2>
             <span>Unread Notifications</span>
           </div>
         </div>
@@ -270,25 +270,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Recent Activities</h3>
             <a href="#" class="link-btn">View All</a>
           </div>
-          <div class="list-item">
-            <div class="status-dot active"></div>
-            <div class="item-text">Leave request for 22 May approved</div>
-            <div class="item-meta">2 hours ago</div>
-          </div>
-          <div class="list-item">
-            <div class="status-dot active"></div>
-            <div class="item-text">New task "API Integration" assigned</div>
-            <div class="item-meta">5 hours ago</div>
-          </div>
-          <div class="list-item">
-            <div class="status-dot"></div>
-            <div class="item-text">Document "Project Requirements.pdf" uploaded</div>
-            <div class="item-meta">1 day ago</div>
-          </div>
-          <div class="list-item">
-            <div class="status-dot"></div>
-            <div class="item-text">Performance review completed</div>
-            <div class="item-meta">2 days ago</div>
+          <div id="empRecentActivities">
+            <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading activity...</div></div>
           </div>
         </div>
 
@@ -320,10 +303,10 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <a href="#" class="link-btn">View All</a>
           </div>
           <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-            <div class="att-row-flex"><span class="att-label">Annual Leave</span><span class="att-val">10 Days</span></div>
-            <div class="att-row-flex"><span class="att-label">Sick Leave</span><span class="att-val">2 Days</span></div>
-            <div class="att-row-flex"><span class="att-label">Comp Off</span><span class="att-val">0 Day</span></div>
-            <div class="att-row-flex"><span class="att-label">Pending Requests</span><span class="att-val">1</span></div>
+            <div class="att-row-flex"><span class="att-label">Annual Leave</span><span class="att-val" id="leaveSummaryAnnual">0 Days</span></div>
+            <div class="att-row-flex"><span class="att-label">Sick Leave</span><span class="att-val" id="leaveSummarySick">0 Days</span></div>
+            <div class="att-row-flex"><span class="att-label">Comp Off</span><span class="att-val" id="leaveSummaryCompOff">0 Days</span></div>
+            <div class="att-row-flex"><span class="att-label">Pending Requests</span><span class="att-val" id="leaveSummaryPending">0</span></div>
           </div>
           <button class="action-btn-primary">Apply Leave</button>
         </div>
@@ -367,19 +350,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             </thead>
             <tbody id="upcomingDeadlinesTableBody">
               <tr>
-                <td>API Integration</td>
-                <td>EMS Portal</td>
-                <td>18 Jun 2025</td>
-              </tr>
-              <tr>
-                <td>UI Design</td>
-                <td>Mobile App</td>
-                <td>22 Jun 2025</td>
-              </tr>
-              <tr>
-                <td>Testing & Bug Fixes</td>
-                <td>Internal Dash</td>
-                <td>25 Jun 2025</td>
+                <td colspan="3" style="text-align:center; padding:20px; color:#8898aa;">Loading deadlines...</td>
               </tr>
             </tbody>
           </table>
@@ -395,24 +366,24 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <div class="perf-ring-wrap">
               <svg viewBox="0 0 36 36">
                 <circle class="perf-ring-bg" cx="18" cy="18" r="15.9"/>
-                <circle class="perf-ring-fill" cx="18" cy="18" r="15.9"/>
+                <circle class="perf-ring-fill" id="perfRingFill" cx="18" cy="18" r="15.9" style="stroke-dasharray:0 100;"/>
               </svg>
               <div class="perf-ring-center">
-                <strong>4.5</strong>
+                <strong id="perfRingRatingVal">0</strong>
                 <span>/ 5</span>
               </div>
             </div>
             <div class="perf-details">
-              <div class="perf-stat-row"><span>Current Rating</span><span>4.5 / 5</span></div>
+              <div class="perf-stat-row"><span>Current Rating</span><span id="perfCurrentRating">0 / 5</span></div>
               <div>
-                <div class="perf-stat-row"><span>Goals Completed</span><span>80%</span></div>
-                <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+                <div class="perf-stat-row"><span>Goals Completed</span><span id="perfGoalsCompleted">0%</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="perfGoalsProgressFill" style="width:0%;"></div></div>
               </div>
             </div>
           </div>
           <div style="margin-top:10px; border-top:1px solid #1b2e6e; padding-top:10px;">
             <span style="font-size:11px; color:#8898aa; display:block; margin-bottom:2px;">Feedback</span>
-            <p style="font-size:13px; color:#e2e8f0; font-style:italic;">"Good performance overall."</p>
+            <p style="font-size:13px; color:#e2e8f0; font-style:italic;" id="perfFeedbackText">No feedback yet.</p>
           </div>
         </div>
 
@@ -423,17 +394,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Recent Documents</h3>
             <a href="#" class="link-btn">View All</a>
           </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-file-pdf" style="color:#4299e1; margin-right:6px;"></i> Payslip - May 2025.pdf</div>
-            <div class="item-meta">18 May 2025</div>
-          </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-file-pdf" style="color:#4299e1; margin-right:6px;"></i> Performance Report - Q1 2025.pdf</div>
-            <div class="item-meta">12 May 2025</div>
-          </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-file-pdf" style="color:#4299e1; margin-right:6px;"></i> HR Policy Handbook.pdf</div>
-            <div class="item-meta">01 May 2025</div>
+          <div id="empRecentDocuments">
+            <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading documents...</div></div>
           </div>
         </div>
 
@@ -442,17 +404,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Notifications</h3>
             <a href="#" class="link-btn">View All</a>
           </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-bell" style="color:#4299e1; margin-right:6px;"></i> Payroll for May 2025 has been processed</div>
-            <div class="item-meta">3 hours ago</div>
-          </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-bell" style="color:#4299e1; margin-right:6px;"></i> Leave request for 22 May has been approved</div>
-            <div class="item-meta">5 hours ago</div>
-          </div>
-          <div class="list-item">
-            <div class="item-text"><i class="fa-regular fa-bell" style="color:#4299e1; margin-right:6px;"></i> New task "API Integration" assigned to you</div>
-            <div class="item-meta">1 day ago</div>
+          <div id="empRecentNotifications">
+            <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading notifications...</div></div>
           </div>
         </div>
 
@@ -497,7 +450,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     document.getElementById('welcomeHeading').textContent = `Welcome back, ${currentUser.name.split(' ')[0]}!`;
 
+    // Static "today" date badge - no Firestore needed.
+    document.getElementById('currentDateBadge').textContent = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' });
+
     const projectsTableBody = document.getElementById('assignedProjectsTableBody');
+    const deadlinesTableBody = document.getElementById('upcomingDeadlinesTableBody');
+
+    let assignedProjects = [];
+    let leaveRequests = [];
 
     async function paintSidebarProfile() {
         try {
@@ -510,36 +470,325 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         }
     }
 
+    function renderUpcomingDeadlines() {
+        const now = new Date();
+        const upcoming = assignedProjects
+            .map(p => ({ p, due: p.endDate ? new Date(p.endDate) : null }))
+            .filter(x => x.due && !isNaN(x.due) && x.due >= now)
+            .sort((a, b) => a.due - b.due);
+
+        if (upcoming.length === 0) {
+            deadlinesTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#8898aa;">No upcoming deadlines.</td></tr>`;
+            return;
+        }
+
+        deadlinesTableBody.innerHTML = "";
+        upcoming.forEach(({ p }) => {
+            deadlinesTableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>Project Deadline</td>
+                    <td>${p.projectName || p.name || '-'}</td>
+                    <td>${p.endDate || '-'}</td>
+                </tr>
+            `);
+        });
+    }
+
+    function updateActiveProjectsMetric() {
+        const activeCount = assignedProjects.filter(p => {
+            const s = (p.status || '').toLowerCase();
+            return s !== 'completed' && s !== 'closed';
+        }).length;
+        document.getElementById('metricActiveProjects').textContent = assignedProjects.length > 0 ? activeCount : 0;
+    }
+
     async function loadAssignedProjects() {
         try {
             const q = query(collection(db, "projects"), where("teamUids", "array-contains", currentUser.uid));
             const snap = await getDocs(q);
 
-            if (snap.empty) {
-                projectsTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#8898aa;">No projects assigned yet.</td></tr>`;
-                return;
-            }
+            assignedProjects = [];
+            snap.forEach(docSnap => assignedProjects.push({ id: docSnap.id, ...docSnap.data() }));
 
-            projectsTableBody.innerHTML = "";
-            snap.forEach((docSnap) => {
-                const p = docSnap.data();
-                const statusClass = (p.status || '').toLowerCase() === 'review' ? 'badge-status review' : 'badge-status';
-                projectsTableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td>${p.name || '-'}</td>
-                        <td><span class="${statusClass}">${p.status || '-'}</span></td>
-                        <td>${p.endDate || '-'}</td>
-                    </tr>
-                `);
-            });
+            if (assignedProjects.length === 0) {
+                projectsTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#8898aa;">No projects assigned yet.</td></tr>`;
+            } else {
+                projectsTableBody.innerHTML = "";
+                assignedProjects.forEach((p) => {
+                    const statusClass = (p.status || '').toLowerCase() === 'review' ? 'badge-status review' : 'badge-status';
+                    projectsTableBody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${p.name || '-'}</td>
+                            <td><span class="${statusClass}">${p.status || '-'}</span></td>
+                            <td>${p.endDate || '-'}</td>
+                        </tr>
+                    `);
+                });
+            }
         } catch (err) {
             console.error("Failed to load assigned projects: ", err);
             projectsTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#f87171;">Failed to load projects: ${err.message}</td></tr>`;
         }
+
+        updateActiveProjectsMetric();
+        renderUpcomingDeadlines();
+        renderRecentActivities();
     }
 
-    paintSidebarProfile();
-    loadAssignedProjects();
+    function formatTimestampShort(ts) {
+        if (ts && typeof ts.toDate === 'function') {
+            return ts.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        return null;
+    }
+
+    function renderRecentActivities() {
+        const container = document.getElementById('empRecentActivities');
+        const events = [];
+
+        leaveRequests.forEach(r => {
+            const millis = r.appliedOn && typeof r.appliedOn.toMillis === 'function' ? r.appliedOn.toMillis() : 0;
+            const statusText = (r.status || 'Pending').toLowerCase();
+            events.push({
+                text: `Leave request (${r.leaveType || 'leave'}) ${statusText}`,
+                dateLabel: formatTimestampShort(r.appliedOn) || '-',
+                millis
+            });
+        });
+
+        assignedProjects.forEach(p => {
+            const parsed = p.startDate ? new Date(p.startDate) : null;
+            const millis = parsed && !isNaN(parsed) ? parsed.getTime() : 0;
+            events.push({
+                text: `Assigned to project "${p.projectName || p.name || 'Untitled Project'}"`,
+                dateLabel: p.startDate || '-',
+                millis
+            });
+        });
+
+        events.sort((a, b) => b.millis - a.millis);
+        const top = events.slice(0, 4);
+
+        if (top.length === 0) {
+            container.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No recent activity.</div></div>`;
+            return;
+        }
+
+        container.innerHTML = "";
+        top.forEach((ev, idx) => {
+            container.insertAdjacentHTML('beforeend', `
+                <div class="list-item">
+                    <div class="status-dot${idx < 2 ? ' active' : ''}"></div>
+                    <div class="item-text">${ev.text}</div>
+                    <div class="item-meta">${ev.dateLabel}</div>
+                </div>
+            `);
+        });
+    }
+
+    function renderLeaveSummary() {
+        const currentYear = new Date().getFullYear();
+        let annual = 0, sick = 0, compOff = 0, pending = 0;
+
+        leaveRequests.forEach(r => {
+            const status = (r.status || '').toLowerCase();
+            if (status === 'pending') pending++;
+
+            if (status === 'approved') {
+                const appliedYear = r.appliedOn && typeof r.appliedOn.toDate === 'function' ? r.appliedOn.toDate().getFullYear() : null;
+                if (appliedYear === null || appliedYear === currentYear) {
+                    const days = Number(r.totalDays) || 0;
+                    const type = (r.leaveType || '').toLowerCase();
+                    if (type === 'annual leave') annual += days;
+                    else if (type === 'sick leave') sick += days;
+                    else if (type === 'comp off') compOff += days;
+                }
+            }
+        });
+
+        document.getElementById('leaveSummaryAnnual').textContent = `${annual} Days`;
+        document.getElementById('leaveSummarySick').textContent = `${sick} Days`;
+        document.getElementById('leaveSummaryCompOff').textContent = `${compOff} Days`;
+        document.getElementById('leaveSummaryPending').textContent = pending;
+
+        document.getElementById('navBellBadge').textContent = pending;
+        document.getElementById('metricLeaveBalance').textContent = `0 Days`;
+    }
+
+    async function loadLeaveRequests() {
+        try {
+            const q = query(collection(db, "leaveRequests"), where("uid", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            leaveRequests = [];
+            snap.forEach(docSnap => leaveRequests.push({ id: docSnap.id, ...docSnap.data() }));
+        } catch (err) {
+            console.error("Failed to load leave requests: ", err);
+            leaveRequests = [];
+        }
+        renderLeaveSummary();
+        renderRecentActivities();
+    }
+
+    async function loadAttendanceThisMonth() {
+        try {
+            const now = new Date();
+            const monthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const q = query(collection(db, "attendance"), where("uid", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            const records = [];
+            snap.forEach(docSnap => records.push(docSnap.data()));
+            const monthRecords = records.filter(r => (r.date || '').startsWith(monthPrefix));
+            const attended = monthRecords.filter(r => {
+                const s = (r.status || '').toLowerCase();
+                return s === 'present' || s === 'late';
+            }).length;
+            const percent = monthRecords.length > 0 ? Math.round((attended / monthRecords.length) * 100) : 0;
+            document.getElementById('metricAttendanceValue').textContent = `${percent}%`;
+        } catch (err) {
+            console.error("Failed to load attendance: ", err);
+            document.getElementById('metricAttendanceValue').textContent = `0%`;
+        }
+    }
+
+    function formatNotificationTime(createdAt) {
+        if (createdAt && typeof createdAt.toDate === 'function') {
+            return createdAt.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        return '-';
+    }
+
+    async function loadNotificationsWidgets() {
+        const listContainer = document.getElementById('empRecentNotifications');
+        try {
+            const q = query(collection(db, "notifications"), where("audience", "in", ["All", "Employees"]));
+            const snap = await getDocs(q);
+            const records = [];
+            snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
+
+            const unreadCount = records.filter(r => !(r.readByUids || []).includes(currentUser.uid)).length;
+            document.getElementById('metricNotifications').textContent = unreadCount;
+
+            records.sort((a, b) => {
+                const aTime = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+                const bTime = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+                return bTime - aTime;
+            });
+
+            const top = records.slice(0, 3);
+            if (top.length === 0) {
+                listContainer.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No notifications.</div></div>`;
+                return;
+            }
+
+            listContainer.innerHTML = "";
+            top.forEach(r => {
+                listContainer.insertAdjacentHTML('beforeend', `
+                    <div class="list-item">
+                        <div class="item-text"><i class="fa-regular fa-bell" style="color:#4299e1; margin-right:6px;"></i> ${r.title || 'Notification'}${r.body ? ' — ' + r.body : ''}</div>
+                        <div class="item-meta">${formatNotificationTime(r.createdAt)}</div>
+                    </div>
+                `);
+            });
+        } catch (err) {
+            console.error("Failed to load notifications: ", err);
+            document.getElementById('metricNotifications').textContent = 0;
+            listContainer.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No notifications.</div></div>`;
+        }
+    }
+
+    function formatDocUploadedOn(uploadedOn) {
+        try {
+            const d = uploadedOn && uploadedOn.toDate ? uploadedOn.toDate() : new Date(uploadedOn);
+            if (isNaN(d.getTime())) return uploadedOn || '-';
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        } catch {
+            return uploadedOn || '-';
+        }
+    }
+
+    async function loadRecentDocuments() {
+        const container = document.getElementById('empRecentDocuments');
+        try {
+            const snap = await getDocs(collection(db, "documents"));
+            let docsArray = [];
+            snap.forEach(docSnap => docsArray.push({ id: docSnap.id, ...docSnap.data() }));
+            docsArray = docsArray.filter(d => d.uploadedBy === currentUser.name && !d.deleted);
+            docsArray.sort((a, b) => {
+                const aTime = a.uploadedOn && a.uploadedOn.toMillis ? a.uploadedOn.toMillis() : new Date(a.uploadedOn || 0).getTime();
+                const bTime = b.uploadedOn && b.uploadedOn.toMillis ? b.uploadedOn.toMillis() : new Date(b.uploadedOn || 0).getTime();
+                return bTime - aTime;
+            });
+
+            const top = docsArray.slice(0, 3);
+            if (top.length === 0) {
+                container.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No recent documents.</div></div>`;
+                return;
+            }
+
+            container.innerHTML = "";
+            top.forEach(d => {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="list-item">
+                        <div class="item-text"><i class="fa-regular fa-file-pdf" style="color:#4299e1; margin-right:6px;"></i> ${d.fileName || 'Untitled Document'}</div>
+                        <div class="item-meta">${formatDocUploadedOn(d.uploadedOn)}</div>
+                    </div>
+                `);
+            });
+        } catch (err) {
+            console.error("Failed to load documents: ", err);
+            container.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No recent documents.</div></div>`;
+        }
+    }
+
+    async function loadPerformanceWidget() {
+        try {
+            const q = query(collection(db, "performance"), where("uid", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            const records = [];
+            snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
+            records.sort((a, b) => {
+                const aTime = a.reviewDate && a.reviewDate.toMillis ? a.reviewDate.toMillis() : 0;
+                const bTime = b.reviewDate && b.reviewDate.toMillis ? b.reviewDate.toMillis() : 0;
+                return bTime - aTime;
+            });
+
+            const latest = records[0];
+            const rating = latest ? Number(latest.rating) || 0 : 0;
+            const ringPercent = Math.round((rating / 5) * 100);
+
+            document.getElementById('perfRingRatingVal').textContent = rating.toFixed(1);
+            document.getElementById('perfCurrentRating').textContent = `${rating.toFixed(1)} / 5`;
+            document.getElementById('perfRingFill').style.strokeDasharray = `${ringPercent} 100`;
+
+            // No "goals completed" field exists on the performance schema; leave at 0% rather than invent one.
+            document.getElementById('perfGoalsCompleted').textContent = `0%`;
+            document.getElementById('perfGoalsProgressFill').style.width = `0%`;
+
+            document.getElementById('perfFeedbackText').textContent = latest && latest.comments ? `"${latest.comments}"` : 'No feedback yet.';
+        } catch (err) {
+            console.error("Failed to load performance: ", err);
+            document.getElementById('perfRingRatingVal').textContent = '0';
+            document.getElementById('perfCurrentRating').textContent = '0 / 5';
+            document.getElementById('perfRingFill').style.strokeDasharray = '0 100';
+            document.getElementById('perfGoalsCompleted').textContent = '0%';
+            document.getElementById('perfGoalsProgressFill').style.width = '0%';
+            document.getElementById('perfFeedbackText').textContent = 'No feedback yet.';
+        }
+    }
+
+    // Pending Tasks: no dedicated "tasks" collection exists in this project.
+    document.getElementById('metricPendingTasks').textContent = 0;
+    document.getElementById('navEnvelopeBadge').textContent = 0;
+
+    Promise.all([
+        paintSidebarProfile(),
+        loadAssignedProjects(),
+        loadLeaveRequests(),
+        loadAttendanceThisMonth(),
+        loadNotificationsWidgets(),
+        loadRecentDocuments(),
+        loadPerformanceWidget()
+    ]);
 </script>
 
 </body>

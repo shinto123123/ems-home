@@ -694,11 +694,11 @@ body {
     <div class="navbar-right">
         <div class="nav-icon-btn">
             <i class="fa-regular fa-bell"></i>
-            <span class="badge">3</span>
+            <span class="badge" id="bellBadge">0</span>
         </div>
         <div class="nav-icon-btn">
             <i class="fa-regular fa-envelope"></i>
-            <span class="badge">5</span>
+            <span class="badge" id="envelopeBadge">0</span>
         </div>
         <div class="nav-profile" id="navProfileToggle">
             <div class="nav-profile-avatar">
@@ -752,7 +752,7 @@ body {
                 </div>
                 <div class="date-box">
                     <i class="fa-regular fa-calendar"></i>
-                    <span>June 25, 2026</span>
+                    <span id="dashDateLabel">--</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
             </div>
@@ -761,7 +761,7 @@ body {
                 <div class="card"><i class="fa-solid fa-users"></i><p>Total Employees</p><h2 id="kpiTotalEmployees">--</h2></div>
                 <div class="card"><i class="fa-solid fa-building"></i><p>Departments</p><h2 id="kpiTotalDepartments">--</h2></div>
                 <div class="card"><i class="fa-solid fa-calendar-days"></i><p>Pending Leaves</p><h2 id="kpiPendingLeaves">--</h2></div>
-                <div class="card"><i class="fa-solid fa-user-check"></i><p>Attendance</p><h2>92%</h2></div>
+                <div class="card"><i class="fa-solid fa-user-check"></i><p>Attendance</p><h2 id="kpiAttendanceToday">0%</h2></div>
                 <div class="card"><i class="fa-solid fa-folder-open"></i><p>Active Projects</p><h2 id="kpiActiveProjects">--</h2></div>
             </div>
 
@@ -779,13 +779,13 @@ body {
                             </div>
                             <div class="chart-bars-wrap">
                                 <div class="chart-bars">
-                                    <div class="bar-col"><div class="bar-fill" style="height:80%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:85%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:75%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:90%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:88%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:65%"></div></div>
-                                    <div class="bar-col"><div class="bar-fill" style="height:20%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barMon" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barTue" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barWed" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barThu" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barFri" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barSat" style="height:0%"></div></div>
+                                    <div class="bar-col"><div class="bar-fill" id="barSun" style="height:0%"></div></div>
                                 </div>
                                 <div class="chart-x-labels">
                                     <span>Mon</span>
@@ -800,15 +800,15 @@ body {
                         </div>
                         <div class="chart-stats">
                             <p class="stat-label">Average Attendance</p>
-                            <div class="stat-big">92%</div>
+                            <div class="stat-big" id="avgAttendanceStat">0%</div>
                             <div class="chart-stats-row">
                                 <div class="stat-item">
                                     <p>Present</p>
-                                    <h4>236</h4>
+                                    <h4 id="presentCountStat">0</h4>
                                 </div>
                                 <div class="stat-item">
                                     <p>Absent</p>
-                                    <h4>20</h4>
+                                    <h4 id="absentCountStat">0</h4>
                                 </div>
                             </div>
                         </div>
@@ -821,30 +821,30 @@ body {
                         <div class="donut-wrap">
                             <svg viewBox="0 0 36 36">
                                 <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1b2e6e" stroke-width="3.5"/>
-                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="3.5" stroke-dasharray="50 50" stroke-dashoffset="25" stroke-linecap="round"/>
-                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="3.5" stroke-dasharray="30 70" stroke-dashoffset="-25" stroke-linecap="round"/>
-                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2d4a8a" stroke-width="3.5" stroke-dasharray="20 80" stroke-dashoffset="-55" stroke-linecap="round"/>
+                                <circle id="circleApproved" cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round"/>
+                                <circle id="circlePending" cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round"/>
+                                <circle id="circleRejected" cx="18" cy="18" r="15.9" fill="none" stroke="#2d4a8a" stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round"/>
                             </svg>
                         </div>
                         <div class="leave-legend">
                             <div class="leg-row">
                                 <div class="leg-dot" style="background:#4299e1"></div>
                                 <span class="leg-label">Approved</span>
-                                <span class="leg-val">25 (50%)</span>
+                                <span class="leg-val" id="legApprovedVal">0 (0%)</span>
                             </div>
                             <div class="leg-row">
                                 <div class="leg-dot" style="background:#00b5d8"></div>
                                 <span class="leg-label">Pending</span>
-                                <span class="leg-val">15 (30%)</span>
+                                <span class="leg-val" id="legPendingVal">0 (0%)</span>
                             </div>
                             <div class="leg-row">
                                 <div class="leg-dot" style="background:#2d4a8a"></div>
                                 <span class="leg-label">Rejected</span>
-                                <span class="leg-val">10 (20%)</span>
+                                <span class="leg-val" id="legRejectedVal">0 (0%)</span>
                             </div>
                             <div class="leave-total">
                                 <span>Total Leaves</span>
-                                <span>50</span>
+                                <span id="legTotalVal">0</span>
                             </div>
                         </div>
                     </div>
@@ -854,22 +854,15 @@ body {
             <div class="sections">
                 <div class="box">
                     <h3>Recent Activities</h3>
-                    <div class="activity"><span>Leave Request Submitted</span><span>10:30 AM</span></div>
-                    <div class="activity"><span>Project Updated</span><span>09:15 AM</span></div>
-                    <div class="activity"><span>Document Uploaded</span><span>Yesterday</span></div>
-                    <div class="activity"><span>New Employee Added</span><span>2 days ago</span></div>
+                    <div id="recentActivitiesList"></div>
                 </div>
                 <div class="box">
                     <h3>Upcoming Events</h3>
-                    <div class="activity"><span>Performance Review</span><span>10 May</span></div>
-                    <div class="activity"><span>Project Deadline</span><span>12 May</span></div>
-                    <div class="activity"><span>Team Building</span><span>15 May</span></div>
+                    <div id="upcomingEventsList"></div>
                 </div>
                 <div class="box">
                     <h3>Notifications</h3>
-                    <div class="activity"><span>Leave Request from Emma</span><span>10:30 AM</span></div>
-                    <div class="activity"><span>New Project Assigned</span><span>09:20 AM</span></div>
-                    <div class="activity"><span>Policy Update</span><span>Yesterday</span></div>
+                    <div id="dashNotificationsList"></div>
                 </div>
             </div>
 
@@ -900,6 +893,71 @@ body {
     const welcomeNameEl = document.getElementById('welcomeUserName');
     if (welcomeNameEl && currentUser) welcomeNameEl.textContent = currentUser.name;
 
+    // ── Date box ──
+    const dashDateLabel = document.getElementById('dashDateLabel');
+    if (dashDateLabel) {
+        dashDateLabel.textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+
+    // ── Helpers ──
+    function pad2(n) { return String(n).padStart(2, '0'); }
+
+    function toYMD(date) {
+        return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+    }
+
+    // Normalize an attendance doc's date field (string "YYYY-MM-DD" or Firestore Timestamp) into a JS Date
+    function parseAttendanceDate(rawDate) {
+        if (!rawDate) return null;
+        if (typeof rawDate.toDate === 'function') return rawDate.toDate();
+        if (typeof rawDate === 'string') {
+            const parts = rawDate.split('-');
+            if (parts.length === 3) {
+                const [y, m, d] = parts.map(Number);
+                return new Date(y, m - 1, d);
+            }
+            const fallback = new Date(rawDate);
+            return isNaN(fallback.getTime()) ? null : fallback;
+        }
+        if (rawDate instanceof Date) return rawDate;
+        return null;
+    }
+
+    // Parse a "DD/MM/YYYY" project date string into a JS Date (returns null for "-" / empty / invalid)
+    function parseDMY(str) {
+        if (!str || str === '-') return null;
+        const parts = str.split('/');
+        if (parts.length !== 3) return null;
+        const [d, m, y] = parts.map(Number);
+        if (!d || !m || !y) return null;
+        return new Date(y, m - 1, d);
+    }
+
+    function timeAgo(date) {
+        if (!date) return '';
+        const diffMs = Date.now() - date.getTime();
+        const diffMin = Math.floor(diffMs / 60000);
+        if (diffMin < 1) return 'Just now';
+        if (diffMin < 60) return `${diffMin}m ago`;
+        const diffHr = Math.floor(diffMin / 60);
+        if (diffHr < 24) return `${diffHr}h ago`;
+        const diffDay = Math.floor(diffHr / 24);
+        if (diffDay < 7) return `${diffDay}d ago`;
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function getWeekDates(base) {
+        // Monday-Sunday of the week containing `base`
+        const day = base.getDay(); // 0=Sun..6=Sat
+        const mondayOffset = day === 0 ? -6 : 1 - day;
+        const monday = new Date(base.getFullYear(), base.getMonth(), base.getDate() + mondayOffset);
+        const week = [];
+        for (let i = 0; i < 7; i++) {
+            week.push(new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i));
+        }
+        return week;
+    }
+
     async function loadDashboardKPIs() {
         try {
             const [employeesSnap, deptSnap, leaveSnap, projectsSnap] = await Promise.all([
@@ -913,12 +971,236 @@ body {
             document.getElementById('kpiTotalDepartments').textContent = deptSnap.size;
             document.getElementById('kpiPendingLeaves').textContent = leaveSnap.size;
             document.getElementById('kpiActiveProjects').textContent = projectsSnap.size;
+
+            const bellBadge = document.getElementById('bellBadge');
+            if (bellBadge) bellBadge.textContent = leaveSnap.size;
+            const envelopeBadge = document.getElementById('envelopeBadge');
+            if (envelopeBadge) envelopeBadge.textContent = 0;
         } catch (err) {
             console.error("Failed to load dashboard KPIs: ", err);
         }
     }
 
+    async function loadAttendanceOverview() {
+        const barIds = { 0: 'barMon', 1: 'barTue', 2: 'barWed', 3: 'barThu', 4: 'barFri', 5: 'barSat', 6: 'barSun' };
+        try {
+            const attendanceSnap = await getDocs(collection(db, "attendance"));
+            const records = [];
+            attendanceSnap.forEach(docSnap => records.push(docSnap.data()));
+
+            const today = new Date();
+            const weekDates = getWeekDates(today);
+            const todayYMD = toYMD(today);
+
+            let weekPresent = 0;
+            let weekAbsent = 0;
+            let weekTotal = 0;
+            let todayPresent = 0;
+            let todayTotal = 0;
+
+            weekDates.forEach((dateObj, idx) => {
+                const ymd = toYMD(dateObj);
+                const dayRecords = records.filter(rec => {
+                    const d = parseAttendanceDate(rec.date);
+                    return d && toYMD(d) === ymd;
+                });
+                const presentCount = dayRecords.filter(r => (r.status || '').toLowerCase().trim() === 'present').length;
+                const absentCount = dayRecords.filter(r => (r.status || '').toLowerCase().trim() === 'absent').length;
+                const pct = dayRecords.length > 0 ? Math.round((presentCount / dayRecords.length) * 100) : 0;
+
+                const barEl = document.getElementById(barIds[idx]);
+                if (barEl) barEl.style.height = `${pct}%`;
+
+                weekPresent += presentCount;
+                weekAbsent += absentCount;
+                weekTotal += dayRecords.length;
+
+                if (ymd === todayYMD) {
+                    todayPresent = presentCount;
+                    todayTotal = dayRecords.length;
+                }
+            });
+
+            const avgPct = weekTotal > 0 ? Math.round((weekPresent / weekTotal) * 100) : 0;
+            const todayPct = todayTotal > 0 ? Math.round((todayPresent / todayTotal) * 100) : 0;
+
+            const avgEl = document.getElementById('avgAttendanceStat');
+            if (avgEl) avgEl.textContent = `${avgPct}%`;
+            const presentEl = document.getElementById('presentCountStat');
+            if (presentEl) presentEl.textContent = weekPresent;
+            const absentEl = document.getElementById('absentCountStat');
+            if (absentEl) absentEl.textContent = weekAbsent;
+            const kpiAttendanceEl = document.getElementById('kpiAttendanceToday');
+            if (kpiAttendanceEl) kpiAttendanceEl.textContent = `${todayPct}%`;
+        } catch (err) {
+            console.error("Failed to load attendance overview: ", err);
+            Object.values(barIds).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.height = '0%';
+            });
+            const avgEl = document.getElementById('avgAttendanceStat');
+            if (avgEl) avgEl.textContent = '0%';
+            const presentEl = document.getElementById('presentCountStat');
+            if (presentEl) presentEl.textContent = 0;
+            const absentEl = document.getElementById('absentCountStat');
+            if (absentEl) absentEl.textContent = 0;
+            const kpiAttendanceEl = document.getElementById('kpiAttendanceToday');
+            if (kpiAttendanceEl) kpiAttendanceEl.textContent = '0%';
+        }
+    }
+
+    async function loadLeaveOverview() {
+        try {
+            const leaveSnap = await getDocs(collection(db, "leaveRequests"));
+            let approved = 0, pending = 0, rejected = 0;
+            leaveSnap.forEach(docSnap => {
+                const status = (docSnap.data().status || '').trim();
+                if (status === 'Approved') approved++;
+                else if (status === 'Pending') pending++;
+                else if (status === 'Rejected') rejected++;
+            });
+            const total = approved + pending + rejected;
+
+            const approvedPct = total > 0 ? Math.round((approved / total) * 100) : 0;
+            const pendingPct = total > 0 ? Math.round((pending / total) * 100) : 0;
+            const rejectedPct = total > 0 ? Math.round((rejected / total) * 100) : 0;
+
+            const circleApproved = document.getElementById('circleApproved');
+            const circlePending = document.getElementById('circlePending');
+            const circleRejected = document.getElementById('circleRejected');
+
+            if (circleApproved) circleApproved.setAttribute('stroke-dasharray', `${approvedPct} ${100 - approvedPct}`);
+            if (circlePending) {
+                circlePending.setAttribute('stroke-dasharray', `${pendingPct} ${100 - pendingPct}`);
+                circlePending.setAttribute('stroke-dashoffset', `${25 - approvedPct}`);
+            }
+            if (circleRejected) {
+                circleRejected.setAttribute('stroke-dasharray', `${rejectedPct} ${100 - rejectedPct}`);
+                circleRejected.setAttribute('stroke-dashoffset', `${25 - approvedPct - pendingPct}`);
+            }
+
+            const legApprovedVal = document.getElementById('legApprovedVal');
+            if (legApprovedVal) legApprovedVal.textContent = `${approved} (${approvedPct}%)`;
+            const legPendingVal = document.getElementById('legPendingVal');
+            if (legPendingVal) legPendingVal.textContent = `${pending} (${pendingPct}%)`;
+            const legRejectedVal = document.getElementById('legRejectedVal');
+            if (legRejectedVal) legRejectedVal.textContent = `${rejected} (${rejectedPct}%)`;
+            const legTotalVal = document.getElementById('legTotalVal');
+            if (legTotalVal) legTotalVal.textContent = total;
+
+            return leaveSnap;
+        } catch (err) {
+            console.error("Failed to load leave overview: ", err);
+            ['legApprovedVal', 'legPendingVal', 'legRejectedVal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '0 (0%)';
+            });
+            const legTotalVal = document.getElementById('legTotalVal');
+            if (legTotalVal) legTotalVal.textContent = 0;
+            return null;
+        }
+    }
+
+    function renderActivityList(containerId, items) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        if (!items.length) {
+            container.innerHTML = `<div class="activity"><span>No recent activity</span><span></span></div>`;
+            return;
+        }
+        container.innerHTML = items.map(item =>
+            `<div class="activity"><span>${item.label}</span><span>${item.time}</span></div>`
+        ).join('');
+    }
+
+    async function loadRecentActivities() {
+        try {
+            const [leaveSnap, projectsSnap] = await Promise.all([
+                getDocs(collection(db, "leaveRequests")),
+                getDocs(collection(db, "projects"))
+            ]);
+
+            const events = [];
+            leaveSnap.forEach(docSnap => {
+                const d = docSnap.data();
+                const appliedOn = d.appliedOn && typeof d.appliedOn.toDate === 'function' ? d.appliedOn.toDate() : null;
+                if (appliedOn) {
+                    events.push({
+                        date: appliedOn,
+                        label: `${d.employeeName || 'An employee'} submitted a ${d.leaveType || ''} leave request`.replace(/\s+/g, ' ').trim()
+                    });
+                }
+            });
+            projectsSnap.forEach(docSnap => {
+                const d = docSnap.data();
+                const startDate = parseDMY(d.startDate);
+                if (startDate) {
+                    events.push({
+                        date: startDate,
+                        label: `Project "${d.projectName || d.name || 'Unnamed'}" was created`
+                    });
+                }
+            });
+
+            events.sort((a, b) => b.date - a.date);
+            const top4 = events.slice(0, 4).map(e => ({ label: e.label, time: timeAgo(e.date) }));
+            renderActivityList('recentActivitiesList', top4);
+        } catch (err) {
+            console.error("Failed to load recent activities: ", err);
+            renderActivityList('recentActivitiesList', []);
+        }
+    }
+
+    async function loadUpcomingEvents() {
+        try {
+            const projectsSnap = await getDocs(collection(db, "projects"));
+            const now = new Date();
+            const upcoming = [];
+            projectsSnap.forEach(docSnap => {
+                const d = docSnap.data();
+                const endDate = parseDMY(d.endDate);
+                if (endDate && endDate > now) {
+                    upcoming.push({
+                        date: endDate,
+                        label: `${d.projectName || d.name || 'Unnamed'} Deadline`,
+                        time: endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    });
+                }
+            });
+            upcoming.sort((a, b) => a.date - b.date);
+            renderActivityList('upcomingEventsList', upcoming.slice(0, 3));
+        } catch (err) {
+            console.error("Failed to load upcoming events: ", err);
+            renderActivityList('upcomingEventsList', []);
+        }
+    }
+
+    async function loadDashboardNotifications() {
+        try {
+            const notifSnap = await getDocs(collection(db, "notifications"));
+            const relevant = [];
+            notifSnap.forEach(docSnap => {
+                const d = docSnap.data();
+                if (d.audience === 'All' || d.audience === 'Admins') {
+                    const createdAt = d.createdAt && typeof d.createdAt.toDate === 'function' ? d.createdAt.toDate() : null;
+                    relevant.push({ date: createdAt || new Date(0), label: d.title || 'Notification' });
+                }
+            });
+            relevant.sort((a, b) => b.date - a.date);
+            const top3 = relevant.slice(0, 3).map(n => ({ label: n.label, time: timeAgo(n.date) }));
+            renderActivityList('dashNotificationsList', top3);
+        } catch (err) {
+            console.error("Failed to load notifications: ", err);
+            renderActivityList('dashNotificationsList', []);
+        }
+    }
+
     loadDashboardKPIs();
+    loadAttendanceOverview();
+    loadLeaveOverview();
+    loadRecentActivities();
+    loadUpcomingEvents();
+    loadDashboardNotifications();
 </script>
 
 </body>

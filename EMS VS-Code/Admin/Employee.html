@@ -18,7 +18,18 @@
 body {
     background:#0b1437;
     display:flex;
+    flex-direction:column;
     height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   BODY WRAP
+========================= */
+
+.body-wrap {
+    display:flex;
+    flex:1;
     overflow:hidden;
 }
 
@@ -27,20 +38,13 @@ body {
 ========================= */
 
 .sidebar {
-    width:230px;
-    height:100vh;
+    width:240px;
+    height:100%;
     background:#111c44;
     border-right:1px solid #1b2e6e;
-    position:fixed;
-    overflow:auto;
-}
-
-.logo {
-    padding:18px 25px;
-    font-size:20px;
-    font-weight:700;
-    color:#ffffff;
-    border-bottom:1px solid #1b2e6e;
+    overflow-y:auto;
+    flex-shrink:0;
+    transition: width 0.3s ease;
 }
 
 .sidebar ul {
@@ -49,28 +53,31 @@ body {
 }
 
 .sidebar ul li {
-    padding:13px 22px;
+    padding:12px 20px;
     display:flex;
-    gap:14px;
     align-items:center;
     cursor:pointer;
     transition:.3s;
-    color:#8898aa;
-    font-size:14px;
 }
 
 .sidebar ul li a {
     text-decoration:none;
-    color:inherit;
+    color:#8898aa;
     display:flex;
-    gap:14px;
+    gap:12px;
     align-items:center;
     width:100%;
+    font-size:14px;
+    white-space:nowrap;
 }
 
 .sidebar ul li:hover,
 .sidebar ul li.active {
     background:#1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
     color:#ffffff;
 }
 
@@ -79,11 +86,10 @@ body {
 ========================= */
 
 .main {
-    margin-left:230px;
-    width:calc(100% - 230px);
-    height:100vh;
+    flex:1;
     display:flex;
     flex-direction:column;
+    overflow:hidden;
 }
 
 /* =========================
@@ -692,36 +698,6 @@ tbody tr:hover {
 </head>
 <body>
 
-
-<div class="sidebar">
-
-<div class="logo">
-EMS ADMIN
-</div>
-
-<ul>
- <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
- <li class="active"><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
- <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
- <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
- <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
- <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
- <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
- <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
- <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
- <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
- <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
- <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
- <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
- <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
- </ul>
-
-</div>
-
-
-
-<div class="main">
-
 <div class="navbar">
     <div class="navbar-left">
         <div class="hamburger">
@@ -777,6 +753,33 @@ EMS ADMIN
 
     </div>
 </div>
+
+<div class="body-wrap">
+
+<div class="sidebar">
+
+<ul>
+ <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li class="active"><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+ </ul>
+
+</div>
+
+
+
+<div class="main">
 
 <div class="content">
 
@@ -849,6 +852,8 @@ Showing 0 to 0 of 0 entries
 
 <div class="page">
 <i class="fa-solid fa-angle-right"></i>
+</div>
+
 </div>
 
 </div>

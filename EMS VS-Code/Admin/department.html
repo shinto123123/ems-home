@@ -18,27 +18,29 @@
 body{
     background:#0b1437;
     display:flex;
+    flex-direction:column;
     height:100vh;
+    overflow:hidden;
+}
+
+/* ================= Body Wrap ================= */
+
+.body-wrap{
+    display:flex;
+    flex:1;
     overflow:hidden;
 }
 
 /* ================= Sidebar ================= */
 
 .sidebar{
-    width:230px;
-    height:100vh;
+    width:240px;
+    height:100%;
     background:#111c44;
     border-right:1px solid #1b2e6e;
-    position:fixed;
-    overflow:auto;
-}
-
-.logo{
-    padding:18px 25px;
-    font-size:20px;
-    font-weight:700;
-    color:#ffffff;
-    border-bottom:1px solid #1b2e6e;
+    overflow-y:auto;
+    flex-shrink:0;
+    transition: width 0.3s ease;
 }
 
 .sidebar ul{
@@ -47,39 +49,41 @@ body{
 }
 
 .sidebar ul li{
-    padding:13px 22px;
+    padding:12px 20px;
     display:flex;
-    gap:14px;
     align-items:center;
     cursor:pointer;
     transition:.3s;
-    color:#8898aa;
-    font-size:14px;
 }
 
 .sidebar ul li a{
     text-decoration:none;
-    color:inherit;
+    color:#8898aa;
     display:flex;
-    gap:14px;
+    gap:12px;
     align-items:center;
     width:100%;
+    font-size:14px;
+    white-space:nowrap;
 }
 
 .sidebar ul li:hover,
 .sidebar ul li.active{
     background:#1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a{
     color:#ffffff;
 }
 
 /* ================= Main ================= */
 
 .main{
-    margin-left:230px;
-    width:calc(100% - 230px);
-    height:100vh;
+    flex:1;
     display:flex;
     flex-direction:column;
+    overflow:hidden;
 }
 
 /* ================= Topbar ================= */
@@ -663,8 +667,35 @@ tbody tr:hover{
 </head>
 <body>
 
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">LOGO</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
+        <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
 <div class="sidebar">
-    <div class="logo">EMS ADMIN</div>
     <ul>
         <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
         <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
@@ -684,32 +715,6 @@ tbody tr:hover{
 </div>
 
 <div class="main">
-
-    <div class="navbar">
-        <div class="navbar-left">
-            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-            <div class="navbar-logo">LOGO</div>
-            <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
-        </div>
-        <div class="navbar-center">
-            <div class="nav-search">
-                <i class="fa fa-search"></i>
-                <input type="text" placeholder="Search anything...">
-            </div>
-        </div>
-        <div class="navbar-right">
-            <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
-            <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
-            <div class="nav-profile" id="navProfileToggle">
-                <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
-                <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
-                <i class="fa-solid fa-chevron-down"></i>
-                <div class="nav-profile-dropdown" id="navProfileDropdown">
-                    <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="content">
         <div class="header">
@@ -758,6 +763,8 @@ tbody tr:hover{
             </div>
         </div>
     </div>
+</div>
+
 </div>
 
 <div class="modal-backdrop" id="addDeptModal">

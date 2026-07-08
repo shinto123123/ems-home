@@ -164,8 +164,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     </div>
   </div>
   <div class="navbar-right">
-    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">3</span></div>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge" id="navBellBadge">0</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge" id="navEnvelopeBadge">0</span></div>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
@@ -180,8 +180,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     <div>
       <div class="sidebar-top">
         <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
-        <h3>Intern User</h3>
-        <p>Software Intern</p>
+        <h3 id="sidebarInternName">Intern User</h3>
+        <p id="sidebarInternRole">Software Intern</p>
       </div>
       <ul class="sidebar-menu">
         <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
@@ -215,8 +215,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <div class="widget-avatar-box"><i class="fa-regular fa-user"></i></div>
             <div class="widget-details">
               <span>Assigned Mentor</span>
-              <h3>David Brown</h3>
-              <p>Senior Developer</p>
+              <h3 id="mentorNameVal">-</h3>
+              <p id="mentorRoleVal"></p>
             </div>
           </div>
           <button class="btn-sm-outline">Message</button>
@@ -254,26 +254,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Recent Activities</h3>
             <a href="#" class="view-all">View All</a>
           </div>
-          <div class="activity-list">
+          <div class="activity-list" id="recentActivitiesList">
             <div class="activity-item">
               <div class="activity-dot"></div>
               <div class="activity-info">
-                <p><strong>Mentor approved your work log</strong><br>API Integration Module</p>
-                <span>2 hours ago</span>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot"></div>
-              <div class="activity-info">
-                <p><strong>New task assigned</strong><br>Dashboard UI Design</p>
-                <span>1 day ago</span>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot"></div>
-              <div class="activity-info">
-                <p><strong>Feedback received from mentor</strong><br>Good progress on the project</p>
-                <span>2 days ago</span>
+                <p>Loading...</p>
               </div>
             </div>
           </div>
@@ -335,12 +320,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 <th>Review Date</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Mid-Term Review</td>
-                <td>Employee Management System</td>
-                <td style="color:#8898aa;">20/05/2025</td>
-              </tr>
+            <tbody id="upcomingReviewsBody">
+              <tr><td colspan="3" style="text-align:center;color:#8898aa;">Loading...</td></tr>
             </tbody>
           </table>
           <button class="btn-sm-outline btn-center-panel">View All Reviews</button>
@@ -391,8 +372,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="feedback-left-content">
           <div class="feedback-icon-box"><i class="fa-regular fa-comment-dots"></i></div>
           <div class="feedback-quote">
-            blockquote>"Good progress on the project. Keep up the quality of your work."</blockquote>
-            <span>— David Brown, 3 days ago</span>
+            <blockquote id="feedbackQuoteText">"No feedback yet."</blockquote>
+            <span id="feedbackQuoteMeta"></span>
           </div>
         </div>
         <button class="btn-sm-outline">View All Feedback</button>
@@ -403,7 +384,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 </div>
 
 <script type="module">
-  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -424,6 +405,36 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     } catch {
       return value;
     }
+  }
+
+  function toMillis(value) {
+    if (!value) return 0;
+    try {
+      if (value.toDate) return value.toDate().getTime();
+      if (value.toMillis) return value.toMillis();
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? 0 : d.getTime();
+    } catch {
+      return 0;
+    }
+  }
+
+  function formatRelativeTime(value) {
+    const ms = toMillis(value);
+    if (!ms) return "-";
+    const diffMs = Date.now() - ms;
+    if (diffMs < 0) return formatDate(value);
+    const minutes = Math.floor(diffMs / 60000);
+    if (minutes < 1) return "Just now";
+    if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days} day${days === 1 ? "" : "s"} ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
+    const years = Math.floor(months / 12);
+    return `${years} year${years === 1 ? "" : "s"} ago`;
   }
 
   function updateProjectsWidgets(projectsArray) {
@@ -516,8 +527,213 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
   }
 
-  loadAssignedProjects();
-  loadPendingWorkLogs();
+  // Fetches the intern's own "interns" doc (currentUser.docId maps directly to it,
+  // per how signin.html resolves the profile for role "intern").
+  async function fetchInternDoc() {
+    try {
+      const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+      return meSnap.exists() ? meSnap.data() : {};
+    } catch (err) {
+      console.error("Error loading intern profile: ", err);
+      return {};
+    }
+  }
+
+  function paintSidebarProfile(me) {
+    const nameEl = document.getElementById("sidebarInternName");
+    const roleEl = document.getElementById("sidebarInternRole");
+    if (nameEl) nameEl.textContent = me.internName || currentUser.name || "Intern";
+    if (roleEl) {
+      roleEl.textContent = me.department
+        ? (me.university ? `${me.department} • ${me.university}` : me.department)
+        : "Intern";
+    }
+  }
+
+  async function paintAssignedMentor(me) {
+    const nameEl = document.getElementById("mentorNameVal");
+    const roleEl = document.getElementById("mentorRoleVal");
+    try {
+      const mentorName = (me.mentorName || "").trim();
+      if (!mentorName) {
+        if (nameEl) nameEl.textContent = "No mentor assigned yet";
+        if (roleEl) roleEl.textContent = "";
+        return;
+      }
+      if (nameEl) nameEl.textContent = mentorName;
+      // Best-effort lookup of the mentor's designation from the employees collection.
+      try {
+        const empSnap = await getDocs(query(collection(db, "employees"), where("name", "==", mentorName)));
+        if (!empSnap.empty) {
+          const emp = empSnap.docs[0].data();
+          if (roleEl) roleEl.textContent = emp.designation || emp.department || "Mentor";
+        } else if (roleEl) {
+          roleEl.textContent = "Mentor";
+        }
+      } catch {
+        if (roleEl) roleEl.textContent = "Mentor";
+      }
+    } catch (err) {
+      console.error("Error loading assigned mentor: ", err);
+      if (nameEl) nameEl.textContent = "No mentor assigned yet";
+      if (roleEl) roleEl.textContent = "";
+    }
+  }
+
+  async function loadRecentActivities() {
+    const container = document.getElementById("recentActivitiesList");
+    try {
+      const [workLogsSnap, projectsSnap] = await Promise.all([
+        getDocs(query(collection(db, "workLogs"), where("uid", "==", currentUser.uid))),
+        getDocs(query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid)))
+      ]);
+
+      const events = [];
+      workLogsSnap.forEach((docSnap) => {
+        const w = docSnap.data();
+        const time = toMillis(w.submittedOn) || toMillis(w.date);
+        const status = w.status || "Pending Review";
+        events.push({
+          title: status.toLowerCase() === "approved" ? "Mentor approved your work log" : `Work log ${status.toLowerCase()}`,
+          detail: w.project || w.task || "Work Log",
+          time
+        });
+      });
+      projectsSnap.forEach((docSnap) => {
+        const p = docSnap.data();
+        const time = toMillis(p.startDate);
+        events.push({
+          title: "Assigned to project",
+          detail: p.name || "Untitled Project",
+          time
+        });
+      });
+
+      events.sort((a, b) => b.time - a.time);
+      const top = events.slice(0, 3);
+
+      container.innerHTML = "";
+      if (top.length === 0) {
+        container.innerHTML = `<div class="activity-item"><div class="activity-info"><p>No recent activity.</p></div></div>`;
+        return;
+      }
+      top.forEach((e) => {
+        container.insertAdjacentHTML("beforeend", `
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-info">
+              <p><strong>${e.title}</strong><br>${e.detail}</p>
+              <span>${formatRelativeTime(e.time || null)}</span>
+            </div>
+          </div>
+        `);
+      });
+    } catch (err) {
+      console.error("Error loading recent activities: ", err);
+      container.innerHTML = `<div class="activity-item"><div class="activity-info"><p>Failed to load recent activity.</p></div></div>`;
+    }
+  }
+
+  async function loadUpcomingReviews() {
+    const tbody = document.getElementById("upcomingReviewsBody");
+    try {
+      const q = query(
+        collection(db, "performance"),
+        where("uid", "==", currentUser.uid),
+        where("revieweeType", "==", "intern")
+      );
+      const snap = await getDocs(q);
+      const now = Date.now();
+      const upcoming = [];
+      snap.forEach((docSnap) => {
+        const r = docSnap.data();
+        const time = toMillis(r.reviewDate);
+        if (time && time > now) upcoming.push({ ...r, _time: time });
+      });
+      upcoming.sort((a, b) => a._time - b._time);
+
+      tbody.innerHTML = "";
+      if (upcoming.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8898aa;">No upcoming reviews.</td></tr>`;
+        return;
+      }
+      upcoming.forEach((r) => {
+        tbody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${r.reviewCycle || "Performance Review"}</td>
+            <td>${r.projectName || "-"}</td>
+            <td style="color:#8898aa;">${formatDate(r.reviewDate)}</td>
+          </tr>
+        `);
+      });
+    } catch (err) {
+      console.error("Error loading upcoming reviews: ", err);
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8898aa;">No upcoming reviews.</td></tr>`;
+    }
+  }
+
+  async function loadLatestFeedback() {
+    const textEl = document.getElementById("feedbackQuoteText");
+    const metaEl = document.getElementById("feedbackQuoteMeta");
+    try {
+      const q = query(
+        collection(db, "feedback"),
+        where("menteeUid", "==", currentUser.uid),
+        where("status", "==", "Given")
+      );
+      const snap = await getDocs(q);
+      const feedbackArray = [];
+      snap.forEach((docSnap) => feedbackArray.push(docSnap.data()));
+      feedbackArray.sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt));
+
+      if (feedbackArray.length === 0) {
+        if (textEl) textEl.textContent = "No feedback yet.";
+        if (metaEl) metaEl.textContent = "";
+        return;
+      }
+      const latest = feedbackArray[0];
+      if (textEl) textEl.textContent = `"${latest.message || ""}"`;
+      if (metaEl) metaEl.textContent = `— ${latest.mentorName || "Mentor"}, ${formatRelativeTime(latest.createdAt)}`;
+    } catch (err) {
+      console.error("Error loading latest feedback: ", err);
+      if (textEl) textEl.textContent = "No feedback yet.";
+      if (metaEl) metaEl.textContent = "";
+    }
+  }
+
+  async function loadNavBadges() {
+    try {
+      const q = query(collection(db, "notifications"), where("audience", "in", ["All", "Interns"]));
+      const snap = await getDocs(q);
+      let unread = 0;
+      snap.forEach((docSnap) => {
+        const n = docSnap.data();
+        if (!(n.readByUids || []).includes(currentUser.uid)) unread++;
+      });
+      document.getElementById("navBellBadge").textContent = unread;
+    } catch (err) {
+      console.error("Error loading notification badge: ", err);
+      document.getElementById("navBellBadge").textContent = 0;
+    }
+    // No messaging/inbox collection exists in this project.
+    document.getElementById("navEnvelopeBadge").textContent = 0;
+  }
+
+  async function init() {
+    const me = await fetchInternDoc();
+    paintSidebarProfile(me);
+    await Promise.all([
+      paintAssignedMentor(me),
+      loadAssignedProjects(),
+      loadPendingWorkLogs(),
+      loadRecentActivities(),
+      loadUpcomingReviews(),
+      loadLatestFeedback(),
+      loadNavBadges()
+    ]);
+  }
+
+  init();
 </script>
 
 </body>

@@ -163,7 +163,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     </div>
   </div>
   <div class="navbar-right">
-    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">5</span></div>
+    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge" id="navBellBadge">0</span></div>
     <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
@@ -208,12 +208,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <!-- WELCOME -->
       <div class="welcome">
         <div class="welcome-left">
-          <h1>Welcome Back, John Doe 👋</h1>
+          <h1>Welcome Back, <span id="welcomeUserName">HR</span> 👋</h1>
           <p>Monitor your organization, employees and daily activities from one place.</p>
         </div>
         <div class="date-box">
           <i class="fa-regular fa-calendar"></i>
-          <span>26 June 2026</span>
+          <span id="dashDateLabel">--</span>
           <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
@@ -225,7 +225,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="kpi-info">
             <p>Total Employees</p>
             <h2>256</h2>
-            <small>+12 this month</small>
+            <small class="neutral" id="kpiEmployeesSub">Total active</small>
           </div>
         </div>
         <div class="kpi-card">
@@ -240,16 +240,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="kpi-icon"><i class="fa-solid fa-briefcase"></i></div>
           <div class="kpi-info">
             <p>Open Positions</p>
-            <h2>8</h2>
-            <small>3 urgent</small>
+            <h2 id="kpiOpenPositions">0</h2>
+            <small class="neutral" id="kpiOpenPositionsSub">Open</small>
           </div>
         </div>
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-solid fa-user-check"></i></div>
           <div class="kpi-info">
             <p>Active Hires</p>
-            <h2>22</h2>
-            <small>+5 this week</small>
+            <h2 id="kpiActiveHires">0</h2>
+            <small class="neutral" id="kpiActiveHiresSub">No hire status data</small>
           </div>
         </div>
         <div class="kpi-card">
@@ -257,14 +257,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="kpi-info">
             <p>Pending Leaves</p>
             <h2>15</h2>
-            <small class="warn">+5 today</small>
+            <small class="warn" id="kpiPendingLeavesSub">0 today</small>
           </div>
         </div>
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
           <div class="kpi-info">
             <p>Attendance Today</p>
-            <h2>92%</h2>
+            <h2 id="kpiAttendanceToday">0%</h2>
             <small class="neutral">Present</small>
           </div>
         </div>
@@ -272,16 +272,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="kpi-icon"><i class="fa-solid fa-user-plus"></i></div>
           <div class="kpi-info">
             <p>Onboarding</p>
-            <h2>3</h2>
-            <small class="warn">In Progress</small>
+            <h2 id="kpiOnboarding">0</h2>
+            <small class="neutral" id="kpiOnboardingSub">In Progress</small>
           </div>
         </div>
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
           <div class="kpi-info">
             <p>Payroll Status</p>
-            <h2>Jun 2026</h2>
-            <small class="warn">Processing</small>
+            <h2 id="kpiPayrollPeriod">Jun 2026</h2>
+            <small class="neutral" id="kpiPayrollStatus">Not started</small>
           </div>
         </div>
       </div>
@@ -298,53 +298,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             </div>
             <button class="view-btn">View Report</button>
           </div>
-          <div class="line-chart-wrap">
-            <div class="lc-y-axis">
-              <span>300</span>
-              <span>250</span>
-              <span>200</span>
-              <span>150</span>
-              <span>100</span>
-              <span>0</span>
-            </div>
-            <div class="lc-area">
-              <div class="lc-svg-wrap">
-                <svg viewBox="0 0 600 200" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#4299e1" stop-opacity="0.25"/>
-                      <stop offset="100%" stop-color="#4299e1" stop-opacity="0.02"/>
-                    </linearGradient>
-                  </defs>
-                  <!-- Grid lines -->
-                  <line x1="0" y1="40" x2="600" y2="40" stroke="#1b2e6e" stroke-width="1"/>
-                  <line x1="0" y1="80" x2="600" y2="80" stroke="#1b2e6e" stroke-width="1"/>
-                  <line x1="0" y1="120" x2="600" y2="120" stroke="#1b2e6e" stroke-width="1"/>
-                  <line x1="0" y1="160" x2="600" y2="160" stroke="#1b2e6e" stroke-width="1"/>
-                  <!-- Area fill -->
-                  <polygon points="50,160 150,130 250,110 350,100 450,80 550,60 550,200 50,200" fill="url(#areaGrad)"/>
-                  <!-- Line -->
-                  <polyline points="50,160 150,130 250,110 350,100 450,80 550,60" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                  <!-- Dots -->
-                  <circle cx="50"  cy="160" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
-                  <circle cx="150" cy="130" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
-                  <circle cx="250" cy="110" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
-                  <circle cx="350" cy="100" r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
-                  <circle cx="450" cy="80"  r="5" fill="#111c44" stroke="#4299e1" stroke-width="2.5"/>
-                  <circle cx="550" cy="60"  r="7" fill="#4299e1" stroke="#4299e1" stroke-width="2"/>
-                  <!-- Value labels -->
-                  <text x="50"  y="150" fill="#8898aa" font-size="11" text-anchor="middle">110</text>
-                  <text x="150" y="120" fill="#8898aa" font-size="11" text-anchor="middle">175</text>
-                  <text x="250" y="100" fill="#8898aa" font-size="11" text-anchor="middle">210</text>
-                  <text x="350" y="90"  fill="#8898aa" font-size="11" text-anchor="middle">230</text>
-                  <text x="450" y="70"  fill="#8898aa" font-size="11" text-anchor="middle">248</text>
-                  <text x="550" y="48"  fill="#4299e1" font-size="11" text-anchor="middle" font-weight="700">256</text>
-                </svg>
-              </div>
-              <div class="lc-x-labels">
-                <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
-              </div>
-            </div>
+          <div class="line-chart-wrap" id="trendChartWrap">
+            <div style="display:flex;align-items:center;justify-content:center;width:100%;color:#8898aa;font-size:13px;">Trend data not available yet</div>
           </div>
         </div>
 
@@ -358,33 +313,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           </div>
           <div class="donut-body">
             <div class="donut-svg-wrap">
-              <svg viewBox="0 0 36 36">
+              <svg viewBox="0 0 36 36" id="deptDonutSvg">
                 <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
-                <!-- Engineering 47% -->
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4"
-                  stroke-dasharray="47 53" stroke-dashoffset="25" stroke-linecap="round"/>
-                <!-- Marketing 18% -->
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="4"
-                  stroke-dasharray="18 82" stroke-dashoffset="-22" stroke-linecap="round"/>
-                <!-- Sales 16% -->
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7dd3fc" stroke-width="4"
-                  stroke-dasharray="16 84" stroke-dashoffset="-40" stroke-linecap="round"/>
-                <!-- HR 10% -->
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2d4a8a" stroke-width="4"
-                  stroke-dasharray="10 90" stroke-dashoffset="-56" stroke-linecap="round"/>
-                <!-- Finance 8% -->
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e40af" stroke-width="4"
-                  stroke-dasharray="8 92" stroke-dashoffset="-66" stroke-linecap="round"/>
               </svg>
-              <div class="donut-center"><strong>256</strong><span>Total</span></div>
+              <div class="donut-center"><strong id="deptDonutTotal">0</strong><span>Total</span></div>
             </div>
-            <div class="donut-legend">
-              <div class="leg-row"><div class="leg-dot" style="background:#4299e1"></div><span class="leg-label">Engineering</span><span class="leg-val">120</span></div>
-              <div class="leg-row"><div class="leg-dot" style="background:#00b5d8"></div><span class="leg-label">Marketing</span><span class="leg-val">45</span></div>
-              <div class="leg-row"><div class="leg-dot" style="background:#7dd3fc"></div><span class="leg-label">Sales</span><span class="leg-val">40</span></div>
-              <div class="leg-row"><div class="leg-dot" style="background:#2d4a8a"></div><span class="leg-label">HR</span><span class="leg-val">25</span></div>
-              <div class="leg-row"><div class="leg-dot" style="background:#1e40af"></div><span class="leg-label">Finance</span><span class="leg-val">26</span></div>
-              <div class="leg-divider"><span>Total Employees</span><span>256</span></div>
+            <div class="donut-legend" id="deptLegend">
+              <div class="leg-divider"><span>Total Employees</span><span id="deptLegendTotal">0</span></div>
             </div>
           </div>
         </div>
@@ -400,30 +335,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Recent Activities</h3>
             <button class="view-btn">View All Activities</button>
           </div>
-          <div class="act-row">
-            <div class="act-icon"><i class="fa-solid fa-user-plus"></i></div>
-            <div class="act-info"><p>New employee John Doe has joined the Engineering team.</p></div>
-            <span class="act-time">1 hour ago</span>
-          </div>
-          <div class="act-row">
-            <div class="act-icon"><i class="fa-solid fa-plane-departure"></i></div>
-            <div class="act-info"><p>Leave request from Jane Smith is pending review.</p></div>
-            <span class="act-time">2 hours ago</span>
-          </div>
-          <div class="act-row">
-            <div class="act-icon"><i class="fa-solid fa-chart-line"></i></div>
-            <div class="act-info"><p>Performance review for 5 employees is pending submission.</p></div>
-            <span class="act-time">3 hours ago</span>
-          </div>
-          <div class="act-row">
-            <div class="act-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
-            <div class="act-info"><p>Payroll processing for June 2026 has been initiated.</p></div>
-            <span class="act-time">Today</span>
-          </div>
-          <div class="act-row">
-            <div class="act-icon"><i class="fa-solid fa-folder-open"></i></div>
-            <div class="act-info"><p>Project "ERP Upgrade" has been marked as completed.</p></div>
-            <span class="act-time">Yesterday</span>
+          <div id="recentActivitiesList">
+            <div class="act-row"><div class="act-info"><p>Loading...</p></div></div>
           </div>
         </div>
 
@@ -433,25 +346,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Upcoming Events</h3>
             <button class="view-btn">View All Events</button>
           </div>
-          <div class="evt-row">
-            <div class="evt-date-box"><strong>27</strong><span>Jun</span></div>
-            <div class="evt-info"><p>Monthly HR Meeting</p><small>10:00 AM · Conference Room A</small></div>
-          </div>
-          <div class="evt-row">
-            <div class="evt-date-box"><strong>29</strong><span>Jun</span></div>
-            <div class="evt-info"><p>Campus Recruitment Drive</p><small>09:00 AM · Main Hall</small></div>
-          </div>
-          <div class="evt-row">
-            <div class="evt-date-box"><strong>30</strong><span>Jun</span></div>
-            <div class="evt-info"><p>Quarterly Performance Review</p><small>02:00 PM · Online</small></div>
-          </div>
-          <div class="evt-row">
-            <div class="evt-date-box"><strong>01</strong><span>Jul</span></div>
-            <div class="evt-info"><p>Payroll Processing Deadline</p><small>06:00 PM · Finance Dept</small></div>
-          </div>
-          <div class="evt-row">
-            <div class="evt-date-box"><strong>03</strong><span>Jul</span></div>
-            <div class="evt-info"><p>Internship Orientation</p><small>10:00 AM · Training Room</small></div>
+          <div id="upcomingEventsList">
+            <div class="evt-row"><div class="evt-info"><p>Loading...</p></div></div>
           </div>
         </div>
 
@@ -481,6 +377,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       logout("../");
   });
 
+  const welcomeNameEl = document.getElementById('welcomeUserName');
+  if (welcomeNameEl && currentUser && currentUser.name) welcomeNameEl.textContent = currentUser.name;
+
+  const dashDateLabel = document.getElementById('dashDateLabel');
+  if (dashDateLabel) {
+    dashDateLabel.textContent = new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
   function setKpiValue(labelText, value) {
     const cards = document.querySelectorAll('.kpi-card');
     for (const card of cards) {
@@ -493,9 +397,41 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
   }
 
+  // Normalize a Firestore date value (Timestamp, "YYYY-MM-DD" string, or JS Date) into a JS Date
+  function toJsDate(raw) {
+    if (!raw) return null;
+    if (typeof raw.toDate === 'function') return raw.toDate();
+    if (raw instanceof Date) return raw;
+    if (typeof raw === 'string') {
+      const parts = raw.split('-');
+      if (parts.length === 3) {
+        const [y, m, d] = parts.map(Number);
+        if (!isNaN(y) && !isNaN(m) && !isNaN(d)) return new Date(y, m - 1, d);
+      }
+      const fallback = new Date(raw);
+      return isNaN(fallback.getTime()) ? null : fallback;
+    }
+    return null;
+  }
+
+  function timeAgo(date) {
+    if (!date) return '';
+    const diffMs = Date.now() - date.getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return `${mins} min${mins === 1 ? '' : 's'} ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs} hour${hrs === 1 ? '' : 's'} ago`;
+    const days = Math.floor(hrs / 24);
+    if (days === 1) return 'Yesterday';
+    return `${days} days ago`;
+  }
+
   async function loadKpis() {
+    let employeesData = [];
     try {
       const employeesSnap = await getDocs(collection(db, "employees"));
+      employeesData = employeesSnap.docs.map(d => d.data());
       setKpiValue('Total Employees', employeesSnap.size);
     } catch (err) {
       console.error('Failed to load employee count:', err);
@@ -508,15 +444,277 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       console.error('Failed to load department count:', err);
     }
 
+    let pendingLeavesData = [];
     try {
       const pendingLeavesSnap = await getDocs(query(collection(db, "leaveRequests"), where("status", "==", "Pending")));
+      pendingLeavesData = pendingLeavesSnap.docs.map(d => d.data());
       setKpiValue('Pending Leaves', pendingLeavesSnap.size);
+
+      // Bell badge + "today" subtext derived from the same pending-leaves query
+      const bellBadge = document.getElementById('navBellBadge');
+      if (bellBadge) bellBadge.textContent = pendingLeavesSnap.size;
+
+      const today = new Date();
+      const todayCount = pendingLeavesData.filter(l => {
+        const d = toJsDate(l.appliedOn);
+        return d && d.toDateString() === today.toDateString();
+      }).length;
+      const pendingSub = document.getElementById('kpiPendingLeavesSub');
+      if (pendingSub) pendingSub.textContent = `${todayCount} today`;
     } catch (err) {
       console.error('Failed to load pending leave count:', err);
     }
+
+    // Total Employees subtext: real "+N this month" count based on employee timestamp field
+    try {
+      const now = new Date();
+      const thisMonthCount = employeesData.filter(e => {
+        const d = toJsDate(e.timestamp);
+        return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+      }).length;
+      const sub = document.getElementById('kpiEmployeesSub');
+      if (sub) {
+        if (thisMonthCount > 0) {
+          sub.textContent = `+${thisMonthCount} this month`;
+          sub.classList.remove('neutral');
+        } else {
+          sub.textContent = 'Total active';
+          sub.classList.add('neutral');
+        }
+      }
+    } catch (err) {
+      console.error('Failed to compute employees-this-month:', err);
+    }
+
+    return employeesData;
   }
 
-  loadKpis();
+  async function loadRecruitment() {
+    try {
+      const snap = await getDocs(collection(db, "recruitment"));
+      const docs = snap.docs.map(d => d.data());
+      const openCount = docs.filter(v => (v.status || '').toLowerCase() === 'active').length;
+      document.getElementById('kpiOpenPositions').textContent = openCount;
+      document.getElementById('kpiOpenPositionsSub').textContent = 'Open';
+
+      // No hired/priority concept exists in the recruitment schema (jobTitle, openings, applications, status: Active/On Hold/Closed).
+      // Do not invent a number for Active Hires.
+      document.getElementById('kpiActiveHires').textContent = '0';
+      document.getElementById('kpiActiveHiresSub').textContent = 'No hire status data';
+    } catch (err) {
+      console.error('Failed to load recruitment data:', err);
+      document.getElementById('kpiOpenPositions').textContent = '0';
+      document.getElementById('kpiOpenPositionsSub').textContent = 'Open';
+      document.getElementById('kpiActiveHires').textContent = '0';
+      document.getElementById('kpiActiveHiresSub').textContent = 'No hire status data';
+    }
+  }
+
+  async function loadOnboarding() {
+    // Neither `interns` nor `employees` has an "onboarding"/newly-joined status concept in the schema.
+    try {
+      document.getElementById('kpiOnboarding').textContent = '0';
+      document.getElementById('kpiOnboardingSub').textContent = 'No data';
+    } catch (err) {
+      console.error('Failed to set onboarding placeholder:', err);
+    }
+  }
+
+  async function loadAttendanceToday(employeesData) {
+    try {
+      const snap = await getDocs(collection(db, "attendance"));
+      const today = new Date();
+      const todaysRecords = snap.docs
+        .map(d => d.data())
+        .filter(rec => {
+          const d = toJsDate(rec.date);
+          return d && d.toDateString() === today.toDateString();
+        });
+      const totalEmployees = employeesData.length || 0;
+      let pct = 0;
+      if (totalEmployees > 0 && todaysRecords.length > 0) {
+        const presentCount = todaysRecords.filter(r => (r.status || '').toLowerCase().trim() === 'present').length;
+        pct = Math.round((presentCount / totalEmployees) * 100);
+      }
+      document.getElementById('kpiAttendanceToday').textContent = `${pct}%`;
+    } catch (err) {
+      console.error('Failed to load attendance:', err);
+      document.getElementById('kpiAttendanceToday').textContent = '0%';
+    }
+  }
+
+  async function loadPayrollStatus() {
+    const now = new Date();
+    const periodLabel = now.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    document.getElementById('kpiPayrollPeriod').textContent = periodLabel;
+    // The `payroll` schema (employeeUid, employeeName, basicSalary, allowances, deductions, netPay, status)
+    // has no per-period/month field, so we cannot reliably determine whether "this period" has been processed.
+    document.getElementById('kpiPayrollStatus').textContent = 'Not started';
+  }
+
+  function svgArcOffset(cumulativePercent) {
+    // Circle circumference math matches the existing donut markup: r=15.9, dashoffset starts at 25 for first slice.
+    return 25 - cumulativePercent;
+  }
+
+  async function loadDeptDonut(employeesData) {
+    const svg = document.getElementById('deptDonutSvg');
+    const legend = document.getElementById('deptLegend');
+    const totalEl = document.getElementById('deptDonutTotal');
+    const legendTotalEl = document.getElementById('deptLegendTotal');
+    const palette = ['#4299e1', '#00b5d8', '#7dd3fc', '#2d4a8a', '#1e40af', '#38bdf8', '#0ea5e9', '#60a5fa'];
+
+    try {
+      const total = employeesData.length;
+      totalEl.textContent = total;
+      legendTotalEl.textContent = total;
+
+      if (total === 0) {
+        legend.innerHTML = '<div class="leg-divider"><span>Total Employees</span><span>0</span></div>';
+        return;
+      }
+
+      const counts = {};
+      employeesData.forEach(e => {
+        const dept = e.department || 'Unassigned';
+        counts[dept] = (counts[dept] || 0) + 1;
+      });
+
+      let deptEntries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const maxSlices = 6;
+      if (deptEntries.length > maxSlices) {
+        const top = deptEntries.slice(0, maxSlices - 1);
+        const restCount = deptEntries.slice(maxSlices - 1).reduce((s, [, c]) => s + c, 0);
+        deptEntries = [...top, ['Other', restCount]];
+      }
+
+      // Rebuild donut circles
+      while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+      let cumulative = 0;
+      const legendRows = [];
+      deptEntries.forEach(([name, count], idx) => {
+        const pct = Math.round((count / total) * 100);
+        const color = palette[idx % palette.length];
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '18');
+        circle.setAttribute('cy', '18');
+        circle.setAttribute('r', '15.9');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', color);
+        circle.setAttribute('stroke-width', '4');
+        circle.setAttribute('stroke-dasharray', `${pct} ${100 - pct}`);
+        circle.setAttribute('stroke-dashoffset', String(svgArcOffset(cumulative)));
+        circle.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(circle);
+        cumulative += pct;
+        legendRows.push(`<div class="leg-row"><div class="leg-dot" style="background:${color}"></div><span class="leg-label">${name}</span><span class="leg-val">${count}</span></div>`);
+      });
+      legendRows.push(`<div class="leg-divider"><span>Total Employees</span><span>${total}</span></div>`);
+      legend.innerHTML = legendRows.join('');
+    } catch (err) {
+      console.error('Failed to build department donut:', err);
+      legend.innerHTML = '<div class="leg-divider"><span>Total Employees</span><span>0</span></div>';
+    }
+  }
+
+  async function loadRecentActivities() {
+    const container = document.getElementById('recentActivitiesList');
+    try {
+      const [employeesSnap, leaveSnap] = await Promise.all([
+        getDocs(collection(db, "employees")),
+        getDocs(collection(db, "leaveRequests"))
+      ]);
+
+      const events = [];
+      employeesSnap.docs.forEach(d => {
+        const e = d.data();
+        const date = toJsDate(e.timestamp);
+        if (date) events.push({ icon: 'fa-user-plus', text: `New employee ${e.name || 'Unnamed'} added to ${e.department || 'a department'}.`, date });
+      });
+      leaveSnap.docs.forEach(d => {
+        const l = d.data();
+        const date = toJsDate(l.appliedOn);
+        if (date) events.push({ icon: 'fa-plane-departure', text: `Leave request from ${l.employeeName || 'an employee'} is ${(l.status || 'pending').toLowerCase()}.`, date });
+      });
+
+      events.sort((a, b) => b.date - a.date);
+      const top5 = events.slice(0, 5);
+
+      if (top5.length === 0) {
+        container.innerHTML = '<div class="act-row"><div class="act-info"><p>No recent activity.</p></div></div>';
+        return;
+      }
+
+      container.innerHTML = top5.map(ev => `
+        <div class="act-row">
+          <div class="act-icon"><i class="fa-solid ${ev.icon}"></i></div>
+          <div class="act-info"><p>${ev.text}</p></div>
+          <span class="act-time">${timeAgo(ev.date)}</span>
+        </div>`).join('');
+    } catch (err) {
+      console.error('Failed to load recent activities:', err);
+      container.innerHTML = '<div class="act-row"><div class="act-info"><p>No recent activity.</p></div></div>';
+    }
+  }
+
+  async function loadUpcomingEvents() {
+    const container = document.getElementById('upcomingEventsList');
+    try {
+      const [internsSnap, recruitmentSnap] = await Promise.all([
+        getDocs(collection(db, "interns")),
+        getDocs(collection(db, "recruitment"))
+      ]);
+
+      const now = new Date();
+      const events = [];
+
+      internsSnap.docs.forEach(d => {
+        const i = d.data();
+        const start = toJsDate(i.startDate);
+        if (start && start > now) events.push({ date: start, title: `Internship starts: ${i.internName || 'Intern'}`, sub: i.department || '' });
+        const end = toJsDate(i.endDate);
+        if (end && end > now) events.push({ date: end, title: `Internship ends: ${i.internName || 'Intern'}`, sub: i.department || '' });
+      });
+
+      recruitmentSnap.docs.forEach(d => {
+        const r = d.data();
+        const deadline = toJsDate(r.deadline);
+        if (deadline && deadline > now) events.push({ date: deadline, title: `Application deadline: ${r.jobTitle || 'Position'}`, sub: r.department || '' });
+      });
+
+      events.sort((a, b) => a.date - b.date);
+      const top5 = events.slice(0, 5);
+
+      if (top5.length === 0) {
+        container.innerHTML = '<div class="evt-row"><div class="evt-info"><p>No upcoming events.</p></div></div>';
+        return;
+      }
+
+      container.innerHTML = top5.map(ev => `
+        <div class="evt-row">
+          <div class="evt-date-box"><strong>${String(ev.date.getDate()).padStart(2, '0')}</strong><span>${ev.date.toLocaleDateString('en-US', { month: 'short' })}</span></div>
+          <div class="evt-info"><p>${ev.title}</p><small>${ev.sub}</small></div>
+        </div>`).join('');
+    } catch (err) {
+      console.error('Failed to load upcoming events:', err);
+      container.innerHTML = '<div class="evt-row"><div class="evt-info"><p>No upcoming events.</p></div></div>';
+    }
+  }
+
+  async function init() {
+    const employeesData = await loadKpis();
+    await Promise.all([
+      loadRecruitment(),
+      loadOnboarding(),
+      loadAttendanceToday(employeesData),
+      loadPayrollStatus(),
+      loadDeptDonut(employeesData),
+      loadRecentActivities(),
+      loadUpcomingEvents()
+    ]);
+  }
+
+  init();
 </script>
 
 </body>
