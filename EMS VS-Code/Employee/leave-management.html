@@ -21,7 +21,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
 .nav-search input::placeholder{color:#4a5568;}
 .navbar-right{display:flex;align-items:center;gap:16px;}
-.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;}
+.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;text-decoration:none;}
 .nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
 .nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 .nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
@@ -162,7 +162,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     </div>
   </div>
   <div class="navbar-right">
-    <div class="nav-icon-btn"><i class="fa-regular fa-bell"></i><span class="badge">6</span></div>
+    <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
     <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>

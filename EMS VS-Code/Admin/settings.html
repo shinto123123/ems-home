@@ -31,7 +31,7 @@ body { background:#0b1437; display:flex; flex-direction:column; height:100vh; ov
 .nav-search input { border:none; outline:none; background:none; width:100%; color:#e2e8f0; font-size:14px; }
 .nav-search input::placeholder { color:#4a5568; }
 .navbar-right { display:flex; align-items:center; gap:20px; }
-.nav-icon-btn { position:relative; width:38px; height:38px; background:#0b1437; border:1px solid #1b2e6e; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#8898aa; font-size:16px; }
+.nav-icon-btn { position:relative; width:38px; height:38px; background:#0b1437; border:1px solid #1b2e6e; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#8898aa; font-size:16px; text-decoration:none; }
 .nav-icon-btn:hover { color:#4299e1; border-color:#4299e1; }
 .nav-icon-btn .badge { position:absolute; top:-4px; right:-4px; background:#4299e1; color:#fff; font-size:9px; font-weight:bold; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .nav-profile { display:flex; align-items:center; gap:10px; cursor:pointer; padding:5px 10px; border-radius:10px; border:1px solid #1b2e6e; position:relative; }
@@ -77,10 +77,10 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
         </div>
     </div>
     <div class="navbar-right">
-        <div class="nav-icon-btn">
+        <a class="nav-icon-btn" href="notification.html">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
-        </div>
+        </a>
         <div class="nav-icon-btn">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
