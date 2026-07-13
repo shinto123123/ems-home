@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruitment - Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body {
+    background:#0b1437;
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* =========================
+   BODY WRAP
+========================= */
+
+.body-wrap {
+    display:flex;
+    flex:1;
+    overflow:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width:240px;
+    height:100%;
+    background:#111c44;
+    border-right:1px solid #1b2e6e;
+    overflow-y:auto;
+    flex-shrink:0;
+    transition: width 0.3s ease;
+}
+
+.sidebar ul {
+    list-style:none;
+    padding:10px 0;
+}
+
+.sidebar ul li {
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar ul li a {
+    text-decoration:none;
+    color:#8898aa;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    width:100%;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background:#1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    color:#ffffff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.navbar {
+    height:60px;
+    background:#111c44;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    flex-shrink:0;
+    z-index:100;
+}
+
+.navbar-left {
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.hamburger {
+    font-size:20px;
+    color:#8898aa;
+    cursor:pointer;
+}
+
+.navbar-logo {
+    width:40px;
+    height:40px;
+    background:#1b2e6e;
+    border:2px solid #4299e1;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#4299e1;
+}
+
+.navbar-title {
+    font-size:16px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:.5px;
+}
+
+.navbar-center {
+    flex:1;
+    display:flex;
+    justify-content:center;
+    padding:0 40px;
+}
+
+.nav-search {
+    width:100%;
+    max-width:420px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    padding:9px 15px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav-search i {
+    color:#4a5568;
+    font-size:14px;
+}
+
+.nav-search input {
+    border:none;
+    outline:none;
+    background:none;
+    width:100%;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.nav-search input::placeholder {
+    color:#4a5568;
+}
+
+.navbar-right {
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-icon-btn {
+    position:relative;
+    width:38px;
+    height:38px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#8898aa;
+    font-size:16px;
+    transition:.3s;
+    text-decoration:none;
+}
+
+.nav-icon-btn:hover {
+    color:#4299e1;
+    border-color:#4299e1;
+}
+
+.nav-icon-btn .badge {
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#4299e1;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-profile {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid #1b2e6e;
+    position:relative;
+}
+
+.nav-profile-dropdown {
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:160px;
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    padding:6px;
+    display:none;
+    z-index:1000;
+}
+
+.nav-profile-dropdown.show {
+    display:block;
+}
+
+.nav-profile-dropdown a {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:8px;
+    color:#d7dfef;
+    font-size:13px;
+    text-decoration:none;
+    transition:.15s;
+}
+
+.nav-profile-dropdown a:hover {
+    background:rgba(66,153,225,.12);
+    color:#fff;
+}
+
+.nav-profile-dropdown a i {
+    width:14px;
+}
+
+.nav-profile-avatar {
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#8898aa;
+    font-size:16px;
+}
+
+.nav-profile-info h4 {
+    font-size:13px;
+    font-weight:600;
+    color:#ffffff;
+}
+
+.nav-profile-info small {
+    font-size:11px;
+    color:#8898aa;
+}
+
+.nav-profile .fa-chevron-down {
+    font-size:11px;
+    color:#8898aa;
+}
+
+/* =========================
+   MAIN WORKSPACE MULTIPANEL
+========================= */
+
+.main-workspace {
+    flex:1;
+    display:flex;
+    overflow:hidden;
+}
+
+.directory-panel {
+    flex:1.4;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    border-right:1px solid #1b2e6e;
+}
+
+.page-header {
+    padding:18px 22px 0;
+}
+
+.page-header h2 {
+    font-size:22px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.breadcrumb {
+    font-size:12px;
+    color:#8898aa;
+    margin-top:4px;
+    display:flex;
+    gap:4px;
+}
+
+.breadcrumb span {
+    color:#4299e1;
+}
+
+.directory-content {
+    flex:1;
+    padding:15px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    overflow-y:auto;
+    background:#0b1437;
+}
+
+.directory-content::-webkit-scrollbar {
+    width:6px;
+}
+
+.directory-content::-webkit-scrollbar-thumb {
+    background:#1b2e6e;
+    border-radius:20px;
+}
+
+/* KPI grid */
+.mini-kpi-grid {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.mini-kpi {
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+    min-width:0;
+}
+
+.mini-icon {
+    width:38px;
+    height:38px;
+    border-radius:8px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    color:#4299e1;
+    flex-shrink:0;
+}
+
+.mini-info p {
+    font-size:11px;
+    color:#8898aa;
+    margin-bottom:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.mini-info h3 {
+    font-size:18px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.mini-info small {
+    font-size:10px;
+    color:#cbd5e1;
+}
+
+/* Segment tabs */
+.segment-filter-row {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border-bottom:1px solid #1b2e6e;
+    padding-bottom:2px;
+}
+
+.segment-btn {
+    background:none;
+    border:none;
+    color:#8898aa;
+    font-size:13px;
+    padding:8px 12px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+}
+
+.segment-btn:hover {
+    color:#ffffff;
+}
+
+.segment-btn.active {
+    color:#4299e1;
+    border-color:#4299e1;
+    font-weight:600;
+}
+
+/* Filter bar */
+.filter-bar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    background:#111c44;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #1b2e6e;
+}
+
+.search-box {
+    flex:1;
+    min-width:160px;
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    padding:8px 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.search-box input {
+    border:none;
+    outline:none;
+    background:none;
+    color:#ffffff;
+    font-size:13px;
+    width:100%;
+}
+
+.search-box i {
+    color:#4a5568;
+    font-size:12px;
+}
+
+.filter-select {
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    color:#cbd5e1;
+    font-size:13px;
+    padding:8px 12px;
+    border-radius:8px;
+    outline:none;
+    cursor:pointer;
+}
+
+.btn-action {
+    background:#1b2e6e;
+    color:#ffffff;
+    border:none;
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:.2s;
+}
+
+.btn-action:hover {
+    background:#243b82;
+}
+
+.btn-primary {
+    background:#4299e1;
+}
+
+.btn-primary:hover {
+    background:#3182ce;
+}
+
+/* Table */
+.table-wrap {
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+
+.recruitment-table {
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+}
+
+.recruitment-table th {
+    background:#16265c;
+    color:#8898aa;
+    font-size:11px;
+    font-weight:600;
+    padding:14px 16px;
+    border-bottom:1px solid #1b2e6e;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+
+.recruitment-table td {
+    padding:12px 16px;
+    color:#d7dfef;
+    font-size:13px;
+    border-bottom:1px solid #1b2e6e;
+    vertical-align:middle;
+}
+
+.recruitment-table tr:last-child td {
+    border-bottom:none;
+}
+
+.recruitment-table tr:hover td {
+    background:rgba(66,153,225,0.05);
+}
+
+/* Status badges */
+.status-badge {
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
+}
+
+.status-badge.active {
+    background:rgba(74,222,128,0.15);
+    color:#4ade80;
+}
+
+.status-badge.onhold {
+    background:rgba(251,191,36,0.15);
+    color:#fbbf24;
+}
+
+.status-badge.closed {
+    background:rgba(248,113,113,0.15);
+    color:#f87171;
+}
+
+.btn-icon {
+    background:none;
+    border:none;
+    color:#8898aa;
+    cursor:pointer;
+    padding:4px;
+    font-size:14px;
+}
+
+.btn-icon:hover {
+    color:#ffffff;
+}
+
+/* Table footer */
+.table-footer {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 16px;
+    background:#111c44;
+    border-top:1px solid #1b2e6e;
+    font-size:12px;
+    color:#8898aa;
+}
+
+/* Empty applicants panel */
+.section-panel-container {
+    background:#111c44;
+    border:1px solid #1b2e6e;
+    border-radius:15px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+
+.section-panel-header h3 {
+    color:#ffffff;
+    font-size:14px;
+    font-weight:600;
+}
+
+.empty-state {
+    text-align:center;
+    padding:24px;
+    color:#8898aa;
+    font-size:13px;
+}
+
+/* =========================
+   DETAILS PANEL (ADD VACANCY)
+========================= */
+
+.details-panel {
+    flex:1;
+    background:#111c44;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:-4px 0 24px rgba(0,0,0,0.25);
+}
+
+.details-header {
+    padding:18px 22px;
+    border-bottom:1px solid #1b2e6e;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.details-header h3 {
+    color:#ffffff;
+    font-size:16px;
+    font-weight:600;
+}
+
+.close-panel-btn {
+    background:none;
+    border:none;
+    color:#8898aa;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.close-panel-btn:hover {
+    color:#ffffff;
+}
+
+.details-content {
+    flex:1;
+    overflow-y:auto;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.details-content::-webkit-scrollbar {
+    width:6px;
+}
+
+.details-content::-webkit-scrollbar-thumb {
+    background:#1b2e6e;
+    border-radius:20px;
+}
+
+.form-grid-layout {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-group {
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full-width {
+    grid-column:span 2;
+}
+
+.form-group label {
+    font-size:12px;
+    color:#cbd5e1;
+    font-weight:500;
+}
+
+.form-group label span {
+    color:#f56565;
+    margin-left:2px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    background:#0b1437;
+    border:1px solid #1b2e6e;
+    border-radius:8px;
+    padding:9px 12px;
+    color:#ffffff;
+    font-size:13px;
+    outline:none;
+    width:100%;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color:#4299e1;
+}
+
+.form-group input::placeholder, .form-group textarea::placeholder {
+    color:#4a5568;
+}
+
+.form-group textarea {
+    resize:none;
+    height:80px;
+}
+
+.salary-range-wrap {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.salary-range-wrap span {
+    font-size:12.5px;
+    color:#8898aa;
+}
+
+.details-footer {
+    padding:14px 22px;
+    background:#0b1437;
+    border-top:1px solid #1b2e6e;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+.d-none {
+    display:none !important;
+}
+
+/* ── CONDITIONAL BREAKPOINTS FOR RESPONSIVENESS ── */
+@media (max-width: 1024px) {
+    .navbar-center { display: none; }
+    .sidebar { width: 70px; }
+    .sidebar ul li a span { display: none; }
+    .details-panel { display: none; }
+}
+
+@media(max-width: 768px) {
+    .navbar-title { display: none; }
+    .nav-profile-info { display: none; }
+    .mini-kpi-grid { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="navbar-logo">
+            LOGO
+        </div>
+
+        <span class="navbar-title">
+            EMPLOYEE MANAGEMENT SYSTEM
+        </span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search anything...">
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <a class="nav-icon-btn" href="notification.html">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </a>
+
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+
+        <div class="nav-profile" id="navProfileToggle">
+
+            <div class="nav-profile-avatar">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="body-wrap">
+
+<div class="sidebar">
+
+<ul>
+ <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+ <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+ <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
+ <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+ <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
+ <li class="active"><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> Recruitment</a></li>
+ <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
+ <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
+ <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
+ <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
+ <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
+ <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
+ <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+ <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+</ul>
+
+</div>
+
+<div class="main">
+
+<div class="main-workspace">
+
+    <div class="directory-panel">
+        <div class="page-header">
+            <h2>Recruitment</h2>
+            <div class="breadcrumb">Dashboard &gt; <span>Recruitment</span></div>
+        </div>
+
+        <div class="directory-content">
+
+            <div class="mini-kpi-grid">
+                <div class="mini-kpi">
+                    <div class="mini-icon"><i class="fa-regular fa-briefcase"></i></div>
+                    <div class="mini-info"><p>Total Vacancies</p><h3 id="kpiTotalVacancies">--</h3><small id="kpiActiveVacancies">-- Active</small></div>
+                </div>
+                <div class="mini-kpi">
+                    <div class="mini-icon"><i class="fa-regular fa-address-card"></i></div>
+                    <div class="mini-info"><p>Total Applications</p><h3 id="kpiTotalApplications">--</h3><small>All Vacancies</small></div>
+                </div>
+                <div class="mini-kpi">
+                    <div class="mini-icon"><i class="fa-regular fa-eye"></i></div>
+                    <div class="mini-info"><p>Under Review</p><h3 id="kpiUnderReview">0</h3><small style="color:#fbbf24;">No tracking data</small></div>
+                </div>
+                <div class="mini-kpi">
+                    <div class="mini-icon"><i class="fa-regular fa-id-badge"></i></div>
+                    <div class="mini-info"><p>Shortlisted</p><h3 id="kpiShortlisted">0</h3><small style="color:#4ade80;">No tracking data</small></div>
+                </div>
+                <div class="mini-kpi">
+                    <div class="mini-icon"><i class="fa-regular fa-circle-check"></i></div>
+                    <div class="mini-info"><p>Hired</p><h3 id="kpiHired">0</h3><small style="color:#4299e1;">No tracking data</small></div>
+                </div>
+            </div>
+
+            <div class="segment-filter-row">
+                <button class="segment-btn active">Vacancies</button>
+            </div>
+
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="recruitmentSearchInput" placeholder="Search by job title or department...">
+                </div>
+                <select class="filter-select" id="recruitmentStatusFilter">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                <button class="btn-action btn-primary" style="margin-left:auto;" id="openAddVacancyBtn"><i class="fa-solid fa-plus"></i> Add Vacancy</button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="recruitment-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Department</th>
+                            <th>Employment Type</th>
+                            <th>Openings</th>
+                            <th>Applications</th>
+                            <th>Status</th>
+                            <th>Posted On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recruitmentTableBody"><tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">Loading vacancies...</td></tr></tbody>
+                </table>
+
+                <div class="table-footer">
+                    <span id="recruitmentEntriesCounter">Showing 0 to 0 of 0 vacancies</span>
+                </div>
+            </div>
+
+            <div class="section-panel-container">
+                <div class="section-panel-header">
+                    <h3>Under Processing Applicants</h3>
+                </div>
+                <div class="empty-state">No applicant-tracking data available yet.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="details-panel d-none" id="detailsPanel">
+        <div class="details-header">
+            <h3>Add Vacancy</h3>
+            <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="details-content">
+            <div class="form-group">
+                <label>Job Title<span>*</span></label>
+                <input type="text" id="vacJobTitle" placeholder="Enter job title">
+            </div>
+            <div class="form-group">
+                <label>Department<span>*</span></label>
+                <select id="vacDepartment">
+                    <option hidden selected>Select department</option>
+                </select>
+            </div>
+
+            <div class="form-grid-layout">
+                <div class="form-group">
+                    <label>Employment Type<span>*</span></label>
+                    <select id="vacEmploymentType">
+                        <option hidden selected>Select type</option>
+                        <option>Full Time</option>
+                        <option>Part Time</option>
+                        <option>Contract</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Experience Level<span>*</span></label>
+                    <select id="vacExperienceLevel">
+                        <option hidden selected>Select experience level</option>
+                        <option>Junior</option>
+                        <option>Mid Level</option>
+                        <option>Senior</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Openings<span>*</span></label>
+                    <input type="number" id="vacOpenings" placeholder="No. of openings">
+                </div>
+                <div class="form-group">
+                    <label>Notice Period</label>
+                    <select id="vacNoticePeriod">
+                        <option hidden selected>Select notice period</option>
+                        <option>Immediate</option>
+                        <option>15 Days</option>
+                        <option>1 Month</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Location<span>*</span></label>
+                <input type="text" id="vacLocation" placeholder="Enter location">
+            </div>
+            <div class="form-group">
+                <label>Job Description<span>*</span></label>
+                <textarea id="vacDescription" placeholder="Enter job description" maxlength="1000"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Required Skills<span>*</span></label>
+                <input type="text" id="vacSkills" placeholder="Enter skills (e.g. Java, SQL, Communication)">
+            </div>
+            <div class="form-group">
+                <label>Minimum Qualification<span>*</span></label>
+                <input type="text" id="vacQualification" placeholder="Enter minimum qualification">
+            </div>
+
+            <div class="form-group">
+                <label>Salary Range</label>
+                <div class="salary-range-wrap">
+                    <input type="text" id="vacSalaryMin" placeholder="Minimum">
+                    <span>to</span>
+                    <input type="text" id="vacSalaryMax" placeholder="Maximum">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Application Deadline</label>
+                <input type="date" id="vacDeadline">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="vacStatus">
+                    <option>Active</option>
+                    <option>On Hold</option>
+                    <option>Closed</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="details-footer">
+            <button class="btn-action" style="background:transparent; color:#8898aa;" id="cancelFormBtn">Cancel</button>
+            <button class="btn-action btn-primary" id="saveVacancyBtn">Save Vacancy</button>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["admin"]);
+    paintNavProfile(currentUser);
+
+    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown').classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown').classList.remove('show');
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const detailsPanel = document.getElementById('detailsPanel');
+    document.getElementById('closePanelBtn').addEventListener('click', () => detailsPanel.classList.add('d-none'));
+    document.getElementById('cancelFormBtn').addEventListener('click', () => detailsPanel.classList.add('d-none'));
+    document.getElementById('openAddVacancyBtn').addEventListener('click', () => detailsPanel.classList.remove('d-none'));
+
+    const tableBody = document.getElementById('recruitmentTableBody');
+    const entriesCounter = document.getElementById('recruitmentEntriesCounter');
+    const searchInput = document.getElementById('recruitmentSearchInput');
+    const statusFilter = document.getElementById('recruitmentStatusFilter');
+    const deptSelect = document.getElementById('vacDepartment');
+
+    let allVacancies = [];
+
+    function renderVacancies() {
+        const searchTerm = (searchInput.value || "").toLowerCase();
+        const statusTerm = statusFilter.value;
+
+        const filtered = allVacancies.filter(v => {
+            const matchesSearch = !searchTerm ||
+                (v.jobTitle || "").toLowerCase().includes(searchTerm) ||
+                (v.department || "").toLowerCase().includes(searchTerm);
+            const matchesStatus = !statusTerm || v.status === statusTerm;
+            return matchesSearch && matchesStatus;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">No vacancies found.</td></tr>`;
+            entriesCounter.textContent = "Showing 0 to 0 of 0 vacancies";
+            return;
+        }
+
+        tableBody.innerHTML = "";
+        filtered.forEach((v) => {
+            const statusClass = (v.status || 'Active').toLowerCase().replace(/\s+/g, '');
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td><strong>${v.jobTitle || '-'}</strong></td>
+                    <td>${v.department || '-'}</td>
+                    <td>${v.employmentType || '-'}</td>
+                    <td>${v.openings ?? '-'}</td>
+                    <td>${v.applications ?? 0}</td>
+                    <td><span class="status-badge ${statusClass}">${v.status || 'Active'}</span></td>
+                    <td>${v.postedOn || '-'}</td>
+                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                </tr>
+            `);
+        });
+        entriesCounter.textContent = `Showing 1 to ${filtered.length} of ${allVacancies.length} vacancies`;
+    }
+
+    async function loadVacancies() {
+        try {
+            const [recruitmentSnap, deptSnap] = await Promise.all([
+                getDocs(collection(db, "recruitment")),
+                getDocs(collection(db, "departments"))
+            ]);
+
+            deptSnap.forEach((d) => {
+                const name = d.data().name;
+                if (name) deptSelect.insertAdjacentHTML('beforeend', `<option>${name}</option>`);
+            });
+
+            allVacancies = recruitmentSnap.docs.map(d => d.data());
+
+            const totalApplications = allVacancies.reduce((sum, v) => sum + (Number(v.applications) || 0), 0);
+            const activeCount = allVacancies.filter(v => v.status === 'Active').length;
+
+            document.getElementById('kpiTotalVacancies').textContent = allVacancies.length;
+            document.getElementById('kpiActiveVacancies').textContent = `${activeCount} Active`;
+            document.getElementById('kpiTotalApplications').textContent = totalApplications;
+
+            renderVacancies();
+        } catch (error) {
+            console.error("Failed to load vacancies: ", error);
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+        }
+    }
+
+    searchInput.addEventListener('input', renderVacancies);
+    statusFilter.addEventListener('change', renderVacancies);
+
+    document.getElementById('saveVacancyBtn').addEventListener('click', async () => {
+        const jobTitle = document.getElementById('vacJobTitle').value;
+        if (!jobTitle) { alert("Job title is required."); return; }
+
+        try {
+            await addDoc(collection(db, "recruitment"), {
+                jobTitle,
+                department: deptSelect.value,
+                employmentType: document.getElementById('vacEmploymentType').value,
+                openings: Number(document.getElementById('vacOpenings').value) || 0,
+                applications: 0,
+                status: document.getElementById('vacStatus').value,
+                postedOn: new Date().toLocaleDateString(),
+                description: document.getElementById('vacDescription').value,
+                requiredSkills: document.getElementById('vacSkills').value,
+                minQualification: document.getElementById('vacQualification').value,
+                salaryRange: `${document.getElementById('vacSalaryMin').value} - ${document.getElementById('vacSalaryMax').value}`,
+                deadline: document.getElementById('vacDeadline').value,
+                postedBy: currentUser.name,
+                timestamp: serverTimestamp()
+            });
+            detailsPanel.classList.add('d-none');
+            loadVacancies();
+        } catch (error) {
+            alert("Failed to save vacancy: " + error.message);
+        }
+    });
+
+    loadVacancies();
+</script>
+
+</body>
+</html>
