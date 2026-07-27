@@ -776,6 +776,7 @@ body{
         <ul>
             <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
             <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
             <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
             <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
             <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
@@ -979,10 +980,10 @@ body{
 
             <div class="quick-report">
                 <h3>Quick Reports</h3>
-                <div class="quick-item">Employee Directory <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item">Attendance Summary <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item">Leave Summary <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item">Payroll Summary <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item" data-report="directory">Employee Directory <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item" data-report="attendance">Attendance Summary <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item" data-report="leave">Leave Summary <i class="fa-solid fa-angle-right"></i></div>
+                <div class="quick-item" data-report="payroll">Payroll Summary <i class="fa-solid fa-angle-right"></i></div>
             </div>
         </div>
 
@@ -1021,6 +1022,95 @@ body{
             console.error("Failed to load report KPIs: ", error);
         }
     }
+
+    // Builds a CSV file from an array of objects and triggers a download
+    function downloadCsv(filename, rows) {
+        const csv = rows.map(row =>
+            row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')
+        ).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    async function generateEmployeeDirectoryReport() {
+        const snap = await getDocs(collection(db, "employees"));
+        const rows = [["Name", "Email", "Department", "Designation", "Role", "Status"]];
+        snap.forEach(docSnap => {
+            const e = docSnap.data();
+            rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]);
+        });
+        downloadCsv(`Employee-Directory-${Date.now()}.csv`, rows);
+    }
+
+    async function generateAttendanceSummaryReport() {
+        const [employeeSnap, attendanceSnap] = await Promise.all([
+            getDocs(collection(db, "employees")),
+            getDocs(collection(db, "attendance"))
+        ]);
+        const nameByUid = {};
+        employeeSnap.forEach(docSnap => {
+            const e = docSnap.data();
+            if (e.uid) nameByUid[e.uid] = e.name;
+        });
+        const rows = [["Employee", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
+        attendanceSnap.forEach(docSnap => {
+            const a = docSnap.data();
+            rows.push([nameByUid[a.employeeUid] || nameByUid[a.uid] || a.employeeUid || '-', a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]);
+        });
+        downloadCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
+    }
+
+    async function generateLeaveSummaryReport() {
+        const snap = await getDocs(collection(db, "leaveRequests"));
+        const rows = [["Employee", "Department", "Leave Type", "From", "To", "Total Days", "Status"]];
+        snap.forEach(docSnap => {
+            const l = docSnap.data();
+            rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]);
+        });
+        downloadCsv(`Leave-Summary-${Date.now()}.csv`, rows);
+    }
+
+    async function generatePayrollSummaryReport() {
+        const snap = await getDocs(collection(db, "payroll"));
+        const rows = [["Employee", "Department", "Designation", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status"]];
+        snap.forEach(docSnap => {
+            const p = docSnap.data();
+            rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.allowances, p.deductions, p.netPay, p.status]);
+        });
+        downloadCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
+    }
+
+    const reportGenerators = {
+        directory: generateEmployeeDirectoryReport,
+        attendance: generateAttendanceSummaryReport,
+        leave: generateLeaveSummaryReport,
+        payroll: generatePayrollSummaryReport
+    };
+
+    document.querySelectorAll('.quick-item').forEach(item => {
+        item.addEventListener('click', async () => {
+            const generator = reportGenerators[item.getAttribute('data-report')];
+            if (!generator) return;
+            const icon = item.querySelector('i');
+            const originalIconClass = icon.className;
+            icon.className = 'fa-solid fa-spinner fa-spin';
+            try {
+                await generator();
+            } catch (error) {
+                console.error("Failed to generate report: ", error);
+                alert("Could not generate report: " + error.message);
+            } finally {
+                icon.className = originalIconClass;
+            }
+        });
+    });
 
     loadKpis();
 </script>

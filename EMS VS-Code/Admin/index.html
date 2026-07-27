@@ -272,6 +272,23 @@ body {
     color: #ffffff;
 }
 
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed ul li {
+    justify-content: center;
+}
+
+.sidebar.collapsed ul li a {
+    justify-content: center;
+    gap: 0;
+}
+
+.sidebar.collapsed ul li a span {
+    display: none;
+}
+
 /* ── MAIN ── */
 .main {
     flex: 1;
@@ -390,8 +407,9 @@ body {
 /* ── FIXED HORIZONTAL MIDDLE ROW ── */
 .bottom {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Retains structure on all breakpoints */
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
+    align-items: stretch;
 }
 
 .chart {
@@ -401,6 +419,8 @@ body {
     border: 1px solid #1b2e6e;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .chart h3, .leave h3, .box h3 {
@@ -419,6 +439,7 @@ body {
     display: flex;
     gap: 15px;
     align-items: stretch;
+    flex: 1;
 }
 
 .chart-graph {
@@ -547,12 +568,15 @@ body {
     border: 1px solid #1b2e6e;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .leave-inner {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex: 1;
 }
 
 .donut-wrap {
@@ -682,7 +706,7 @@ body {
 
 <div class="navbar">
     <div class="navbar-left">
-        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+        <div class="hamburger" id="sidebarToggle"><i class="fa-solid fa-bars"></i></div>
         <div class="navbar-logo">LOGO</div>
         <span class="navbar-title">EMS</span>
     </div>
@@ -697,9 +721,13 @@ body {
             <i class="fa-regular fa-bell"></i>
             <span class="badge" id="bellBadge">0</span>
         </a>
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="envelopeToggle" style="position:relative;">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge" id="envelopeBadge">0</span>
+            <div class="nav-profile-dropdown" id="envelopeDropdown" style="right:auto; left:50%; transform:translateX(-50%); min-width:220px; padding:14px; cursor:default;">
+                <p style="color:#d7dfef; font-size:13px; font-weight:600; margin-bottom:6px;">Messages</p>
+                <p style="color:#8898aa; font-size:12px;">No direct messages yet. Use Notifications for system alerts.</p>
+            </div>
         </div>
         <div class="nav-profile" id="navProfileToggle">
             <div class="nav-profile-avatar">
@@ -719,10 +747,11 @@ body {
 
 <div class="body-wrap">
 
-    <div class="sidebar">
+    <div class="sidebar" id="adminSidebar">
         <ul>
             <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
             <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
             <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
             <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
             <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
@@ -886,10 +915,25 @@ body {
     });
     document.addEventListener('click', () => {
         document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('envelopeDropdown').classList.remove('show');
     });
     document.getElementById('logoutLink').addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
+    });
+
+    document.getElementById('envelopeToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('envelopeDropdown').classList.toggle('show');
+    });
+
+    // ── Sidebar collapse toggle (persisted) ──
+    const sidebarEl = document.getElementById('adminSidebar');
+    const SIDEBAR_COLLAPSE_KEY = 'emsAdminSidebarCollapsed';
+    if (localStorage.getItem(SIDEBAR_COLLAPSE_KEY) === 'true') sidebarEl.classList.add('collapsed');
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+        sidebarEl.classList.toggle('collapsed');
+        localStorage.setItem(SIDEBAR_COLLAPSE_KEY, sidebarEl.classList.contains('collapsed'));
     });
 
     const welcomeNameEl = document.getElementById('welcomeUserName');

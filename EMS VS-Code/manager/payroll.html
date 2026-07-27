@@ -164,6 +164,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["manager"]);
     paintNavProfile(currentUser);
@@ -202,9 +203,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 payrollCacheById[docSnap.id] = p;
                 const statusCls = (p.status || 'Pending').toLowerCase();
                 const grossSalary = p.grossSalary ?? p.basicSalary;
-                const receiptCell = p.receiptData
-                    ? `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}">View</button>`
-                    : `<span style="color:#8898aa;">-</span>`;
+                const receiptCell = `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}">View</button>`;
                 tableBody.insertAdjacentHTML('beforeend', `
                     <tr>
                         <td><strong>${p.employeeName || '-'}</strong></td>
@@ -222,14 +221,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
             document.querySelectorAll('.view-receipt-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const record = payrollCacheById[btn.getAttribute('data-id')];
-                    if (!record || !record.receiptData) return;
-                    const win = window.open();
-                    if (record.receiptType && record.receiptType.startsWith('image/')) {
-                        win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
-                    } else {
-                        win.location.href = record.receiptData;
-                    }
+                    const id = btn.getAttribute('data-id');
+                    const record = payrollCacheById[id];
+                    if (record) openReceiptWindow(record, id);
                 });
             });
 

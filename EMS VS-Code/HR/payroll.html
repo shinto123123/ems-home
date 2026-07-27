@@ -452,6 +452,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["hr"]);
     paintNavProfile(currentUser);
@@ -488,9 +489,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const status = pay.status || 'Pending';
         const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
         const grossSalary = pay.grossSalary ?? pay.basicSalary;
-        const receiptCell = pay.receiptData
-            ? `<button class="btn-table-action view-receipt-btn" data-id="${id}">View</button>`
-            : `<span style="color:#8898aa;">-</span>`;
+        const receiptCell = `<button class="btn-table-action view-receipt-btn" data-id="${id}">View</button>`;
         return `
             <tr data-id="${id}">
                 <td class="chk-cell"><input type="checkbox"></td>
@@ -560,14 +559,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     function bindReceiptTriggers() {
         document.querySelectorAll('.view-receipt-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const record = loadedPayrollCache[btn.getAttribute('data-id')];
-                if (!record || !record.receiptData) return;
-                const win = window.open();
-                if (record.receiptType && record.receiptType.startsWith('image/')) {
-                    win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
-                } else {
-                    win.location.href = record.receiptData;
-                }
+                const id = btn.getAttribute('data-id');
+                const record = loadedPayrollCache[id];
+                if (record) openReceiptWindow(record, id);
             });
         });
     }

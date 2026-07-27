@@ -929,6 +929,7 @@ tbody tr:hover{
         <ul>
             <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
             <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+        <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
             <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
             <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
             <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
@@ -1086,11 +1087,7 @@ tbody tr:hover{
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="payReceipt">Payment Receipt (image or PDF, optional)</label>
-                <input type="file" id="payReceipt" accept="image/*,.pdf">
-                <small style="color:#8898aa; display:block; margin-top:4px;">Max 700KB. Visible to HR, managers, and the employee once saved.</small>
-            </div>
+            <p style="color:#8898aa; font-size:12px; margin-top:-4px;">A receipt is generated automatically once this record is saved. It will be visible to HR, managers, and the employee.</p>
             <div class="form-actions">
                 <button type="button" class="btn-cancel" id="cancelAddPayrollBtn">Cancel</button>
                 <button type="submit" class="btn-submit">Save Record</button>
@@ -1103,6 +1100,7 @@ tbody tr:hover{
     import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
@@ -1122,16 +1120,6 @@ tbody tr:hover{
     const tableBody = document.getElementById('payrollTableBody');
     let employeesCache = {};
     let payrollCacheById = {};
-
-    const MAX_RECEIPT_BYTES = 700 * 1024;
-    function readFileAsDataUrl(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
 
     // Add Payroll Modal DOM Hooks
     const addPayrollModal = document.getElementById('addPayrollModal');
@@ -1183,7 +1171,7 @@ tbody tr:hover{
                         <td>${p.deductions ?? '-'}</td>
                         <td class="salary">${p.netPay ?? '-'}</td>
                         <td><span class="status ${statusClass}">${p.status || 'Pending'}</span></td>
-                        <td>${p.receiptData ? `<a href="#" class="view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1;">View</a>` : '<span style="color:#8898aa;">-</span>'}</td>
+                        <td><a href="#" class="view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1;">View</a></td>
                         <td><div class="action"><i class="fa-solid fa-check toggle-paid-btn" data-id="${docSnap.id}" data-status="${p.status || 'Pending'}" style="cursor:pointer;" title="Toggle Paid/Pending"></i></div></td>
                     </tr>
                 `);
@@ -1192,15 +1180,9 @@ tbody tr:hover{
             document.querySelectorAll('.view-receipt-btn').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const record = payrollCacheById[link.getAttribute('data-id')];
-                    if (record && record.receiptData) {
-                        const win = window.open();
-                        if (record.receiptType && record.receiptType.startsWith('image/')) {
-                            win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
-                        } else {
-                            win.location.href = record.receiptData;
-                        }
-                    }
+                    const id = link.getAttribute('data-id');
+                    const record = payrollCacheById[id];
+                    if (record) openReceiptWindow(record, id);
                 });
             });
 
@@ -1232,12 +1214,6 @@ tbody tr:hover{
         const allowances = Number(document.getElementById('payAllowances').value) || 0;
         const deductions = Number(document.getElementById('payDeductions').value) || 0;
         const status = document.getElementById('payStatus').value;
-        const receiptFile = document.getElementById('payReceipt').files[0];
-
-        if (receiptFile && receiptFile.size > MAX_RECEIPT_BYTES) {
-            alert("Receipt file is too large. Please upload a file under 700KB.");
-            return;
-        }
 
         try {
             const record = {
@@ -1249,18 +1225,13 @@ tbody tr:hover{
                 allowances: allowances,
                 deductions: deductions,
                 netPay: basicSalary + allowances - deductions,
-                status: status
+                status: status,
+                createdOn: new Date().toISOString()
             };
-
-            if (receiptFile) {
-                record.receiptData = await readFileAsDataUrl(receiptFile);
-                record.receiptFileName = receiptFile.name;
-                record.receiptType = receiptFile.type;
-            }
 
             await addDoc(collection(db, "payroll"), record);
 
-            alert(`Payroll record successfully created for ${selectedEmployee.name}!`);
+            alert(`Payroll record created for ${selectedEmployee.name}! A receipt has been generated automatically.`);
             hideAddPayrollModal();
             loadPayroll();
         } catch (error) {

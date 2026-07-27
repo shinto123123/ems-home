@@ -385,6 +385,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["employee"]);
     paintNavProfile(currentUser);
@@ -464,9 +465,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         }
         historyTableBody.innerHTML = "";
         records.forEach((r) => {
-            const receiptBtn = r.receiptData
-                ? `<button class="btn-icon-action view-receipt-btn" data-id="${r.id}" title="View Receipt"><i class="fa-regular fa-file-lines"></i></button>`
-                : '';
+            const receiptBtn = `<button class="btn-icon-action view-receipt-btn" data-id="${r.id}" title="View Receipt"><i class="fa-regular fa-file-lines"></i></button>`;
             historyTableBody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td>
@@ -483,14 +482,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         document.querySelectorAll('.view-receipt-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const record = records.find(r => r.id === btn.getAttribute('data-id'));
-                if (!record || !record.receiptData) return;
-                const win = window.open();
-                if (record.receiptType && record.receiptType.startsWith('image/')) {
-                    win.document.write(`<img src="${record.receiptData}" style="max-width:100%;">`);
-                } else {
-                    win.location.href = record.receiptData;
-                }
+                const id = btn.getAttribute('data-id');
+                const record = records.find(r => r.id === id);
+                if (record) openReceiptWindow(record, id);
             });
         });
         document.getElementById('payslipCountLabel').textContent = `Showing 1 to ${records.length} of ${records.length} payslips`;
