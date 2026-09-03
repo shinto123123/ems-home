@@ -286,33 +286,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           </div>
         </div>
 
-        <div class="segment-filter-row">
-          <button class="segment-btn active">All Requests</button>
-          <button class="segment-btn">Pending</button>
-          <button class="segment-btn">Approved</button>
-          <button class="segment-btn">Rejected</button>
-          <button class="segment-btn">Cancelled</button>
+        <div class="segment-filter-row" id="leaveSegmentTabs">
+          <button class="segment-btn active" data-status="All">All Requests</button>
+          <button class="segment-btn" data-status="Pending">Pending</button>
+          <button class="segment-btn" data-status="Approved">Approved</button>
+          <button class="segment-btn" data-status="Rejected">Rejected</button>
+          <button class="segment-btn" data-status="Cancelled">Cancelled</button>
         </div>
 
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search by employee name or ID...">
+            <input type="text" id="hrLeaveSearchInput" placeholder="Search by employee name or reason...">
           </div>
-          <select class="filter-select">
-            <option>All Departments</option>
+          <select class="filter-select" id="hrLeaveDeptFilter">
+            <option value="All">All Departments</option>
           </select>
-          <select class="filter-select">
-            <option>All Leave Types</option>
+          <select class="filter-select" id="hrLeaveTypeFilter">
+            <option value="All">All Leave Types</option>
           </select>
-          <select class="filter-select">
-            <option>All Status</option>
-          </select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
-          <div class="date-picker-btn">
-            <i class="fa-regular fa-calendar"></i>
-            <span>01 May 2025 - 31 May 2025</span>
-          </div>
+          <button class="btn-action" id="hrExportLeaveBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
           <button class="btn-action btn-primary" style="margin-left: auto;" id="openHrLeaveModalBtn"><i class="fa-solid fa-plus"></i> Apply for Leave</button>
         </div>
 
@@ -607,20 +600,68 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     return role === 'employee' || role === 'intern';
   }
 
+  let allLeaveRequests = [];
+  let currentLeaveSegment = 'All';
+
+  function renderLeaveTable(list = allLeaveRequests) {
+    leaveTableBody.innerHTML = '';
+    if (list.length === 0) {
+      leaveTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No leave requests match your filter.</td></tr>';
+      return;
+    }
+    list.forEach((docData) => {
+      leaveTableBody.insertAdjacentHTML('beforeend', renderRow(docData.id, docData));
+    });
+  }
+
+  function applyLeaveFilters() {
+    const q = (document.getElementById('hrLeaveSearchInput')?.value || '').toLowerCase().trim();
+    const dept = document.getElementById('hrLeaveDeptFilter')?.value || 'All';
+    const lType = document.getElementById('hrLeaveTypeFilter')?.value || 'All';
+
+    const filtered = allLeaveRequests.filter(d => {
+      const emp = (d.employeeName || '').toLowerCase();
+      const reason = (d.reason || '').toLowerCase();
+      const dDept = d.department || '';
+      const leaveType = d.leaveType || '';
+      const status = d.status || 'Pending';
+
+      const matchQ = !q || emp.includes(q) || reason.includes(q);
+      const matchDept = dept === 'All' || dDept === dept;
+      const matchType = lType === 'All' || leaveType === lType;
+      const matchSegment = currentLeaveSegment === 'All' || status.toLowerCase() === currentLeaveSegment.toLowerCase();
+
+      return matchQ && matchDept && matchType && matchSegment;
+    });
+
+    renderLeaveTable(filtered);
+  }
+
   async function loadLeaves() {
     try {
       const snapshot = await getDocs(collection(db, "leaveRequests"));
       leaveCache.clear();
-      leaveTableBody.innerHTML = '';
+      allLeaveRequests = [];
       const approvableDocs = snapshot.docs.filter((docSnap) => isApprovableByHr(docSnap.data()));
-      if (approvableDocs.length === 0) {
-        leaveTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No leave requests found.</td></tr>';
-        return;
-      }
       approvableDocs.forEach((docSnap) => {
-        leaveCache.set(docSnap.id, docSnap.data());
-        leaveTableBody.insertAdjacentHTML('beforeend', renderRow(docSnap.id, docSnap.data()));
+        const d = { id: docSnap.id, ...docSnap.data() };
+        leaveCache.set(docSnap.id, d);
+        allLeaveRequests.push(d);
       });
+
+      const depts = Array.from(new Set(allLeaveRequests.map(d => d.department).filter(Boolean))).sort();
+      const deptFilterEl = document.getElementById('hrLeaveDeptFilter');
+      if (deptFilterEl) {
+        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+      }
+
+      const types = Array.from(new Set(allLeaveRequests.map(d => d.leaveType).filter(Boolean))).sort();
+      const typeFilterEl = document.getElementById('hrLeaveTypeFilter');
+      if (typeFilterEl) {
+        typeFilterEl.innerHTML = `<option value="All">All Leave Types</option>` + types.map(t => `<option value="${t}">${t}</option>`).join('');
+      }
+
+      applyLeaveFilters();
     } catch (err) {
       console.error('Failed to load leave requests:', err);
       leaveTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load leave requests.</td></tr>';
@@ -664,11 +705,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       await updateDoc(doc(db, "leaveRequests", id), { status: newStatus });
       const cached = leaveCache.get(id);
       if (cached) cached.status = newStatus;
-      const row = leaveTableBody.querySelector(`tr[data-id="${id}"]`);
-      if (row) {
-        const statusClass = STATUS_CLASSES.includes(newStatus.toLowerCase()) ? newStatus.toLowerCase() : 'pending';
-        row.querySelector('.status-cell').innerHTML = `<span class="status-badge ${statusClass}">${escapeHtml(newStatus)}</span>`;
-      }
+      const target = allLeaveRequests.find(d => d.id === id);
+      if (target) target.status = newStatus;
+      applyLeaveFilters();
     } catch (err) {
       console.error('Failed to update leave status:', err);
       alert('Failed to update leave request. Please try again.');
@@ -733,6 +772,34 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     } catch (err) {
       alert('Failed to submit leave request: ' + err.message);
     }
+  });
+
+  document.getElementById('hrLeaveSearchInput')?.addEventListener('input', applyLeaveFilters);
+  document.getElementById('hrLeaveDeptFilter')?.addEventListener('change', applyLeaveFilters);
+  document.getElementById('hrLeaveTypeFilter')?.addEventListener('change', applyLeaveFilters);
+
+  document.querySelectorAll('#leaveSegmentTabs .segment-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#leaveSegmentTabs .segment-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLeaveSegment = btn.getAttribute('data-status') || 'All';
+      applyLeaveFilters();
+    });
+  });
+
+  document.getElementById('hrExportLeaveBtn')?.addEventListener('click', () => {
+    if (!allLeaveRequests.length) return alert('No leave requests to export.');
+    const rows = [["Employee", "Department", "Leave Type", "From Date", "To Date", "Days", "Reason", "Status"]];
+    allLeaveRequests.forEach(d => {
+      rows.push([d.employeeName || '', d.department || '', d.leaveType || '', d.fromDate || '', d.toDate || '', d.totalDays ?? '', d.reason || '', d.status || 'Pending']);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Leave-Requests-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
 
   loadLeaves();

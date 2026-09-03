@@ -247,10 +247,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="header-controls">
           <div class="date-box">
             <i class="fa-regular fa-calendar"></i>
-            <span>20 May – 26 May 2024</span>
-            <i class="fa-solid fa-chevron-down"></i>
+            <span>Current Cycle: August 2026</span>
           </div>
-          <button class="btn-outline"><i class="fa-solid fa-download"></i>Export</button>
+          <button class="btn-outline" id="exportLeaveBtn"><i class="fa-solid fa-download"></i>Export</button>
           <button class="btn-primary" id="openMgrLeaveModalBtn"><i class="fa-solid fa-plus"></i>Apply for Leave</button>
         </div>
       </div>
@@ -261,67 +260,48 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-regular fa-file-lines"></i></div>
-          <div class="kpi-info"><p>Total Requests</p><h3>24</h3><small>This Month</small></div>
+          <div class="kpi-info"><p>Total Requests</p><h3 id="kpiTotalLeave">0</h3><small>Department</small></div>
         </div>
         <div class="kpi-card pending">
           <div class="kpi-icon"><i class="fa-regular fa-clock"></i></div>
-          <div class="kpi-info"><p>Pending</p><h3>6</h3><small style="color: #fbbf24">Awaiting Action</small></div>
+          <div class="kpi-info"><p>Pending</p><h3 id="kpiPendingLeave">0</h3><small style="color: #fbbf24">Awaiting Action</small></div>
         </div>
         <div class="kpi-card approved">
           <div class="kpi-icon"><i class="fa-regular fa-circle-check"></i></div>
-          <div class="kpi-info"><p>Approved</p><h3>14</h3><small style="color: #4ade80">This Month</small></div>
+          <div class="kpi-info"><p>Approved</p><h3 id="kpiApprovedLeave">0</h3><small style="color: #4ade80">Approved</small></div>
         </div>
         <div class="kpi-card rejected">
           <div class="kpi-icon"><i class="fa-regular fa-circle-xmark"></i></div>
-          <div class="kpi-info"><p>Rejected</p><h3>4</h3><small style="color: #f87171">This Month</small></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon"><i class="fa-solid fa-ban"></i></div>
-          <div class="kpi-info"><p>Cancelled</p><h3>0</h3><small>This Month</small></div>
+          <div class="kpi-info"><p>Rejected</p><h3 id="kpiRejectedLeave">0</h3><small style="color: #f87171">Rejected</small></div>
         </div>
       </div>
 
       <div class="table-panel">
         
-        <div class="tabs-bar">
-          <a href="#" class="tab-link active">Pending (6)</a>
-          <a href="#" class="tab-link">Approved (14)</a>
-          <a href="#" class="tab-link">Rejected (4)</a>
-          <a href="#" class="tab-link">Cancelled (0)</a>
-          <a href="#" class="tab-link">All Requests (24)</a>
+        <div class="tabs-bar" id="leaveFilterTabs">
+          <a href="#" class="tab-link active" data-tab="all">All Requests</a>
+          <a href="#" class="tab-link" data-tab="pending">Pending</a>
+          <a href="#" class="tab-link" data-tab="approved">Approved</a>
+          <a href="#" class="tab-link" data-tab="rejected">Rejected</a>
         </div>
 
         <div class="filter-row">
           <div class="filter-item search-box">
             <div class="input-position-wrapper">
               <i class="fa-solid fa-search search-icon"></i>
-              <input type="text" placeholder="Search by name or ID...">
-            </div>
-          </div>
-          <div class="filter-item select-box">
-            <label>Department</label>
-            <div class="input-position-wrapper">
-              <select><option>All Departments</option></select>
-              <i class="fa-solid fa-chevron-down chevron-icon"></i>
+              <input type="text" id="leaveSearchInput" placeholder="Search by name or reason...">
             </div>
           </div>
           <div class="filter-item select-box">
             <label>Leave Type</label>
             <div class="input-position-wrapper">
-              <select><option>All Types</option></select>
-              <i class="fa-solid fa-chevron-down chevron-icon"></i>
-            </div>
-          </div>
-          <div class="filter-item select-box">
-            <label>Duration</label>
-            <div class="input-position-wrapper">
-              <select><option>All</option></select>
+              <select id="leaveTypeFilter"><option value="All">All Types</option><option value="Sick Leave">Sick Leave</option><option value="Annual Leave">Annual Leave</option><option value="Comp Off">Comp Off</option></select>
               <i class="fa-solid fa-chevron-down chevron-icon"></i>
             </div>
           </div>
           <div class="filter-buttons-wrap">
-            <button class="btn-outline" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
-            <button class="btn-primary" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
+            <button class="btn-outline" id="resetLeaveFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+            <button class="btn-primary" id="applyLeaveFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
           </div>
         </div>
 
@@ -472,6 +452,132 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         return 'annual';
     }
 
+    let allLeaveRequestsList = [];
+    let currentLeaveTab = 'all';
+
+    function bindActionListeners() {
+        document.querySelectorAll('.btn-action-trigger.approve').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "leaveRequests", id), { status: "Approved" });
+                    loadLeaveRequests();
+                } catch (err) {
+                    alert("Error approving leave request: " + err.message);
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-action-trigger.reject').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "leaveRequests", id), { status: "Rejected" });
+                    loadLeaveRequests();
+                } catch (err) {
+                    alert("Error rejecting leave request: " + err.message);
+                }
+            });
+        });
+    }
+
+    function renderLeaveTable(requests) {
+        tableBody.innerHTML = "";
+
+        if (!requests || requests.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No leave requests found.</td></tr>`;
+            entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+            return;
+        }
+
+        requests.forEach((lr, idx) => {
+            const id = lr.id;
+            const statusClass = (lr.status || 'pending').toLowerCase();
+            const typeClass = leaveTypeClass(lr.leaveType);
+            const isPending = statusClass === 'pending';
+
+            const actionButtons = isPending
+                ? `<button class="btn-action-trigger approve" data-id="${id}" title="Approve"><i class="fa-solid fa-check"></i></button><button class="btn-action-trigger reject" data-id="${id}" title="Reject"><i class="fa-solid fa-xmark"></i></button>`
+                : `<span class="badge-tag ${statusClass}" style="font-size:11px;">${lr.status}</span>`;
+
+            const rowTemplate = `
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="custom-checkbox"></td>
+                    <td><div class="user-identity-wrap"><div class="user-avatar"><i class="fa-regular fa-user"></i></div><div><span class="user-name">${lr.employeeName || '-'}</span><span class="user-id">${lr.department || ''}</span></div></div></td>
+                    <td><div class="type-cell-badge ${typeClass}"><i class="fa-solid fa-plane-departure"></i> ${lr.leaveType || '-'}</div></td>
+                    <td><strong>${lr.totalDays || '-'} ${lr.totalDays === 1 ? 'Day' : 'Days'}</strong></td>
+                    <td><div class="date-duration-info">${formatDate(lr.fromDate)}<span>to ${formatDate(lr.toDate)}</span></div></td>
+                    <td><div class="reason-text-box">${lr.reason || '-'}</div></td>
+                    <td>${formatDate(lr.appliedOn)}</td>
+                    <td><span class="status-badge ${statusClass}">${lr.status || 'Pending'}</span></td>
+                    <td><div class="actions-container">${actionButtons}</div></td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+        });
+
+        entriesCounter.innerText = `Showing 1 to ${requests.length} of ${allLeaveRequestsList.length} entries`;
+        bindActionListeners();
+    }
+
+    function applyLeaveFilter() {
+        const queryTerm = (document.getElementById('leaveSearchInput').value || '').toLowerCase().trim();
+        const selType = document.getElementById('leaveTypeFilter').value;
+
+        const filtered = allLeaveRequestsList.filter(lr => {
+            const name = (lr.employeeName || '').toLowerCase();
+            const reason = (lr.reason || '').toLowerCase();
+            const matchesSearch = !queryTerm || name.includes(queryTerm) || reason.includes(queryTerm);
+            const matchesType = selType === 'All' || lr.leaveType === selType;
+
+            const st = (lr.status || 'pending').toLowerCase();
+            let matchesTab = true;
+            if (currentLeaveTab === 'pending') matchesTab = st === 'pending';
+            else if (currentLeaveTab === 'approved') matchesTab = st === 'approved';
+            else if (currentLeaveTab === 'rejected') matchesTab = st === 'rejected';
+
+            return matchesSearch && matchesType && matchesTab;
+        });
+
+        renderLeaveTable(filtered);
+    }
+
+    document.getElementById('leaveSearchInput').addEventListener('input', applyLeaveFilter);
+    document.getElementById('leaveTypeFilter').addEventListener('change', applyLeaveFilter);
+    document.getElementById('applyLeaveFilterBtn').addEventListener('click', applyLeaveFilter);
+    document.getElementById('resetLeaveFilterBtn').addEventListener('click', () => {
+        document.getElementById('leaveSearchInput').value = '';
+        document.getElementById('leaveTypeFilter').value = 'All';
+        currentLeaveTab = 'all';
+        document.querySelectorAll('#leaveFilterTabs .tab-link').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === 'all'));
+        renderLeaveTable(allLeaveRequestsList);
+    });
+
+    document.querySelectorAll('#leaveFilterTabs .tab-link').forEach(t => {
+        t.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('#leaveFilterTabs .tab-link').forEach(tab => tab.classList.remove('active'));
+            t.classList.add('active');
+            currentLeaveTab = t.getAttribute('data-tab') || 'all';
+            applyLeaveFilter();
+        });
+    });
+
+    document.getElementById('exportLeaveBtn').addEventListener('click', () => {
+        if (!allLeaveRequestsList.length) return alert('No leave request records to export.');
+        const rows = [["Employee Name", "Department", "Leave Type", "Duration", "From Date", "To Date", "Reason", "Status"]];
+        allLeaveRequestsList.forEach(lr => {
+            rows.push([lr.employeeName || '', lr.department || '', lr.leaveType || '', `${lr.totalDays || 1} Days`, lr.fromDate || '', lr.toDate || '', lr.reason || '', lr.status || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Leave-Requests-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
     async function loadLeaveRequests() {
         try {
             if (!myDept) {
@@ -481,52 +587,30 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
             const q = query(collection(db, "leaveRequests"), where("department", "==", myDept));
             const querySnapshot = await getDocs(q);
-            tableBody.innerHTML = "";
-            let counter = 0;
+            allLeaveRequestsList = [];
 
-            const approvableDocs = querySnapshot.docs.filter((docSnap) => isApprovableByManager(docSnap.data()));
-
-            if (approvableDocs.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No leave requests found for your department.</td></tr>`;
-                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
-                return;
-            }
-
-            approvableDocs.forEach((docSnap) => {
+            querySnapshot.forEach((docSnap) => {
                 const lr = docSnap.data();
-                const id = docSnap.id;
-                counter++;
-                const statusClass = (lr.status || 'pending').toLowerCase();
-                const typeClass = leaveTypeClass(lr.leaveType);
-                const isPending = statusClass === 'pending';
-
-                const actionButtons = isPending
-                    ? `<button class="btn-action-trigger approve" data-id="${id}"><i class="fa-solid fa-check"></i></button><button class="btn-action-trigger reject" data-id="${id}"><i class="fa-solid fa-xmark"></i></button><button class="btn-action-trigger view"><i class="fa-regular fa-eye"></i></button>`
-                    : `<button class="btn-action-trigger view"><i class="fa-regular fa-eye"></i></button>`;
-
-                const rowTemplate = `
-                    <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="custom-checkbox"></td>
-                        <td><div class="user-identity-wrap"><div class="user-avatar"><i class="fa-regular fa-user"></i></div><div><span class="user-name">${lr.employeeName || '-'}</span><span class="user-id">${lr.department || ''}</span></div></div></td>
-                        <td><div class="type-cell-badge ${typeClass}"><i class="fa-solid fa-plane-departure"></i> ${lr.leaveType || '-'}</div></td>
-                        <td><strong>${lr.totalDays || '-'} ${lr.totalDays === 1 ? 'Day' : 'Days'}</strong></td>
-                        <td><div class="date-duration-info">${formatDate(lr.fromDate)}<span>to ${formatDate(lr.toDate)}</span></div></td>
-                        <td><div class="reason-text-box">${lr.reason || '-'}</div></td>
-                        <td>${formatDate(lr.appliedOn)}</td>
-                        <td><span class="status-badge ${statusClass}">${lr.status || 'Pending'}</span></td>
-                        <td><div class="actions-container">${actionButtons}</div></td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+                if (lr.uid !== currentUser.uid) {
+                    allLeaveRequestsList.push({ id: docSnap.id, ...lr });
+                }
             });
 
-            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
-            bindActionListeners();
+            const total = allLeaveRequestsList.length;
+            const pending = allLeaveRequestsList.filter(l => (l.status || '').toLowerCase() === 'pending').length;
+            const approved = allLeaveRequestsList.filter(l => (l.status || '').toLowerCase() === 'approved').length;
+            const rejected = allLeaveRequestsList.filter(l => (l.status || '').toLowerCase() === 'rejected').length;
+
+            document.getElementById('kpiTotalLeave').textContent = total;
+            document.getElementById('kpiPendingLeave').textContent = pending;
+            document.getElementById('kpiApprovedLeave').textContent = approved;
+            document.getElementById('kpiRejectedLeave').textContent = rejected;
+
+            renderLeaveTable(allLeaveRequestsList);
 
         } catch (err) {
             console.error("Failed to load leave requests: ", err);
             tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
-            alert("Error loading leave requests: " + err.message);
         }
     }
 

@@ -52,9 +52,10 @@ body { background:#0b1437; display:flex; flex-direction:column; height:100vh; ov
 .header p { color:#8898aa; font-size:13px; margin-top:4px; }
 
 .stats-row { display:flex; gap:16px; margin:18px 0; }
-.stat-card { flex:1; background:#111c44; border:1px solid #1b2e6e; border-radius:14px; padding:16px 20px; }
+.stat-card { flex:1; background:#111c44; border:1px solid #1b2e6e; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:14px; }
+.stat-icon { width:44px; height:44px; border-radius:10px; background:#0b1437; border:1px solid #1b2e6e; display:flex; align-items:center; justify-content:center; font-size:18px; color:#4299e1; flex-shrink:0; }
 .stat-card .stat-label { color:#8898aa; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
-.stat-card .stat-value { color:#ffffff; font-size:24px; font-weight:700; margin-top:6px; }
+.stat-card .stat-value { color:#ffffff; font-size:22px; font-weight:700; margin-top:4px; }
 
 .search-filter { display:flex; gap:15px; margin-bottom:18px; flex-wrap:wrap; }
 
@@ -72,28 +73,19 @@ th { padding:16px; text-align:left; color:#ffffff; font-size:14px; font-weight:6
 td { padding:15px; color:#d7dfef; border-top:1px solid #1b2e6e; font-size:14px; }
 tbody tr:hover { background:#16265c; }
 
-.account-cell { display:flex; align-items:center; gap:12px; }
-.account-cell img { width:40px; height:40px; border-radius:50%; border:2px solid #4299e1; object-fit:cover; }
-.account-avatar-placeholder { width:40px; height:40px; border-radius:50%; background:#1b2e6e; border:2px solid #4299e1; display:flex; align-items:center; justify-content:center; color:#8898aa; }
-.account-name-block h4 { font-size:14px; color:#ffffff; font-weight:600; }
-.account-name-block small { color:#8898aa; font-size:12px; }
+.txn-cell { display:flex; align-items:center; gap:12px; }
+.txn-icon { width:38px; height:38px; border-radius:10px; background:#0b1437; border:1px solid #1b2e6e; display:flex; align-items:center; justify-content:center; color:#4299e1; font-size:15px; flex-shrink:0; }
+.txn-name-block h4 { font-size:14px; color:#ffffff; font-weight:600; }
+.txn-name-block small { color:#8898aa; font-size:12px; }
 
-.role-badge { display:inline-block; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; }
-.role-badge.admin { background:rgba(129,140,248,.18); color:#a5b4fc; }
-.role-badge.hr { background:rgba(244,114,182,.18); color:#f9a8d4; }
-.role-badge.manager { background:rgba(96,165,250,.18); color:#93c5fd; }
-.role-badge.employee { background:rgba(66,153,225,.18); color:#7dd3fc; }
-.role-badge.intern { background:rgba(251,191,36,.18); color:#fcd34d; }
+.amount-cell { font-weight:700; color:#ffffff; }
 
 .status { display:inline-block; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; }
-.status.active { background:rgba(34,197,94,.18); color:#4ade80; }
-.status.inactive { background:rgba(239,68,68,.18); color:#f87171; }
+.status.paid { background:rgba(34,197,94,.18); color:#4ade80; }
+.status.pending { background:rgba(251,191,36,.18); color:#fbbf24; }
 
-.actions-cell { display:flex; gap:12px; align-items:center; }
-.toggle-btn-icon, .delete-btn-icon { color:#4299e1; cursor:pointer; font-size:16px; background:none; border:none; transition:color 0.2s; }
-.toggle-btn-icon:hover { color:#3182ce; }
-.delete-btn-icon { color:#f87171; }
-.delete-btn-icon:hover { color:#ef4444; }
+.receipt-btn { background:none; border:1px solid #1b2e6e; color:#cbd5e1; padding:6px 14px; border-radius:8px; font-size:12.5px; cursor:pointer; transition:.2s; }
+.receipt-btn:hover { border-color:#4299e1; color:#fff; }
 
 .footer { margin-top:18px; display:flex; justify-content:space-between; align-items:center; color:#8898aa; flex-shrink:0; }
 </style>
@@ -161,46 +153,53 @@ tbody tr:hover { background:#16265c; }
 <div class="header">
     <div>
         <h1>Accounts</h1>
-        <p>Every login account across the system, in one place. Create new accounts from the Employees or Internship pages.</p>
+        <p>Every financial transaction the company has made — payroll payouts, in one place.</p>
     </div>
 </div>
 
 <div class="stats-row">
     <div class="stat-card">
-        <div class="stat-label">Total Accounts</div>
-        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div>
+            <div class="stat-label">Total Paid Out</div>
+            <div class="stat-value" id="statTotalPaid">-</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Active</div>
-        <div class="stat-value" id="statActive">0</div>
+        <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+        <div>
+            <div class="stat-label">Pending Payouts</div>
+            <div class="stat-value" id="statTotalPending">-</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Inactive</div>
-        <div class="stat-value" id="statInactive">0</div>
+        <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+        <div>
+            <div class="stat-label">This Month</div>
+            <div class="stat-value" id="statThisMonth">-</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Interns</div>
-        <div class="stat-value" id="statInterns">0</div>
+        <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+        <div>
+            <div class="stat-label">Total Transactions</div>
+            <div class="stat-value" id="statTotalCount">0</div>
+        </div>
     </div>
 </div>
 
 <div class="search-filter">
     <div class="search-box">
         <i class="fa fa-search"></i>
-        <input type="text" id="accountSearchInput" placeholder="Search by name or email">
+        <input type="text" id="txnSearchInput" placeholder="Search by employee or department">
     </div>
-    <select class="filter-select" id="roleFilter">
-        <option value="All">All Roles</option>
-        <option value="admin">Admin</option>
-        <option value="hr">HR</option>
-        <option value="manager">Manager</option>
-        <option value="employee">Employee</option>
-        <option value="intern">Intern</option>
+    <select class="filter-select" id="departmentFilter">
+        <option value="All">All Departments</option>
     </select>
     <select class="filter-select" id="statusFilterSelect">
         <option value="All">All Status</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
+        <option value="Paid">Paid</option>
+        <option value="Pending">Pending</option>
     </select>
 </div>
 
@@ -208,15 +207,17 @@ tbody tr:hover { background:#16265c; }
 <table>
 <thead>
 <tr>
-    <th>Account</th>
-    <th>Email</th>
-    <th>Role</th>
+    <th>Date</th>
+    <th>Transaction</th>
     <th>Department</th>
+    <th>Type</th>
+    <th>Amount</th>
     <th>Status</th>
-    <th>Action</th>
+    <th>Receipt</th>
 </tr>
 </thead>
-<tbody id="accountsTableBody">
+<tbody id="transactionsTableBody">
+<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>
 </tbody>
 </table>
 </div>
@@ -231,9 +232,10 @@ tbody tr:hover { background:#16265c; }
 </div>
 
 <script type="module">
-    import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
@@ -250,173 +252,132 @@ tbody tr:hover { background:#16265c; }
         logout("../");
     });
 
-    const tableBody = document.getElementById('accountsTableBody');
+    const tableBody = document.getElementById('transactionsTableBody');
     const entriesCounter = document.getElementById('tableEntriesCounter');
-    const searchInput = document.getElementById('accountSearchInput');
-    const roleFilter = document.getElementById('roleFilter');
+    const searchInput = document.getElementById('txnSearchInput');
+    const departmentFilter = document.getElementById('departmentFilter');
     const statusFilterSelect = document.getElementById('statusFilterSelect');
 
-    let allAccounts = [];
+    let allTransactions = [];
 
-    // Normalize both "employees" and "interns" documents into one shape:
-    // { id, collection, name, email, role, department, status, avatarUrl }
-    async function loadAllAccounts() {
-        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">Loading accounts...</td></tr>`;
+    function money(n) {
+        const num = Number(n) || 0;
+        return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function transactionDate(record) {
+        if (record.createdOn) {
+            const d = new Date(record.createdOn);
+            if (!isNaN(d)) return d;
+        }
+        return null;
+    }
+
+    // Every payroll record is one company-to-employee salary transaction.
+    // This is the only kind of company transaction currently tracked in Firestore.
+    async function loadTransactions() {
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>`;
 
         try {
-            const [employeeSnap, internSnap] = await Promise.all([
-                getDocs(collection(db, "employees")),
-                getDocs(collection(db, "interns"))
-            ]);
+            const snap = await getDocs(collection(db, "payroll"));
 
-            allAccounts = [];
-
-            employeeSnap.forEach((docSnap) => {
+            allTransactions = snap.docs.map(docSnap => {
                 const data = docSnap.data();
-                allAccounts.push({
+                return {
                     id: docSnap.id,
-                    source: "employees",
-                    name: data.name || "Unnamed",
-                    email: data.email || "--",
-                    role: data.role || "employee",
-                    department: data.department || "--",
-                    status: data.status || "Active",
-                    avatarUrl: data.avatarUrl || ""
-                });
-            });
+                    ...data,
+                    netPay: data.netPay ?? ((Number(data.basicSalary) || 0) + (Number(data.allowances) || 0) - (Number(data.deductions) || 0)),
+                    dateObj: transactionDate(data)
+                };
+            }).sort((a, b) => (b.dateObj?.getTime() || 0) - (a.dateObj?.getTime() || 0));
 
-            internSnap.forEach((docSnap) => {
-                const data = docSnap.data();
-                allAccounts.push({
-                    id: docSnap.id,
-                    source: "interns",
-                    name: data.internName || "Unnamed",
-                    email: data.email || "--",
-                    role: "intern",
-                    department: data.department || "--",
-                    status: data.status === "Active" ? "Active" : (data.status || "Active"),
-                    avatarUrl: data.internAvatar || ""
-                });
-            });
+            const departments = Array.from(new Set(allTransactions.map(t => t.department).filter(Boolean))).sort();
+            departmentFilter.innerHTML = `<option value="All">All Departments</option>` +
+                departments.map(d => `<option value="${d}">${d}</option>`).join('');
 
-            renderAccounts();
+            renderStats();
+            renderTransactions();
         } catch (err) {
-            console.error("Failed to load accounts: ", err);
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#f87171;">Failed to load accounts: ${err.message}</td></tr>`;
+            console.error("Failed to load transactions: ", err);
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#f87171;">Failed to load transactions: ${err.message}</td></tr>`;
         }
     }
 
-    function renderAccounts() {
+    function renderStats() {
+        const paid = allTransactions.filter(t => t.status === 'Paid');
+        const pending = allTransactions.filter(t => t.status !== 'Paid');
+        const now = new Date();
+        const thisMonth = allTransactions.filter(t => t.dateObj && t.dateObj.getMonth() === now.getMonth() && t.dateObj.getFullYear() === now.getFullYear());
+
+        document.getElementById('statTotalPaid').textContent = money(paid.reduce((s, t) => s + t.netPay, 0));
+        document.getElementById('statTotalPending').textContent = money(pending.reduce((s, t) => s + t.netPay, 0));
+        document.getElementById('statThisMonth').textContent = money(thisMonth.reduce((s, t) => s + t.netPay, 0));
+        document.getElementById('statTotalCount').textContent = allTransactions.length;
+    }
+
+    function renderTransactions() {
         const searchTerm = searchInput.value.trim().toLowerCase();
-        const selectedRole = roleFilter.value;
+        const selectedDept = departmentFilter.value;
         const selectedStatus = statusFilterSelect.value;
 
-        const filtered = allAccounts.filter(acc => {
-            const matchesSearch = !searchTerm || acc.name.toLowerCase().includes(searchTerm) || acc.email.toLowerCase().includes(searchTerm);
-            const matchesRole = selectedRole === "All" || acc.role === selectedRole;
-            // "Inactive" covers any intern status other than Active (e.g. Completed) as well as Inactive employees
-            const isActive = acc.status === "Active";
-            const matchesStatus = selectedStatus === "All" || (selectedStatus === "Active" ? isActive : !isActive);
-            return matchesSearch && matchesRole && matchesStatus;
+        const filtered = allTransactions.filter(t => {
+            const matchesSearch = !searchTerm ||
+                (t.employeeName || '').toLowerCase().includes(searchTerm) ||
+                (t.department || '').toLowerCase().includes(searchTerm);
+            const matchesDept = selectedDept === "All" || t.department === selectedDept;
+            const isPaid = t.status === 'Paid';
+            const matchesStatus = selectedStatus === "All" || (selectedStatus === "Paid" ? isPaid : !isPaid);
+            return matchesSearch && matchesDept && matchesStatus;
         });
 
-        document.getElementById('statTotal').textContent = allAccounts.length;
-        document.getElementById('statActive').textContent = allAccounts.filter(a => a.status === "Active").length;
-        document.getElementById('statInactive').textContent = allAccounts.filter(a => a.status !== "Active").length;
-        document.getElementById('statInterns').textContent = allAccounts.filter(a => a.role === "intern").length;
-
         if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#8898aa;">No accounts match your filters.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">No transactions match your filters.</td></tr>`;
             entriesCounter.textContent = "Showing 0 to 0 of 0 entries";
             return;
         }
 
-        tableBody.innerHTML = filtered.map(acc => {
-            const avatarHTML = acc.avatarUrl
-                ? `<img src="${acc.avatarUrl}" alt="${acc.name}">`
-                : `<div class="account-avatar-placeholder"><i class="fa-regular fa-user"></i></div>`;
-            const isActive = acc.status === "Active";
-            const statusClass = isActive ? 'active' : 'inactive';
-            const toggleIcon = isActive ? 'fa-toggle-on' : 'fa-toggle-off';
-            const toggleTitle = isActive ? 'Deactivate account' : 'Activate account';
+        tableBody.innerHTML = filtered.map(t => {
+            const isPaid = t.status === 'Paid';
+            const statusClass = isPaid ? 'paid' : 'pending';
+            const dateLabel = t.dateObj ? t.dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
 
             return `
                 <tr>
+                    <td>${dateLabel}</td>
                     <td>
-                        <div class="account-cell">
-                            ${avatarHTML}
-                            <div class="account-name-block">
-                                <h4>${acc.name}</h4>
-                                <small>${acc.source === 'interns' ? 'Intern account' : 'Staff account'}</small>
+                        <div class="txn-cell">
+                            <div class="txn-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <div class="txn-name-block">
+                                <h4>${t.employeeName || 'Unknown'}</h4>
+                                <small>${t.designation || 'Salary Payment'}</small>
                             </div>
                         </div>
                     </td>
-                    <td>${acc.email}</td>
-                    <td><span class="role-badge ${acc.role}">${acc.role}</span></td>
-                    <td>${acc.department}</td>
-                    <td><span class="status ${statusClass}">${acc.status}</span></td>
-                    <td>
-                        <div class="actions-cell">
-                            <button class="toggle-btn-icon action-toggle-trigger" title="${toggleTitle}" data-id="${acc.id}" data-source="${acc.source}">
-                                <i class="fa-solid ${toggleIcon}"></i>
-                            </button>
-                            <button class="delete-btn-icon action-delete-trigger" title="Delete account" data-id="${acc.id}" data-source="${acc.source}">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
+                    <td>${t.department || '-'}</td>
+                    <td>Salary Payment</td>
+                    <td class="amount-cell">${money(t.netPay)}</td>
+                    <td><span class="status ${statusClass}">${t.status || 'Pending'}</span></td>
+                    <td><button class="receipt-btn action-view-receipt" data-id="${t.id}">View</button></td>
                 </tr>
             `;
         }).join('');
 
         entriesCounter.textContent = `Showing 1 to ${filtered.length} of ${filtered.length} entries`;
-        bindActionRowListeners();
-    }
 
-    function bindActionRowListeners() {
-        document.querySelectorAll('.action-toggle-trigger').forEach(btn => {
-            btn.addEventListener('click', async () => {
+        document.querySelectorAll('.action-view-receipt').forEach(btn => {
+            btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
-                const source = btn.getAttribute('data-source');
-                const account = allAccounts.find(a => a.id === id && a.source === source);
-                if (!account) return;
-
-                const nextStatus = account.status === "Active" ? "Inactive" : "Active";
-                try {
-                    await updateDoc(doc(db, source, id), { status: nextStatus });
-                    account.status = nextStatus;
-                    renderAccounts();
-                } catch (error) {
-                    alert("Could not update account status: " + error.message);
-                }
-            });
-        });
-
-        document.querySelectorAll('.action-delete-trigger').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const id = btn.getAttribute('data-id');
-                const source = btn.getAttribute('data-source');
-                const account = allAccounts.find(a => a.id === id && a.source === source);
-                if (!account) return;
-
-                if (confirm(`Are you sure you want to permanently delete the account for ${account.name}?`)) {
-                    try {
-                        await deleteDoc(doc(db, source, id));
-                        allAccounts = allAccounts.filter(a => !(a.id === id && a.source === source));
-                        renderAccounts();
-                    } catch (error) {
-                        alert("Could not delete account: " + error.message);
-                    }
-                }
+                const record = allTransactions.find(t => t.id === id);
+                if (record) openReceiptWindow(record, id);
             });
         });
     }
 
-    searchInput.addEventListener('input', renderAccounts);
-    roleFilter.addEventListener('change', renderAccounts);
-    statusFilterSelect.addEventListener('change', renderAccounts);
+    searchInput.addEventListener('input', renderTransactions);
+    departmentFilter.addEventListener('change', renderTransactions);
+    statusFilterSelect.addEventListener('change', renderTransactions);
 
-    loadAllAccounts();
+    loadTransactions();
 </script>
 </body>
 </html>

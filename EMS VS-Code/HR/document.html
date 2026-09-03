@@ -310,12 +310,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search documents by name, type or owner...">
+            <input type="text" id="docSearchInput" placeholder="Search documents by name, type or owner...">
           </div>
-          <select class="filter-select"><option>All Types</option></select>
-          <select class="filter-select"><option>All Departments</option></select>
-          <select class="filter-select"><option>All Access</option></select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <select class="filter-select" id="docTypeFilter"><option value="All">All Types</option></select>
+          <select class="filter-select" id="docDeptFilter"><option value="All">All Departments</option></select>
+          <button class="btn-action" id="exportDocBtn" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Export CSV</button>
         </div>
 
         <div>
@@ -584,8 +583,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       </tr>`;
   }
 
-  // Filters the in-memory cache according to the active segment tab, then (re)draws the table
+  // Filters the in-memory cache according to active segment tab, search query, type, and dept
   function renderDocuments() {
+    const q = (document.getElementById('docSearchInput')?.value || '').toLowerCase().trim();
+    const typeFilter = document.getElementById('docTypeFilter')?.value || 'All';
+    const deptFilter = document.getElementById('docDeptFilter')?.value || 'All';
+
     let filtered;
     if (currentView === 'trash') {
       filtered = documentsCache.filter(d => d.deleted === true);
@@ -596,9 +599,22 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       else if (currentView === 'shared') filtered = filtered.filter(d => d.status === 'department');
     }
 
+    filtered = filtered.filter(d => {
+      const fileName = (d.fileName || '').toLowerCase();
+      const owner = (d.uploadedBy || '').toLowerCase();
+      const cat = d.category || '';
+      const dept = d.department || '';
+
+      const matchQ = !q || fileName.includes(q) || owner.includes(q);
+      const matchType = typeFilter === 'All' || cat === typeFilter;
+      const matchDept = deptFilter === 'All' || dept === deptFilter;
+
+      return matchQ && matchType && matchDept;
+    });
+
     documentTableBody.innerHTML = '';
     if (filtered.length === 0) {
-      documentTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">${currentView === 'trash' ? 'Trash is empty.' : 'No documents found.'}</td></tr>`;
+      documentTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">${currentView === 'trash' ? 'Trash is empty.' : 'No documents match your filter.'}</td></tr>`;
       return;
     }
     const isTrashView = currentView === 'trash';
@@ -665,6 +681,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       snapshot.forEach((docSnap) => {
         documentsCache.push({ id: docSnap.id, ...docSnap.data() });
       });
+
+      const types = Array.from(new Set(documentsCache.map(d => d.category).filter(Boolean))).sort();
+      const typeFilterEl = document.getElementById('docTypeFilter');
+      if (typeFilterEl) {
+        typeFilterEl.innerHTML = `<option value="All">All Types</option>` + types.map(t => `<option value="${t}">${t}</option>`).join('');
+      }
+
+      const depts = Array.from(new Set(documentsCache.map(d => d.department).filter(Boolean))).sort();
+      const deptFilterEl = document.getElementById('docDeptFilter');
+      if (deptFilterEl) {
+        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+      }
+
       renderDocuments();
     } catch (err) {
       console.error('Failed to load documents:', err);
@@ -679,7 +708,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   const closeUploadModal = () => { uploadDocModal.classList.add('d-none'); uploadDocForm.reset(); };
 
   document.getElementById('openUploadModalBtn').addEventListener('click', openUploadModal);
-  document.getElementById('quickUploadBtn').addEventListener('click', openUploadModal);
+  document.getElementById('quickUploadBtn')?.addEventListener('click', openUploadModal);
   document.getElementById('closeUploadModalBtn').addEventListener('click', closeUploadModal);
   document.getElementById('cancelUploadModalBtn').addEventListener('click', closeUploadModal);
 
@@ -701,6 +730,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     } catch (err) {
       alert('Failed to upload document: ' + err.message);
     }
+  });
+
+  document.getElementById('docSearchInput')?.addEventListener('input', renderDocuments);
+  document.getElementById('docTypeFilter')?.addEventListener('change', renderDocuments);
+  document.getElementById('docDeptFilter')?.addEventListener('change', renderDocuments);
+
+  document.getElementById('exportDocBtn')?.addEventListener('click', () => {
+    const visibleDocs = documentsCache.filter(d => d.deleted !== true);
+    if (!visibleDocs.length) return alert('No documents to export.');
+    const rows = [["File Name", "Category", "Department", "Uploaded By", "Uploaded On", "Access Status"]];
+    visibleDocs.forEach(d => {
+      rows.push([d.fileName || '', d.category || '', d.department || '', d.uploadedBy || '', d.uploadedOn || '', d.status || '']);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Documents-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
 
   loadDocuments();

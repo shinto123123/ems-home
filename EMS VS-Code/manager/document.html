@@ -244,8 +244,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <p>View and manage documents shared with you and your team.</p>
         </div>
         <div class="header-buttons">
-          <button class="btn-outline"><i class="fa-solid fa-plus"></i>Upload Document</button>
-          <button class="btn-primary"><i class="fa-regular fa-folder-open"></i>Folder</button>
+          <button class="btn-primary" id="openUploadDocBtn"><i class="fa-solid fa-plus"></i>Upload Document</button>
         </div>
       </div>
     </div>
@@ -255,23 +254,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="kpi-grid">
         <div class="kpi-card files-v">
           <div class="kpi-icon"><i class="fa-regular fa-file-lines"></i></div>
-          <div class="kpi-info"><p>Total Documents</p><h3>126</h3><small>All Documents</small></div>
+          <div class="kpi-info"><p>Total Documents</p><h3 id="kpiTotalDocs">0</h3><small>All Documents</small></div>
         </div>
         <div class="kpi-card folders-v">
           <div class="kpi-icon"><i class="fa-regular fa-folder"></i></div>
-          <div class="kpi-info"><p>Folders</p><h3>18</h3><small>All Folders</small></div>
+          <div class="kpi-info"><p>Categories</p><h3 id="kpiCategories">0</h3><small>Policy, Finance, etc.</small></div>
         </div>
         <div class="kpi-card shared-v">
           <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
-          <div class="kpi-info"><p>Shared by Team</p><h3>96</h3><small>Documents</small></div>
+          <div class="kpi-info"><p>Department Docs</p><h3 id="kpiDeptDocs">0</h3><small>Active Department</small></div>
         </div>
         <div class="kpi-card download-v">
           <div class="kpi-icon"><i class="fa-solid fa-download"></i></div>
-          <div class="kpi-info"><p>Downloads</p><h3>245</h3><small>This Month</small></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon"><i class="fa-regular fa-clock"></i></div>
-          <div class="kpi-info"><p>Recently Added</p><h3>12</h3><small>This Week</small></div>
+          <div class="kpi-info"><p>Active Files</p><h3 id="kpiActiveDocs">0</h3><small>Available</small></div>
         </div>
       </div>
 
@@ -279,40 +274,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-group search-box">
           <div class="input-inner-wrap">
             <i class="fa-solid fa-search search-icon"></i>
-            <input type="text" placeholder="Search documents...">
+            <input type="text" id="docSearchInput" placeholder="Search documents...">
           </div>
         </div>
         <div class="filter-group select-box">
           <label>Type</label>
           <div class="input-inner-wrap">
-            <select><option>All Types</option></select>
+            <select id="docTypeFilter"><option value="All">All Types</option><option value="Policy">Policy</option><option value="Finance">Finance</option><option value="Presentation">Presentation</option><option value="Image">Image</option><option value="Template">Template</option></select>
             <i class="fa-solid fa-chevron-down chevron-icon"></i>
           </div>
         </div>
-        <div class="filter-group select-box">
-          <label>Department</label>
-          <div class="input-inner-wrap">
-            <select><option>All Departments</option></select>
-            <i class="fa-solid fa-chevron-down chevron-icon"></i>
-          </div>
-        </div>
-        <div class="filter-group select-box">
-          <label>Shared By</label>
-          <div class="input-inner-wrap">
-            <select><option>All</option></select>
-            <i class="fa-solid fa-chevron-down chevron-icon"></i>
-          </div>
-        </div>
-        <div class="filter-group select-box">
-          <label>Sort By</label>
-          <div class="input-inner-wrap">
-            <select><option>Newest First</option></select>
-            <i class="fa-solid fa-chevron-down chevron-icon"></i>
-          </div>
-        </div>
-        <div class="filter-actions-buttons">
-          <button class="btn-outline" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
-          <button class="btn-primary" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
+        <div class="filter-actions-buttons" style="margin-left:auto;">
+          <button class="btn-outline" id="resetDocFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+          <button class="btn-primary" id="applyDocFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
         </div>
       </div>
 
@@ -543,13 +517,90 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         return 'fa-file-lines';
     }
 
-    function formatDate(value) {
-        if (!value) return '-';
-        if (typeof value.toDate === 'function') {
-            return value.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    let allDocsList = [];
+
+    function renderDocumentsTable(docs) {
+        tableBody.innerHTML = "";
+        docsById.clear();
+
+        if (!docs || docs.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #8898aa;">No matching documents found.</td></tr>`;
+            entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+            return;
         }
-        return value;
+
+        docs.forEach((d) => {
+            const iconClass = iconForFile(d.fileName);
+            const rowTemplate = `
+                <tr>
+                    <td class="chk-cell"><input type="checkbox" class="custom-checkbox"></td>
+                    <td>
+                      <div class="doc-name-cell">
+                        <i class="fa-solid ${iconClass} doc-type-brand-icon"></i>
+                        <span class="doc-title-txt">${d.fileName || 'Untitled'}</span>
+                      </div>
+                    </td>
+                    <td><span class="doc-type-badge">${d.category || 'General'}</span></td>
+                    <td>${d.uploadedBy || '-'}</td>
+                    <td>${d.department || '-'}</td>
+                    <td><div class="time-stamp-wrap">${formatDate(d.uploadedOn)}</div></td>
+                    <td>${d.size || d.fileSize || '-'}</td>
+                    <td><div class="row-control-actions-wrapper" style="justify-content: center;"><button class="btn-action-trigger btn-download" data-id="${d.id}" title="Download"><i class="fa-solid fa-download"></i></button><button class="btn-action-trigger btn-share" data-id="${d.id}" title="Share"><i class="fa-solid fa-share-nodes"></i></button><button class="btn-action-trigger btn-more" data-id="${d.id}" title="More"><i class="fa-solid fa-ellipsis-vertical"></i></button></div></td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            docsById.set(d.id, d);
+        });
+
+        entriesCounter.innerText = `Showing 1 to ${docs.length} of ${allDocsList.length} entries`;
     }
+
+    function applyDocFilter() {
+        const queryTerm = (document.getElementById('docSearchInput').value || '').toLowerCase().trim();
+        const selType = document.getElementById('docTypeFilter').value;
+
+        const filtered = allDocsList.filter(d => {
+            const name = (d.fileName || d.title || '').toLowerCase();
+            const matchesSearch = !queryTerm || name.includes(queryTerm);
+            const matchesType = selType === 'All' || (d.category || '').toLowerCase() === selType.toLowerCase();
+            return matchesSearch && matchesType;
+        });
+
+        renderDocumentsTable(filtered);
+    }
+
+    document.getElementById('docSearchInput').addEventListener('input', applyDocFilter);
+    document.getElementById('docTypeFilter').addEventListener('change', applyDocFilter);
+    document.getElementById('applyDocFilterBtn').addEventListener('click', applyDocFilter);
+    document.getElementById('resetDocFilterBtn').addEventListener('click', () => {
+        document.getElementById('docSearchInput').value = '';
+        document.getElementById('docTypeFilter').value = 'All';
+        renderDocumentsTable(allDocsList);
+    });
+
+    document.getElementById('openUploadDocBtn').addEventListener('click', async () => {
+        const fileName = prompt("Enter Document Title / File Name (e.g. Sprint_Architecture.pdf):");
+        if (!fileName || !fileName.trim()) return;
+        const category = prompt("Enter Category (Policy, Finance, Presentation, Image, Template):", "Presentation") || "Presentation";
+        try {
+            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+            const myDept = meSnap.exists() ? meSnap.data().department : "Engineering";
+            await addDoc(collection(db, "documents"), {
+                fileName: fileName.trim(),
+                title: fileName.trim(),
+                category: category.trim(),
+                department: myDept,
+                status: "Active",
+                uploadedBy: currentUser.name,
+                uploadedOn: new Date().toISOString().slice(0, 10),
+                fileSize: "1.5 MB"
+            });
+            alert("Document uploaded successfully!");
+            loadDocuments();
+        } catch (err) {
+            alert("Failed to upload document: " + err.message);
+        }
+    });
 
     async function loadDocuments() {
         try {
@@ -558,53 +609,31 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
             const q = query(collection(db, "documents"), where("department", "==", myDept));
             const querySnapshot = await getDocs(q);
-            tableBody.innerHTML = "";
-            docsById.clear();
-            let counter = 0;
-
-            if (querySnapshot.empty) {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #8898aa;">No documents found for your department.</td></tr>`;
-                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
-                return;
-            }
+            allDocsList = [];
 
             querySnapshot.forEach((docSnap) => {
-                const d = docSnap.data();
-                counter++;
-                const iconClass = iconForFile(d.fileName);
-
-                const rowTemplate = `
-                    <tr>
-                        <td class="chk-cell"><input type="checkbox" class="custom-checkbox"></td>
-                        <td>
-                          <div class="doc-name-cell">
-                            <i class="fa-solid ${iconClass} doc-type-brand-icon"></i>
-                            <span class="doc-title-txt">${d.fileName || 'Untitled'}</span>
-                          </div>
-                        </td>
-                        <td><span class="doc-type-badge">${d.category || 'General'}</span></td>
-                        <td>${d.uploadedBy || '-'}</td>
-                        <td>${d.department || '-'}</td>
-                        <td><div class="time-stamp-wrap">${formatDate(d.uploadedOn)}</div></td>
-                        <td>${d.size || '-'}</td>
-                        <td><div class="row-control-actions-wrapper" style="justify-content: center;"><button class="btn-action-trigger btn-download" data-id="${docSnap.id}" title="Download"><i class="fa-solid fa-download"></i></button><button class="btn-action-trigger btn-share" data-id="${docSnap.id}" title="Share"><i class="fa-solid fa-share-nodes"></i></button><button class="btn-action-trigger btn-more" data-id="${docSnap.id}" title="More"><i class="fa-solid fa-ellipsis-vertical"></i></button></div></td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
-                docsById.set(docSnap.id, d);
+                allDocsList.push({ id: docSnap.id, ...docSnap.data() });
             });
 
-            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
+            // Dynamic KPIs
+            const total = allDocsList.length;
+            const categories = new Set(allDocsList.map(d => d.category).filter(Boolean)).size;
+            const activeDocs = allDocsList.filter(d => (d.status || 'Active').toLowerCase() === 'active').length;
+
+            document.getElementById('kpiTotalDocs').textContent = total;
+            document.getElementById('kpiCategories').textContent = categories || 0;
+            document.getElementById('kpiDeptDocs').textContent = total;
+            document.getElementById('kpiActiveDocs').textContent = activeDocs;
+
+            renderDocumentsTable(allDocsList);
 
         } catch (err) {
             console.error("Failed to load documents: ", err);
             tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
-            alert("Error loading documents: " + err.message);
         }
     }
 
     loadDocuments();
 </script>
-
 </body>
 </html>

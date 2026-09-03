@@ -1,654 +1,666 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Internship Management</title>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
- <style>
- *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internship Management - Admin Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-body{
-    background:#0b1437;
-    display:flex;
-    flex-direction:column;
-    color:#d7dfef;
-    height:100vh;
-    overflow:hidden;
-}
-
-/* =========================
-   BODY WRAP
-========================= */
-.body-wrap{
-    display:flex;
-    flex:1;
-    overflow:hidden;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-.sidebar{
-    width:240px;
-    height:100%;
-    background:#111c44;
-    border-right:1px solid #1b2e6e;
-    overflow-y:auto;
-    flex-shrink:0;
-    transition: width 0.3s ease;
-}
-
-.sidebar::-webkit-scrollbar{
-    width:6px;
-}
-
-.sidebar::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
-}
-
-.sidebar ul{
-    list-style:none;
-    padding:10px 0;
-}
-
-.sidebar ul li{
-    padding:12px 20px;
-    display:flex;
-    align-items:center;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.sidebar ul li a{
-    text-decoration:none;
-    color:#8898aa;
-    display:flex;
-    gap:12px;
-    align-items:center;
-    width:100%;
-    font-size:14px;
-    white-space:nowrap;
-}
-
-.sidebar ul li:hover,
-.sidebar ul li.active{
-    background:#1b2e6e;
-}
-
-.sidebar ul li:hover a,
-.sidebar ul li.active a{
-    color:#ffffff;
-}
-
-/* =========================
-   MAIN
-========================= */
-.main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    color: #d7dfef;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* =========================
    TOP NAVBAR
 ========================= */
-.navbar{
-    height:60px;
-    background:#111c44;
-    border-bottom:1px solid #1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 25px;
-    flex-shrink:0;
-    z-index:100;
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
 }
 
-.navbar-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.hamburger{
-    font-size:20px;
-    color:#8898aa;
-    cursor:pointer;
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
 }
 
-.navbar-logo{
-    width:40px;
-    height:40px;
-    background:#1b2e6e;
-    border:2px solid #4299e1;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:11px;
-    font-weight:bold;
-    color:#4299e1;
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
 }
 
-.navbar-title{
-    font-size:16px;
-    font-weight:700;
-    color:#ffffff;
-    letter-spacing:.5px;
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
 }
 
-.navbar-center{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    padding:0 40px;
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
 }
 
-.nav-search{
-    width:100%;
-    max-width:420px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    padding:9px 15px;
-    display:flex;
-    align-items:center;
-    gap:10px;
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.nav-search i{
-    color:#4a5568;
-    font-size:14px;
+.nav-search i {
+    color: #4a5568;
+    font-size: 14px;
 }
 
-.nav-search input{
-    border:none;
-    outline:none;
-    background:none;
-    width:100%;
-    color:#e2e8f0;
-    font-size:14px;
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
 }
 
-.nav-search input::placeholder{
-    color:#4a5568;
+.nav-search input::placeholder {
+    color: #4a5568;
 }
 
-.navbar-right{
-    display:flex;
-    align-items:center;
-    gap:20px;
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.nav-icon-btn{
-    position:relative;
-    width:38px;
-    height:38px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    color:#8898aa;
-    font-size:16px;
-    transition:.3s;
-    text-decoration:none;
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    text-decoration: none;
 }
 
-.nav-icon-btn:hover{
-    color:#4299e1;
-    border-color:#4299e1;
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
 }
 
-.nav-icon-btn .badge{
-    position:absolute;
-    top:-4px;
-    right:-4px;
-    background:#4299e1;
-    color:#fff;
-    font-size:9px;
-    font-weight:bold;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-profile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    cursor:pointer;
-    padding:5px 10px;
-    border-radius:10px;
-    border:1px solid #1b2e6e;
-    position:relative;
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    position: relative;
 }
 
-.nav-profile-dropdown{
-    position:absolute;
-    top:calc(100% + 8px);
-    right:0;
-    min-width:160px;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
-    padding:6px;
-    display:none;
-    z-index:1000;
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
 }
 
-.nav-profile-dropdown.show{
-    display:block;
+.nav-profile-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
 }
 
-.nav-profile-dropdown a{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:9px 12px;
-    border-radius:8px;
-    color:#d7dfef;
-    font-size:13px;
-    text-decoration:none;
-    transition:.15s;
+.nav-profile-info small {
+    font-size: 11px;
+    color: #8898aa;
 }
 
-.nav-profile-dropdown a:hover{
-    background:rgba(66,153,225,.12);
-    color:#fff;
+.nav-profile i.fa-chevron-down {
+    font-size: 11px;
+    color: #8898aa;
 }
 
-.nav-profile-dropdown a i{
-    width:14px;
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
 }
 
-.nav-profile-avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#8898aa;
-    font-size:16px;
+.nav-profile-dropdown.show {
+    display: block;
 }
 
-.nav-profile-info h4{
-    font-size:13px;
-    font-weight:600;
-    color:#ffffff;
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
 }
 
-.nav-profile-info small{
-    font-size:11px;
-    color:#8898aa;
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
 }
 
-.nav-profile .fa-chevron-down{
-    font-size:11px;
-    color:#8898aa;
-}
-
-/* =========================
-   CONTENT
-========================= */
-.content{
-    flex:1;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-    overflow:hidden;
-    background:#0b1437;
+.nav-profile-dropdown a i {
+    width: 14px;
 }
 
 /* =========================
-   HEADER
+   BODY WRAP
 ========================= */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.header h1{
-    font-size:24px;
-    font-weight:700;
-    color:#ffffff;
-}
-
-.add-btn{
-    padding:10px 18px;
-    border:none;
-    background:#4299e1;
-    color:#ffffff;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.add-btn:hover{
-    background:#3182ce;
-}
-
-.add-btn i{
-    margin-right:6px;
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* =========================
-   STATISTICS CARDS
+   SIDEBAR
 ========================= */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
 }
 
-.card{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    gap:16px;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-    transition:.3s;
+.sidebar::-webkit-scrollbar {
+    width: 6px;
 }
 
-.card:hover{
-    transform:translateY(-2px);
-    border-color:#4299e1;
+.sidebar::-webkit-scrollbar-thumb {
+    background: #1b2e6e;
+    border-radius: 10px;
 }
 
-.icon{
-    width:55px;
-    height:55px;
-    background:#0b1437;
-    border:2px solid #4299e1;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#4299e1;
-    font-size:22px;
-    flex-shrink:0;
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
 }
 
-.card h3{
-    color:#ffffff;
-    font-size:30px;
-    margin:4px 0;
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.card p{
-    color:#d7dfef;
-    font-size:14px;
-    margin-bottom:4px;
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
-.card small{
-    color:#8898aa;
-    font-size:12px;
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background: #1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    color: #ffffff;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed ul li {
+    justify-content: center;
+}
+
+.sidebar.collapsed ul li a {
+    justify-content: center;
+    gap: 0;
+}
+
+.sidebar.collapsed ul li a span {
+    display: none;
 }
 
 /* =========================
-   FILTER PANEL
+   MAIN WORKSPACE
 ========================= */
-.filter-box{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:18px;
-    display:flex;
-    gap:15px;
-    align-items:center;
-    flex-wrap:wrap;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.filter-box input,
-.filter-box select{
-    min-width:180px;
-    padding:11px 14px;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    outline:none;
-    background:#0b1437;
-    color:#ffffff;
-    font-size:13px;
-    transition:.3s;
+.content {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    background: #0b1437;
 }
 
-.filter-box input::placeholder{
-    color:#8898aa;
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.filter-box input:focus,
-.filter-box select:focus{
-    border-color:#4299e1;
+.header h1 {
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 700;
 }
 
-.filter-box select{
-    cursor:pointer;
+.header-buttons {
+    display: flex;
+    gap: 12px;
 }
 
-.filter-btn{
-    padding:11px 22px;
-    border:none;
-    background:#4299e1;
-    color:#ffffff;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.3s;
+.add-btn {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
 }
 
-.filter-btn:hover{
-    background:#3182ce;
+.add-btn:hover {
+    background: #3182ce;
 }
 
-.filter-btn i{
-    margin-right:6px;
+.export-btn {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
 }
 
-/* =========================
-   TABLE
-========================= */
-.table-box{
-    flex:1;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    overflow:auto;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
+.export-btn:hover {
+    background: #1b2e6e;
+    color: #ffffff;
 }
 
-.table-box::-webkit-scrollbar{
-    width:8px;
-    height:8px;
+/* KPI Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
 }
 
-.table-box::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
+.card {
+    background: #111c44;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:1200px;
+.card-icon {
+    width: 46px;
+    height: 46px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #4299e1;
+    flex-shrink: 0;
 }
 
-thead{
-    background:#16265c;
+.card-info h3 {
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 700;
 }
 
-th{
-    padding:15px;
-    text-align:left;
-    color:#ffffff;
-    font-size:14px;
-    font-weight:600;
-    border-bottom:1px solid #1b2e6e;
+.card-info p {
+    color: #8898aa;
+    font-size: 12.5px;
+    margin-top: 2px;
 }
 
-td{
-    padding:15px;
-    border-top:1px solid #1b2e6e;
-    color:#d7dfef;
-    font-size:13px;
-    vertical-align:middle;
+/* Filter Bar */
+.filter-box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: #111c44;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid #1b2e6e;
+    flex-wrap: wrap;
 }
 
-tbody tr{
-    transition:.3s;
+.search-intern {
+    flex: 1;
+    min-width: 220px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-tbody tr:hover{
-    background:#16265c;
+.search-intern i {
+    color: #4a5568;
+    font-size: 13px;
 }
 
-.intern{
-    display:flex;
-    align-items:center;
-    gap:12px;
+.search-intern input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #ffffff;
+    font-size: 13.5px;
 }
 
-.intern img{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:2px solid #4299e1;
+.filter-select {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #cbd5e1;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    min-width: 140px;
 }
 
-.intern h4{
-    color:#ffffff;
-    font-size:14px;
-    margin-bottom:3px;
+.filter-btn {
+    background: #1b2e6e;
+    border: none;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
 }
 
-.intern p{
-    color:#8898aa;
-    font-size:12px;
+.filter-btn:hover {
+    background: #2a449c;
 }
 
-/* =========================
-   STATUS BADGES
-========================= */
-.active-status,
-.completed-status,
-.upcoming-status{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
+/* Table */
+.table-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    overflow: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
-.active-status{
-    background:rgba(34,197,94,.18);
-    color:#4ade80;
+.table-box::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-.completed-status{
-    background:rgba(59,130,246,.18);
-    color:#60a5fa;
+.table-box::-webkit-scrollbar-thumb {
+    background: #1b2e6e;
+    border-radius: 10px;
 }
 
-.upcoming-status{
-    background:rgba(251,191,36,.18);
-    color:#fbbf24;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 950px;
 }
 
-/* =========================
-   ACTION BUTTONS
-========================= */
-.action{
-    display:flex;
-    align-items:center;
-    gap:16px;
+thead {
+    background: #16265c;
 }
 
-.action i{
-    color:#8898aa;
-    cursor:pointer;
-    font-size:16px;
-    transition:.3s;
+th {
+    padding: 14px 18px;
+    text-align: left;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #1b2e6e;
 }
 
-.action i.fa-regular:hover{
-    color:#4299e1;
-    transform:scale(1.1);
+td {
+    padding: 13px 18px;
+    color: #d7dfef;
+    border-top: 1px solid #1b2e6e;
+    font-size: 13.5px;
+    vertical-align: middle;
 }
 
-.action i.fa-trash-can:hover {
+tbody tr:hover {
+    background: rgba(66, 153, 225, 0.05);
+}
+
+.intern-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.intern-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #4299e1;
+    object-fit: cover;
+}
+
+.intern-info h4 {
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.intern-info small {
+    color: #8898aa;
+    font-size: 11.5px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-badge.active {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.status-badge.completed {
+    background: rgba(66, 153, 225, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.status-badge.upcoming {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.action-btns {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.action-icon {
+    font-size: 15px;
+    cursor: pointer;
+    color: #8898aa;
+    transition: color 0.2s;
+}
+
+.action-icon:hover {
+    color: #4299e1;
+}
+
+.action-icon.delete-btn:hover {
     color: #f87171;
-    transform:scale(1.1);
+}
+
+/* Footer / Pagination */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 4px;
+    font-size: 13px;
+    color: #8898aa;
+}
+
+.pagination {
+    display: flex;
+    gap: 6px;
+}
+
+.page {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #8898aa;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.page.active {
+    background: #4299e1;
+    color: #ffffff;
+    border-color: #4299e1;
 }
 
 /* =========================
-   FOOTER
-========================= */
-.footer{
-    margin-top:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:#8898aa;
-    font-size:13px;
-}
-
-.pagination{
-    display:flex;
-    gap:8px;
-}
-
-.page{
-    width:36px;
-    height:36px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:8px;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.page:hover{
-    background:#1b2e6e;
-    color:#ffffff;
-}
-
-.page.active{
-    background:#4299e1;
-    border-color:#4299e1;
-    color:#ffffff;
-}
-
-/* =========================
-   MODAL OVERLAYS & FORMS
+   MODALS
 ========================= */
 .modal-overlay {
     position: fixed;
@@ -677,7 +689,7 @@ tbody tr:hover{
     border: 1px solid #1b2e6e;
     border-radius: 16px;
     width: 100%;
-    max-width: 500px;
+    max-width: 520px;
     padding: 24px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transform: translateY(-20px);
@@ -732,12 +744,12 @@ tbody tr:hover{
 
 .form-group input, .form-group select {
     width: 100%;
-    padding: 11px 14px;
+    padding: 10px 14px;
     background: #0b1437;
     border: 1px solid #1b2e6e;
     border-radius: 8px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13.5px;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -796,41 +808,51 @@ tbody tr:hover{
 /* =========================
    RESPONSIVE
 ========================= */
-@media(max-width:1300px){
-    .cards{ grid-template-columns:repeat(2,1fr); }
-    .filter-box{ flex-wrap:wrap; }
+@media(max-width: 1200px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media(max-width:768px){
-    body{ overflow:auto; }
-    .sidebar{ width:200px; }
-    .main{ margin-left:200px; width:calc(100% - 200px); }
-    .header{ flex-direction:column; align-items:flex-start; gap:15px; }
-    .filter-box{ flex-direction:column; align-items:stretch; }
-    .filter-box input, .filter-box select, .filter-btn{ width:100%; }
+@media(max-width: 768px) {
+    body { overflow: auto; }
+    .sidebar { width: 70px; }
+    .sidebar ul li a span { display: none; }
+    .header { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .header-buttons { width: 100%; }
+    .filter-box { flex-direction: column; align-items: stretch; }
+    .search-intern, .filter-select, .filter-btn { width: 100%; }
 }
 </style>
 </head>
 <body>
 
+<!-- TOP NAVBAR -->
 <div class="navbar">
     <div class="navbar-left">
-        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-        <div class="navbar-logo">LOGO</div>
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">EMS</div>
         <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search anything...">
+            <input type="text" placeholder="Search interns, universities, mentors...">
         </div>
     </div>
     <div class="navbar-right">
-        <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
-        <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+        <a class="nav-icon-btn" href="notification.html">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </a>
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
         <div class="nav-profile" id="navProfileToggle">
             <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
-            <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
+            <div class="nav-profile-info">
+                <h4>John Doe</h4>
+                <small>Admin</small>
+            </div>
             <i class="fa-solid fa-chevron-down"></i>
             <div class="nav-profile-dropdown" id="navProfileDropdown">
                 <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
@@ -841,120 +863,139 @@ tbody tr:hover{
 
 <div class="body-wrap">
 
-<div class="sidebar">
-    <ul>
-        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
-        <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
-        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
-        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
-        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
-        <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> Recruitment</a></li>
-        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
-        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
-        <li class="active"><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
-        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
-        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
-        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
-        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
-        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
-        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
-    </ul>
-</div>
+    <!-- SIDEBAR (16 items) -->
+    <div class="sidebar" id="adminSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+            <li class="active"><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
 
-<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
 
-    <div class="content">
-        <div class="header">
-            <h1>Internship Management</h1>
-            <button class="add-btn" id="openModalBtn"><i class="fa-solid fa-plus"></i> Add Intern</button>
-        </div>
-
-        <div class="cards">
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-users"></i></div>
+            <div class="header">
                 <div>
-                    <h3 id="statTotal">0</h3>
-                    <p>Total Interns</p>
-                    <small>All Time</small>
+                    <h1>Internship Management</h1>
+                </div>
+                <div class="header-buttons">
+                    <button class="export-btn" id="adminExportInternsBtn">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                    <button class="add-btn" id="openModalBtn">
+                        <i class="fa-solid fa-plus"></i> Add Intern
+                    </button>
                 </div>
             </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-user-check"></i></div>
-                <div>
-                    <h3 id="statActive">0</h3>
-                    <p>Active Interns</p>
-                    <small>Currently Active</small>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <div>
-                    <h3 id="statCompleted">0</h3>
-                    <p>Completed Internships</p>
-                    <small>This Year</small>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-regular fa-calendar-check"></i></div>
-                <div>
-                    <h3 id="statUpcoming">0</h3>
-                    <p>Upcoming Completions</p>
-                    <small>Next 30 Days</small>
-                </div>
-            </div>
-        </div>
 
-        <div class="filter-box">
-            <input type="text" id="searchInput" placeholder="Search interns by name or mentor...">
-            <select id="deptFilter">
-                <option value="All Departments">All Departments</option>
-                <option value="IT">IT</option>
-                <option value="HR">HR</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Finance">Finance</option>
-            </select>
-            <select id="statusFilter">
-                <option value="All Status">All Status</option>
-                <option value="Active">Active</option>
-                <option value="Completed">Completed</option>
-                <option value="Upcoming">Upcoming</option>
-            </select>
-            <button class="filter-btn" id="filterBtn"><i class="fa-solid fa-filter"></i> Filter</button>
-        </div>
+            <!-- KPI Cards -->
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="card-info">
+                        <h3 id="statTotal">0</h3>
+                        <p>Total Interns</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color:#4ade80;"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="card-info">
+                        <h3 id="statActive">0</h3>
+                        <p>Active Interns</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color:#60a5fa;"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div class="card-info">
+                        <h3 id="statCompleted">0</h3>
+                        <p>Completed Programs</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color:#fbbf24;"><i class="fa-regular fa-clock"></i></div>
+                    <div class="card-info">
+                        <h3 id="statUpcoming">0</h3>
+                        <p>Upcoming / In Review</p>
+                    </div>
+                </div>
+            </div>
 
-        <div class="table-box">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Intern Name</th>
-                        <th>Department</th>
-                        <th>University / College</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Mentor</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="internTableBody">
+            <!-- Search & Filters -->
+            <div class="filter-box">
+                <div class="search-intern">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name, custom ID, university, mentor...">
+                </div>
+                <select class="filter-select" id="deptFilter">
+                    <option value="All Departments">All Departments</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Design">Design</option>
+                    <option value="HR">HR</option>
+                    <option value="IT">IT</option>
+                    <option value="Finance">Finance</option>
+                </select>
+                <select class="filter-select" id="statusFilter">
+                    <option value="All Status">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Upcoming">Upcoming</option>
+                </select>
+                <button class="filter-btn" id="filterBtn"><i class="fa-solid fa-filter"></i> Filter</button>
+            </div>
+
+            <!-- Interns Table -->
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Intern Profile</th>
+                            <th>Department</th>
+                            <th>University / College</th>
+                            <th>Mentor</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="internTableBody">
+                        <tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading interns...</td></tr>
                     </tbody>
-            </table>
-        </div>
-
-        <div class="footer">
-            <div class="entries" id="entriesCount">Showing 0 entries</div>
-            <div class="pagination">
-                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
-                <div class="page active">1</div>
-                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+                </table>
             </div>
+
+            <!-- Footer / Entries counter -->
+            <div class="footer">
+                <div class="entries" id="entriesCount">Showing 0 entries</div>
+                <div class="pagination">
+                    <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                    <div class="page active">1</div>
+                    <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
-</div>
-
+<!-- ADD INTERN MODAL -->
 <div class="modal-overlay" id="internModal">
     <div class="modal-box">
         <div class="modal-header">
@@ -963,16 +1004,16 @@ tbody tr:hover{
         </div>
         <form id="addInternForm">
             <div class="form-group">
-                <label for="internName">Intern Name</label>
-                <input type="text" id="internName" required placeholder="e.g., Aarav Sharma">
+                <label for="internName">Intern Full Name</label>
+                <input type="text" id="internName" required placeholder="e.g., Neha Gupta">
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="internEmail">Email Address</label>
-                    <input type="email" id="internEmail" required placeholder="name@company.com">
+                    <input type="email" id="internEmail" required placeholder="intern@company.com">
                 </div>
                 <div class="form-group">
-                    <label for="internPassword">Account Password</label>
+                    <label for="internPassword">Password</label>
                     <input type="password" id="internPassword" required minlength="6" placeholder="Min 6 characters">
                 </div>
             </div>
@@ -980,28 +1021,31 @@ tbody tr:hover{
                 <div class="form-group">
                     <label for="internDept">Department</label>
                     <select id="internDept">
-                        <option value="IT">IT</option>
-                        <option value="HR">HR</option>
+                        <option value="Engineering">Engineering</option>
                         <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Design">Design</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
                         <option value="Finance">Finance</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="internStatus">Status</label>
                     <select id="internStatus">
-                        <option value="Active">Active</option>
-                        <option value="Completed">Completed</option>
+                        <option value="Active" selected>Active</option>
                         <option value="Upcoming">Upcoming</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="university">University / College</label>
-                <input type="text" id="university" required placeholder="e.g., ABC University">
+                <input type="text" id="university" required placeholder="e.g., NIT Trichy">
             </div>
             <div class="form-group">
-                <label for="mentorName">Mentor Name</label>
-                <input type="text" id="mentorName" required placeholder="e.g., David Brown">
+                <label for="mentorName">Assigned Mentor</label>
+                <input type="text" id="mentorName" required placeholder="e.g., Sara Khan">
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -1021,25 +1065,29 @@ tbody tr:hover{
     </div>
 </div>
 
+<!-- EDIT INTERN MODAL -->
 <div class="modal-overlay" id="editModal">
     <div class="modal-box">
         <div class="modal-header">
-            <h3>View / Edit Intern Info</h3>
+            <h3>Edit Intern Info</h3>
             <button class="modal-close" id="closeEditModalBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <form id="editInternForm">
             <input type="hidden" id="editInternId">
             <div class="form-group">
-                <label for="editInternName">Intern Name</label>
+                <label for="editInternName">Intern Full Name</label>
                 <input type="text" id="editInternName" required>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="editInternDept">Department</label>
                     <select id="editInternDept">
-                        <option value="IT">IT</option>
-                        <option value="HR">HR</option>
+                        <option value="Engineering">Engineering</option>
                         <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Design">Design</option>
+                        <option value="HR">HR</option>
+                        <option value="IT">IT</option>
                         <option value="Finance">Finance</option>
                     </select>
                 </div>
@@ -1047,8 +1095,8 @@ tbody tr:hover{
                     <label for="editInternStatus">Status</label>
                     <select id="editInternStatus">
                         <option value="Active">Active</option>
-                        <option value="Completed">Completed</option>
                         <option value="Upcoming">Upcoming</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
             </div>
@@ -1057,7 +1105,7 @@ tbody tr:hover{
                 <input type="text" id="editUniversity" required>
             </div>
             <div class="form-group">
-                <label for="editMentorName">Mentor Name</label>
+                <label for="editMentorName">Assigned Mentor</label>
                 <input type="text" id="editMentorName" required>
             </div>
             <div class="form-row">
@@ -1087,14 +1135,20 @@ tbody tr:hover{
   const currentUser = requireRole(["admin"]);
   paintNavProfile(currentUser);
 
-  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+  // Sidebar toggle
+  document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+      document.getElementById('adminSidebar')?.classList.toggle('collapsed');
+  });
+
+  // Profile dropdown
+  document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
       e.stopPropagation();
-      document.getElementById('navProfileDropdown').classList.toggle('show');
+      document.getElementById('navProfileDropdown')?.classList.toggle('show');
   });
   document.addEventListener('click', () => {
-      document.getElementById('navProfileDropdown').classList.remove('show');
+      document.getElementById('navProfileDropdown')?.classList.remove('show');
   });
-  document.getElementById('logoutLink').addEventListener('click', (e) => {
+  document.getElementById('logoutLink')?.addEventListener('click', (e) => {
       e.preventDefault();
       logout("../");
   });
@@ -1102,7 +1156,7 @@ tbody tr:hover{
   let localInternsCache = [];
   const fallbackAvatar = 'https://i.pravatar.cc/50?img=1';
 
-  // Modal Setup Connectors
+  // Modals
   const modal = document.getElementById('internModal');
   const editModal = document.getElementById('editModal');
   const openModalBtn = document.getElementById('openModalBtn');
@@ -1120,220 +1174,250 @@ tbody tr:hover{
   document.getElementById('closeEditModalBtn').addEventListener('click', hideEditModal);
   document.getElementById('cancelEditModalBtn').addEventListener('click', hideEditModal);
 
-  // Form input conversion handles date formats securely
   function formatDate(dateString) {
-    if (!dateString || dateString.trim() === "") return '-';
-    if (dateString.includes('/')) return dateString; 
-    try {
-        const parts = dateString.split('-');
-        if (parts.length !== 3) return dateString; 
-        const [year, month, day] = parts;
-        return `${day}/${month}/${year}`;
-    } catch (e) {
-        return dateString;
-    }
+      if (!dateString || dateString.trim() === "") return '-';
+      if (dateString.includes('/')) return dateString;
+      try {
+          const parts = dateString.split('-');
+          if (parts.length !== 3) return dateString;
+          const [year, month, day] = parts;
+          return `${day}/${month}/${year}`;
+      } catch (e) {
+          return dateString;
+      }
   }
 
-  // UPDATE RUNTIME DASHBOARD STATISTICS
   function updateStatistics(internsArray) {
       document.getElementById('statTotal').textContent = internsArray.length;
-      document.getElementById('statActive').textContent = internsArray.filter(i => i.status === 'Active').length;
-      document.getElementById('statCompleted').textContent = internsArray.filter(i => i.status === 'Completed').length;
-      document.getElementById('statUpcoming').textContent = internsArray.filter(i => i.status === 'Upcoming').length;
+      document.getElementById('statActive').textContent = internsArray.filter(i => (i.status || '').toLowerCase() === 'active').length;
+      document.getElementById('statCompleted').textContent = internsArray.filter(i => (i.status || '').toLowerCase() === 'completed').length;
+      document.getElementById('statUpcoming').textContent = internsArray.filter(i => (i.status || '').toLowerCase() === 'upcoming').length;
   }
 
-  // RENDER INTERFACE ARRAY RUNTIME
   function renderTable(internsArray) {
-    const tableBody = document.getElementById('internTableBody');
-    const countDisplay = document.getElementById('entriesCount');
-    tableBody.innerHTML = '';
+      const tableBody = document.getElementById('internTableBody');
+      const countDisplay = document.getElementById('entriesCount');
+      tableBody.innerHTML = '';
 
-    if(!internsArray || internsArray.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8898aa;">No interns discovered. Click "Add Intern" to begin.</td></tr>`;
-        countDisplay.textContent = `Showing 0 entries`;
-        return;
-    }
+      if (!internsArray || internsArray.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;">No interns found. Click "+ Add Intern" to register one.</td></tr>`;
+          countDisplay.textContent = `Showing 0 entries`;
+          return;
+      }
 
-    internsArray.forEach((intern) => {
-        const statusClass = intern.status ? intern.status.toLowerCase() + '-status' : 'planning-status';
+      internsArray.forEach((intern) => {
+          const statusKey = (intern.status || 'Active').toLowerCase();
+          const avatarUrl = intern.internAvatar || fallbackAvatar;
 
-        const rowTemplate = `
-            <tr>
-                <td>
-                    <div class="intern">
-                        <img src="${intern.internAvatar || fallbackAvatar}" alt="Avatar">
-                        <div>
-                            <h4>${intern.internName || 'Unnamed Intern'}</h4>
-                            <p>${intern.customId || 'INTR000'}</p>
-                        </div>
-                    </div>
-                </td>
-                <td>${intern.department || '-'}</td>
-                <td>${intern.university || '-'}</td>
-                <td>${intern.startDate || '-'}</td>
-                <td>${intern.endDate || '-'}</td>
-                <td>${intern.mentorName || 'Unassigned'}</td>
-                <td><span class="${statusClass}">${intern.status || 'Active'}</span></td>
-                <td>
-                    <div class="action">
-                        <i class="fa-regular fa-eye view-btn" data-id="${intern.id}"></i>
-                        <i class="fa-regular fa-trash-can delete-btn" data-id="${intern.id}"></i>
-                    </div>
-                </td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML('beforeend', rowTemplate);
-    });
+          const row = `
+              <tr>
+                  <td>
+                      <div class="intern-cell">
+                          <img class="intern-avatar" src="${avatarUrl}" alt="Avatar">
+                          <div class="intern-info">
+                              <h4>${intern.internName || intern.name || 'Unnamed Intern'}</h4>
+                              <small>${intern.customId || intern.email || 'INTR000'}</small>
+                          </div>
+                      </div>
+                  </td>
+                  <td>${intern.department || '-'}</td>
+                  <td>${intern.university || '-'}</td>
+                  <td>${intern.mentorName || '-'}</td>
+                  <td>${intern.startDate || '-'}</td>
+                  <td>${intern.endDate || '-'}</td>
+                  <td><span class="status-badge ${statusKey}">${intern.status || 'Active'}</span></td>
+                  <td>
+                      <div class="action-btns">
+                          <i class="fa-regular fa-eye action-icon view-btn" title="View / Edit" data-id="${intern.id}"></i>
+                          <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete" data-id="${intern.id}"></i>
+                      </div>
+                  </td>
+              </tr>
+          `;
+          tableBody.insertAdjacentHTML('beforeend', row);
+      });
 
-    countDisplay.textContent = `Showing ${internsArray.length} of ${localInternsCache.length} entries`;
-    attachActionListeners();
+      countDisplay.textContent = `Showing ${internsArray.length} of ${localInternsCache.length} entries`;
+      attachActionListeners();
   }
 
-  // ATTACH ACTION BUTTON HOOKS DETECTORS
   function attachActionListeners() {
-      // Open view/edit loader matching clicked document item
       document.querySelectorAll('.view-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
-              const internId = e.target.getAttribute('data-id');
+              const internId = e.currentTarget.getAttribute('data-id');
               const targetIntern = localInternsCache.find(i => i.id === internId);
-              if(targetIntern) {
+              if (targetIntern) {
                   document.getElementById('editInternId').value = targetIntern.id;
-                  document.getElementById('editInternName').value = targetIntern.internName || '';
-                  document.getElementById('editInternDept').value = targetIntern.department || 'IT';
+                  document.getElementById('editInternName').value = targetIntern.internName || targetIntern.name || '';
+                  document.getElementById('editInternDept').value = targetIntern.department || 'Engineering';
                   document.getElementById('editInternStatus').value = targetIntern.status || 'Active';
                   document.getElementById('editUniversity').value = targetIntern.university || '';
                   document.getElementById('editMentorName').value = targetIntern.mentorName || '';
                   document.getElementById('editStartDate').value = targetIntern.startDate || '';
                   document.getElementById('editEndDate').value = targetIntern.endDate || '';
-                  
                   editModal.classList.add('show');
               }
           });
       });
 
-      // Clear record node from database instantly
       document.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', async (e) => {
-              const internId = e.target.getAttribute('data-id');
-              if(confirm("Confirm action deletion parameter? This intern record will be permanently deleted.")) {
+              const internId = e.currentTarget.getAttribute('data-id');
+              if (confirm("Are you sure you want to remove this intern? This action cannot be undone.")) {
                   try {
                       await deleteDoc(doc(db, "interns", internId));
                       localInternsCache = localInternsCache.filter(i => i.id !== internId);
-                      renderTable(localInternsCache);
                       updateStatistics(localInternsCache);
+                      runSearchFilter();
                   } catch (err) {
-                      console.error("Failed to delete record: ", err);
+                      console.error("Failed to delete intern: ", err);
+                      alert("Failed to delete intern: " + err.message);
                   }
               }
           });
       });
   }
 
-  // LIVE SEARCH AND MULTI-DROP FILTER ENGINE
   function runSearchFilter() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-      const selectedDept = document.getElementById('deptFilter').value;
-      const selectedStatus = document.getElementById('statusFilter').value;
+      const searchTerm = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const selectedStatus = document.getElementById('statusFilter')?.value || 'All Status';
+      const selectedDept = document.getElementById('deptFilter')?.value || 'All Departments';
 
-      const filteredList = localInternsCache.filter(intern => {
-          const nameMatch = intern.internName ? intern.internName.toLowerCase().includes(searchTerm) : false;
-          const mentorMatch = intern.mentorName ? intern.mentorName.toLowerCase().includes(searchTerm) : false;
-          const matchesSearch = nameMatch || mentorMatch;
-          
-          const matchesDept = (selectedDept === "All Departments") || (intern.department === selectedDept);
-          const matchesStatus = (selectedStatus === "All Status") || (intern.status === selectedStatus);
+      const filtered = localInternsCache.filter(intern => {
+          const name = (intern.internName || intern.name || '').toLowerCase();
+          const cid = (intern.customId || '').toLowerCase();
+          const uni = (intern.university || '').toLowerCase();
+          const mentor = (intern.mentorName || '').toLowerCase();
+          const dept = intern.department || '';
+          const status = intern.status || 'Active';
 
-          return matchesSearch && matchesDept && matchesStatus;
+          const matchSearch = !searchTerm || name.includes(searchTerm) || cid.includes(searchTerm) || uni.includes(searchTerm) || mentor.includes(searchTerm);
+          const matchStatus = (selectedStatus === 'All Status') || (status.toLowerCase() === selectedStatus.toLowerCase());
+          const matchDept = (selectedDept === 'All Departments') || (dept === selectedDept);
+
+          return matchSearch && matchStatus && matchDept;
       });
 
-      renderTable(filteredList);
+      renderTable(filtered);
   }
 
-  document.getElementById('searchInput').addEventListener('input', runSearchFilter);
-  document.getElementById('deptFilter').addEventListener('change', runSearchFilter);
-  document.getElementById('statusFilter').addEventListener('change', runSearchFilter);
-  document.getElementById('filterBtn').addEventListener('click', runSearchFilter);
+  document.getElementById('searchInput')?.addEventListener('input', runSearchFilter);
+  document.getElementById('statusFilter')?.addEventListener('change', runSearchFilter);
+  document.getElementById('deptFilter')?.addEventListener('change', runSearchFilter);
+  document.getElementById('filterBtn')?.addEventListener('click', runSearchFilter);
 
-  // READ CRITICAL ROOT TRANSACTION 
   async function loadInternsFromFirestore() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "interns"));
-        localInternsCache = [];
-        
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            localInternsCache.push({ id: doc.id, ...data });
-        });
-
-        renderTable(localInternsCache);
-        updateStatistics(localInternsCache);
-    } catch (err) {
-        console.error("Critical error loading intern documents: ", err);
-    }
+      try {
+          const querySnapshot = await getDocs(collection(db, "interns"));
+          localInternsCache = [];
+          querySnapshot.forEach((docSnap) => {
+              localInternsCache.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          updateStatistics(localInternsCache);
+          runSearchFilter();
+      } catch (err) {
+          console.error("Error loading interns: ", err);
+          document.getElementById('internTableBody').innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load interns: ${err.message}</td></tr>`;
+      }
   }
 
-  // WRITE OPERATIONS: Add New Intern
-  addInternForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  addInternForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+          const name = document.getElementById('internName').value.trim();
+          const email = document.getElementById('internEmail').value.trim();
+          const password = document.getElementById('internPassword').value;
+          const dept = document.getElementById('internDept').value;
+          const status = document.getElementById('internStatus').value;
+          const uni = document.getElementById('university').value.trim();
+          const mentor = document.getElementById('mentorName').value.trim();
+          const start = document.getElementById('startDate').value;
+          const end = document.getElementById('endDate').value;
 
-    try {
-        const email = document.getElementById('internEmail').value;
-        const password = document.getElementById('internPassword').value;
+          let authUid = `intern-${Date.now()}`;
+          try {
+              const userCred = await createUserWithEmailAndPassword(auth, email, password);
+              authUid = userCred.user.uid;
+          } catch (authErr) {
+              console.warn("Auth account creation notice:", authErr.message);
+          }
 
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const customId = `INTR${String(localInternsCache.length + 1).padStart(3, '0')}`;
+          const newIntern = {
+              uid: authUid,
+              internName: name,
+              name: name,
+              email: email,
+              customId: customId,
+              department: dept,
+              status: status,
+              university: uni,
+              mentorName: mentor,
+              startDate: formatDate(start),
+              endDate: formatDate(end),
+              internAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 1}`
+          };
 
-        const nextNum = localInternsCache.length + 1;
-        const assignedCustomId = `INTR${String(nextNum).padStart(3, '0')}`;
-
-        const newIntern = {
-            uid: userCredential.user.uid,
-            internName: document.getElementById('internName').value,
-            email: email,
-            customId: assignedCustomId,
-            department: document.getElementById('internDept').value,
-            status: document.getElementById('internStatus').value,
-            university: document.getElementById('university').value,
-            mentorName: document.getElementById('mentorName').value,
-            startDate: formatDate(document.getElementById('startDate').value),
-            endDate: formatDate(document.getElementById('endDate').value),
-            internAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 1}`
-        };
-
-        await addDoc(collection(db, "interns"), newIntern);
-        hideModal();
-        await loadInternsFromFirestore();
-    } catch (error) {
-        console.error("Exception handling input creation context metrics: ", error);
-        alert("Could not create intern account: " + error.message);
-    }
+          await addDoc(collection(db, "interns"), newIntern);
+          hideModal();
+          await loadInternsFromFirestore();
+      } catch (error) {
+          console.error("Error registering intern: ", error);
+          alert("Error registering intern: " + error.message);
+      }
   });
 
-  // UPDATE TRANSACTION: Save modifications back to Firebase
-  editInternForm.addEventListener('submit', async (e) => {
+  editInternForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       const internId = document.getElementById('editInternId').value;
       const updatedFields = {
-          internName: document.getElementById('editInternName').value,
+          internName: document.getElementById('editInternName').value.trim(),
+          name: document.getElementById('editInternName').value.trim(),
           department: document.getElementById('editInternDept').value,
           status: document.getElementById('editInternStatus').value,
-          university: document.getElementById('editUniversity').value,
-          mentorName: document.getElementById('editMentorName').value,
+          university: document.getElementById('editUniversity').value.trim(),
+          mentorName: document.getElementById('editMentorName').value.trim(),
           startDate: formatDate(document.getElementById('editStartDate').value),
           endDate: formatDate(document.getElementById('editEndDate').value)
       };
 
       try {
-          await updateDoc(doc(db, "interns", internId), updatedFields);
+          const docRef = doc(db, "interns", internId);
+          await updateDoc(docRef, updatedFields);
           hideEditModal();
-          await loadInternsFromFirestore(); 
+          await loadInternsFromFirestore();
       } catch (error) {
           console.error("Error updating intern: ", error);
-          alert("Failed to update intern records.");
+          alert("Failed to update intern: " + error.message);
       }
   });
 
-  window.addEventListener('DOMContentLoaded', loadInternsFromFirestore);
+  document.getElementById('adminExportInternsBtn')?.addEventListener('click', () => {
+      if (!localInternsCache.length) return alert('No interns to export.');
+      const rows = [["Custom ID", "Intern Name", "Email", "Department", "University", "Mentor", "Start Date", "End Date", "Status"]];
+      localInternsCache.forEach(i => {
+          rows.push([
+              i.customId || '',
+              i.internName || i.name || '',
+              i.email || '',
+              i.department || '',
+              i.university || '',
+              i.mentorName || '',
+              i.startDate || '',
+              i.endDate || '',
+              i.status || 'Active'
+          ]);
+      });
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Admin-Interns-${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+  });
+
+  loadInternsFromFirestore();
 </script>
 </body>
 </html>

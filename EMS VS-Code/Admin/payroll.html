@@ -337,74 +337,25 @@ body{
     gap:12px;
 }
 
-.export-btn,
 .run-btn{
     padding:10px 18px;
     border-radius:10px;
     cursor:pointer;
     border:1px solid #1b2e6e;
-    background:#111c44;
+    background:#4299e1;
+    border-color:#4299e1;
     color:#ffffff;
     font-size:13px;
     font-weight:600;
     transition:.3s;
 }
 
-.export-btn:hover{
-    background:#1b2e6e;
-}
-
-.run-btn{
-    background:#4299e1;
-    border-color:#4299e1;
-}
-
 .run-btn:hover{
     background:#3182ce;
 }
 
-.export-btn i,
 .run-btn i{
     margin-right:6px;
-}
-
-/* =========================
-   TABS
-========================= */
-.tabs{
-    display:flex;
-    gap:28px;
-    border-bottom:1px solid #1b2e6e;
-    margin-bottom:18px;
-}
-
-.tab{
-    padding-bottom:12px;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-    position:relative;
-    font-size:14px;
-}
-
-.tab:hover{
-    color:#ffffff;
-}
-
-.tab.active{
-    color:#4299e1;
-    font-weight:600;
-}
-
-.tab.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-1px;
-    width:100%;
-    height:3px;
-    background:#4299e1;
-    border-radius:10px;
 }
 
 /* =========================
@@ -542,26 +493,6 @@ body{
 .filter-box select:hover,
 .filter-box select:focus{
     border-color:#4299e1;
-}
-
-.filter-btn{
-    padding:11px 22px;
-    background:#4299e1;
-    color:#ffffff;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.filter-btn:hover{
-    background:#3182ce;
-}
-
-.filter-btn i{
-    margin-right:6px;
 }
 
 /* =========================
@@ -703,36 +634,6 @@ tbody tr:hover{
     align-items:center;
     color:#8898aa;
     font-size:13px;
-}
-
-.pagination{
-    display:flex;
-    gap:8px;
-}
-
-.page{
-    width:36px;
-    height:36px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:8px;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.page:hover{
-    background:#1b2e6e;
-    color:#ffffff;
-}
-
-.page.active{
-    background:#4299e1;
-    border-color:#4299e1;
-    color:#ffffff;
 }
 
 /* =========================
@@ -891,7 +792,7 @@ tbody tr:hover{
     .header-buttons{ width:100%; flex-wrap:wrap; }
     .cards{ grid-template-columns:1fr; }
     .filter-box{ flex-direction:column; align-items:stretch; }
-    .search-employee, .filter-box input[type="month"], .filter-box select, .filter-btn{ width:100%; }
+    .search-employee, .filter-box input[type="month"], .filter-box select{ width:100%; }
 }
 </style>
 </head>
@@ -952,18 +853,8 @@ tbody tr:hover{
         <div class="header">
             <h1>Payroll Management</h1>
             <div class="header-buttons">
-                <button class="export-btn"><i class="fa-solid fa-download"></i> Export</button>
-                <button class="run-btn"><i class="fa-solid fa-plus"></i> Run Payroll</button>
                 <button class="run-btn" id="openAddPayrollBtn"><i class="fa-solid fa-plus"></i> Add Payroll Record</button>
             </div>
-        </div>
-
-        <div class="tabs">
-            <div class="tab active">Payroll Overview</div>
-            <div class="tab">Employee Payslip</div>
-            <div class="tab">Salary Components</div>
-            <div class="tab">Tax Management</div>
-            <div class="tab">Payroll History</div>
         </div>
 
         <div class="cards">
@@ -1004,13 +895,17 @@ tbody tr:hover{
         <div class="filter-box">
             <div class="search-employee">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search employee...">
+                <input type="text" id="adminPayrollSearchInput" placeholder="Search employee name or ID...">
             </div>
-            <input type="month" value="2025-05">
-            <select>
-                <option>All Departments</option>
+            <select id="adminPayrollDeptFilter">
+                <option value="All">All Departments</option>
             </select>
-            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>
+            <select id="adminPayrollStatusFilter">
+                <option value="All">All Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
+            </select>
+            <button class="run-btn" id="adminExportPayrollBtn" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Export CSV</button>
         </div>
 
         <div class="table-box">
@@ -1036,16 +931,7 @@ tbody tr:hover{
         </div>
 
         <div class="footer">
-            <div class="entries">Showing 1 to 5 of 52 entries</div>
-            <div class="pagination">
-                <div class="page"><i class="fa-solid fa-angle-left"></i></div>
-                <div class="page active">1</div>
-                <div class="page">2</div>
-                <div class="page">3</div>
-                <div class="page">...</div>
-                <div class="page">11</div>
-                <div class="page"><i class="fa-solid fa-angle-right"></i></div>
-            </div>
+            <div class="entries" id="payrollEntriesCounter">Showing 0 entries</div>
         </div>
     </div>
     </div>
@@ -1148,57 +1034,122 @@ tbody tr:hover{
         }
     }
 
+    let allPayrollRecords = [];
+
+    function renderPayrollTable(records = allPayrollRecords) {
+        tableBody.innerHTML = "";
+        payrollCacheById = {};
+        if (records.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#8898aa;">No matching payroll records.</td></tr>`;
+            document.getElementById('payrollEntriesCounter').textContent = 'Showing 0 entries';
+            return;
+        }
+
+        records.forEach((p) => {
+            payrollCacheById[p.id] = p;
+            const statusClass = (p.status || 'Pending').toLowerCase();
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${p.id.slice(0, 8)}</td>
+                    <td><div class="employee"><div><h4>${p.employeeName || '-'}</h4><p>${p.designation || ''}</p></div></div></td>
+                    <td>${p.department || '-'}</td>
+                    <td>${p.basicSalary ?? '-'}</td>
+                    <td>${p.allowances ?? '-'}</td>
+                    <td>${p.deductions ?? '-'}</td>
+                    <td class="salary">${p.netPay ?? '-'}</td>
+                    <td><span class="status ${statusClass}">${p.status || 'Pending'}</span></td>
+                    <td><a href="#" class="view-receipt-btn" data-id="${p.id}" style="color:#4299e1;">View</a></td>
+                    <td><div class="action"><i class="fa-solid fa-check toggle-paid-btn" data-id="${p.id}" data-status="${p.status || 'Pending'}" style="cursor:pointer;" title="Toggle Paid/Pending"></i></div></td>
+                </tr>
+            `);
+        });
+
+        document.querySelectorAll('.view-receipt-btn').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = link.getAttribute('data-id');
+                const record = payrollCacheById[id];
+                if (record) openReceiptWindow(record, id);
+            });
+        });
+
+        document.querySelectorAll('.toggle-paid-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const newStatus = btn.getAttribute('data-status') === 'Paid' ? 'Pending' : 'Paid';
+                await updateDoc(doc(db, "payroll", btn.getAttribute('data-id')), { status: newStatus });
+                loadPayroll();
+            });
+        });
+
+        document.getElementById('payrollEntriesCounter').textContent = `Showing ${records.length} entries`;
+    }
+
+    function applyFilters() {
+        const q = (document.getElementById('adminPayrollSearchInput')?.value || '').toLowerCase().trim();
+        const dept = document.getElementById('adminPayrollDeptFilter')?.value || 'All';
+        const status = document.getElementById('adminPayrollStatusFilter')?.value || 'All';
+
+        const filtered = allPayrollRecords.filter(p => {
+            const name = (p.employeeName || '').toLowerCase();
+            const id = (p.id || '').toLowerCase();
+            const pDept = p.department || '';
+            const pStatus = p.status || 'Pending';
+
+            const matchQ = !q || name.includes(q) || id.includes(q);
+            const matchDept = dept === 'All' || pDept === dept;
+            const matchStatus = status === 'All' || pStatus.toLowerCase() === status.toLowerCase();
+
+            return matchQ && matchDept && matchStatus;
+        });
+
+        renderPayrollTable(filtered);
+    }
+
     async function loadPayroll() {
         try {
             const snap = await getDocs(collection(db, "payroll"));
+            allPayrollRecords = [];
             if (snap.empty) {
                 tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#8898aa;">No payroll records found.</td></tr>`;
+                document.getElementById('payrollEntriesCounter').textContent = 'Showing 0 entries';
                 return;
             }
-            tableBody.innerHTML = "";
-            payrollCacheById = {};
+
             snap.forEach((docSnap) => {
-                const p = docSnap.data();
-                payrollCacheById[docSnap.id] = p;
-                const statusClass = (p.status || 'Pending').toLowerCase();
-                tableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td>${docSnap.id.slice(0, 8)}</td>
-                        <td><div class="employee"><div><h4>${p.employeeName || '-'}</h4><p>${p.designation || ''}</p></div></div></td>
-                        <td>${p.department || '-'}</td>
-                        <td>${p.basicSalary ?? '-'}</td>
-                        <td>${p.allowances ?? '-'}</td>
-                        <td>${p.deductions ?? '-'}</td>
-                        <td class="salary">${p.netPay ?? '-'}</td>
-                        <td><span class="status ${statusClass}">${p.status || 'Pending'}</span></td>
-                        <td><a href="#" class="view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1;">View</a></td>
-                        <td><div class="action"><i class="fa-solid fa-check toggle-paid-btn" data-id="${docSnap.id}" data-status="${p.status || 'Pending'}" style="cursor:pointer;" title="Toggle Paid/Pending"></i></div></td>
-                    </tr>
-                `);
+                allPayrollRecords.push({ id: docSnap.id, ...docSnap.data() });
             });
 
-            document.querySelectorAll('.view-receipt-btn').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const id = link.getAttribute('data-id');
-                    const record = payrollCacheById[id];
-                    if (record) openReceiptWindow(record, id);
-                });
-            });
+            const depts = Array.from(new Set(allPayrollRecords.map(p => p.department).filter(Boolean))).sort();
+            const deptEl = document.getElementById('adminPayrollDeptFilter');
+            if (deptEl) {
+                deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+            }
 
-            document.querySelectorAll('.toggle-paid-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const newStatus = btn.getAttribute('data-status') === 'Paid' ? 'Pending' : 'Paid';
-                    await updateDoc(doc(db, "payroll", btn.getAttribute('data-id')), { status: newStatus });
-                    loadPayroll();
-                });
-            });
-
+            applyFilters();
         } catch (error) {
             console.error("Failed to load payroll: ", error);
             tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
         }
     }
+
+    document.getElementById('adminPayrollSearchInput')?.addEventListener('input', applyFilters);
+    document.getElementById('adminPayrollDeptFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminPayrollStatusFilter')?.addEventListener('change', applyFilters);
+
+    document.getElementById('adminExportPayrollBtn')?.addEventListener('click', () => {
+        if (!allPayrollRecords.length) return alert('No payroll records to export.');
+        const rows = [["Payroll ID", "Employee Name", "Designation", "Department", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status", "Date"]];
+        allPayrollRecords.forEach(p => {
+            rows.push([p.id || '', p.employeeName || '', p.designation || '', p.department || '', p.basicSalary ?? '', p.allowances ?? '', p.deductions ?? '', p.netPay ?? '', p.status || 'Pending', p.createdOn || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Admin-Payroll-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
 
     // CREATE Action Form Interception Logic
     addPayrollForm.addEventListener('submit', async (e) => {

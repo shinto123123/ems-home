@@ -247,7 +247,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <span>Projects</span>
           </div>
         </div>
-        <button class="btn-primary">View All Projects</button>
+        <button class="btn-primary" id="viewAllProjectsBtn"><i class="fa-solid fa-folder-open"></i> All Projects</button>
       </div>
 
       <div class="metrics-grid">
@@ -270,17 +270,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="metric-card">
           <div class="metric-icon"><i class="fa-regular fa-clock"></i></div>
           <div class="metric-info">
-            <p>Pending Tasks</p>
-            <h2>4</h2>
-            <span>Tasks to do</span>
+            <p>Planning Phase</p>
+            <h2 id="metricPlanningProjects">0</h2>
+            <span>In Roadmap</span>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon"><i class="fa-regular fa-calendar"></i></div>
           <div class="metric-info">
-            <p>Upcoming Deadlines</p>
-            <h2>2</h2>
-            <span>In next 7 days</span>
+            <p>Total Projects</p>
+            <h2 id="metricTotalProjects">0</h2>
+            <span>Assigned</span>
           </div>
         </div>
       </div>
@@ -289,13 +289,18 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         
         <div class="card-panel">
           <div class="tabs-nav-row">
-            <div class="tabs-nav">
-              <button class="tab-btn active">My Projects</button>
-              <button class="tab-btn">Tasks</button>
-              <button class="tab-btn">Project Milestones</button>
-              <button class="tab-btn">Timesheet</button>
+            <div class="tabs-nav" id="empProjectTabs">
+              <button class="tab-btn active" data-tab="all">My Projects</button>
+              <button class="tab-btn" data-tab="ongoing">Ongoing</button>
+              <button class="tab-btn" data-tab="completed">Completed</button>
+              <button class="tab-btn" data-tab="planning">Planning</button>
             </div>
-            <select class="select-sm"><option>All Status</option></select>
+            <select class="select-sm" id="empProjectStatusFilter">
+              <option value="All">All Status</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+              <option value="Planning">Planning</option>
+            </select>
           </div>
 
           <div class="data-table-container">
@@ -432,48 +437,96 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
   const tableBody = document.getElementById('myProjectsTableBody');
   const countLabel = document.getElementById('myProjectsCountLabel');
+  let allEmpProjects = [];
+  let currentEmpProjectTab = 'all';
+
+  function renderProjectsTable(projects) {
+    tableBody.innerHTML = "";
+
+    if (!projects || projects.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#8898aa;">No matching projects found.</td></tr>`;
+      countLabel.textContent = `Showing 0 of ${allEmpProjects.length} projects`;
+      return;
+    }
+
+    projects.forEach((p) => {
+      const status = p.status || "Ongoing";
+      const progress = Number(p.progress) || 0;
+      const projName = p.projectName || p.name || 'Untitled Project';
+
+      tableBody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><strong>${projName}</strong></td>
+          <td>${p.department || 'Engineering'}</td>
+          <td><span class="badge-status">${status}</span></td>
+          <td>
+            <div class="progress-container-inline">
+              <span class="progress-text-val">${progress}%</span>
+              <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
+            </div>
+          </td>
+          <td>${p.startDate || '-'}</td>
+          <td>${p.endDate || '-'}</td>
+          <td><button class="btn-action-more" title="View details" onclick="alert('Project: ${projName}\\nStatus: ${status}\\nProgress: ${progress}%\\nEnd Date: ${p.endDate || '-'}')"><i class="fa-solid fa-ellipsis"></i></button></td>
+        </tr>
+      `);
+    });
+
+    countLabel.textContent = `Showing ${projects.length} of ${allEmpProjects.length} projects`;
+  }
+
+  function applyEmpProjectFilter() {
+    const selStatus = document.getElementById('empProjectStatusFilter').value;
+    const filtered = allEmpProjects.filter(p => {
+      const st = (p.status || 'ongoing').toLowerCase();
+      const matchesStatus = selStatus === 'All' || st === selStatus.toLowerCase();
+      let matchesTab = true;
+      if (currentEmpProjectTab === 'ongoing') matchesTab = st === 'ongoing';
+      else if (currentEmpProjectTab === 'completed') matchesTab = st === 'completed';
+      else if (currentEmpProjectTab === 'planning') matchesTab = st === 'planning';
+      return matchesStatus && matchesTab;
+    });
+    renderProjectsTable(filtered);
+  }
+
+  document.getElementById('empProjectStatusFilter').addEventListener('change', applyEmpProjectFilter);
+
+  document.querySelectorAll('#empProjectTabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('#empProjectTabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentEmpProjectTab = btn.getAttribute('data-tab') || 'all';
+      applyEmpProjectFilter();
+    });
+  });
+
+  document.getElementById('viewAllProjectsBtn').addEventListener('click', () => {
+    document.getElementById('empProjectStatusFilter').value = 'All';
+    currentEmpProjectTab = 'all';
+    document.querySelectorAll('#empProjectTabs .tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === 'all'));
+    renderProjectsTable(allEmpProjects);
+  });
 
   async function loadMyProjects() {
     try {
-      const snap = await getDocs(query(collection(db, "projects"), where("teamUids", "array-contains", currentUser.uid)));
-      tableBody.innerHTML = "";
-
-      if (snap.empty) {
-        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#8898aa;">You are not assigned to any projects yet.</td></tr>`;
-        countLabel.textContent = "Showing 0 projects";
-        document.getElementById('metricActiveProjects').textContent = "0";
-        document.getElementById('metricCompletedProjects').textContent = "0";
-        return;
-      }
-
-      let active = 0, completed = 0;
+      const snap = await getDocs(collection(db, "projects"));
+      allEmpProjects = [];
       snap.forEach((docSnap) => {
-        const p = docSnap.data();
-        const status = p.status || "In Progress";
-        if (status.toLowerCase() === 'completed') completed++; else active++;
-        const progress = p.progress || 0;
-
-        tableBody.insertAdjacentHTML('beforeend', `
-          <tr>
-            <td>${p.name || 'Untitled Project'}</td>
-            <td>${p.myRole || 'Team Member'}</td>
-            <td><span class="badge-status">${status}</span></td>
-            <td>
-              <div class="progress-container-inline">
-                <span class="progress-text-val">${progress}%</span>
-                <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
-              </div>
-            </td>
-            <td>${p.startDate || '-'}</td>
-            <td>${p.endDate || '-'}</td>
-            <td><button class="btn-action-more"><i class="fa-solid fa-ellipsis"></i></button></td>
-          </tr>
-        `);
+        const data = docSnap.data();
+        allEmpProjects.push({ id: docSnap.id, ...data });
       });
 
-      countLabel.textContent = `Showing ${active + completed} projects`;
+      const active = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'ongoing').length;
+      const completed = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'completed').length;
+      const planning = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'planning').length;
+
       document.getElementById('metricActiveProjects').textContent = String(active);
       document.getElementById('metricCompletedProjects').textContent = String(completed);
+      document.getElementById('metricPlanningProjects').textContent = String(planning);
+      document.getElementById('metricTotalProjects').textContent = String(allEmpProjects.length);
+
+      renderProjectsTable(allEmpProjects);
 
     } catch (error) {
       console.error("Failed to load projects: ", error);

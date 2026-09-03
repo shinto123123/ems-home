@@ -268,7 +268,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Recent Activities</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="notifications.html" class="link-btn">View All</a>
           </div>
           <div id="empRecentActivities">
             <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading activity...</div></div>
@@ -278,29 +278,29 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Today's Attendance</h3>
-            <a href="#" class="link-btn">View Details</a>
+            <a href="attendance.html" class="link-btn">View Details</a>
           </div>
           <div class="attendance-display">
             <div class="att-row-flex">
               <span class="att-label"><i class="fa-regular fa-clock"></i> Check In</span>
-              <span class="att-val">09:00 AM</span>
+              <span class="att-val" id="todayCheckInVal">09:00 AM</span>
             </div>
             <div class="att-row-flex">
               <span class="att-label"><i class="fa-regular fa-clock"></i> Check Out</span>
-              <span class="att-val">06:00 PM</span>
+              <span class="att-val" id="todayCheckOutVal">06:00 PM</span>
             </div>
             <div class="att-row-flex" style="border-top:1px solid #1b2e6e; padding-top:10px; margin-top:4px;">
               <span class="att-label">Working Hours</span>
-              <span class="att-val" style="color:#4299e1;">8 hrs</span>
+              <span class="att-val" style="color:#4299e1;" id="todayHoursVal">8.5 hrs</span>
             </div>
-            <button class="action-btn">View Attendance</button>
+            <a href="attendance.html" class="action-btn" style="text-align:center; text-decoration:none; display:block; padding:10px;">View Attendance</a>
           </div>
         </div>
 
         <div class="card-panel">
           <div class="panel-header">
             <h3>Leave Summary</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="leave-management.html" class="link-btn">View All</a>
           </div>
           <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
             <div class="att-row-flex"><span class="att-label">Annual Leave</span><span class="att-val" id="leaveSummaryAnnual">0 Days</span></div>
@@ -308,7 +308,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <div class="att-row-flex"><span class="att-label">Comp Off</span><span class="att-val" id="leaveSummaryCompOff">0 Days</span></div>
             <div class="att-row-flex"><span class="att-label">Pending Requests</span><span class="att-val" id="leaveSummaryPending">0</span></div>
           </div>
-          <button class="action-btn-primary">Apply Leave</button>
+          <a href="leave-management.html" class="action-btn-primary" style="text-align:center; text-decoration:none; display:block; padding:10px;">Apply Leave</a>
         </div>
 
       </div><div class="dashboard-grid-3col">
@@ -316,7 +316,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Assigned Projects</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="projects.html" class="link-btn">View All</a>
           </div>
           <table class="data-table">
             <thead>
@@ -332,13 +332,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </tbody>
           </table>
-          <button class="action-btn" style="margin-top:auto;">View All Projects</button>
+          <a href="projects.html" class="action-btn" style="margin-top:auto; text-align:center; text-decoration:none; display:block; padding:10px;">View All Projects</a>
         </div>
 
         <div class="card-panel">
           <div class="panel-header">
             <h3>Upcoming Deadlines</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="projects.html" class="link-btn">View All</a>
           </div>
           <table class="data-table">
             <thead>
@@ -354,13 +354,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </tbody>
           </table>
-          <button class="action-btn" style="margin-top:auto;">View All Tasks</button>
+          <a href="projects.html" class="action-btn" style="margin-top:auto; text-align:center; text-decoration:none; display:block; padding:10px;">View All Tasks</a>
         </div>
 
         <div class="card-panel">
           <div class="panel-header">
             <h3>Performance Overview</h3>
-            <a href="#" class="link-btn">View Details</a>
+            <a href="perfomance.html" class="link-btn">View Details</a>
           </div>
           <div class="perf-box">
             <div class="perf-ring-wrap">
@@ -392,7 +392,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Recent Documents</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="documents.html" class="link-btn">View All</a>
           </div>
           <div id="empRecentDocuments">
             <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading documents...</div></div>
@@ -402,7 +402,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Notifications</h3>
-            <a href="#" class="link-btn">View All</a>
+            <a href="notifications.html" class="link-btn">View All</a>
           </div>
           <div id="empRecentNotifications">
             <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading notifications...</div></div>
@@ -414,19 +414,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <h3>Quick Links</h3>
           </div>
           <div class="quick-links-grid">
-            <a href="#" class="link-card">
+            <a href="leave-management.html" class="link-card">
               <i class="fa-solid fa-plane-departure"></i>
               <span>Apply Leave</span>
             </a>
-            <a href="#" class="link-card">
+            <a href="attendance.html" class="link-card">
               <i class="fa-regular fa-clock"></i>
               <span>Log Time</span>
             </a>
-            <a href="#" class="link-card">
+            <a href="payroll.html" class="link-card">
               <i class="fa-solid fa-money-bill-wave"></i>
               <span>View Payslip</span>
             </a>
-            <a href="#" class="link-card">
+            <a href="perfomance.html" class="link-card">
               <i class="fa-solid fa-bullseye"></i>
               <span>My Goals</span>
             </a>

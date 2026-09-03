@@ -53,10 +53,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .directory-panel{flex:1.5;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
 .page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:center;}
 .page-header h2{font-size:20px;font-weight:700;color:#fff;}
-.btn-top-action{background:#1b2e6e;color:#fff;border:1px solid #233a82;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
-.btn-top-action:hover{background:#233a82;}
-.btn-top-action.primary{background:#4299e1;border-color:#4299e1;}
-.btn-top-action.primary:hover{background:#2b7fd1;}
 
 .directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
 .directory-content::-webkit-scrollbar{width:6px;}
@@ -66,8 +62,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
 .filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
 .date-picker-btn{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;cursor:pointer;}
-.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
-.btn-action:hover{background:#2a449c;}
 
 /* 6 Column High-Level Performance Metrics Grid */
 .mini-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
@@ -108,9 +102,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
 /* Lower Micro-Analytics Row Layout Panels Grid */
 .lower-micro-metrics-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:12px;}
-.micro-card-footer{border-top:1px solid #162256;padding-top:10px;margin-top:auto;text-align:center;}
-.btn-micro-details{background:none;border:1px solid #1b2e6e;color:#4299e1;padding:6px;width:100%;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.2s;}
-.btn-micro-details:hover{background:rgba(66,153,225,0.03);border-color:#4299e1;}
 
 /* Custom Histogram Attrition Bar Pillars Canvas styling */
 .histogram-canvas-wrapper{display:flex;align-items:flex-end;justify-content:space-between;height:110px;border-bottom:1px solid #1b2e6e;padding:0 10px;gap:14px;}
@@ -121,9 +112,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .histogram-axis-lbl{font-size:9.5px;color:#8898aa;margin-top:6px;}
 
 /* Custom Modular Multi-Query Builder Panel */
-.custom-report-generation-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.custom-report-generation-panel p{font-size:12px;color:#cbd5e1;}
-.custom-report-generation-panel p strong{display:block;color:#fff;font-size:13px;margin-bottom:2px;}
 
 /* ── INSPECTOR CANVAS PANEL (RIGHT) ── */
 .inspector-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
@@ -152,11 +140,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .insight-bulletin-row strong{color:#fff;}
 
 /* Vertical Schedule Management Node Components List grid elements */
-.schedules-stack-list{display:flex;flex-direction:column;gap:10px;}
-.schedule-node-row{display:flex;justify-content:space-between;align-items:center;background:#0b1437;border:1px solid #1b2e6e;padding:10px 12px;border-radius:8px;}
-.schedule-meta-details strong{display:block;color:#fff;font-size:12.5px;font-weight:500;}
-.schedule-meta-details small{display:block;color:#8898aa;font-size:11px;margin-top:2px;}
-.active-status-flag{background:rgba(74,222,128,0.1);color:#4ade80;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;}
 
 .d-none{display:none !important;}
 </style>
@@ -217,10 +200,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <h2>Reports & Analytics</h2>
           <div class="breadcrumb">Dashboard &gt; <span>Reports & Analytics</span></div>
         </div>
-        <div style="display:flex; gap:8px;">
-          <button class="btn-top-action"><i class="fa-solid fa-download"></i> Export Report</button>
-          <button class="btn-top-action primary"><i class="fa-regular fa-calendar-days"></i> Scheduled Reports</button>
-        </div>
       </div>
       
       <div class="directory-content">
@@ -234,13 +213,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <select class="filter-select"><option>All Departments</option></select>
           <select class="filter-select"><option>All Locations</option></select>
           <select class="filter-select"><option>All Employment Types</option></select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
         </div>
 
         <div class="mini-kpi-grid">
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
-            <div class="mini-info"><p>Total Employees</p><h3 id="kpiTotalEmployees">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> 5.3% <span style="color:#8898aa;">vs Apr</span></small></div>
+            <div class="mini-info"><p>Total Employees</p><h3 id="kpiTotalEmployees">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Across all departments</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-user-plus"></i></div>
@@ -252,7 +230,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="mini-info"><p>Average Attendance</p><h3>92.6%</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> 2.1% <span style="color:#8898aa;">vs Apr</span></small></div>
+            <div class="mini-info"><p>Average Attendance</p><h3 id="kpiAvgAttendance">--</h3><small class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Present + Late / all records</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-plane-departure"></i></div>
@@ -269,28 +247,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="chart-card-node">
             <div class="chart-card-header">
               <h4>Employee Trend</h4>
-              <select class="filter-select" style="padding:4px 8px; font-size:11.5px;"><option>Total Employees</option></select>
+              <span style="font-size:11px; color:#8898aa;">Headcount, last 6 months</span>
             </div>
-            
+
             <div class="line-chart-svg-wrap">
-              <div class="lc-y-axis"><span>300</span><span>200</span><span>150</span><span>100</span><span>50</span><span>0</span></div>
+              <div class="lc-y-axis" id="trendYAxis"><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span></div>
               <div class="lc-area">
-                <div class="lc-svg-wrap">
+                <div class="lc-svg-wrap" id="trendSvgWrap">
                   <svg viewBox="0 0 500 130" preserveAspectRatio="none">
                     <line x1="0" y1="26" x2="500" y2="26" stroke="#1b2e6e" stroke-width="0.7"/>
                     <line x1="0" y1="52" x2="500" y2="52" stroke="#1b2e6e" stroke-width="0.7"/>
                     <line x1="0" y1="78" x2="500" y2="78" stroke="#1b2e6e" stroke-width="0.7"/>
                     <line x1="0" y1="104" x2="500" y2="104" stroke="#1b2e6e" stroke-width="0.7"/>
-                    <polyline points="20,100 110,88 200,82 290,75 380,70 470,60" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                    <circle cx="20" cy="100" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
-                    <circle cx="110" cy="88" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
-                    <circle cx="200" cy="82" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
-                    <circle cx="290" cy="75" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
-                    <circle cx="380" cy="70" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>
-                    <circle cx="470" cy="60" r="5" fill="#4299e1" stroke="#4299e1"/>
                   </svg>
                 </div>
-                <div class="lc-x-labels"><span>Dec '24</span><span>Jan '25</span><span>Feb '25</span><span>Mar '25</span><span>Apr '25</span><span>May '25</span></div>
+                <div class="lc-x-labels" id="trendXLabels"><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span></div>
               </div>
             </div>
           </div>
@@ -319,22 +290,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="chart-card-node">
             <div class="chart-card-header"><h4>Attendance Overview</h4></div>
             <div class="donut-chart-split-layout" style="margin-top:4px;">
-              <div class="donut-graphic-panel" style="width:90px; height:90px;">
+              <div class="donut-graphic-panel" style="width:90px; height:90px;" id="attendanceDonutGraphic">
                 <svg viewBox="0 0 36 36">
                   <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="92.6 7.4" stroke-dashoffset="25"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="4" stroke-dasharray="4.2 95.8" stroke-dashoffset="-67.6"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f87171" stroke-width="4" stroke-dasharray="3.2 96.8" stroke-dashoffset="-71.8"/>
                 </svg>
-                <div class="donut-center-overlay"><strong>92.6%</strong><span style="font-size:8px;">Avg Attendance</span></div>
+                <div class="donut-center-overlay"><strong>0</strong><span style="font-size:8px;">Records</span></div>
               </div>
-              <div class="donut-legends-stack">
-                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#4ade80;"></div>Present</div><span>92.6%</span></div>
-                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#fbbf24;"></div>Late</div><span>4.2%</span></div>
-                <div class="legend-item-row"><div class="legend-bullet-prefix"><div class="legend-bullet-dot" style="background:#f87171;"></div>Absent</div><span>3.2%</span></div>
-              </div>
+              <div class="donut-legends-stack" id="attendanceDonutLegend"></div>
             </div>
-            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
           </div>
 
           <div class="chart-card-node">
@@ -349,53 +312,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               <div class="donut-legends-stack" id="leaveDonutLegend">
               </div>
             </div>
-            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
           </div>
 
           <div class="chart-card-node">
             <div class="chart-card-header">
-              <h4>Attrition Rate</h4>
-              <select class="filter-select" style="padding:2px 6px; font-size:11px;"><option>Monthly</option></select>
+              <h4>Active vs Inactive</h4>
+              <span style="font-size:11px; color:#8898aa;">All employees</span>
             </div>
-            
-            <div class="histogram-canvas-wrapper">
+
+            <div class="histogram-canvas-wrapper" id="activeInactiveBars">
               <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 62%;"><span class="histogram-bar-val">6.2%</span></div>
-                <span class="histogram-axis-lbl">Dec '24</span>
+                <div class="histogram-bar-fill" style="height: 0%; background:#4ade80;"><span class="histogram-bar-val" id="activeBarVal">0</span></div>
+                <span class="histogram-axis-lbl">Active</span>
               </div>
               <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 68%;"><span class="histogram-bar-val">6.8%</span></div>
-                <span class="histogram-axis-lbl">Jan '25</span>
-              </div>
-              <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 61%;"><span class="histogram-bar-val">6.1%</span></div>
-                <span class="histogram-axis-lbl">Feb '25</span>
-              </div>
-              <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 56%;"><span class="histogram-bar-val">5.6%</span></div>
-                <span class="histogram-axis-lbl">Mar '25</span>
-              </div>
-              <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 60%;"><span class="histogram-bar-val">6.0%</span></div>
-                <span class="histogram-axis-lbl">Apr '25</span>
-              </div>
-              <div class="histogram-pillar-node">
-                <div class="histogram-bar-fill" style="height: 48%; background:#4299e1;"><span class="histogram-bar-val">4.8%</span></div>
-                <span class="histogram-axis-lbl">May '25</span>
+                <div class="histogram-bar-fill" style="height: 0%; background:#f87171;"><span class="histogram-bar-val" id="inactiveBarVal">0</span></div>
+                <span class="histogram-axis-lbl">Inactive</span>
               </div>
             </div>
-            <div class="micro-card-footer"><button class="btn-micro-details">View Details</button></div>
           </div>
 
-        </div><div class="custom-report-generation-panel">
-          <p>
-            <strong>Custom Reports</strong>
-            Create custom reports with the data and metrics that matter to you.
-          </p>
-          <div style="display:flex; gap:10px; flex:1; justify-content:flex-end;">
-            <select class="filter-select" style="max-width:240px; width:100%;"><option hidden>Select Report Type</option><option>Employee Lifecycle Report</option><option>Department Expense Analysis</option></select>
-            <button class="btn-action btn-primary" style="font-weight:600;"><i class="fa-solid fa-gears"></i> Generate Report</button>
-          </div>
         </div>
 
       </div>
@@ -407,51 +343,23 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="inspector-card-node">
           <h4>Report Shortcuts</h4>
           <div class="shortcuts-links-stack">
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-user"></i> Employee Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-calendar-check"></i> Attendance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-regular fa-file-lines"></i> Leave Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-money-bill-wave"></i> Payroll Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-chart-line"></i> Performance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="shortcut-nav-row"><span class="shortcut-nav-label"><i class="fa-solid fa-user-plus"></i> Recruitment Summary</span><i class="fa-solid fa-chevron-right"></i></div>
-          </div>
-          <button class="btn-inspector-action-trigger" style="margin-top:4px;">View All Reports</button>
-        </div>
-
-        <div class="inspector-card-node">
-          <h4>Insights</h4>
-          <div class="insights-bulletin-list">
-            <div class="insight-bulletin-row">
-              <div class="insight-bulletin-icon up"><i class="fa-solid fa-arrow-up"></i></div>
-              <div>Employee count has increased by <strong>5.3%</strong> compared to last month.</div>
-            </div>
-            <div class="insight-bulletin-row">
-              <div class="insight-bulletin-icon down"><i class="fa-solid fa-arrow-down"></i></div>
-              <div>Attrition rate decreased by <strong>1.2%</strong> compared to last month.</div>
-            </div>
-            <div class="insight-bulletin-row">
-              <div class="insight-bulletin-icon blue"><i class="fa-solid fa-chart-pie"></i></div>
-              <div>Average attendance improved by <strong>2.1%</strong> compared to last month.</div>
-            </div>
+            <div class="shortcut-nav-row quick-item" data-report="directory"><span class="shortcut-nav-label"><i class="fa-regular fa-user"></i> Employee Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row quick-item" data-report="attendance"><span class="shortcut-nav-label"><i class="fa-regular fa-calendar-check"></i> Attendance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row quick-item" data-report="leave"><span class="shortcut-nav-label"><i class="fa-regular fa-file-lines"></i> Leave Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row quick-item" data-report="payroll"><span class="shortcut-nav-label"><i class="fa-solid fa-money-bill-wave"></i> Payroll Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row quick-item" data-report="performance"><span class="shortcut-nav-label"><i class="fa-solid fa-chart-line"></i> Performance Summary</span><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="shortcut-nav-row quick-item" data-report="recruitment"><span class="shortcut-nav-label"><i class="fa-solid fa-user-plus"></i> Recruitment Summary</span><i class="fa-solid fa-chevron-right"></i></div>
           </div>
         </div>
 
         <div class="inspector-card-node" style="flex:1;">
-          <h4>Reports Schedule</h4>
-          <div class="schedules-stack-list">
-            <div class="schedule-node-row">
-              <div class="schedule-meta-details"><strong>Monthly HR Overview</strong><small>Every 1st of the month</small></div>
-              <span class="active-status-flag">Active</span>
-            </div>
-            <div class="schedule-node-row">
-              <div class="schedule-meta-details"><strong>Attendance Report</strong><small>Every Monday</small></div>
-              <span class="active-status-flag">Active</span>
-            </div>
-            <div class="schedule-node-row">
-              <div class="schedule-meta-details"><strong>Payroll Summary</strong><small>Every Month End</small></div>
-              <span class="active-status-flag">Active</span>
+          <h4>Insights</h4>
+          <div class="insights-bulletin-list" id="insightsList">
+            <div class="insight-bulletin-row">
+              <div class="insight-bulletin-icon blue"><i class="fa-solid fa-spinner fa-spin"></i></div>
+              <div>Loading insights...</div>
             </div>
           </div>
-          <button class="btn-inspector-action-trigger" style="margin-top:auto;">Manage Schedules</button>
         </div>
 
       </div>
@@ -519,6 +427,76 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     return { svg: `<svg viewBox="0 0 36 36">${circles}</svg>`, legend, total };
   }
 
+  // Cumulative headcount at the end of each of the last 6 months, derived from
+  // each employee's creation timestamp (no historical snapshots exist, so this
+  // is "how many employees existed by that month" rather than a hire/attrition delta).
+  function renderEmployeeTrend(employees) {
+    const months = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      months.push(new Date(now.getFullYear(), now.getMonth() - i, 1));
+    }
+
+    const createdDates = employees
+      .map(e => (e.timestamp && typeof e.timestamp.toDate === 'function') ? e.timestamp.toDate() : null)
+      .filter(Boolean);
+
+    const counts = months.map(monthDate => {
+      const endOfMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0, 23, 59, 59);
+      return createdDates.filter(d => d <= endOfMonth).length;
+    });
+
+    // Employees with no usable timestamp still count toward "today" so the
+    // last point always matches the real total.
+    const untimestamped = employees.length - createdDates.length;
+    for (let i = 0; i < counts.length; i++) counts[i] += untimestamped;
+
+    const maxVal = Math.max(...counts, 1);
+    const svgW = 500, svgH = 130, padding = 10;
+    const points = counts.map((c, i) => {
+      const x = padding + (i / (counts.length - 1)) * (svgW - padding * 2);
+      const y = svgH - padding - (c / maxVal) * (svgH - padding * 2 - 10);
+      return { x, y };
+    });
+
+    const polyline = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    const circles = points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="#0b1437" stroke="#4299e1" stroke-width="2"/>`).join('');
+    const gridLines = `<line x1="0" y1="26" x2="500" y2="26" stroke="#1b2e6e" stroke-width="0.7"/><line x1="0" y1="52" x2="500" y2="52" stroke="#1b2e6e" stroke-width="0.7"/><line x1="0" y1="78" x2="500" y2="78" stroke="#1b2e6e" stroke-width="0.7"/><line x1="0" y1="104" x2="500" y2="104" stroke="#1b2e6e" stroke-width="0.7"/>`;
+
+    document.getElementById('trendSvgWrap').innerHTML = `
+      <svg viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="none">
+        ${gridLines}
+        <polyline points="${polyline}" fill="none" stroke="#4299e1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${circles}
+      </svg>
+    `;
+
+    const yAxisSteps = 4;
+    const yAxisHtml = Array.from({ length: yAxisSteps + 1 }, (_, i) => `<span>${Math.round(maxVal * (1 - i / yAxisSteps))}</span>`).join('');
+    document.getElementById('trendYAxis').innerHTML = yAxisHtml;
+
+    const xLabelsHtml = months.map(m => `<span>${m.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}</span>`).join('');
+    document.getElementById('trendXLabels').innerHTML = xLabelsHtml;
+  }
+
+  function renderInsights({ newHires, attritionRate, avgAttendance, topDept }) {
+    const rows = [
+      { icon: 'up', iconClass: 'fa-solid fa-arrow-up', text: `<strong>${newHires}</strong> new hire${newHires === 1 ? '' : 's'} this month.` },
+      { icon: attritionRate > 0 ? 'down' : 'up', iconClass: attritionRate > 0 ? 'fa-solid fa-arrow-down' : 'fa-solid fa-check', text: `Attrition rate is currently <strong>${attritionRate.toFixed(1)}%</strong> of the workforce.` },
+      { icon: 'blue', iconClass: 'fa-solid fa-chart-pie', text: `Average attendance across all recorded days is <strong>${avgAttendance.toFixed(1)}%</strong>.` }
+    ];
+    if (topDept) {
+      rows.push({ icon: 'blue', iconClass: 'fa-solid fa-building', text: `<strong>${topDept}</strong> is the largest department by headcount.` });
+    }
+
+    document.getElementById('insightsList').innerHTML = rows.map(r => `
+      <div class="insight-bulletin-row">
+        <div class="insight-bulletin-icon ${r.icon}"><i class="${r.iconClass}"></i></div>
+        <div>${r.text}</div>
+      </div>
+    `).join('');
+  }
+
   async function loadKpis() {
     try {
       // ── Employees: total, new hires this month, attrition (inactive ratio), department mix ──
@@ -535,13 +513,23 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       document.getElementById('kpiNewHires').textContent = newHires;
 
       const inactiveCount = employees.filter(emp => (emp.status || 'Active') !== 'Active').length;
+      const activeCount = employees.length - inactiveCount;
       const attritionRate = employees.length ? (inactiveCount / employees.length * 100) : 0;
       document.getElementById('kpiAttritionRate').textContent = `${attritionRate.toFixed(1)}%`;
+
+      const maxActiveInactive = Math.max(activeCount, inactiveCount, 1);
+      document.getElementById('activeBarVal').textContent = activeCount;
+      document.getElementById('activeBarVal').parentElement.style.height = `${(activeCount / maxActiveInactive * 100).toFixed(0)}%`;
+      document.getElementById('inactiveBarVal').textContent = inactiveCount;
+      document.getElementById('inactiveBarVal').parentElement.style.height = `${(inactiveCount / maxActiveInactive * 100).toFixed(0)}%`;
 
       const deptTally = tallyBy(employees, emp => emp.department, 'Unassigned');
       const deptDonut = buildDonut(deptTally, 4.2);
       document.getElementById('deptDonutGraphic').innerHTML = `${deptDonut.svg}<div class="donut-center-overlay"><strong>${deptDonut.total}</strong><span>Total</span></div>`;
       document.getElementById('deptDonutLegend').innerHTML = deptDonut.legend;
+      const topDept = Array.from(deptTally.entries()).sort((a, b) => b[1] - a[1])[0];
+
+      renderEmployeeTrend(employees);
 
       // ── Leave Requests: leaves taken (approved), leave-type mix ──
       const leaveSnap = await getDocs(collection(db, "leaveRequests"));
@@ -559,10 +547,142 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       const totalPayroll = payrollSnap.docs.reduce((sum, d) => sum + (Number(d.data().netPay) || 0), 0);
       document.getElementById('kpiPayrollCost').textContent = `₹${totalPayroll.toLocaleString('en-IN')}`;
 
+      // ── Attendance: present/late/absent/leave mix + average attendance ──
+      const attendanceSnap = await getDocs(collection(db, "attendance"));
+      const attendanceRecords = attendanceSnap.docs.map(d => d.data());
+      const statusTally = tallyBy(attendanceRecords, rec => {
+        const s = (rec.status || '').toLowerCase();
+        if (s === 'present') return 'Present';
+        if (s === 'late') return 'Late';
+        if (s === 'absent') return 'Absent';
+        if (s === 'leave') return 'Leave';
+        return 'Other';
+      }, 'Other');
+      const attendanceDonut = buildDonut(statusTally, 4);
+      document.getElementById('attendanceDonutGraphic').innerHTML = `${attendanceDonut.svg}<div class="donut-center-overlay"><strong>${attendanceDonut.total}</strong><span style="font-size:8px;">Records</span></div>`;
+      document.getElementById('attendanceDonutLegend').innerHTML = attendanceDonut.legend;
+
+      const presentLike = attendanceRecords.filter(r => ['present', 'late'].includes((r.status || '').toLowerCase())).length;
+      const avgAttendance = attendanceRecords.length ? (presentLike / attendanceRecords.length * 100) : 0;
+      document.getElementById('kpiAvgAttendance').textContent = `${avgAttendance.toFixed(1)}%`;
+
+      renderInsights({ newHires, attritionRate, avgAttendance, topDept: topDept ? topDept[0] : null });
+
     } catch (error) {
       console.error("Failed to load report KPIs: ", error);
     }
   }
+
+  // ── Report Shortcuts: real CSV exports (same pattern as Admin's Quick Reports) ──
+  function downloadCsv(filename, rows) {
+    const csv = rows.map(row =>
+      row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')
+    ).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  async function generateEmployeeDirectoryReport() {
+    const snap = await getDocs(collection(db, "employees"));
+    const rows = [["Name", "Email", "Department", "Designation", "Role", "Status"]];
+    snap.forEach(docSnap => {
+      const e = docSnap.data();
+      rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]);
+    });
+    downloadCsv(`Employee-Summary-${Date.now()}.csv`, rows);
+  }
+
+  async function generateAttendanceSummaryReport() {
+    const [employeeSnap, attendanceSnap] = await Promise.all([
+      getDocs(collection(db, "employees")),
+      getDocs(collection(db, "attendance"))
+    ]);
+    const nameByUid = {};
+    employeeSnap.forEach(docSnap => {
+      const e = docSnap.data();
+      if (e.uid) nameByUid[e.uid] = e.name;
+    });
+    const rows = [["Employee", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
+    attendanceSnap.forEach(docSnap => {
+      const a = docSnap.data();
+      rows.push([nameByUid[a.employeeUid] || nameByUid[a.uid] || a.employeeUid || '-', a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]);
+    });
+    downloadCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
+  }
+
+  async function generateLeaveSummaryReport() {
+    const snap = await getDocs(collection(db, "leaveRequests"));
+    const rows = [["Employee", "Department", "Leave Type", "From", "To", "Total Days", "Status"]];
+    snap.forEach(docSnap => {
+      const l = docSnap.data();
+      rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]);
+    });
+    downloadCsv(`Leave-Summary-${Date.now()}.csv`, rows);
+  }
+
+  async function generatePayrollSummaryReport() {
+    const snap = await getDocs(collection(db, "payroll"));
+    const rows = [["Employee", "Department", "Designation", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status"]];
+    snap.forEach(docSnap => {
+      const p = docSnap.data();
+      rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.allowances, p.deductions, p.netPay, p.status]);
+    });
+    downloadCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
+  }
+
+  async function generatePerformanceSummaryReport() {
+    const snap = await getDocs(collection(db, "performance"));
+    const rows = [["Employee", "Department", "Designation", "Review Cycle", "Rating", "Status"]];
+    snap.forEach(docSnap => {
+      const p = docSnap.data();
+      rows.push([p.employeeName, p.department, p.designation, p.reviewCycle, p.rating, p.status]);
+    });
+    downloadCsv(`Performance-Summary-${Date.now()}.csv`, rows);
+  }
+
+  async function generateRecruitmentSummaryReport() {
+    const snap = await getDocs(collection(db, "recruitment"));
+    const rows = [["Job Title", "Department", "Employment Type", "Openings", "Applications", "Status", "Posted On"]];
+    snap.forEach(docSnap => {
+      const r = docSnap.data();
+      rows.push([r.jobTitle, r.department, r.employmentType, r.openings, r.applications, r.status, r.postedOn]);
+    });
+    downloadCsv(`Recruitment-Summary-${Date.now()}.csv`, rows);
+  }
+
+  const reportGenerators = {
+    directory: generateEmployeeDirectoryReport,
+    attendance: generateAttendanceSummaryReport,
+    leave: generateLeaveSummaryReport,
+    payroll: generatePayrollSummaryReport,
+    performance: generatePerformanceSummaryReport,
+    recruitment: generateRecruitmentSummaryReport
+  };
+
+  document.querySelectorAll('.quick-item').forEach(item => {
+    item.addEventListener('click', async () => {
+      const generator = reportGenerators[item.getAttribute('data-report')];
+      if (!generator) return;
+      const icon = item.querySelector('.shortcut-nav-label i');
+      const originalIconClass = icon.className;
+      icon.className = 'fa-solid fa-spinner fa-spin';
+      try {
+        await generator();
+      } catch (error) {
+        console.error("Failed to generate report: ", error);
+        alert("Could not generate report: " + error.message);
+      } finally {
+        icon.className = originalIconClass;
+      }
+    });
+  });
 
   loadKpis();
 </script>

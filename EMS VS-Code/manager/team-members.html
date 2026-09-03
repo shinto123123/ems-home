@@ -191,8 +191,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <p>View and manage your team members and their information.</p>
         </div>
         <div class="header-buttons">
-          <button class="btn-outline"><i class="fa-solid fa-download"></i>Export</button>
-          <button class="btn-primary"><i class="fa-solid fa-plus"></i>Add Team Member</button>
+          <button class="btn-outline" id="exportTeamBtn"><i class="fa-solid fa-download"></i>Export</button>
+          <a href="project.html" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><i class="fa-solid fa-briefcase"></i>View Projects</a>
         </div>
       </div>
     </div>
@@ -202,19 +202,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="mini-kpi-grid">
         <div class="mini-panel">
           <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
-          <div class="mini-info"><p>Total Members</p><h3>18</h3><small>View all members</small></div>
+          <div class="mini-info"><p>Total Members</p><h3 id="kpiTotalMembers">0</h3><small>Department team</small></div>
         </div>
         <div class="mini-panel">
           <div class="mini-icon"><i class="fa-solid fa-circle-check"></i></div>
-          <div class="mini-info"><p>Active Members</p><h3>16</h3><small style="color:#4ade80">88.9% of total</small></div>
+          <div class="mini-info"><p>Active Members</p><h3 id="kpiActiveMembers">0</h3><small style="color:#4ade80" id="kpiActivePct">100% active</small></div>
         </div>
         <div class="mini-panel">
           <div class="mini-icon"><i class="fa-solid fa-plane-departure"></i></div>
-          <div class="mini-info"><p>On Leave</p><h3>2</h3><small style="color:#fbbf24">11.1% of total</small></div>
+          <div class="mini-info"><p>On Leave</p><h3 id="kpiOnLeave">0</h3><small style="color:#fbbf24">0% on leave</small></div>
         </div>
         <div class="mini-panel">
           <div class="mini-icon"><i class="fa-solid fa-building"></i></div>
-          <div class="mini-info"><p>Departments</p><h3>5</h3><small>View all departments</small></div>
+          <div class="mini-info"><p>Department</p><h3 id="kpiDeptName">-</h3><small>Active workspace</small></div>
         </div>
       </div>
 
@@ -222,33 +222,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-group search-box">
           <div class="input-inner-wrap">
             <i class="fa-solid fa-search search-icon"></i>
-            <input type="text" placeholder="Search by name, email or ID...">
-          </div>
-        </div>
-        <div class="filter-group select-box">
-          <label>Department</label>
-          <div class="input-inner-wrap">
-            <select><option>All Departments</option></select>
-            <i class="fa-solid fa-chevron-down chevron-icon"></i>
+            <input type="text" id="memberSearchInput" placeholder="Search by name, email or ID...">
           </div>
         </div>
         <div class="filter-group select-box">
           <label>Designation</label>
           <div class="input-inner-wrap">
-            <select><option>All Designations</option></select>
+            <select id="desigFilterSelect"><option value="All">All Designations</option></select>
             <i class="fa-solid fa-chevron-down chevron-icon"></i>
           </div>
         </div>
         <div class="filter-group select-box">
           <label>Status</label>
           <div class="input-inner-wrap">
-            <select><option>All Status</option></select>
+            <select id="statusFilterSelect"><option value="All">All Status</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
             <i class="fa-solid fa-chevron-down chevron-icon"></i>
           </div>
         </div>
         <div class="filter-actions-buttons">
-          <button class="btn-outline" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
-          <button class="btn-primary" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
+          <button class="btn-outline" id="resetFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+          <button class="btn-primary" id="applyFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
         </div>
       </div>
 
@@ -275,15 +268,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         <div class="table-footer">
           <div class="entry-info" id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
-          <div class="pagination-controls">
-            <a href="#" class="page-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px"></i></a>
-            <a href="#" class="page-btn active">1</a>
-            <a href="#" class="page-btn">2</a>
-            <a href="#" class="page-btn">3</a>
-            <a href="#" class="page-btn"><i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
-          </div>
         </div>
-      </div> <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+      </div> <div class="footer-text">© 2026 Employee Management System. All rights reserved.</div>
 
     </div> </div> </div>
 
@@ -309,50 +295,139 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     const tableBody = document.getElementById('teamTableBody');
     const entriesCounter = document.getElementById('tableEntriesCounter');
+    const searchInput = document.getElementById('memberSearchInput');
+    const desigFilter = document.getElementById('desigFilterSelect');
+    const statusFilter = document.getElementById('statusFilterSelect');
+    const resetBtn = document.getElementById('resetFilterBtn');
+    const applyBtn = document.getElementById('applyFilterBtn');
+    const exportBtn = document.getElementById('exportTeamBtn');
+
+    let allMembers = [];
+
+    function renderMembersTable(members) {
+        tableBody.innerHTML = "";
+
+        if (!members || members.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #8898aa;">No matching team members found.</td></tr>`;
+            entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+            return;
+        }
+
+        members.forEach((emp, index) => {
+            const formattedId = `EMP${String(index + 1).padStart(3, '0')}`;
+            const statusClass = emp.status && emp.status.toLowerCase() === 'active' ? 'active' : 'inactive';
+            const avatarUrl = emp.avatarUrl || 'https://i.pravatar.cc/50?img=' + (index + 10);
+
+            const rowTemplate = `
+                <tr>
+                    <td><span class="emp-id-text">${formattedId}</span></td>
+                    <td>
+                        <div class="user-identity-cell">
+                            <img src="${avatarUrl}" alt="${emp.name}" style="width:32px;height:32px;border-radius:50%;border:1px solid #4299e1;">
+                            <span class="identity-name">${emp.name || '-'}</span>
+                        </div>
+                    </td>
+                    <td>${emp.designation || '-'}</td>
+                    <td>${emp.department || '-'}</td>
+                    <td>${emp.email || '-'}</td>
+                    <td>${emp.phone || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${emp.status || 'Active'}</span></td>
+                    <td>
+                        <div class="row-actions-wrap" style="justify-content: center;">
+                            <button class="action-icon-btn view-member-btn" title="View details" data-email="${emp.email}" data-name="${emp.name}" data-desig="${emp.designation}"><i class="fa-regular fa-eye"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+        });
+
+        entriesCounter.innerText = `Showing 1 to ${members.length} of ${allMembers.length} entries`;
+
+        document.querySelectorAll('.view-member-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert(`Team Member: ${btn.getAttribute('data-name')}\nRole: ${btn.getAttribute('data-desig')}\nEmail: ${btn.getAttribute('data-email')}`);
+            });
+        });
+    }
+
+    function applyFilter() {
+        const queryTerm = searchInput.value.toLowerCase().trim();
+        const selDesig = desigFilter.value;
+        const selStatus = statusFilter.value;
+
+        const filtered = allMembers.filter(emp => {
+            const matchesSearch = !queryTerm ||
+                (emp.name || '').toLowerCase().includes(queryTerm) ||
+                (emp.email || '').toLowerCase().includes(queryTerm) ||
+                (emp.designation || '').toLowerCase().includes(queryTerm);
+            const matchesDesig = selDesig === 'All' || emp.designation === selDesig;
+            const matchesStatus = selStatus === 'All' || emp.status === selStatus;
+            return matchesSearch && matchesDesig && matchesStatus;
+        });
+
+        renderMembersTable(filtered);
+    }
+
+    searchInput.addEventListener('input', applyFilter);
+    desigFilter.addEventListener('change', applyFilter);
+    statusFilter.addEventListener('change', applyFilter);
+    applyBtn.addEventListener('click', applyFilter);
+
+    resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        desigFilter.value = 'All';
+        statusFilter.value = 'All';
+        renderMembersTable(allMembers);
+    });
+
+    exportBtn.addEventListener('click', () => {
+        if (!allMembers.length) return alert('No team member records to export.');
+        const rows = [["Employee ID", "Name", "Designation", "Department", "Email", "Phone", "Status"]];
+        allMembers.forEach((emp, i) => {
+            rows.push([`EMP${String(i + 1).padStart(3, '0')}`, emp.name || '', emp.designation || '', emp.department || '', emp.email || '', emp.phone || '', emp.status || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Team-Members-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
 
     async function loadTeamMembers() {
         try {
             const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
-            const myDept = meSnap.exists() ? meSnap.data().department : null;
+            const myDept = meSnap.exists() ? meSnap.data().department : "Engineering";
+
+            document.getElementById('kpiDeptName').textContent = myDept || 'Engineering';
 
             const q = query(collection(db, "employees"), where("department", "==", myDept));
             const querySnapshot = await getDocs(q);
-            tableBody.innerHTML = "";
-            let counter = 0;
-
-            if (querySnapshot.empty) {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #8898aa;">No team members found in your department.</td></tr>`;
-                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
-                return;
-            }
+            allMembers = [];
 
             querySnapshot.forEach((docSnap) => {
-                const emp = docSnap.data();
-                counter++;
-                const formattedId = `EMP${String(counter).padStart(3, '0')}`;
-                const statusClass = emp.status && emp.status.toLowerCase() === 'active' ? 'active' : 'inactive';
-
-                const rowTemplate = `
-                    <tr>
-                        <td><span class="emp-id-text">${formattedId}</span></td>
-                        <td><div class="user-identity-cell"><div class="identity-avatar"><i class="fa-regular fa-user"></i></div><span class="identity-name">${emp.name || ''}</span></div></td>
-                        <td>${emp.designation || '-'}</td>
-                        <td>${emp.department || '-'}</td>
-                        <td>${emp.email || '-'}</td>
-                        <td>${emp.phone || '-'}</td>
-                        <td><span class="status-badge ${statusClass}">${emp.status || 'Unknown'}</span></td>
-                        <td><div class="row-actions-wrap" style="justify-content: center;"><button class="action-icon-btn"><i class="fa-regular fa-eye"></i></button><button class="action-icon-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button></div></td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+                allMembers.push(docSnap.data());
             });
 
-            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
+            // Update KPIs
+            const activeCount = allMembers.filter(e => (e.status || '').toLowerCase() === 'active').length;
+            const onLeaveCount = allMembers.filter(e => (e.status || '').toLowerCase() === 'leave').length;
+            document.getElementById('kpiTotalMembers').textContent = allMembers.length;
+            document.getElementById('kpiActiveMembers').textContent = activeCount;
+            document.getElementById('kpiActivePct').textContent = allMembers.length ? `${Math.round((activeCount / allMembers.length) * 100)}% active` : '0%';
+            document.getElementById('kpiOnLeave').textContent = onLeaveCount;
+
+            // Populate designation filter
+            const designSet = Array.from(new Set(allMembers.map(e => e.designation).filter(Boolean)));
+            desigFilter.innerHTML = `<option value="All">All Designations</option>` + designSet.map(d => `<option value="${d}">${d}</option>`).join('');
+
+            renderMembersTable(allMembers);
 
         } catch (err) {
             console.error("Failed to load team members: ", err);
             tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
-            alert("Error loading team members: " + err.message);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -288,26 +288,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search by intern name or ID...">
+            <input type="text" id="internSearchInput" placeholder="Search by intern name or ID...">
           </div>
-          <select class="filter-select"><option>All Departments</option></select>
-          <select class="filter-select"><option>All Internship Roles</option></select>
-          <select class="filter-select"><option>All Status</option></select>
-          <div class="date-picker-btn">
-            <i class="fa-regular fa-calendar"></i>
-            <span>01 May 2025 - 31 May 2025</span>
-            <i class="fa-solid fa-chevron-down" style="font-size:10px; color:#8898aa;"></i>
-          </div>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <select class="filter-select" id="internDeptFilter"><option value="All">All Departments</option></select>
+          <select class="filter-select" id="internStatusFilter">
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button class="btn-action" id="exportInternsBtn" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Export CSV</button>
         </div>
 
-        <div class="segment-filter-row">
-          <button class="segment-btn active">All Interns</button>
-          <button class="segment-btn">Active</button>
-          <button class="segment-btn">Under Evaluation</button>
-          <button class="segment-btn">Completed</button>
-          <button class="segment-btn">Converted</button>
-          <button class="segment-btn">Dropped</button>
+        <div class="segment-filter-row" id="internSegmentTabs">
+          <button class="segment-btn active" data-status="All">All Interns</button>
+          <button class="segment-btn" data-status="Active">Active</button>
+          <button class="segment-btn" data-status="Completed">Completed</button>
         </div>
 
         <div class="table-wrap">
@@ -386,7 +381,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       </div>
     </div>
 
-    <div class="details-panel" id="detailsPanel">
+    <div class="details-panel d-none" id="detailsPanel">
       <div class="details-header">
         <h3>Intern Details</h3>
         <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
@@ -641,6 +636,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
   }
 
+  let activeSegment = 'All';
+
   async function loadInterns() {
     try {
       const snap = await getDocs(collection(db, "interns"));
@@ -648,28 +645,54 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       snap.forEach((docSnap) => {
         localInternsCache.push({ id: docSnap.id, ...docSnap.data() });
       });
-      renderInterns();
+
+      const depts = Array.from(new Set(localInternsCache.map(i => i.department).filter(Boolean))).sort();
+      const deptFilterEl = document.getElementById('internDeptFilter');
+      if (deptFilterEl) {
+        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+      }
+
+      applyFilters();
     } catch (error) {
       console.error("Failed to load interns: ", error);
       tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
     }
   }
 
-  function renderInterns() {
-    if (localInternsCache.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No interns found. Click "Add Intern" to begin.</td></tr>`;
-      document.getElementById('kpiTotalInterns').textContent = '0';
-      document.getElementById('kpiActiveInterns').textContent = '0';
-      document.getElementById('kpiCompletedInterns').textContent = '0';
+  function applyFilters() {
+    const q = (document.getElementById('internSearchInput')?.value || '').toLowerCase().trim();
+    const dept = document.getElementById('internDeptFilter')?.value || 'All';
+    const statusSel = document.getElementById('internStatusFilter')?.value || 'All';
+
+    const filtered = localInternsCache.filter(i => {
+      const name = (i.internName || '').toLowerCase();
+      const id = (i.customId || '').toLowerCase();
+      const iDept = i.department || '';
+      const iStatus = i.status || 'Active';
+
+      const matchQ = !q || name.includes(q) || id.includes(q);
+      const matchDept = dept === 'All' || iDept === dept;
+      const matchStatusSel = statusSel === 'All' || iStatus === statusSel;
+      const matchSegment = activeSegment === 'All' || iStatus === activeSegment;
+
+      return matchQ && matchDept && matchStatusSel && matchSegment;
+    });
+
+    renderInterns(filtered);
+  }
+
+  function renderInterns(list = localInternsCache) {
+    if (list.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No interns match your filters.</td></tr>`;
+      document.getElementById('kpiTotalInterns').textContent = String(localInternsCache.length);
+      document.getElementById('kpiActiveInterns').textContent = String(localInternsCache.filter(i => (i.status || 'Active') === 'Active').length);
+      document.getElementById('kpiCompletedInterns').textContent = String(localInternsCache.filter(i => i.status === 'Completed').length);
       return;
     }
 
     tableBody.innerHTML = "";
-    let active = 0, completed = 0;
-    localInternsCache.forEach((i) => {
+    list.forEach((i) => {
       const status = i.status || 'Active';
-      if (status === 'Active') active++;
-      if (status === 'Completed') completed++;
       const statusClass = status.toLowerCase();
 
       tableBody.insertAdjacentHTML('beforeend', `
@@ -693,8 +716,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     });
 
     document.getElementById('kpiTotalInterns').textContent = String(localInternsCache.length);
-    document.getElementById('kpiActiveInterns').textContent = String(active);
-    document.getElementById('kpiCompletedInterns').textContent = String(completed);
+    document.getElementById('kpiActiveInterns').textContent = String(localInternsCache.filter(i => (i.status || 'Active') === 'Active').length);
+    document.getElementById('kpiCompletedInterns').textContent = String(localInternsCache.filter(i => i.status === 'Completed').length);
 
     bindInternRowActions();
   }
@@ -843,6 +866,34 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       console.error("Error updating intern: ", error);
       alert("Failed to update intern records.");
     }
+  });
+
+  document.getElementById('internSearchInput')?.addEventListener('input', applyFilters);
+  document.getElementById('internDeptFilter')?.addEventListener('change', applyFilters);
+  document.getElementById('internStatusFilter')?.addEventListener('change', applyFilters);
+
+  document.querySelectorAll('#internSegmentTabs .segment-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#internSegmentTabs .segment-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSegment = btn.getAttribute('data-status') || 'All';
+      applyFilters();
+    });
+  });
+
+  document.getElementById('exportInternsBtn')?.addEventListener('click', () => {
+    if (!localInternsCache.length) return alert('No interns to export.');
+    const rows = [["ID", "Name", "Email", "Department", "University", "Mentor", "Start Date", "End Date", "Status"]];
+    localInternsCache.forEach(i => {
+      rows.push([i.customId || '', i.internName || '', i.email || '', i.department || '', i.university || '', i.mentorName || '', i.startDate || '', i.endDate || '', i.status || '']);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Interns-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
 
   loadInterns();

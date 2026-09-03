@@ -1,1387 +1,1534 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
- <link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
- 
- <title>Performance Management</title>
- 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<title>Performance Management - Admin Dashboard</title>
 <style>
- *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-body{
-    background:#0b1437;
-    display:flex;
-    flex-direction:column;
-    color:#d7dfef;
-    overflow:hidden;
-    height:100vh;
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    color: #d7dfef;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
+}
+
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-search i {
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+
+.nav-search input::placeholder {
+    color: #4a5568;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
+}
+
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    position: relative;
+}
+
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+
+.nav-profile-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.nav-profile-info small {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.nav-profile i.fa-chevron-down {
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
+}
+
+.nav-profile-dropdown.show {
+    display: block;
+}
+
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
+}
+
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
+}
+
+.nav-profile-dropdown a i {
+    width: 14px;
 }
 
 /* =========================
    BODY WRAP
 ========================= */
-
-.body-wrap{
-    display:flex;
-    flex:1;
-    overflow:hidden;
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* =========================
    SIDEBAR
 ========================= */
-
-.sidebar{
-    width:240px;
-    height:100%;
-    background:#111c44;
-    border-right:1px solid #1b2e6e;
-    overflow-y:auto;
-    flex-shrink:0;
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
     transition: width 0.3s ease;
 }
 
-.sidebar::-webkit-scrollbar{
-    width:6px;
+.sidebar::-webkit-scrollbar {
+    width: 6px;
 }
 
-.sidebar::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
+.sidebar::-webkit-scrollbar-thumb {
+    background: #1b2e6e;
+    border-radius: 10px;
 }
 
-.sidebar ul{
-    list-style:none;
-    padding:10px 0;
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
 }
 
-.sidebar ul li{
-    padding:12px 20px;
-    display:flex;
-    align-items:center;
-    cursor:pointer;
-    transition:.3s;
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.sidebar ul li a{
-    text-decoration:none;
-    color:#8898aa;
-    display:flex;
-    gap:12px;
-    align-items:center;
-    width:100%;
-    font-size:14px;
-    white-space:nowrap;
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .sidebar ul li:hover,
-.sidebar ul li.active{
-    background:#1b2e6e;
+.sidebar ul li.active {
+    background: #1b2e6e;
 }
 
 .sidebar ul li:hover a,
-.sidebar ul li.active a{
-    color:#ffffff;
+.sidebar ul li.active a {
+    color: #ffffff;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed ul li {
+    justify-content: center;
+}
+
+.sidebar.collapsed ul li a {
+    justify-content: center;
+    gap: 0;
+}
+
+.sidebar.collapsed ul li a span {
+    display: none;
 }
 
 /* =========================
-   MAIN
+   MAIN WORKSPACE
 ========================= */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 
-.main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+.content {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    background: #0b1437;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.add-btn {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.add-btn:hover {
+    background: #3182ce;
+}
+
+.export-btn {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.export-btn:hover {
+    background: #1b2e6e;
+    color: #ffffff;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 2px;
+}
+
+.tab {
+    padding: 10px 4px;
+    color: #8898aa;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tab:hover {
+    color: #ffffff;
+}
+
+.tab.active {
+    color: #4299e1;
+    font-weight: 600;
+}
+
+.tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 3px;
+    background: #4299e1;
+    border-radius: 10px;
+}
+
+/* Filter Card */
+.filter-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    flex-wrap: wrap;
+}
+
+.search-employee {
+    flex: 1;
+    min-width: 220px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-employee i {
+    color: #4a5568;
+    font-size: 13px;
+}
+
+.search-employee input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #ffffff;
+    font-size: 13.5px;
+}
+
+.filter-group select {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #cbd5e1;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+/* Performance Table */
+.table-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    overflow: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,.25);
+}
+
+.table-box::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.table-box::-webkit-scrollbar-thumb {
+    background: #1b2e6e;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+thead {
+    background: #16265c;
+}
+
+th {
+    padding: 14px 18px;
+    text-align: left;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+td {
+    padding: 13px 18px;
+    color: #d7dfef;
+    border-top: 1px solid #1b2e6e;
+    font-size: 13.5px;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background: rgba(66, 153, 225, 0.05);
+}
+
+.employee-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0b1437;
+    border: 1.5px solid #4299e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4299e1;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.employee-cell h4 {
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.employee-cell small {
+    color: #8898aa;
+    font-size: 11.5px;
+}
+
+.rating-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.rating-tag.excellent {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.rating-tag.verygood, .rating-tag.good {
+    background: rgba(66, 153, 225, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(66, 153, 225, 0.3);
+}
+
+.rating-tag.satisfactory {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.rating-tag.average {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.status-tag.completed {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+
+.status-tag.inprogress {
+    background: rgba(66, 153, 225, 0.1);
+    color: #60a5fa;
+}
+
+.action-btns {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.action-icon {
+    font-size: 15px;
+    cursor: pointer;
+    color: #8898aa;
+    transition: color 0.2s;
+}
+
+.action-icon:hover {
+    color: #4299e1;
+}
+
+.action-icon.delete-btn:hover {
+    color: #f87171;
+}
+
+/* Footer / Pagination */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 4px;
+    font-size: 13px;
+    color: #8898aa;
+}
+
+.pagination {
+    display: flex;
+    gap: 6px;
+}
+
+.page {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #8898aa;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.page.active {
+    background: #4299e1;
+    color: #ffffff;
+    border-color: #4299e1;
+}
+
+/* Secondary Tab Panels */
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.panel-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel-card h3 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.panel-card p {
+    color: #8898aa;
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 /* =========================
-   TOPBAR
+   MODALS
 ========================= */
-
-/* ───────── TOP NAVBAR ───────── */
-
-.navbar{
-    height:60px;
-    background:#111c44;
-    border-bottom:1px solid #1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 25px;
-    flex-shrink:0;
-    z-index:100;
-}
-
-.navbar-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.hamburger{
-    font-size:20px;
-    color:#8898aa;
-    cursor:pointer;
-}
-
-.navbar-logo{
-    width:40px;
-    height:40px;
-    background:#1b2e6e;
-    border:2px solid #4299e1;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:11px;
-    font-weight:bold;
-    color:#4299e1;
-}
-
-.navbar-title{
-    font-size:16px;
-    font-weight:700;
-    color:#ffffff;
-    letter-spacing:.5px;
-}
-
-.navbar-center{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    padding:0 40px;
-}
-
-.nav-search{
-    width:100%;
-    max-width:420px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    padding:9px 15px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.nav-search i{
-    color:#4a5568;
-    font-size:14px;
-}
-
-.nav-search input{
-    border:none;
-    outline:none;
-    background:none;
-    width:100%;
-    color:#e2e8f0;
-    font-size:14px;
-}
-
-.nav-search input::placeholder{
-    color:#4a5568;
-}
-
-.navbar-right{
-    display:flex;
-    align-items:center;
-    gap:20px;
-}
-
-.nav-icon-btn{
-    position:relative;
-    width:38px;
-    height:38px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    color:#8898aa;
-    font-size:16px;
-    transition:.3s;
-    text-decoration:none;
-}
-
-.nav-icon-btn:hover{
-    color:#4299e1;
-    border-color:#4299e1;
-}
-
-.nav-icon-btn .badge{
-    position:absolute;
-    top:-4px;
-    right:-4px;
-    background:#4299e1;
-    color:#fff;
-    font-size:9px;
-    font-weight:bold;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.nav-profile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    cursor:pointer;
-    padding:5px 10px;
-    border-radius:10px;
-    border:1px solid #1b2e6e;
-    position:relative;
-}
-
-.nav-profile-dropdown{
-    position:absolute;
-    top:calc(100% + 8px);
-    right:0;
-    min-width:160px;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
-    padding:6px;
-    display:none;
-    z-index:1000;
-}
-
-.nav-profile-dropdown.show{
-    display:block;
-}
-
-.nav-profile-dropdown a{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:9px 12px;
-    border-radius:8px;
-    color:#d7dfef;
-    font-size:13px;
-    text-decoration:none;
-    transition:.15s;
-}
-
-.nav-profile-dropdown a:hover{
-    background:rgba(66,153,225,.12);
-    color:#fff;
-}
-
-.nav-profile-dropdown a i{
-    width:14px;
-}
-
-.nav-profile-avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#8898aa;
-    font-size:16px;
-}
-
-.nav-profile-info h4{
-    font-size:13px;
-    font-weight:600;
-    color:#ffffff;
-}
-
-.nav-profile-info small{
-    font-size:11px;
-    color:#8898aa;
-}
-
-.nav-profile .fa-chevron-down{
-    font-size:11px;
-    color:#8898aa;
-}
-
-/* =========================
-   CONTENT
-========================= */
-
-.content{
-    flex:1;
-    padding:20px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    background:#0b1437;
-}
-
-.content h1{
-    color:#ffffff;
-    font-size:28px;
-    margin-bottom:18px;
-}
-
-/* =========================
-   TABS
-========================= */
-
-.tabs{
-    display:flex;
-    gap:30px;
-    margin-bottom:18px;
-    border-bottom:1px solid #1b2e6e;
-}
-
-.tab{
-    padding-bottom:14px;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-    position:relative;
-    font-size:14px;
-}
-
-.tab:hover{
-    color:#ffffff;
-}
-
-.tab.active{
-    color:#4299e1;
-    font-weight:600;
-}
-
-.tab.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-1px;
-    width:100%;
-    height:3px;
-    background:#4299e1;
-    border-radius:10px;
-}
-/* =========================
-   FILTER CARD
-========================= */
-
-.filter-card{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:18px;
-    display:flex;
-    gap:15px;
-    align-items:flex-end;
-    margin-bottom:18px;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-    flex-wrap:wrap;
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 540px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
 }
 
-/* =========================
-   SEARCH EMPLOYEE
-========================= */
-
-.search-employee{
-    width:260px;
-    padding:12px 15px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#8898aa;
-}
-
-.search-employee input{
-    width:100%;
-    border:none;
-    outline:none;
-    background:none;
-    color:#ffffff;
-    font-size:14px;
-}
-
-.search-employee input::placeholder{
-    color:#8898aa;
-}
-
-.search-employee:focus-within{
-    border-color:#4299e1;
-}
-
-/* =========================
-   FILTER GROUP
-========================= */
-
-.filter-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.filter-group label{
-    color:#8898aa;
-    font-size:13px;
-    font-weight:500;
-}
-
-.filter-group select{
-    width:170px;
-    padding:11px 12px;
-    background:#0b1437;
-    color:#ffffff;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    outline:none;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.filter-group select:hover,
-.filter-group select:focus{
-    border-color:#4299e1;
-}
-
-/* =========================
-   EXPORT BUTTON
-========================= */
-
-.export-btn{
-    padding:11px 22px;
-    background:#4299e1;
-    color:#ffffff;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.export-btn:hover{
-    background:#3182ce;
-}
-
-.export-btn i{
-    margin-right:6px;
-}
-
-/* =========================
-   EXTRA BUTTON STYLE
-========================= */
-
-.filter-card button{
-    height:43px;
-}
-
-/* =========================
-   FILTER ANIMATION
-========================= */
-
-.search-employee,
-.filter-group select,
-.export-btn{
-    transition:all .3s ease;
-}
-/* =========================
-   TABLE
-========================= */
-
-.table-box{
-    flex:1;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    overflow:auto;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-}
-
-.table-box::-webkit-scrollbar{
-    width:8px;
-    height:8px;
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
-.table-box::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
+.modal-close:hover {
+    color: #f87171;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:1050px;
+.form-group {
+    margin-bottom: 16px;
 }
 
-thead{
-    background:#16265c;
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-th{
-    padding:15px;
-    text-align:left;
-    color:#ffffff;
-    font-size:14px;
-    font-weight:600;
-    border-bottom:1px solid #1b2e6e;
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-td{
-    padding:15px;
-    color:#d7dfef;
-    border-top:1px solid #1b2e6e;
-    font-size:13px;
-    vertical-align:middle;
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #4299e1;
 }
 
-tbody tr{
-    transition:.3s;
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
 }
 
-tbody tr:hover{
-    background:#16265c;
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 16px;
 }
 
-/* =========================
-   EMPLOYEE
-========================= */
-
-.employee{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.employee img{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:2px solid #4299e1;
-}
-
-.employee h4{
-    color:#ffffff;
-    font-size:14px;
-    margin-bottom:3px;
-}
-
-.employee p{
-    color:#8898aa;
-    font-size:12px;
-}
-
-/* =========================
-   RATING BADGES
-========================= */
-
-.rating{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.good{
-    background:rgba(59,130,246,.18);
-    color:#60a5fa;
-}
-
-.excellent{
-    background:rgba(34,197,94,.18);
-    color:#4ade80;
-}
-
-.verygood{
-    background:rgba(6,182,212,.18);
-    color:#22d3ee;
-}
-
-.satisfactory{
-    background:rgba(251,191,36,.18);
-    color:#fbbf24;
-}
-
-.average{
-    background:rgba(239,68,68,.18);
-    color:#f87171;
-}
-
-/* =========================
-   STATUS BADGES
-========================= */
-
-.status{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.completed{
-    background:rgba(34,197,94,.18);
-    color:#4ade80;
+.btn-cancel {
+    background: #16265c;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
-.progress{
-    background:rgba(59,130,246,.18);
-    color:#60a5fa;
+.btn-cancel:hover {
+    background: #1b2e6e;
 }
 
-/* =========================
-   ACTION
-========================= */
-
-.action-icon{
-    font-size:16px;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.action-icon:hover{
-    color:#4299e1;
-    transform:scale(1.1);
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer{
-    margin-top:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:#8898aa;
-    font-size:13px;
+.btn-submit {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
 }
-
-.entries{
-    color:#8898aa;
-}
-
-/* =========================
-   PAGINATION
-========================= */
 
-.pagination{
-    display:flex;
-    gap:8px;
+.btn-submit:hover {
+    background: #3182ce;
 }
 
-.page{
-    width:36px;
-    height:36px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:8px;
-    border:1px solid #1b2e6e;
-    background:#111c44;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #16265c;
+    font-size: 13.5px;
 }
 
-.page:hover{
-    background:#1b2e6e;
-    color:#ffffff;
+.detail-label {
+    color: #8898aa;
 }
 
-.page.active{
-    background:#4299e1;
-    border-color:#4299e1;
-    color:#ffffff;
+.detail-val {
+    color: #ffffff;
+    font-weight: 500;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-
-@media(max-width:1200px){
-
-    .filter-card{
-        flex-wrap:wrap;
-    }
-
-    .tabs{
-        overflow-x:auto;
-        white-space:nowrap;
-    }
-
-    .search-box{
-        width:260px;
-    }
-
+@media(max-width: 1200px) {
+    .cards-grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media(max-width:768px){
-
-    body{
-        overflow:auto;
-    }
-
-    .sidebar{
-        width:200px;
-    }
-
-    .main{
-        margin-left:200px;
-        width:calc(100% - 200px);
-    }
-
-    .topbar{
-        padding:0 15px;
-    }
-
-    .search-box{
-        width:220px;
-    }
-
-    .filter-card{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    .search-employee,
-    .filter-group select,
-    .export-btn{
-        width:100%;
-    }
-
+@media(max-width: 768px) {
+    body { overflow: auto; }
+    .sidebar { width: 70px; }
+    .sidebar ul li a span { display: none; }
+    .header { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .header-buttons { width: 100%; }
+    .filter-card { flex-direction: column; align-items: stretch; }
+    .search-employee, .filter-group select { width: 100%; }
 }
-/* =========================
-   TABLE
-========================= */
-
-.table-box{
-    flex:1;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    overflow:auto;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-}
-
-.table-box::-webkit-scrollbar{
-    width:8px;
-    height:8px;
-}
-
-.table-box::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:1050px;
-}
-
-thead{
-    background:#16265c;
-}
-
-th{
-    padding:15px;
-    text-align:left;
-    color:#ffffff;
-    font-size:14px;
-    font-weight:600;
-    border-bottom:1px solid #1b2e6e;
-}
-
-td{
-    padding:15px;
-    color:#d7dfef;
-    border-top:1px solid #1b2e6e;
-    font-size:13px;
-    vertical-align:middle;
-}
-
-tbody tr{
-    transition:.3s;
-}
-
-tbody tr:hover{
-    background:#16265c;
-}
-
-/* =========================
-   EMPLOYEE
-========================= */
-
-.employee{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.employee img{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:2px solid #4299e1;
-}
-
-.employee h4{
-    color:#ffffff;
-    font-size:14px;
-    margin-bottom:3px;
-}
-
-.employee p{
-    color:#8898aa;
-    font-size:12px;
-}
-
-/* =========================
-   RATING BADGES
-========================= */
-
-.rating{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.good{
-    background:rgba(59,130,246,.18);
-    color:#60a5fa;
-}
-
-.excellent{
-    background:rgba(34,197,94,.18);
-    color:#4ade80;
-}
-
-.verygood{
-    background:rgba(6,182,212,.18);
-    color:#22d3ee;
-}
-
-.satisfactory{
-    background:rgba(251,191,36,.18);
-    color:#fbbf24;
-}
-
-.average{
-    background:rgba(239,68,68,.18);
-    color:#f87171;
-}
-
-/* =========================
-   STATUS BADGES
-========================= */
-
-.status{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.completed{
-    background:rgba(34,197,94,.18);
-    color:#4ade80;
-}
-
-.progress{
-    background:rgba(59,130,246,.18);
-    color:#60a5fa;
-}
-
-/* =========================
-   ACTION
-========================= */
-
-.action-icon{
-    font-size:16px;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.action-icon:hover{
-    color:#4299e1;
-    transform:scale(1.1);
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer{
-    margin-top:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:#8898aa;
-    font-size:13px;
-}
-
-.entries{
-    color:#8898aa;
-}
-
-/* =========================
-   PAGINATION
-========================= */
-
-.pagination{
-    display:flex;
-    gap:8px;
-}
-
-.page{
-    width:36px;
-    height:36px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:8px;
-    border:1px solid #1b2e6e;
-    background:#111c44;
-    color:#8898aa;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.page:hover{
-    background:#1b2e6e;
-    color:#ffffff;
-}
-
-.page.active{
-    background:#4299e1;
-    border-color:#4299e1;
-    color:#ffffff;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:1200px){
-
-    .filter-card{
-        flex-wrap:wrap;
-    }
-
-    .tabs{
-        overflow-x:auto;
-        white-space:nowrap;
-    }
-
-    .search-box{
-        width:260px;
-    }
-
-}
-
-@media(max-width:768px){
-
-    body{
-        overflow:auto;
-    }
-
-    .sidebar{
-        width:200px;
-    }
-
-    .main{
-        margin-left:200px;
-        width:calc(100% - 200px);
-    }
-
-    .topbar{
-        padding:0 15px;
-    }
-
-    .search-box{
-        width:220px;
-    }
-
-    .filter-card{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    .search-employee,
-    .filter-group select,
-    .export-btn{
-        width:100%;
-    }
-
-}
-
 </style>
+</head>
 <body>
 
 <!-- TOP NAVBAR -->
 <div class="navbar">
     <div class="navbar-left">
-        <div class="hamburger">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-
-        <div class="navbar-logo">
-            LOGO
-        </div>
-
-        <span class="navbar-title">
-            EMPLOYEE MANAGEMENT SYSTEM
-        </span>
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">EMS</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
-
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search anything...">
+            <input type="text" placeholder="Search reviews, employees, cycles...">
         </div>
     </div>
-
     <div class="navbar-right">
-
         <a class="nav-icon-btn" href="notification.html">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
-
         <div class="nav-icon-btn">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
-
         <div class="nav-profile" id="navProfileToggle">
-
-            <div class="nav-profile-avatar">
-                <i class="fa-regular fa-user"></i>
-            </div>
-
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
             <div class="nav-profile-info">
                 <h4>John Doe</h4>
                 <small>Admin</small>
             </div>
-
             <i class="fa-solid fa-chevron-down"></i>
-
             <div class="nav-profile-dropdown" id="navProfileDropdown">
                 <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
             </div>
-
         </div>
-
     </div>
 </div>
 
 <div class="body-wrap">
 
-<!-- Sidebar -->
- <div class="sidebar">
- <ul>
- <li ><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
- <li ><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
-        <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
- <li ><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
- <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
- <li ><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
- <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> Recruitment</a></li>
- <li class="active"><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
- <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
- <li ><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
- <li ><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
- <li ><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
- <li ><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
- <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
- <li ><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
- <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
- </ul>
- </div>
+    <!-- SIDEBAR (16 items) -->
+    <div class="sidebar" id="adminSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+            <li class="active"><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
 
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
 
-<!-- Main -->
-<div class="main">
-
-    <!-- Content -->
-
-    <div class="content">
-
-        <h1>Performance Management</h1>
-
-
-        <!-- Tabs -->
-
-        <div class="tabs">
-
-            <div class="tab active">
-                Performance Reviews
+            <div class="header">
+                <div>
+                    <h1>Performance Management</h1>
+                </div>
+                <div class="header-buttons">
+                    <button class="export-btn" id="adminExportPerfBtn">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                    <button class="add-btn" id="openReviewModalBtn">
+                        <i class="fa-solid fa-plus"></i> Add Review
+                    </button>
+                </div>
             </div>
 
-            <div class="tab">
-                My Reviews
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="all">Performance Reviews</div>
+                <div class="tab" data-tab="my">My Reviews</div>
+                <div class="tab" data-tab="team">Team Overview</div>
+                <div class="tab" data-tab="kpi">Goals & KPIs</div>
+                <div class="tab" data-tab="cycles">Appraisal Cycles</div>
             </div>
 
-            <div class="tab">
-                Team Reviews
+            <!-- TAB 1: ALL PERFORMANCE REVIEWS -->
+            <div class="tab-panel active" id="tabContentReviews">
+                <!-- Filter Card -->
+                <div class="filter-card">
+                    <div class="search-employee">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="adminPerfSearchInput" placeholder="Search employee, project, reviewer...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="adminPerfDeptFilter">
+                            <option value="All">All Departments</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="adminPerfCycleFilter">
+                            <option value="All">All Review Cycles</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="adminPerfStatusFilter">
+                            <option value="All">All Status</option>
+                            <option value="Completed">Completed</option>
+                            <option value="In Progress">In Progress</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Performance Table -->
+                <div class="table-box" style="margin-top:16px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Project</th>
+                                <th>KPI Score</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Review Cycle</th>
+                                <th>Reviewed By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="performanceTableBody">
+                            <tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading performance records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <div class="entries" id="perfEntriesCount">Showing 0 entries</div>
+                    <div class="pagination">
+                        <div class="page"><i class="fa-solid fa-angle-left"></i></div>
+                        <div class="page active">1</div>
+                        <div class="page"><i class="fa-solid fa-angle-right"></i></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="tab">
-                Goals & KPIs
+            <!-- TAB 2: TEAM OVERVIEW -->
+            <div class="tab-panel" id="tabContentTeam">
+                <div class="cards-grid">
+                    <div class="panel-card">
+                        <h3>Engineering Department</h3>
+                        <p>Average KPI: <strong style="color:#4ade80;">91%</strong> (Excellent)</p>
+                        <p>Completed Reviews: 12 / 12 &bull; Key Focus: Platform optimization and release stability.</p>
+                    </div>
+                    <div class="panel-card">
+                        <h3>Marketing Department</h3>
+                        <p>Average KPI: <strong style="color:#60a5fa;">84%</strong> (Very Good)</p>
+                        <p>Completed Reviews: 6 / 6 &bull; Key Focus: Campaign reach, lead nurturing, brand equity.</p>
+                    </div>
+                    <div class="panel-card">
+                        <h3>Sales Department</h3>
+                        <p>Average KPI: <strong style="color:#60a5fa;">87%</strong> (Very Good)</p>
+                        <p>Completed Reviews: 8 / 8 &bull; Key Focus: Q3 pipeline conversion and enterprise accounts.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="tab">
-                Appraisal Cycles
+            <!-- TAB 3: GOALS & KPIS -->
+            <div class="tab-panel" id="tabContentKpi">
+                <div class="cards-grid">
+                    <div class="panel-card">
+                        <h3>Q3 Organizational Delivery Rate</h3>
+                        <p>Target: 95% on-time milestone delivery across Engineering and Design.</p>
+                        <div style="background:#0b1437; border-radius:6px; height:8px; overflow:hidden; border:1px solid #1b2e6e; margin-top:6px;">
+                            <div style="background:#4ade80; height:100%; width:88%;"></div>
+                        </div>
+                        <small style="color:#8898aa;">Current Progress: 88%</small>
+                    </div>
+                    <div class="panel-card">
+                        <h3>Talent Growth & Upskilling</h3>
+                        <p>Target: 100% of interns to complete minimum 8 mentorship sprints.</p>
+                        <div style="background:#0b1437; border-radius:6px; height:8px; overflow:hidden; border:1px solid #1b2e6e; margin-top:6px;">
+                            <div style="background:#4299e1; height:100%; width:92%;"></div>
+                        </div>
+                        <small style="color:#8898aa;">Current Progress: 92%</small>
+                    </div>
+                    <div class="panel-card">
+                        <h3>Review Submission Compliance</h3>
+                        <p>Target: 100% appraisals signed off before quarter end.</p>
+                        <div style="background:#0b1437; border-radius:6px; height:8px; overflow:hidden; border:1px solid #1b2e6e; margin-top:6px;">
+                            <div style="background:#fbbf24; height:100%; width:75%;"></div>
+                        </div>
+                        <small style="color:#8898aa;">Current Progress: 75%</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: APPRAISAL CYCLES -->
+            <div class="tab-panel" id="tabContentCycles">
+                <div class="cards-grid">
+                    <div class="panel-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3>Q2 2026 Review Cycle</h3>
+                            <span class="status-tag completed">Completed</span>
+                        </div>
+                        <p>Period: April 1, 2026 &ndash; June 30, 2026</p>
+                        <p>Total Evaluated: 24 team members &bull; Signed off by Management.</p>
+                    </div>
+                    <div class="panel-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3>Q3 2026 Review Cycle</h3>
+                            <span class="status-tag inprogress">Active Cycle</span>
+                        </div>
+                        <p>Period: July 1, 2026 &ndash; September 30, 2026</p>
+                        <p>Total In Scope: 30 employees & interns &bull; Appraisals ongoing.</p>
+                    </div>
+                </div>
             </div>
 
         </div>
+    </div>
+</div>
 
-
-
-        <!-- Filter Card -->
-
-        <div class="filter-card">
-
-            <div class="search-employee">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input type="text"
-                placeholder="Search employee...">
-
-            </div>
-
-
-
-            <div class="filter-group">
-
-                <label>Department</label>
-
-                <select>
-
-                    <option>All</option>
-
-                </select>
-
-            </div>
-
-
-
-            <div class="filter-group">
-
-                <label>Review Cycle</label>
-
-                <select>
-
-                    <option>All</option>
-
-                </select>
-
-            </div>
-
-
-
-            <div class="filter-group">
-
-                <label>Status</label>
-
-                <select>
-
-                    <option>All</option>
-
-                </select>
-
-            </div>
-
-
-            <button class="export-btn">
-
-                <i class="fa-solid fa-download"></i>
-
-                Export
-
-            </button>
-
+<!-- VIEW DETAILS MODAL -->
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Performance Evaluation Details</h3>
+            <button class="modal-close" id="closeDetailsModalBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <!-- Performance Table -->
-
-<div class="table-box">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Employee</th>
-<th>Project</th>
-<th>KPI Score</th>
-<th>Rating</th>
-<th>Status</th>
-<th>Review Cycle</th>
-<th>Reviewed By</th>
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="performanceTableBody"><tr><td colspan="8" style="text-align:center; padding:24px; color:#8898aa;">Loading performance records...</td></tr></tbody>
-
-</table>
-
+        <div id="modalDetailsContent">
+            <!-- Populated via JS -->
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-cancel" id="closeDetailsBtn">Close</button>
+        </div>
+    </div>
 </div>
 
-
-
-<!-- Footer -->
-
-<div class="footer">
-
-<div class="entries">
-
-Showing 1 to 5 of 25 entries
-
-</div>
-
-
-<div class="pagination">
-
-<div class="page">
-
-<i class="fa-solid fa-angle-left"></i>
-
-</div>
-
-
-<div class="page active">
-
-1
-
-</div>
-
-<div class="page">
-
-2
-
-</div>
-
-<div class="page">
-
-3
-
-</div>
-
-<div class="page">
-
-...
-
-</div>
-
-<div class="page">
-
-5
-
-</div>
-
-
-<div class="page">
-
-<i class="fa-solid fa-angle-right"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ADD REVIEW MODAL -->
+<div class="modal-overlay" id="addReviewModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Record Performance Review</h3>
+            <button class="modal-close" id="closeAddReviewModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addReviewForm">
+            <div class="form-group">
+                <label for="revEmpName">Employee / Intern Name</label>
+                <input type="text" id="revEmpName" required placeholder="e.g., Sara Khan">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="revDept">Department</label>
+                    <select id="revDept" required>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Design">Design</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="IT">IT</option>
+                        <option value="Administration">Administration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="revType">Reviewee Type</label>
+                    <select id="revType">
+                        <option value="employee">Staff Employee</option>
+                        <option value="intern">Intern</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="revProject">Project Assessed</label>
+                    <input type="text" id="revProject" required placeholder="e.g., EMS Platform Revamp">
+                </div>
+                <div class="form-group">
+                    <label for="revCycle">Review Cycle</label>
+                    <select id="revCycle">
+                        <option value="Q3 2026">Q3 2026</option>
+                        <option value="Q2 2026">Q2 2026</option>
+                        <option value="Q1 2026">Q1 2026</option>
+                        <option value="Annual 2026">Annual 2026</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="revScore">Score (out of 5.0)</label>
+                    <input type="number" id="revScore" min="1" max="5" step="0.1" value="4.5" required>
+                </div>
+                <div class="form-group">
+                    <label for="revStatus">Status</label>
+                    <select id="revStatus">
+                        <option value="Completed" selected>Completed</option>
+                        <option value="In Progress">In Progress</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="revComments">Evaluation Feedback / Comments</label>
+                <textarea id="revComments" rows="3" placeholder="Provide qualitative review feedback..." style="resize:vertical;"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancelAddReviewModalBtn">Cancel</button>
+                <button type="submit" class="btn-submit">Submit Review</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script type="module">
-    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    // Sidebar toggle
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('adminSidebar')?.classList.toggle('collapsed');
+    });
+
+    // Profile dropdown
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
 
     const tableBody = document.getElementById('performanceTableBody');
+    let allPerfList = [];
+    let currentActiveTab = 'all';
 
-    function ratingClass(rating) {
-        if (rating >= 90) return { cls: 'excellent', label: 'Excellent' };
-        if (rating >= 80) return { cls: 'verygood', label: 'Very Good' };
-        if (rating >= 70) return { cls: 'good', label: 'Good' };
-        if (rating >= 60) return { cls: 'satisfactory', label: 'Satisfactory' };
+    // Tabs functionality
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.getAttribute('data-tab');
+            currentActiveTab = target;
+
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            if (target === 'all' || target === 'my') {
+                document.getElementById('tabContentReviews').classList.add('active');
+                applyFilters();
+            } else if (target === 'team') {
+                document.getElementById('tabContentTeam').classList.add('active');
+            } else if (target === 'kpi') {
+                document.getElementById('tabContentKpi').classList.add('active');
+            } else if (target === 'cycles') {
+                document.getElementById('tabContentCycles').classList.add('active');
+            }
+        });
+    });
+
+    // Modals
+    const detailsModal = document.getElementById('detailsModal');
+    const closeDetailsModalBtn = document.getElementById('closeDetailsModalBtn');
+    const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+    const hideDetailsModal = () => detailsModal.classList.remove('show');
+    closeDetailsModalBtn?.addEventListener('click', hideDetailsModal);
+    closeDetailsBtn?.addEventListener('click', hideDetailsModal);
+
+    const addReviewModal = document.getElementById('addReviewModal');
+    const openReviewModalBtn = document.getElementById('openReviewModalBtn');
+    const closeAddReviewModalBtn = document.getElementById('closeAddReviewModalBtn');
+    const cancelAddReviewModalBtn = document.getElementById('cancelAddReviewModalBtn');
+    const addReviewForm = document.getElementById('addReviewForm');
+
+    openReviewModalBtn?.addEventListener('click', () => addReviewModal.classList.add('show'));
+    const hideAddReviewModal = () => { addReviewModal.classList.remove('show'); addReviewForm.reset(); };
+    closeAddReviewModalBtn?.addEventListener('click', hideAddReviewModal);
+    cancelAddReviewModalBtn?.addEventListener('click', hideAddReviewModal);
+
+    function ratingClass(pct) {
+        if (pct >= 90) return { cls: 'excellent', label: 'Excellent' };
+        if (pct >= 80) return { cls: 'verygood', label: 'Very Good' };
+        if (pct >= 70) return { cls: 'good', label: 'Good' };
+        if (pct >= 60) return { cls: 'satisfactory', label: 'Satisfactory' };
         return { cls: 'average', label: 'Average' };
+    }
+
+    function renderPerfTable(list) {
+        tableBody.innerHTML = "";
+        const countDisplay = document.getElementById('perfEntriesCount');
+
+        if (!list || list.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;">No matching performance records.</td></tr>`;
+            if (countDisplay) countDisplay.textContent = 'Showing 0 entries';
+            return;
+        }
+
+        list.forEach((p) => {
+            const rawRating = typeof p.rating === 'number' ? p.rating : (parseFloat(p.rating) || 4.0);
+            const ratingPct = Math.round(rawRating > 5 ? rawRating : rawRating * 20);
+            const r = ratingClass(ratingPct);
+            const statusKey = (p.status || 'Completed').toLowerCase().replace(/\s+/g, '');
+            const isIntern = p.revieweeType === 'intern' || !!p.internName;
+            const revieweeLabel = isIntern ? ' <span style="font-size:10.5px; color:#4299e1;">(Intern)</span>' : '';
+
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>
+                        <div class="employee-cell">
+                            <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                            <div>
+                                <h4>${p.employeeName || p.name || '-'}${revieweeLabel}</h4>
+                                <small>${p.department || 'General'}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${p.projectName || p.project || '-'}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>${ratingPct}%</span>
+                            <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                <div style="background:#4299e1; height:100%; width:${ratingPct}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="rating-tag ${r.cls}">${r.label}</span></td>
+                    <td><span class="status-tag ${statusKey}">${p.status || 'Completed'}</span></td>
+                    <td>${p.reviewCycle || 'Q3 2026'}</td>
+                    <td>${p.reviewedBy || 'Manager'}${p.reviewedByRole ? ` <span style="color:#8898aa; font-size:11px;">(${p.reviewedByRole.toUpperCase()})</span>` : ''}</td>
+                    <td>
+                        <div class="action-btns">
+                            <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="${p.id}"></i>
+                            <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="${p.id}"></i>
+                        </div>
+                    </td>
+                </tr>
+            `);
+        });
+
+        if (countDisplay) countDisplay.textContent = `Showing ${list.length} of ${allPerfList.length} entries`;
+        attachActionListeners();
+    }
+
+    function attachActionListeners() {
+        document.querySelectorAll('.view-perf-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.getAttribute('data-id');
+                const p = allPerfList.find(item => item.id === id);
+                if (p) {
+                    const rawRating = typeof p.rating === 'number' ? p.rating : (parseFloat(p.rating) || 4.0);
+                    const ratingPct = Math.round(rawRating > 5 ? rawRating : rawRating * 20);
+                    const r = ratingClass(ratingPct);
+
+                    const content = document.getElementById('modalDetailsContent');
+                    content.innerHTML = `
+                        <div class="detail-row">
+                            <span class="detail-label">Employee / Reviewee</span>
+                            <span class="detail-val">${p.employeeName || p.name || '-'} ${p.revieweeType === 'intern' ? '(Intern)' : '(Employee)'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Department</span>
+                            <span class="detail-val">${p.department || '-'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Project Assessed</span>
+                            <span class="detail-val">${p.projectName || p.project || '-'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Review Cycle</span>
+                            <span class="detail-val">${p.reviewCycle || '-'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Score & Rating</span>
+                            <span class="detail-val">${ratingPct}% &bull; <span class="rating-tag ${r.cls}">${r.label}</span></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reviewed By</span>
+                            <span class="detail-val">${p.reviewedBy || '-'} (${p.reviewedByRole || 'Admin'})</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Review Status</span>
+                            <span class="detail-val">${p.status || 'Completed'}</span>
+                        </div>
+                        <div style="margin-top:14px; background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e;">
+                            <label style="color:#8898aa; font-size:11.5px; font-weight:600; text-transform:uppercase;">Feedback / Comments</label>
+                            <p style="color:#cbd5e1; font-size:13px; margin-top:4px; line-height:1.5;">${p.comments || 'No additional remarks submitted for this evaluation cycle.'}</p>
+                        </div>
+                    `;
+                    detailsModal.classList.add('show');
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const id = e.currentTarget.getAttribute('data-id');
+                if (confirm("Delete this performance record? This cannot be undone.")) {
+                    try {
+                        await deleteDoc(doc(db, "performance", id));
+                        allPerfList = allPerfList.filter(item => item.id !== id);
+                        applyFilters();
+                    } catch (err) {
+                        console.error("Failed to delete performance record: ", err);
+                        alert("Failed to delete record: " + err.message);
+                    }
+                }
+            });
+        });
+    }
+
+    function applyFilters() {
+        const q = (document.getElementById('adminPerfSearchInput')?.value || '').toLowerCase().trim();
+        const dept = document.getElementById('adminPerfDeptFilter')?.value || 'All';
+        const cycle = document.getElementById('adminPerfCycleFilter')?.value || 'All';
+        const status = document.getElementById('adminPerfStatusFilter')?.value || 'All';
+
+        const filtered = allPerfList.filter(p => {
+            const name = (p.employeeName || p.name || '').toLowerCase();
+            const proj = (p.projectName || p.project || '').toLowerCase();
+            const reviewer = (p.reviewedBy || '').toLowerCase();
+            const pDept = p.department || '';
+            const pCycle = p.reviewCycle || '';
+            const pStatus = p.status || 'Completed';
+
+            const matchQ = !q || name.includes(q) || proj.includes(q) || reviewer.includes(q) || pDept.toLowerCase().includes(q);
+            const matchDept = dept === 'All' || pDept === dept;
+            const matchCycle = cycle === 'All' || pCycle === cycle;
+            const matchStatus = status === 'All' || pStatus.toLowerCase() === status.toLowerCase();
+
+            if (currentActiveTab === 'my') {
+                const currentName = (currentUser?.name || 'Admin').toLowerCase();
+                const matchMy = name.includes(currentName) || reviewer.includes(currentName);
+                return matchMy && matchQ && matchDept && matchCycle && matchStatus;
+            }
+
+            return matchQ && matchDept && matchCycle && matchStatus;
+        });
+
+        renderPerfTable(filtered);
     }
 
     async function loadPerformance() {
         try {
             const snap = await getDocs(collection(db, "performance"));
-            if (snap.empty) {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#8898aa;">No performance records found.</td></tr>`;
-                return;
-            }
-            tableBody.innerHTML = "";
+            allPerfList = [];
+
             snap.forEach((docSnap) => {
-                const p = docSnap.data();
-                const ratingPct = Math.round((p.rating || 0) * 20);
-                const r = ratingClass(ratingPct);
-                const statusClass = (p.status || 'Completed').toLowerCase().replace(/\s+/g, '');
-                const revieweeLabel = p.revieweeType === 'intern' ? ' (Intern)' : '';
-                tableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td><div class="employee"><div><h4>${p.employeeName || '-'}${revieweeLabel}</h4><p>${p.department || ''}</p></div></div></td>
-                        <td>${p.projectName || '-'}</td>
-                        <td>${ratingPct}%</td>
-                        <td><span class="rating ${r.cls}">${r.label}</span></td>
-                        <td><span class="status ${statusClass}">${p.status || 'Completed'}</span></td>
-                        <td>${p.reviewCycle || '-'}</td>
-                        <td>${p.reviewedBy || '-'}${p.reviewedByRole ? ` (${p.reviewedByRole.toUpperCase()})` : ''}</td>
-                        <td><i class="fa-regular fa-eye action-icon"></i></td>
-                    </tr>
-                `);
+                allPerfList.push({ id: docSnap.id, ...docSnap.data() });
             });
+
+            // Populate departments dropdown
+            const depts = Array.from(new Set(allPerfList.map(p => p.department).filter(Boolean))).sort();
+            const deptEl = document.getElementById('adminPerfDeptFilter');
+            if (deptEl) {
+                deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+            }
+
+            // Populate cycles dropdown
+            const cycles = Array.from(new Set(allPerfList.map(p => p.reviewCycle).filter(Boolean))).sort();
+            const cycleEl = document.getElementById('adminPerfCycleFilter');
+            if (cycleEl) {
+                cycleEl.innerHTML = `<option value="All">All Review Cycles</option>` + cycles.map(c => `<option value="${c}">${c}</option>`).join('');
+            }
+
+            applyFilters();
         } catch (error) {
             console.error("Failed to load performance records: ", error);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load records: ${error.message}</td></tr>`;
         }
     }
+
+    document.getElementById('adminPerfSearchInput')?.addEventListener('input', applyFilters);
+    document.getElementById('adminPerfDeptFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminPerfCycleFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminPerfStatusFilter')?.addEventListener('change', applyFilters);
+
+    // Add Review Submission
+    addReviewForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const empName = document.getElementById('revEmpName').value.trim();
+            const dept = document.getElementById('revDept').value;
+            const revType = document.getElementById('revType').value;
+            const project = document.getElementById('revProject').value.trim();
+            const cycle = document.getElementById('revCycle').value;
+            const score = parseFloat(document.getElementById('revScore').value) || 4.0;
+            const status = document.getElementById('revStatus').value;
+            const comments = document.getElementById('revComments').value.trim();
+
+            const newReview = {
+                employeeName: empName,
+                name: empName,
+                department: dept,
+                revieweeType: revType,
+                projectName: project,
+                project: project,
+                reviewCycle: cycle,
+                rating: score,
+                status: status,
+                comments: comments || 'Consistent contribution and strong collaboration.',
+                reviewedBy: currentUser?.name || 'Alice Admin',
+                reviewedByRole: 'admin',
+                timestamp: serverTimestamp()
+            };
+
+            await addDoc(collection(db, "performance"), newReview);
+            hideAddReviewModal();
+            await loadPerformance();
+        } catch (err) {
+            console.error("Error creating performance review: ", err);
+            alert("Failed to submit review: " + err.message);
+        }
+    });
+
+    document.getElementById('adminExportPerfBtn')?.addEventListener('click', () => {
+        if (!allPerfList.length) return alert('No performance records to export.');
+        const rows = [["Employee", "Department", "Project", "Rating (%)", "Status", "Review Cycle", "Reviewed By", "Comments"]];
+        allPerfList.forEach(p => {
+            const rawRating = typeof p.rating === 'number' ? p.rating : (parseFloat(p.rating) || 4.0);
+            const ratingPct = Math.round(rawRating > 5 ? rawRating : rawRating * 20);
+            rows.push([
+                p.employeeName || p.name || '',
+                p.department || '',
+                p.projectName || p.project || '',
+                `${ratingPct}%`,
+                p.status || 'Completed',
+                p.reviewCycle || '',
+                p.reviewedBy || '',
+                p.comments || ''
+            ]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Admin-Performance-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
 
     loadPerformance();
 </script>

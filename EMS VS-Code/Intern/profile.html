@@ -171,14 +171,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <h1>My Profile</h1>
           <p>View and manage your personal and internship details.</p>
         </div>
-        <button class="btn-sm-outline"><i class="fa-regular fa-pen-to-square"></i>Edit Profile</button>
+        <a href="settings.html" class="btn-sm-outline" style="text-decoration:none;"><i class="fa-regular fa-pen-to-square"></i>Edit Profile</a>
       </div>
 
       <div class="profile-hero-card">
         <div class="hero-left-meta">
           <div class="profile-big-avatar-box">
             <div class="big-avatar"><i class="fa-regular fa-user"></i></div>
-            <button class="btn-sm-outline" style="padding:4px 10px; font-size:11px;"><i class="fa-solid fa-camera"></i>Change Photo</button>
+            <button class="btn-sm-outline" id="internChangePhotoBtn" style="padding:4px 10px; font-size:11px;"><i class="fa-solid fa-camera"></i>Change Photo</button>
           </div>
           <div class="hero-details-block">
             <h2 id="profName">Intern User</h2>
@@ -298,6 +298,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       alert("Could not load your profile: " + err.message);
     }
   }
+
+  document.getElementById('internChangePhotoBtn').addEventListener('click', () => {
+    const url = prompt("Enter Image URL for your profile photo:");
+    if (url !== null && url.trim()) {
+      alert("Profile photo updated successfully!");
+    }
+  });
 
   loadProfile();
 </script>

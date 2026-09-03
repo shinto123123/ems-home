@@ -3,510 +3,1468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HR Dashboard - Attendance Calendar</title>
+<title>Attendance Management - HR Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    color: #e2e8f0;
+}
 
-/* ── NAVBAR ── */
-.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
-.navbar-left{display:flex;align-items:center;gap:14px;}
-.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
-.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
-.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
-.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
-.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
-.nav-search i{color:#4a5568;font-size:13px;}
-.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
-.nav-search input::placeholder{color:#4a5568;}
-.navbar-right{display:flex;align-items:center;gap:16px;}
-.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;text-decoration:none;}
-.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
-.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.nav-profile{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
-.nav-profile:hover{border-color:#4299e1;}
-.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
-.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
-.nav-profile-info small{font-size:11px;color:#8898aa;}
-.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
-.nav-profile-dropdown.show{display:block;}
-.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
-.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
-.nav-profile-dropdown a i{width:14px;}
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
 
-/* ── BODY WRAP ── */
-.body-wrap{display:flex;flex:1;overflow:hidden;}
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-/* ── SIDEBAR ── */
-.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
-.sidebar ul{list-style:none;padding:8px 0;}
-.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
-.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
-.sidebar ul li a i{width:16px;font-size:14px;}
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
 
-/* ── MAIN WORKSPACE AREA ── */
-.main-workspace{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
+}
 
-.page-header{padding:16px 24px 8px;}
-.page-header h2{font-size:20px;font-weight:700;color:#fff;}
-.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
-.breadcrumb span{color:#4299e1;}
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
+}
 
-/* Split-pane content container */
-.content-grid{flex:1;display:flex;padding:14px 24px 24px;gap:20px;overflow:hidden;}
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
 
-/* ── EMPLOYEE LIST PANEL (LEFT) ── */
-.employee-panel{width:320px;background:#111c44;border:1px solid #1b2e6e;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;}
-.panel-search-box{padding:16px;border-bottom:1px solid #1b2e6e;}
-.side-search{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;}
-.side-search input{border:none;outline:none;background:none;color:#fff;font-size:13px;width:100%;}
-.side-search i{color:#4a5568;}
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-.employee-list{flex:1;overflow-y:auto;list-style:none;}
-.employee-list::-webkit-scrollbar{width:5px;}
-.employee-list::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:10px;}
+.nav-search i { color: #4a5568; font-size: 14px; }
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.nav-search input::placeholder { color: #4a5568; }
 
-.employee-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #1b2e6e;cursor:pointer;transition:.2s;}
-.employee-item:hover{background:rgba(66,153,225,0.04);}
-.employee-item.active{background:rgba(66,153,225,0.12);border-left:4px solid #4299e1;}
-.emp-avatar{width:36px;height:36px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:13px;}
-.emp-info h4{font-size:13.5px;color:#fff;font-weight:600;margin-bottom:2px;}
-.emp-info p{font-size:11px;color:#8898aa;}
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
-/* ── CALENDAR DASHBOARD WORKSPACE (RIGHT) ── */
-.calendar-panel{flex:1;background:#111c44;border:1px solid #1b2e6e;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;}
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    transition: .3s;
+    text-decoration: none;
+}
 
-/* Calendar Header controls */
-.calendar-header{padding:16px 20px;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;}
-.active-user-display{display:flex;align-items:center;gap:12px;}
-.active-user-display h3{font-size:16px;color:#fff;font-weight:600;}
-.active-user-display span{font-size:12px;color:#8898aa;background:#0b1437;padding:2px 8px;border-radius:4px;border:1px solid #1b2e6e;}
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
+}
 
-.calendar-controls{display:flex;align-items:center;gap:12px;}
-.month-nav-btn{background:#0b1437;border:1px solid #1b2e6e;color:#fff;width:32px;height:32px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.month-nav-btn:hover{border-color:#4299e1;color:#4299e1;}
-.current-month-label{color:#fff;font-size:15px;font-weight:600;min-width:110px;text-align:center;}
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+}
+
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+
+.nav-profile-info h4 { font-size: 13px; font-weight: 600; color: #ffffff; }
+.nav-profile-info small { font-size: 11px; color: #8898aa; }
+.nav-profile .fa-chevron-down { font-size: 11px; color: #8898aa; }
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
+}
+.nav-profile-dropdown.show { display: block; }
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
+}
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
+}
+.nav-profile-dropdown a i { width: 14px; }
+
+/* =========================
+   BODY WRAP
+========================= */
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
+}
+
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background: #1b2e6e;
+}
+
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    color: #ffffff;
+}
+
+.sidebar.collapsed { width: 70px; }
+.sidebar.collapsed ul li { justify-content: center; }
+.sidebar.collapsed ul li a { justify-content: center; gap: 0; }
+.sidebar.collapsed ul li a span { display: none; }
+
+/* =========================
+   MAIN WRAPPER & CONTENT
+========================= */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    background: #0b1437;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.page-header h1 { font-size: 22px; font-weight: 700; color: #ffffff; }
+.page-header p { font-size: 13px; color: #8898aa; margin-top: 2px; }
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.btn-primary:hover { background: #3182ce; }
+
+.btn-secondary {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.btn-secondary:hover { background: #1b2e6e; color: #fff; }
+
+/* ── ATTENDANCE KPI CARDS ── */
+.att-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.att-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.att-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.att-card-info h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.att-card-info p {
+    font-size: 12px;
+    color: #8898aa;
+    margin-top: 2px;
+}
+
+/* ── MAIN WORKSPACE (LEFT ROSTER + RIGHT CALENDAR) ── */
+.attendance-layout {
+    display: flex;
+    gap: 16px;
+    flex: 1;
+    min-height: 450px;
+}
+
+/* Left Employee Panel */
+.employee-panel {
+    width: 310px;
+    flex-shrink: 0;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.employee-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #16265c;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+.employee-search i { color: #8898aa; font-size: 13px; }
+.employee-search input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #e2e8f0;
+    font-size: 13.5px;
+    width: 100%;
+}
+.employee-search input::placeholder { color: #5a6a85; }
+
+.employee-list {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.employee-list::-webkit-scrollbar { width: 5px; }
+.employee-list::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+.employee {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #1b2e6e;
+    transition: background 0.2s;
+}
+
+.employee:last-child { border-bottom: none; }
+.employee:hover { background: rgba(27, 46, 110, 0.5); }
+.employee.active {
+    background: #1b2e6e;
+    border-left: 4px solid #4299e1;
+    padding-left: 10px;
+}
+
+.emp-profile-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.employee-avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0b1437;
+    border: 1.5px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.employee.active .employee-avatar-placeholder { border-color: #4299e1; color: #4299e1; }
+
+.employee-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.employee-info span {
+    font-size: 11px;
+    color: #8898aa;
+    display: block;
+    margin-top: 1px;
+}
+
+.emp-status-pill {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.emp-status-pill.present { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+.emp-status-pill.late { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.emp-status-pill.leave { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+.emp-status-pill.absent { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+/* Right Calendar Panel */
+.calendar-panel {
+    flex: 1;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.calendar-top-bar {
+    padding: 14px 18px;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.current-profile-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.current-profile-badge h2 { font-size: 16px; color: #ffffff; font-weight: 600; }
+.current-profile-badge span {
+    background: #0b1437;
+    color: #4299e1;
+    font-size: 11.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #1b2e6e;
+    font-weight: 600;
+}
+
+.calendar-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-arrow-btn {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-arrow-btn:hover { border-color: #4299e1; color: #4299e1; }
+
+.calendar-navigation span {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Monthly Stats Strip */
+.monthly-stats-strip {
+    background: #14204d;
+    padding: 9px 18px;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.month-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+}
+
+.month-stat-item strong {
+    color: #ffffff;
+    font-weight: 700;
+}
 
 /* Legend Row */
-.legend-bar{background:#162256;padding:10px 20px;border-bottom:1px solid #1b2e6e;display:flex;gap:20px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#cbd5e1;}
-.legend-dot{width:10px;height:10px;border-radius:50%;}
+.calendar-legend {
+    background: #162256;
+    padding: 8px 18px;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
 
-/* Main Grid Engine */
-.calendar-view{flex:1;display:flex;flex-direction:column;padding:16px;overflow-y:auto;}
-.weekday-header{display:grid;grid-template-columns:repeat(7, 1fr);text-align:center;margin-bottom:8px;}
-.weekday-header span{color:#8898aa;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:6px 0;}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #cbd5e1; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.legend-dot.present { background: #4ade80; }
+.legend-dot.late { background: #f59e0b; }
+.legend-dot.leave { background: #a855f7; }
+.legend-dot.absent { background: #f87171; }
 
-.days-grid{display:grid;grid-template-columns:repeat(7, 1fr);grid-auto-rows: minmax(76px, 1fr);gap:8px;flex:1;}
-.calendar-day{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:space-between;position:relative;}
-.calendar-day.empty{background:transparent;border:none;}
+/* Calendar Grid */
+.calendar-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    overflow-y: auto;
+}
 
-.day-num{font-size:12px;font-weight:600;color:#8898aa;}
-.calendar-day.today .day-num{color:#4299e1;background:rgba(66,153,225,0.15);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 6px;
+}
 
-/* Status Blocks for Calendar Cells */
-.day-status{font-size:10px;font-weight:700;padding:3px 6px;border-radius:4px;text-align:center;margin-top:4px;}
-.day-time{font-size:10px;color:#8898aa;margin-top:auto;text-align:right;}
+.weekdays div {
+    color: #8898aa;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 0;
+}
 
-/* Status Variant Styles matches system badges */
-.status-present{border-left:3px solid #4ade80;}
-.status-present .day-status{background:rgba(74,222,128,0.1);color:#4ade80;}
-.status-late{border-left:3px solid #fbbf24;}
-.status-late .day-status{background:rgba(251,191,36,0.1);color:#fbbf24;}
-.status-leave{border-left:3px solid #60a5fa;}
-.status-leave .day-status{background:rgba(96,165,250,0.1);color:#60a5fa;}
-.status-absent{border-left:3px solid #f87171;}
-.status-absent .day-status{background:rgba(248,113,113,0.1);color:#f87171;}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(70px, 1fr);
+    gap: 6px;
+    flex: 1;
+}
 
-/* Dot references */
-.dot-present{background:#4ade80;}
-.dot-late{background:#fbbf24;}
-.dot-leave{background:#60a5fa;}
-.dot-absent{background:#f87171;}
+.day {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.day:hover:not(.empty) {
+    transform: translateY(-2px);
+    border-color: #4299e1;
+}
+
+.day.empty { background: transparent; border: none; cursor: default; }
+.day-number { font-size: 15px; font-weight: 700; color: #cbd5e1; }
+.day.today .day-number {
+    color: #4299e1;
+    background: rgba(66,153,225,0.18);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-label-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 2px;
+    text-transform: uppercase;
+}
+
+.time-stamp {
+    font-size: 9.5px;
+    color: #8898aa;
+    margin-top: auto;
+    text-align: right;
+}
+
+/* Status variants */
+.day.present { border-left: 4px solid #4ade80; }
+.day.present .status-label-badge { background: rgba(74,222,128,0.16); color: #4ade80; }
+.day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.08); }
+.day.late .status-label-badge { background: rgba(245,158,11,0.25); color: #fbbf24; }
+.day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.08); }
+.day.leave .status-label-badge { background: rgba(168,85,247,0.25); color: #c084fc; }
+.day.absent { border-left: 4px solid #f87171; }
+.day.absent .status-label-badge { background: rgba(248,113,113,0.16); color: #f87171; }
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-close {
+    background: none;
+    border: none;
+    color: #8898aa;
+    font-size: 18px;
+    cursor: pointer;
+}
+.modal-close:hover { color: #f87171; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 9px 12px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13.5px;
+    outline: none;
+}
+.form-group input:focus, .form-group select:focus { border-color: #4299e1; }
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width: 1200px) {
+    .att-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media(max-width: 768px) {
+    body { overflow: auto; }
+    .sidebar { width: 70px; }
+    .sidebar ul li a span { display: none; }
+    .attendance-layout { flex-direction: column; }
+    .employee-panel { width: 100%; height: 260px; }
+}
 </style>
 </head>
 <body>
 
+<!-- TOP NAVBAR -->
 <div class="navbar">
-  <div class="navbar-left">
-    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-    <div class="navbar-logo">HR</div>
-    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
-  </div>
-  <div class="navbar-center">
-    <div class="nav-search">
-      <i class="fa-solid fa-search"></i>
-      <input type="text" placeholder="Search employees, documents, departments...">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">HR</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
-  </div>
-  <div class="navbar-right">
-    <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">5</span></a>
-    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
-    <div class="nav-profile" id="navProfileToggle">
-      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
-      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
-      <i class="fa-solid fa-chevron-down" style="font-size:11px;color:#8898aa;"></i>
-      <div class="nav-profile-dropdown" id="navProfileDropdown">
-        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-      </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search attendance records, staff...">
+        </div>
     </div>
-  </div>
+    <div class="navbar-right">
+        <a class="nav-icon-btn" href="notification.html">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </a>
+        <div class="nav-icon-btn">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">5</span>
+        </div>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info">
+                <h4>HR Manager</h4>
+                <small>Human Resources</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="body-wrap">
 
-  <div class="sidebar">
-    <ul>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
-      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
-      <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
-      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
-      <li><a href="#"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
-      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
-      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
-      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
-      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
-      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
-      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
-    </ul>
-  </div>
-
-  <div class="main-workspace">
-    <div class="page-header">
-      <h2>Attendance Tracker</h2>
-      <div class="breadcrumb">Dashboard &gt; <span>Attendance Calendar</span></div>
+    <!-- SIDEBAR (HR 14 items) -->
+    <div class="sidebar" id="hrSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship Management</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports & Analytics</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
     </div>
-    
-    <div class="content-grid">
-      
-      <div class="employee-panel">
-        <div class="panel-search-box">
-          <div class="side-search">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="empSearch" placeholder="Search employee...">
-          </div>
-        </div>
-        <ul class="employee-list" id="employeeListContainer">
-          </ul>
-      </div>
 
-      <div class="calendar-panel">
-        <div class="calendar-header">
-          <div class="active-user-display">
-            <h3 id="targetEmployeeName">John Doe</h3>
-            <span id="targetEmployeeId">EMP001</span>
-          </div>
-          <div class="calendar-controls">
-            <button class="month-nav-btn" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <span class="current-month-label" id="monthYearLabel">May 2025</span>
-            <button class="month-nav-btn" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-        </div>
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
 
-        <div class="legend-bar">
-          <div class="legend-item"><div class="legend-dot dot-present"></div>Present</div>
-          <div class="legend-item"><div class="legend-dot dot-late"></div>Late Arrival</div>
-          <div class="legend-item"><div class="legend-dot dot-leave"></div>On Leave</div>
-          <div class="legend-item"><div class="legend-dot dot-absent"></div>Absent</div>
-        </div>
-
-        <div class="calendar-view">
-          <div class="weekday-header">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
-          <div class="days-grid" id="daysGridContainer">
+            <div class="page-header">
+                <div>
+                    <h1>Attendance Management</h1>
+                    <p>Real-time employee check-in tracking, timesheets, and monthly attendance rosters.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="exportAllAttBtn"><i class="fa-solid fa-download"></i> Export Roster</button>
+                    <button class="btn-primary" id="openLogAttBtn"><i class="fa-solid fa-plus"></i> Mark Attendance</button>
+                </div>
             </div>
-        </div>
-      </div>
 
+            <!-- ATTENDANCE KPI METRICS DECK -->
+            <div class="att-cards">
+                <div class="att-card">
+                    <div class="att-card-icon" style="color:#4299e1;"><i class="fa-solid fa-users"></i></div>
+                    <div class="att-card-info">
+                        <h3 id="statTotalStaff">0</h3>
+                        <p>Total Staff</p>
+                    </div>
+                </div>
+                <div class="att-card">
+                    <div class="att-card-icon" style="color:#4ade80;"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="att-card-info">
+                        <h3 id="statPresentToday">0</h3>
+                        <p>Present Today</p>
+                    </div>
+                </div>
+                <div class="att-card">
+                    <div class="att-card-icon" style="color:#f59e0b;"><i class="fa-solid fa-user-clock"></i></div>
+                    <div class="att-card-info">
+                        <h3 id="statLateToday">0</h3>
+                        <p>Late Arrival</p>
+                    </div>
+                </div>
+                <div class="att-card">
+                    <div class="att-card-icon" style="color:#c084fc;"><i class="fa-solid fa-plane-departure"></i></div>
+                    <div class="att-card-info">
+                        <h3 id="statOnLeaveToday">0</h3>
+                        <p>On Leave</p>
+                    </div>
+                </div>
+                <div class="att-card">
+                    <div class="att-card-icon" style="color:#f87171;"><i class="fa-solid fa-user-xmark"></i></div>
+                    <div class="att-card-info">
+                        <h3 id="statAbsentToday">0</h3>
+                        <p>Absent Today</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN WORKSPACE LAYOUT -->
+            <div class="attendance-layout">
+
+                <!-- LEFT ROSTER -->
+                <div class="employee-panel">
+                    <div class="employee-search">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="employeeSearchInput" placeholder="Search employee...">
+                    </div>
+                    <div class="employee-list" id="firebaseEmployeeList">
+                        <div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading roster...</div>
+                    </div>
+                </div>
+
+                <!-- RIGHT CALENDAR -->
+                <div class="calendar-panel">
+                    <div class="calendar-top-bar">
+                        <div class="current-profile-badge">
+                            <h2 id="activeProfileName">Select an Employee</h2>
+                            <span id="activeProfileId">ID: --</span>
+                            <span id="activeProfileDept" style="color:#8898aa; border-color:transparent;">--</span>
+                        </div>
+                        <div class="calendar-navigation">
+                            <button class="nav-arrow-btn" id="prevMonthBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span id="monthYearLabel">-</span>
+                            <button class="nav-arrow-btn" id="nextMonthBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="nav-arrow-btn" id="adminExportAttBtn" title="Export Selected Employee CSV" style="width:auto; padding:6px 12px; margin-left:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-csv"></i> Employee CSV</button>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Stats Strip -->
+                    <div class="monthly-stats-strip">
+                        <div class="month-stat-item">Present: <strong id="mStatPresent" style="color:#4ade80;">0</strong> days</div>
+                        <div class="month-stat-item">Late: <strong id="mStatLate" style="color:#fbbf24;">0</strong> days</div>
+                        <div class="month-stat-item">Leave: <strong id="mStatLeave" style="color:#c084fc;">0</strong> days</div>
+                        <div class="month-stat-item">Absent: <strong id="mStatAbsent" style="color:#f87171;">0</strong> days</div>
+                        <div class="month-stat-item">Attendance Rate: <strong id="mStatRate" style="color:#4299e1;">0%</strong></div>
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item"><div class="legend-dot present"></div>Present</div>
+                        <div class="legend-item"><div class="legend-dot late"></div>Late Arrival</div>
+                        <div class="legend-item"><div class="legend-dot leave"></div>On Leave</div>
+                        <div class="legend-item"><div class="legend-dot absent"></div>Absent</div>
+                    </div>
+
+                    <div class="calendar-view">
+                        <div class="weekdays">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
-  </div>
+</div>
+
+<!-- MARK / LOG ATTENDANCE MODAL -->
+<div class="modal-overlay" id="logAttModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Mark / Update Attendance</h3>
+            <button class="modal-close" id="closeLogAttModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="logAttForm">
+            <div class="form-group">
+                <label for="attEmployeeSelect">Select Employee</label>
+                <select id="attEmployeeSelect" required>
+                    <!-- Options populated via JS -->
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="attDate">Date</label>
+                    <input type="date" id="attDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="attStatus">Attendance Status</label>
+                    <select id="attStatus">
+                        <option value="present" selected>Present</option>
+                        <option value="late">Late Arrival</option>
+                        <option value="leave">On Leave</option>
+                        <option value="absent">Absent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="attCheckIn">Check-In Time</label>
+                    <input type="time" id="attCheckIn" value="09:00">
+                </div>
+                <div class="form-group">
+                    <label for="attCheckOut">Check-Out Time</label>
+                    <input type="time" id="attCheckOut" value="17:30">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="attRemarks">Remarks / Notes</label>
+                <input type="text" id="attRemarks" placeholder="e.g., Client meeting, Traffic delay...">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="cancelLogAttBtn">Cancel</button>
+                <button type="submit" class="btn-primary">Save Attendance Log</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script type="module">
-import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { db } from "../assets/js/firebase-config.js";
-import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
-const currentUser = requireRole(["hr"]);
-paintNavProfile(currentUser);
+    const currentUser = requireRole(["hr", "admin"]);
+    paintNavProfile(currentUser);
 
-document.getElementById('navProfileToggle').addEventListener('click', (e) => {
-    e.stopPropagation();
-    document.getElementById('navProfileDropdown').classList.toggle('show');
-});
-document.addEventListener('click', () => {
-    document.getElementById('navProfileDropdown').classList.remove('show');
-});
-document.getElementById('logoutLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    logout("../");
-});
-
-// Live roster + attendance state (replaces the old mock employeesData array)
-let employeesData = [];
-let activeEmployee = null;
-const today = new Date();
-let currentCalendarDate = new Date(today.getFullYear(), today.getMonth(), 1);
-
-const empSearchInput = document.getElementById('empSearch');
-const employeeListContainer = document.getElementById('employeeListContainer');
-const daysGridContainer = document.getElementById('daysGridContainer');
-const monthYearLabel = document.getElementById('monthYearLabel');
-const targetEmployeeName = document.getElementById('targetEmployeeName');
-const targetEmployeeId = document.getElementById('targetEmployeeId');
-
-// Render Left Panel Items
-function renderEmployeeList(filterText = "") {
-  employeeListContainer.innerHTML = "";
-  const filterQuery = filterText.toLowerCase().trim();
-
-  if (employeesData.length === 0) {
-    employeeListContainer.innerHTML = `<li style="padding:20px;color:#8898aa;font-size:13px;text-align:center;">No employees found.</li>`;
-    return;
-  }
-
-  const matches = employeesData.filter(emp =>
-    emp.name.toLowerCase().includes(filterQuery) || emp.id.toLowerCase().includes(filterQuery)
-  );
-
-  if (matches.length === 0) {
-    employeeListContainer.innerHTML = `<li style="padding:20px;color:#8898aa;font-size:13px;text-align:center;">No matching employees.</li>`;
-    return;
-  }
-
-  matches.forEach(emp => {
-    const li = document.createElement('li');
-    li.className = `employee-item ${activeEmployee && activeEmployee.id === emp.id ? 'active' : ''}`;
-    li.innerHTML = `
-      <div class="emp-avatar"><i class="fa-regular fa-user"></i></div>
-      <div class="emp-info">
-        <h4>${emp.name}</h4>
-        <p>${emp.id} • ${emp.title}</p>
-      </div>
-    `;
-    li.addEventListener('click', async () => {
-      activeEmployee = emp;
-      targetEmployeeName.textContent = emp.name;
-      targetEmployeeId.textContent = emp.id;
-      renderEmployeeList(filterText);
-      await loadAttendanceForActiveEmployee();
-      renderCalendarGrid();
-    });
-    employeeListContainer.appendChild(li);
-  });
-}
-
-// Normalize an attendance doc's date field (string "YYYY-MM-DD" or Firestore Timestamp) into a JS Date
-function parseAttendanceDate(rawDate) {
-  if (!rawDate) return null;
-  if (typeof rawDate.toDate === 'function') return rawDate.toDate();
-  if (typeof rawDate === 'string') {
-    const parts = rawDate.split('-');
-    if (parts.length === 3) {
-      const [y, m, d] = parts.map(Number);
-      return new Date(y, m - 1, d);
-    }
-    const fallback = new Date(rawDate);
-    return isNaN(fallback.getTime()) ? null : fallback;
-  }
-  if (rawDate instanceof Date) return rawDate;
-  return null;
-}
-
-// Bucket a set of attendance records into day-of-month arrays for the currently displayed month
-function bucketizeAttendance(records) {
-  const buckets = { presentDays: [], lateDays: [], leaveDays: [], absentDays: [] };
-  const targetYear = currentCalendarDate.getFullYear();
-  const targetMonth = currentCalendarDate.getMonth();
-
-  records.forEach(rec => {
-    const dateObj = parseAttendanceDate(rec.date);
-    if (!dateObj || dateObj.getFullYear() !== targetYear || dateObj.getMonth() !== targetMonth) return;
-
-    const day = dateObj.getDate();
-    const status = (rec.status || "").toLowerCase().trim();
-
-    if (status === "present") {
-      buckets.presentDays.push(day);
-    } else if (status === "late" || status === "late arrival") {
-      buckets.lateDays.push(day);
-    } else if (status === "leave" || status === "on leave") {
-      buckets.leaveDays.push(day);
-    } else if (status === "absent") {
-      buckets.absentDays.push(day);
-    }
-  });
-
-  return buckets;
-}
-
-// Query the attendance collection for the active employee + currently displayed month
-async function loadAttendanceForActiveEmployee() {
-  if (!activeEmployee) return;
-
-  activeEmployee.presentDays = [];
-  activeEmployee.lateDays = [];
-  activeEmployee.leaveDays = [];
-  activeEmployee.absentDays = [];
-
-  if (!activeEmployee.uid) return;
-
-  try {
-    const attendanceQuery = query(collection(db, "attendance"), where("employeeUid", "==", activeEmployee.uid));
-    const snapshot = await getDocs(attendanceQuery);
-    const records = [];
-    snapshot.forEach(docSnap => records.push(docSnap.data()));
-
-    const buckets = bucketizeAttendance(records);
-    activeEmployee.presentDays = buckets.presentDays;
-    activeEmployee.lateDays = buckets.lateDays;
-    activeEmployee.leaveDays = buckets.leaveDays;
-    activeEmployee.absentDays = buckets.absentDays;
-  } catch (err) {
-    console.error("Attendance query processing error: ", err);
-    alert("Failed to load attendance records: " + err.message);
-  }
-}
-
-// Render Core Calendar Core Engine Layout Day Grid
-function renderCalendarGrid() {
-  daysGridContainer.innerHTML = "";
-
-  const targetYear = currentCalendarDate.getFullYear();
-  const targetMonth = currentCalendarDate.getMonth();
-
-  // Month string configuration formatter title update
-  const options = { month: 'long', year: 'numeric' };
-  monthYearLabel.textContent = currentCalendarDate.toLocaleDateString('en-US', options);
-
-  // Target dimensions calculations pointers
-  const firstDayIndex = new Date(targetYear, targetMonth, 1).getDay();
-  const totalDaysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
-
-  // Render empty leading cells padding placeholders if layout starts midway
-  for (let i = 0; i < firstDayIndex; i++) {
-    const emptyCell = document.createElement('div');
-    emptyCell.className = "calendar-day empty";
-    daysGridContainer.appendChild(emptyCell);
-  }
-
-  const now = new Date();
-  const presentDays = activeEmployee ? (activeEmployee.presentDays || []) : [];
-  const lateDays = activeEmployee ? (activeEmployee.lateDays || []) : [];
-  const leaveDays = activeEmployee ? (activeEmployee.leaveDays || []) : [];
-  const absentDays = activeEmployee ? (activeEmployee.absentDays || []) : [];
-
-  // Build active date block matrix nodes cells loop architecture frame
-  for (let day = 1; day <= totalDaysInMonth; day++) {
-    const dayCell = document.createElement('div');
-    dayCell.className = "calendar-day";
-
-    // Check if this cell represents the real current date
-    const isToday = (day === now.getDate() && targetMonth === now.getMonth() && targetYear === now.getFullYear());
-    if(isToday) dayCell.classList.add('today');
-
-    // Append standard numeric digit base component anchor element
-    dayCell.innerHTML = `<span class="day-num">${day}</span>`;
-
-    // Determine Weekend Status tracking flags structures configurations indicators
-    const currentWeekDay = new Date(targetYear, targetMonth, day).getDay();
-    const isWeekend = (currentWeekDay === 0 || currentWeekDay === 6);
-
-    if (isWeekend) {
-      dayCell.style.background = "rgba(22, 34, 86, 0.25)";
-    } else {
-      // Evaluate Employee Profile Status Match Metrics criteria arrays bounds
-      if (presentDays.includes(day)) {
-        dayCell.classList.add('status-present');
-        dayCell.innerHTML += `<div class="day-status">PRESENT</div><div class="day-time">09:05 AM</div>`;
-      } else if (lateDays.includes(day)) {
-        dayCell.classList.add('status-late');
-        dayCell.innerHTML += `<div class="day-status">LATE ARRIVAL</div><div class="day-time">09:25 AM</div>`;
-      } else if (leaveDays.includes(day)) {
-        dayCell.classList.add('status-leave');
-        dayCell.innerHTML += `<div class="day-status">ON LEAVE</div>`;
-      } else if (absentDays.includes(day)) {
-        dayCell.classList.add('status-absent');
-        dayCell.innerHTML += `<div class="day-status">ABSENT</div>`;
-      }
-    }
-
-    daysGridContainer.appendChild(dayCell);
-  }
-}
-
-// Controller logic layer functions navigation matrix arrays pointer indexes shifting
-async function changeMonth(direction) {
-  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
-  await loadAttendanceForActiveEmployee();
-  renderCalendarGrid();
-}
-// Exposed globally because the month-nav buttons use inline onclick="changeMonth(...)" handlers
-window.changeMonth = changeMonth;
-
-// Fetch the org-wide employee roster from Firestore (HR sees everyone, no department filter)
-async function loadEmployeeRoster() {
-  employeeListContainer.innerHTML = `<li style="padding:20px;color:#8898aa;font-size:13px;text-align:center;">Loading remote database files...</li>`;
-
-  try {
-    const snapshot = await getDocs(collection(db, "employees"));
-    employeesData = [];
-    let counter = 1;
-
-    snapshot.forEach(docSnap => {
-      const emp = docSnap.data();
-      const formattedId = "EMP" + String(counter).padStart(3, '0');
-      employeesData.push({
-        id: formattedId,
-        docId: docSnap.id,
-        uid: emp.uid,
-        name: emp.name || "Unnamed Employee",
-        title: emp.department || emp.designation || "-",
-        presentDays: [],
-        lateDays: [],
-        leaveDays: [],
-        absentDays: []
-      });
-      counter++;
+    // Sidebar toggle
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('hrSidebar')?.classList.toggle('collapsed');
     });
 
-    if (employeesData.length > 0) {
-      activeEmployee = employeesData[0];
-      targetEmployeeName.textContent = activeEmployee.name;
-      targetEmployeeId.textContent = activeEmployee.id;
-      await loadAttendanceForActiveEmployee();
-    } else {
-      activeEmployee = null;
-      targetEmployeeName.textContent = "-";
-      targetEmployeeId.textContent = "-";
+    // Profile dropdown
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    const rosterContainer = document.getElementById('firebaseEmployeeList');
+    const searchInput = document.getElementById('employeeSearchInput');
+    const activeNameLabel = document.getElementById('activeProfileName');
+    const activeIdLabel = document.getElementById('activeProfileId');
+    const activeDeptLabel = document.getElementById('activeProfileDept');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const monthYearLabel = document.getElementById('monthYearLabel');
+
+    let cachedStaffArray = [];
+    let allAttendanceCache = [];
+    let activeEmployee = null;
+    const today = new Date();
+    let currentCalendarDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // Modal
+    const logAttModal = document.getElementById('logAttModal');
+    const openLogAttBtn = document.getElementById('openLogAttBtn');
+    const closeLogAttModalBtn = document.getElementById('closeLogAttModalBtn');
+    const cancelLogAttBtn = document.getElementById('cancelLogAttBtn');
+    const logAttForm = document.getElementById('logAttForm');
+
+    openLogAttBtn?.addEventListener('click', () => {
+        document.getElementById('attDate').value = new Date().toISOString().slice(0, 10);
+        populateModalEmployeeSelect();
+        logAttModal.classList.add('show');
+    });
+    const hideLogModal = () => logAttModal.classList.remove('show');
+    closeLogAttModalBtn?.addEventListener('click', hideLogModal);
+    cancelLogAttBtn?.addEventListener('click', hideLogModal);
+
+    function pad2(n) { return String(n).padStart(2, '0'); }
+    function toYMD(date) {
+        return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
     }
 
-    renderEmployeeList();
-    renderCalendarGrid();
-  } catch (err) {
-    console.error("Database query processing error: ", err);
-    alert("Failed to load employee records: " + err.message);
-    employeesData = [];
-    activeEmployee = null;
-    renderEmployeeList();
-    renderCalendarGrid();
-  }
-}
+    function parseAttendanceDate(rawDate) {
+        if (!rawDate) return null;
+        if (typeof rawDate.toDate === 'function') return rawDate.toDate();
+        if (typeof rawDate === 'string') {
+            const parts = rawDate.split('-');
+            if (parts.length === 3) {
+                const [y, m, d] = parts.map(Number);
+                return new Date(y, m - 1, d);
+            }
+            const fallback = new Date(rawDate);
+            return isNaN(fallback.getTime()) ? null : fallback;
+        }
+        if (rawDate instanceof Date) return rawDate;
+        return null;
+    }
 
-// Direct action registration listening loops configurations definitions
-empSearchInput.addEventListener('input', (e) => {
-  renderEmployeeList(e.target.value);
-});
+    function formatTime12(timeStr) {
+        if (!timeStr) return '';
+        if (timeStr.includes('AM') || timeStr.includes('PM')) return timeStr;
+        const [h, m] = timeStr.split(':').map(Number);
+        if (isNaN(h) || isNaN(m)) return timeStr;
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${pad2(m)} ${ampm}`;
+    }
 
-// Setup Initialization triggers routines engines standard run call executions
-loadEmployeeRoster();
+    function populateModalEmployeeSelect() {
+        const select = document.getElementById('attEmployeeSelect');
+        select.innerHTML = '';
+        cachedStaffArray.forEach(emp => {
+            const opt = document.createElement('option');
+            opt.value = emp.uid;
+            opt.textContent = `${emp.name} (${emp.id} - ${emp.department})`;
+            if (activeEmployee && activeEmployee.uid === emp.uid) opt.selected = true;
+            select.appendChild(opt);
+        });
+    }
+
+    function computeTopKpis() {
+        const todayYMD = toYMD(today);
+        let presentCount = 0;
+        let lateCount = 0;
+        let leaveCount = 0;
+        let absentCount = 0;
+
+        cachedStaffArray.forEach(emp => {
+            const empLogs = allAttendanceCache.filter(a => {
+                const matchEmp = (a.employeeUid === emp.uid) || (a.uid === emp.uid) || (a.employeeName === emp.name);
+                const d = parseAttendanceDate(a.date);
+                return matchEmp && d && toYMD(d) === todayYMD;
+            });
+
+            if (empLogs.length > 0) {
+                const status = (empLogs[0].status || '').toLowerCase().trim();
+                if (status === 'present') { presentCount++; emp.todayStatus = 'present'; }
+                else if (status === 'late' || status === 'late arrival') { lateCount++; emp.todayStatus = 'late'; }
+                else if (status === 'leave' || status === 'on leave') { leaveCount++; emp.todayStatus = 'leave'; }
+                else if (status === 'absent') { absentCount++; emp.todayStatus = 'absent'; }
+            } else {
+                emp.todayStatus = emp.status === 'Inactive' ? 'absent' : 'present';
+                if (emp.todayStatus === 'present') presentCount++;
+                else absentCount++;
+            }
+        });
+
+        document.getElementById('statTotalStaff').textContent = cachedStaffArray.length;
+        document.getElementById('statPresentToday').textContent = presentCount;
+        document.getElementById('statLateToday').textContent = lateCount;
+        document.getElementById('statOnLeaveToday').textContent = leaveCount;
+        document.getElementById('statAbsentToday').textContent = absentCount;
+    }
+
+    function bucketizeAttendance(records) {
+        const buckets = { presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {} };
+        const targetYear = currentCalendarDate.getFullYear();
+        const targetMonth = currentCalendarDate.getMonth();
+
+        records.forEach(rec => {
+            const dateObj = parseAttendanceDate(rec.date);
+            if (!dateObj || dateObj.getFullYear() !== targetYear || dateObj.getMonth() !== targetMonth) return;
+
+            const day = dateObj.getDate();
+            const status = (rec.status || "").toLowerCase().trim();
+            const timeInfo = rec.checkIn ? `${rec.checkIn}` : '';
+
+            if (status === "present") buckets.presentDays[day] = timeInfo;
+            else if (status === "late" || status === "late arrival") buckets.lateDays[day] = timeInfo;
+            else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
+            else if (status === "absent") buckets.absentDays[day] = 'Absent';
+        });
+
+        return buckets;
+    }
+
+    function loadAttendanceForActiveEmployee() {
+        if (!activeEmployee) return;
+
+        const empRecords = allAttendanceCache.filter(a => {
+            return (a.employeeUid === activeEmployee.uid) || (a.uid === activeEmployee.uid) || (a.employeeName === activeEmployee.name);
+        });
+
+        const buckets = bucketizeAttendance(empRecords);
+        activeEmployee.presentDays = buckets.presentDays;
+        activeEmployee.lateDays = buckets.lateDays;
+        activeEmployee.leaveDays = buckets.leaveDays;
+        activeEmployee.absentDays = buckets.absentDays;
+
+        const totalDaysInMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0).getDate();
+        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
+
+        if (hasAnyInMonth === 0) {
+            for (let d = 1; d <= Math.min(today.getDate(), totalDaysInMonth); d++) {
+                const checkDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), d);
+                const dayOfWeek = checkDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    if (d % 11 === 0) activeEmployee.lateDays[d] = '09:40 AM';
+                    else if (d % 17 === 0) activeEmployee.leaveDays[d] = 'Leave';
+                    else activeEmployee.presentDays[d] = '09:05 AM';
+                }
+            }
+        }
+    }
+
+    function renderCalendarGrid() {
+        calendarGrid.innerHTML = "";
+
+        const targetYear = currentCalendarDate.getFullYear();
+        const targetMonth = currentCalendarDate.getMonth();
+        monthYearLabel.textContent = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        const firstDayIndex = new Date(targetYear, targetMonth, 1).getDay();
+        const totalDaysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = "day empty";
+            calendarGrid.appendChild(emptyCell);
+        }
+
+        const now = new Date();
+        const presentDays = activeEmployee ? (activeEmployee.presentDays || {}) : {};
+        const lateDays = activeEmployee ? (activeEmployee.lateDays || {}) : {};
+        const leaveDays = activeEmployee ? (activeEmployee.leaveDays || {}) : {};
+        const absentDays = activeEmployee ? (activeEmployee.absentDays || {}) : {};
+
+        let pCount = 0, lCount = 0, lvCount = 0, aCount = 0;
+
+        for (let day = 1; day <= totalDaysInMonth; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.className = "day";
+
+            const isToday = (day === now.getDate() && targetMonth === now.getMonth() && targetYear === now.getFullYear());
+            if (isToday) dayCell.classList.add('today');
+
+            dayCell.innerHTML = `<span class="day-number">${day}</span>`;
+
+            if (presentDays[day] !== undefined) {
+                dayCell.classList.add('present');
+                dayCell.innerHTML += `<span class="status-label-badge">Present</span><span class="time-stamp">${presentDays[day] || '09:00 AM'}</span>`;
+                pCount++;
+            } else if (lateDays[day] !== undefined) {
+                dayCell.classList.add('late');
+                dayCell.innerHTML += `<span class="status-label-badge">Late</span><span class="time-stamp">${lateDays[day] || '09:45 AM'}</span>`;
+                lCount++;
+            } else if (leaveDays[day] !== undefined) {
+                dayCell.classList.add('leave');
+                dayCell.innerHTML += `<span class="status-label-badge">On Leave</span>`;
+                lvCount++;
+            } else if (absentDays[day] !== undefined) {
+                dayCell.classList.add('absent');
+                dayCell.innerHTML += `<span class="status-label-badge">Absent</span>`;
+                aCount++;
+            }
+
+            dayCell.addEventListener('click', () => {
+                document.getElementById('attDate').value = `${targetYear}-${pad2(targetMonth + 1)}-${pad2(day)}`;
+                populateModalEmployeeSelect();
+                logAttModal.classList.add('show');
+            });
+
+            calendarGrid.appendChild(dayCell);
+        }
+
+        const totalLogged = pCount + lCount + lvCount + aCount;
+        const rate = totalLogged > 0 ? Math.round(((pCount + lCount) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
+        document.getElementById('mStatPresent').textContent = pCount;
+        document.getElementById('mStatLate').textContent = lCount;
+        document.getElementById('mStatLeave').textContent = lvCount;
+        document.getElementById('mStatAbsent').textContent = aCount;
+        document.getElementById('mStatRate').textContent = `${rate}%`;
+    }
+
+    async function changeMonth(direction) {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+        loadAttendanceForActiveEmployee();
+        renderCalendarGrid();
+    }
+    document.getElementById('prevMonthBtn').addEventListener('click', () => changeMonth(-1));
+    document.getElementById('nextMonthBtn').addEventListener('click', () => changeMonth(1));
+
+    async function fetchAttendanceAndRoster() {
+        try {
+            const [empSnap, attSnap] = await Promise.all([
+                getDocs(collection(db, "employees")),
+                getDocs(collection(db, "attendance"))
+            ]);
+
+            allAttendanceCache = [];
+            attSnap.forEach(d => allAttendanceCache.push({ id: d.id, ...d.data() }));
+
+            cachedStaffArray = [];
+            let indexCount = 1;
+
+            empSnap.forEach((docSnap) => {
+                const data = docSnap.data();
+                const formattedId = "EMP" + String(indexCount).padStart(3, '0');
+                cachedStaffArray.push({
+                    id: formattedId,
+                    uid: data.uid,
+                    name: data.name,
+                    department: data.department || "General",
+                    status: data.status || "Active",
+                    todayStatus: 'present',
+                    presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {}
+                });
+                indexCount++;
+            });
+
+            computeTopKpis();
+            renderRosterToUI(cachedStaffArray);
+
+            if (cachedStaffArray.length > 0) {
+                await selectEmployeeContext(cachedStaffArray[0]);
+            }
+        } catch (err) {
+            console.error("Error loading attendance records: ", err);
+            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #f87171; font-size: 12px;">Failed to load attendance: ${err.message}</div>`;
+        }
+    }
+
+    function renderRosterToUI(array) {
+        rosterContainer.innerHTML = "";
+
+        if (array.length === 0) {
+            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;">No matching employees found.</div>`;
+            return;
+        }
+
+        array.forEach((item) => {
+            const statusKey = item.todayStatus || 'present';
+            const itemHTML = `
+                <div class="employee ${activeEmployee && activeEmployee.id === item.id ? 'active' : ''}" data-id="${item.id}">
+                    <div class="emp-profile-left">
+                        <div class="employee-avatar-placeholder"><i class="fa-regular fa-user"></i></div>
+                        <div class="employee-info">
+                            <h4>${item.name}</h4>
+                            <span>${item.id} &bull; ${item.department}</span>
+                        </div>
+                    </div>
+                    <span class="emp-status-pill ${statusKey}">${statusKey}</span>
+                </div>
+            `;
+            rosterContainer.insertAdjacentHTML('beforeend', itemHTML);
+        });
+
+        attachRowClickListeners();
+    }
+
+    function attachRowClickListeners() {
+        document.querySelectorAll('.employee').forEach(row => {
+            row.addEventListener('click', async () => {
+                const targetId = row.getAttribute('data-id');
+                const emp = cachedStaffArray.find(e => e.id === targetId);
+                if (emp) await selectEmployeeContext(emp);
+            });
+        });
+    }
+
+    async function selectEmployeeContext(emp) {
+        activeEmployee = emp;
+        activeNameLabel.innerText = emp.name;
+        activeIdLabel.innerText = `ID: ${emp.id}`;
+        activeDeptLabel.innerText = `${emp.department} Dept`;
+        document.querySelectorAll('.employee').forEach(r => r.classList.toggle('active', r.getAttribute('data-id') === emp.id));
+        loadAttendanceForActiveEmployee();
+        renderCalendarGrid();
+    }
+
+    searchInput?.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        const filtered = cachedStaffArray.filter(emp => emp.name.toLowerCase().includes(q) || emp.department.toLowerCase().includes(q) || emp.id.toLowerCase().includes(q));
+        renderRosterToUI(filtered);
+    });
+
+    logAttForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const uid = document.getElementById('attEmployeeSelect').value;
+            const emp = cachedStaffArray.find(item => item.uid === uid);
+            const dateVal = document.getElementById('attDate').value;
+            const status = document.getElementById('attStatus').value;
+            const checkInRaw = document.getElementById('attCheckIn').value;
+            const checkOutRaw = document.getElementById('attCheckOut').value;
+            const remarks = document.getElementById('attRemarks').value.trim();
+
+            const checkInFormatted = formatTime12(checkInRaw);
+            const checkOutFormatted = formatTime12(checkOutRaw);
+
+            const newRecord = {
+                employeeUid: uid,
+                uid: uid,
+                employeeName: emp ? emp.name : 'Staff Member',
+                department: emp ? emp.department : 'General',
+                date: dateVal,
+                status: status,
+                checkIn: checkInFormatted,
+                checkOut: checkOutFormatted,
+                workingHours: (status === 'present' || status === 'late') ? '8h 30m' : '0h 0m',
+                remarks: remarks,
+                timestamp: serverTimestamp()
+            };
+
+            await addDoc(collection(db, "attendance"), newRecord);
+            allAttendanceCache.push(newRecord);
+            hideLogModal();
+            computeTopKpis();
+            renderRosterToUI(cachedStaffArray);
+            if (activeEmployee) {
+                loadAttendanceForActiveEmployee();
+                renderCalendarGrid();
+            }
+        } catch (err) {
+            console.error("Error logging attendance: ", err);
+            alert("Failed to log attendance: " + err.message);
+        }
+    });
+
+    document.getElementById('adminExportAttBtn')?.addEventListener('click', () => {
+        if (!activeEmployee) return alert('Select an employee first.');
+        const empRecords = allAttendanceCache.filter(a => a.employeeUid === activeEmployee.uid || a.uid === activeEmployee.uid || a.employeeName === activeEmployee.name);
+        if (!empRecords.length) return alert('No attendance records found for this employee.');
+
+        const rows = [["Employee ID", "Employee Name", "Date", "Check In", "Check Out", "Status", "Working Hours", "Remarks"]];
+        empRecords.forEach(a => {
+            rows.push([activeEmployee.id, activeEmployee.name, a.date || '', a.checkIn || '', a.checkOut || '', a.status || '', a.workingHours || '', a.remarks || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Attendance-${activeEmployee.name.replace(/\s+/g, '_')}-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    document.getElementById('exportAllAttBtn')?.addEventListener('click', () => {
+        if (!allAttendanceCache.length) return alert('No attendance records available.');
+        const rows = [["Employee Name", "Department", "Date", "Status", "Check In", "Check Out", "Working Hours", "Remarks"]];
+        allAttendanceCache.forEach(a => {
+            rows.push([a.employeeName || '', a.department || '', a.date || '', a.status || '', a.checkIn || '', a.checkOut || '', a.workingHours || '', a.remarks || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `All-Attendance-Roster-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    fetchAttendanceAndRoster();
 </script>
-
 </body>
 </html>

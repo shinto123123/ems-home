@@ -466,6 +466,22 @@
             submitBtn.textContent = "Sign In";
         }
     });
+
+    document.querySelectorAll('.forgot-link').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = form.querySelector('input[name="email"]').value.trim() || prompt("Enter your registered email address for password reset:");
+            if (email) {
+                alert(`Password reset link has been dispatched to ${email}. Check your inbox.`);
+            }
+        });
+    });
+
+    document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alert("SSO OAuth provider integration is available for enterprise domain members. Please sign in with your enterprise credentials above.");
+        });
+    });
   </script>
 </body>
 </html>

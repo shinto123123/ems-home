@@ -222,7 +222,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-calendar"></i></div>
           <div class="metric-info">
             <p>Annual Leave</p>
-            <h2>12</h2>
+            <h2 id="kpiAnnualAvail">12</h2>
             <span>Available</span>
           </div>
         </div>
@@ -230,7 +230,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-solid fa-briefcase-medical"></i></div>
           <div class="metric-info">
             <p>Sick Leave</p>
-            <h2>6</h2>
+            <h2 id="kpiSickAvail">6</h2>
             <span>Available</span>
           </div>
         </div>
@@ -238,7 +238,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-clock"></i></div>
           <div class="metric-info">
             <p>Comp Off</p>
-            <h2>2</h2>
+            <h2 id="kpiCompOffAvail">2</h2>
             <span>Available</span>
           </div>
         </div>
@@ -246,8 +246,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon"><i class="fa-regular fa-calendar-check"></i></div>
           <div class="metric-info">
             <p>Total Leave Taken</p>
-            <h2>8</h2>
-            <span>This Year</span>
+            <h2 id="kpiTotalTaken">0</h2>
+            <span>Approved Days</span>
           </div>
         </div>
       </div>
@@ -255,18 +255,23 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="leave-layout-grid">
         
         <div class="card-panel">
-          <div class="tabs-nav">
-            <button class="tab-btn active">Leave Requests</button>
-            <button class="tab-btn">Leave Balance</button>
-            <button class="tab-btn">Leave Calendar</button>
-            <button class="tab-btn">Leave Policy</button>
+          <div class="tabs-nav" id="leaveTabsNav">
+            <button class="tab-btn active" data-tab="all">All Requests</button>
+            <button class="tab-btn" data-tab="pending">Pending</button>
+            <button class="tab-btn" data-tab="approved">Approved</button>
+            <button class="tab-btn" data-tab="rejected">Rejected</button>
           </div>
           
           <div class="filters-row">
-            <select class="select-sm"><option>All Status</option></select>
+            <select class="select-sm" id="leaveStatusFilter">
+              <option value="All">All Status</option>
+              <option value="Approved">Approved</option>
+              <option value="Pending">Pending</option>
+              <option value="Rejected">Rejected</option>
+            </select>
             <div class="date-filter-box">
               <i class="fa-regular fa-calendar"></i>
-              <span>01 May 2025 - 31 May 2025</span>
+              <span>August 2026 Cycle</span>
             </div>
           </div>
           
@@ -444,14 +449,22 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     fromDateInput.addEventListener('change', computeTotalDays);
     toDateInput.addEventListener('change', computeTotalDays);
 
+    let allEmpLeaveRecords = [];
+    let currentEmpLeaveTab = 'all';
+
     function renderRequestsTable(records) {
-        if (records.length === 0) {
-            requestsTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#8898aa;">No leave requests found yet.</td></tr>`;
+        if (!records || records.length === 0) {
+            requestsTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#8898aa;">No leave requests found.</td></tr>`;
             return;
         }
         requestsTableBody.innerHTML = "";
         records.forEach((r) => {
             const requestId = `LV-${r.id.slice(0, 6).toUpperCase()}`;
+            const isPending = (r.status || '').toLowerCase() === 'pending';
+            const actionBtn = isPending
+                ? `<button class="btn-icon-action cancel-leave-btn" data-id="${r.id}" title="Cancel Request" style="color:#f87171;"><i class="fa-solid fa-xmark"></i></button>`
+                : `<button class="btn-icon-action" title="View"><i class="fa-regular fa-eye"></i></button>`;
+
             requestsTableBody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td>${requestId}</td>
@@ -461,11 +474,52 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                     <td>${r.totalDays ?? '-'}</td>
                     <td><span class="status-badge ${statusClassFor(r.status)}">${r.status || 'Pending'}</span></td>
                     <td>${formatAppliedOn(r.appliedOn)}</td>
-                    <td><button class="btn-icon-action"><i class="fa-regular fa-eye"></i></button></td>
+                    <td>${actionBtn}</td>
                 </tr>
             `);
         });
+
+        document.querySelectorAll('.cancel-leave-btn').forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.getAttribute('data-id');
+                if (confirm('Are you sure you want to cancel this pending leave request?')) {
+                    try {
+                        await updateDoc(doc(db, "leaveRequests", id), { status: "Cancelled" });
+                        alert('Leave request cancelled.');
+                        loadLeaveRequests();
+                    } catch (e) {
+                        alert('Failed to cancel: ' + e.message);
+                    }
+                }
+            };
+        });
     }
+
+    function applyEmpLeaveFilter() {
+        const selStatus = document.getElementById('leaveStatusFilter').value;
+        const filtered = allEmpLeaveRecords.filter(r => {
+            const st = (r.status || 'Pending').toLowerCase();
+            const matchesStatus = selStatus === 'All' || st === selStatus.toLowerCase();
+            let matchesTab = true;
+            if (currentEmpLeaveTab === 'pending') matchesTab = st === 'pending';
+            else if (currentEmpLeaveTab === 'approved') matchesTab = st === 'approved';
+            else if (currentEmpLeaveTab === 'rejected') matchesTab = st === 'rejected';
+            return matchesStatus && matchesTab;
+        });
+        renderRequestsTable(filtered);
+    }
+
+    document.getElementById('leaveStatusFilter').addEventListener('change', applyEmpLeaveFilter);
+
+    document.querySelectorAll('#leaveTabsNav .tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('#leaveTabsNav .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentEmpLeaveTab = btn.getAttribute('data-tab') || 'all';
+            applyEmpLeaveFilter();
+        });
+    });
 
     function renderUpcomingTable(records) {
         const todayStr = new Date().toISOString().slice(0, 10);
@@ -492,11 +546,18 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         try {
             const q = query(collection(db, "leaveRequests"), where("uid", "==", currentUser.uid));
             const snap = await getDocs(q);
-            const records = [];
-            snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
-            records.sort((a, b) => (b.fromDate || '').localeCompare(a.fromDate || ''));
-            renderRequestsTable(records);
-            renderUpcomingTable(records);
+            allEmpLeaveRecords = [];
+            snap.forEach(docSnap => allEmpLeaveRecords.push({ id: docSnap.id, ...docSnap.data() }));
+            allEmpLeaveRecords.sort((a, b) => (b.fromDate || '').localeCompare(a.fromDate || ''));
+
+            // Calculate total approved leave taken
+            const approvedDays = allEmpLeaveRecords
+                .filter(r => (r.status || '').toLowerCase() === 'approved')
+                .reduce((sum, r) => sum + (Number(r.totalDays) || 0), 0);
+            document.getElementById('kpiTotalTaken').textContent = approvedDays;
+
+            renderRequestsTable(allEmpLeaveRecords);
+            renderUpcomingTable(allEmpLeaveRecords);
         } catch (err) {
             console.error("Failed to load leave requests: ", err);
             requestsTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${err.message}</td></tr>`;

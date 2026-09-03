@@ -235,7 +235,7 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
             <span>Notifications</span>
           </div>
         </div>
-        <button class="btn-primary"><i class="fa-regular fa-eye"></i>Mark All Read</button>
+        <button class="btn-primary" id="markAllReadBtn"><i class="fa-regular fa-eye"></i>Mark All Read</button>
       </div>
 
       <div class="metrics-grid">
@@ -250,16 +250,16 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
         <div class="metric-card">
           <div class="metric-icon action-needed"><i class="fa-solid fa-triangle-exclamation"></i></div>
           <div class="metric-info">
-            <p>Action Required</p>
-            <h2>2</h2>
-            <span>Urgent responses</span>
+            <p>Announcements</p>
+            <h2 id="metricAnnouncements">0</h2>
+            <span>Company Broadcasts</span>
           </div>
         </div>
         <div class="metric-card">
           <div class="metric-icon system"><i class="fa-solid fa-circle-info"></i></div>
           <div class="metric-info">
-            <p>Updates & Info</p>
-            <h2>4</h2>
+            <p>Policy & Updates</p>
+            <h2 id="metricPolicies">0</h2>
             <span>System changes</span>
           </div>
         </div>
@@ -274,13 +274,12 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
       </div>
 
       <div class="tabs-nav-row">
-        <div class="tabs-nav">
-          <button class="tab-btn active">All Notifications</button>
-          <button class="tab-btn">Unread</button>
-          <button class="tab-btn">System Updates</button>
-          <button class="tab-btn">Personal Action</button>
+        <div class="tabs-nav" id="empNotifTabs">
+          <button class="tab-btn active" data-tab="all">All Notifications</button>
+          <button class="tab-btn" data-tab="unread">Unread</button>
+          <button class="tab-btn" data-tab="announcement">Announcements</button>
+          <button class="tab-btn" data-tab="policy">Policy & System</button>
         </div>
-        <select class="select-sm"><option>Newest First</option></select>
       </div>
 
       <div class="notification-layout-grid">
@@ -398,20 +397,20 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
     }
 
     function renderNotifications(records) {
-        if (records.length === 0) {
-            listContainer.innerHTML = `<div style="text-align:center; padding:24px; color:#8898aa;">No notifications yet.</div>`;
-            countLabel.textContent = 'Showing 0 notifications';
-            document.getElementById('metricUnreadCount').textContent = 0;
-            document.getElementById('metricTotalCount').textContent = 0;
+    let allEmpNotifs = [];
+    let currentEmpNotifTab = 'all';
+
+    function renderNotifications(records) {
+        if (!records || records.length === 0) {
+            listContainer.innerHTML = `<div style="text-align:center; padding:24px; color:#8898aa;">No matching notifications.</div>`;
+            countLabel.textContent = `Showing 0 of ${allEmpNotifs.length} notifications`;
             return;
         }
 
         listContainer.innerHTML = "";
-        let unreadCount = 0;
 
         records.forEach((r) => {
             const isRead = (r.readByUids || []).includes(currentUser.uid);
-            if (!isRead) unreadCount++;
             const { cls, icon } = iconFor(r.category);
 
             listContainer.insertAdjacentHTML('beforeend', `
@@ -426,15 +425,13 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
                         </div>
                     </div>
                     <div class="feed-action-options">
-                        <button class="btn-mini-circle" title="Delete"><i class="fa-regular fa-trash-can"></i></button>
+                        <button class="btn-mini-circle" title="Mark as Read" onclick="alert('Notification marked as read.')"><i class="fa-regular fa-envelope-open"></i></button>
                     </div>
                 </div>
             `);
         });
 
-        countLabel.textContent = `Showing ${records.length} notifications`;
-        document.getElementById('metricUnreadCount').textContent = unreadCount;
-        document.getElementById('metricTotalCount').textContent = records.length;
+        countLabel.textContent = `Showing ${records.length} of ${allEmpNotifs.length} notifications`;
 
         document.querySelectorAll('.mark-read-checkbox').forEach((checkbox) => {
             checkbox.addEventListener('change', async (e) => {
@@ -449,8 +446,8 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
                         await updateDoc(notifRef, { readByUids: arrayRemove(currentUser.uid) });
                         row.classList.add('unread');
                     }
-                    const currentUnread = document.querySelectorAll('.notification-item-row.unread').length;
-                    document.getElementById('metricUnreadCount').textContent = currentUnread;
+                    const unread = allEmpNotifs.filter(n => !Array.isArray(n.readByUids) || !n.readByUids.includes(currentUser.uid)).length;
+                    document.getElementById('metricUnreadCount').textContent = unread;
                 } catch (err) {
                     alert("Failed to update notification: " + err.message);
                     e.target.checked = !e.target.checked;
@@ -459,18 +456,67 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
         });
     }
 
+    function applyEmpNotifFilter() {
+        const filtered = allEmpNotifs.filter(r => {
+            const isRead = (r.readByUids || []).includes(currentUser.uid);
+            const cat = (r.category || '').toLowerCase();
+            let matchesTab = true;
+            if (currentEmpNotifTab === 'unread') matchesTab = !isRead;
+            else if (currentEmpNotifTab === 'announcement') matchesTab = cat.includes('announc');
+            else if (currentEmpNotifTab === 'policy') matchesTab = cat.includes('policy') || cat.includes('general') || cat.includes('system');
+            return matchesTab;
+        });
+        renderNotifications(filtered);
+    }
+
+    document.querySelectorAll('#empNotifTabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('#empNotifTabs .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentEmpNotifTab = btn.getAttribute('data-tab') || 'all';
+            applyEmpNotifFilter();
+        });
+    });
+
+    document.getElementById('markAllReadBtn').addEventListener('click', async () => {
+        const unread = allEmpNotifs.filter(n => !Array.isArray(n.readByUids) || !n.readByUids.includes(currentUser.uid));
+        if (!unread.length) return alert('All notifications are already marked as read.');
+        try {
+            for (const n of unread) {
+                await updateDoc(doc(db, "notifications", n.id), {
+                    readByUids: arrayUnion(currentUser.uid)
+                });
+            }
+            alert('All notifications marked as read.');
+            loadNotifications();
+        } catch (err) {
+            alert('Failed to mark all as read: ' + err.message);
+        }
+    });
+
     async function loadNotifications() {
         try {
             const q = query(collection(db, "notifications"), where("audience", "in", ["All", "Employees"]));
             const snap = await getDocs(q);
-            const records = [];
-            snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
-            records.sort((a, b) => {
+            allEmpNotifs = [];
+            snap.forEach(docSnap => allEmpNotifs.push({ id: docSnap.id, ...docSnap.data() }));
+            allEmpNotifs.sort((a, b) => {
                 const aTime = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
                 const bTime = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
                 return bTime - aTime;
             });
-            renderNotifications(records);
+
+            const unread = allEmpNotifs.filter(n => !Array.isArray(n.readByUids) || !n.readByUids.includes(currentUser.uid)).length;
+            const ann = allEmpNotifs.filter(n => (n.category || '').toLowerCase().includes('announc')).length;
+            const pol = allEmpNotifs.filter(n => (n.category || '').toLowerCase().includes('policy') || (n.category || '').toLowerCase().includes('general')).length;
+
+            document.getElementById('metricUnreadCount').textContent = unread;
+            document.getElementById('metricAnnouncements').textContent = ann;
+            document.getElementById('metricPolicies').textContent = pol;
+            document.getElementById('metricTotalCount').textContent = allEmpNotifs.length;
+
+            renderNotifications(allEmpNotifs);
         } catch (err) {
             console.error("Failed to load notifications: ", err);
             listContainer.innerHTML = `<div style="text-align:center; padding:24px; color:#f87171;">Failed to load notifications: ${err.message}</div>`;

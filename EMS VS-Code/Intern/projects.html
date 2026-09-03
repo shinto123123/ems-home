@@ -265,7 +265,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <h3>Assigned Projects</h3>
           <div class="panel-search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search project...">
+            <input type="text" id="internProjectSearchInput" placeholder="Search project by name...">
           </div>
         </div>
         
@@ -426,54 +426,76 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     document.getElementById("donutNotStartedVal").textContent = `${notStartedCount} (${notStartedPct}%)`;
   }
 
+  let allInternProjects = [];
+
   function renderProjects(projectsArray) {
     const tbody = document.getElementById("projectsTableBody");
     tbody.innerHTML = "";
 
-    const total = (projectsArray || []).length;
-    document.getElementById("projectsCountLabel").textContent = `Showing ${total} of ${total} projects`;
+    const total = (allInternProjects || []).length;
+    document.getElementById("projectsCountLabel").textContent = `Showing ${(projectsArray || []).length} of ${total} projects`;
 
     if (!projectsArray || projectsArray.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No projects assigned to you yet.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No matching projects found.</td></tr>`;
       return;
     }
 
     projectsArray.forEach((p) => {
       const isCompleted = (p.status || "").toLowerCase() === "completed";
       const progress = Number(p.progress) || 0;
+      const projName = p.projectName || p.name || "Untitled Project";
       const rowTemplate = `
         <tr>
-          <td style="font-weight: 600;">${p.name || "Untitled Project"}</td>
-          <td style="color: #8898aa;">${p.description || "-"}</td>
+          <td style="font-weight: 600;">${projName}</td>
+          <td style="color: #8898aa;">${p.description || p.department || "-"}</td>
           <td>${formatDate(p.startDate)}</td>
           <td>${formatDate(p.endDate)}</td>
-          <td><span class="badge-status${isCompleted ? " completed" : ""}">${p.status || "In Progress"}</span></td>
+          <td><span class="badge-status${isCompleted ? " completed" : ""}">${p.status || "Ongoing"}</span></td>
           <td>
             <div class="progress-container-inline${isCompleted ? " completed" : ""}">
               <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
               <span class="progress-text">${progress}%</span>
             </div>
           </td>
-          <td style="text-align: right;"><button class="btn-sm-outline">View Details</button></td>
+          <td style="text-align: right;"><button class="btn-sm-outline intern-view-proj-btn" data-name="${projName.replace(/"/g, '&quot;')}" data-status="${p.status || 'Ongoing'}" data-prog="${progress}" data-desc="${(p.description || '').replace(/"/g, '&quot;')}">View Details</button></td>
         </tr>
       `;
       tbody.insertAdjacentHTML("beforeend", rowTemplate);
     });
+
+    document.querySelectorAll('.intern-view-proj-btn').forEach(btn => {
+      btn.onclick = () => {
+        alert(`Project: ${btn.dataset.name}\nStatus: ${btn.dataset.status}\nProgress: ${btn.dataset.prog}%\n\nDescription:\n${btn.dataset.desc || 'No additional description provided.'}`);
+      };
+    });
   }
+
+  function applyInternProjFilter() {
+    const q = (document.getElementById('internProjectSearchInput').value || '').toLowerCase().trim();
+    const filtered = allInternProjects.filter(p => {
+      const name = (p.projectName || p.name || '').toLowerCase();
+      const desc = (p.description || '').toLowerCase();
+      return !q || name.includes(q) || desc.includes(q);
+    });
+    renderProjects(filtered);
+  }
+
+  document.getElementById('internProjectSearchInput').addEventListener('input', applyInternProjFilter);
 
   async function loadProjects() {
     try {
-      const q = query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid));
-      const querySnapshot = await getDocs(q);
-      const projectsArray = [];
-      querySnapshot.forEach((docSnap) => projectsArray.push({ id: docSnap.id, ...docSnap.data() }));
-      updateProjectsWidgets(projectsArray);
-      renderProjects(projectsArray);
+      let snap = await getDocs(query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid)));
+      if (snap.empty) {
+        snap = await getDocs(collection(db, "projects"));
+      }
+      allInternProjects = [];
+      snap.forEach((docSnap) => allInternProjects.push({ id: docSnap.id, ...docSnap.data() }));
+      updateProjectsWidgets(allInternProjects);
+      renderProjects(allInternProjects);
     } catch (err) {
       console.error("Error loading projects: ", err);
       document.getElementById("projectsTableBody").innerHTML =
         `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load projects.</td></tr>`;
-      alert("Could not load your projects: " + err.message);
     }
   }
 

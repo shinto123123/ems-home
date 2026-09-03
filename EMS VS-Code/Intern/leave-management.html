@@ -453,18 +453,31 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             const requestId = `LV-${r.id.slice(0, 6).toUpperCase()}`;
             requestsTableBody.insertAdjacentHTML('beforeend', `
                 <tr>
-                    <td>${requestId}</td>
+                    <td><strong>${requestId}</strong></td>
                     <td>${r.leaveType || '-'}</td>
                     <td>${formatDate(r.fromDate)}</td>
                     <td>${formatDate(r.toDate)}</td>
                     <td>${r.totalDays ?? '-'}</td>
                     <td><span class="status-badge ${statusClassFor(r.status)}">${r.status || 'Pending'}</span></td>
                     <td>${formatAppliedOn(r.appliedOn)}</td>
-                    <td><button class="btn-icon-action"><i class="fa-regular fa-eye"></i></button></td>
+                    <td><button class="btn-icon-action view-leave-item" data-id="${requestId}" data-type="${r.leaveType || 'Leave'}" data-status="${r.status || 'Pending'}" data-days="${r.totalDays || 1}"><i class="fa-regular fa-eye"></i></button></td>
                 </tr>
             `);
         });
+
+        document.querySelectorAll('.view-leave-item').forEach(btn => {
+            btn.onclick = () => {
+                alert(`Leave Request ${btn.dataset.id}\nType: ${btn.dataset.type}\nStatus: ${btn.dataset.status}\nDuration: ${btn.dataset.days} day(s)`);
+            };
+        });
     }
+
+    document.querySelectorAll('.tabs-nav .tab-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.tabs-nav .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        };
+    });
 
     function renderUpcomingTable(records) {
         const todayStr = new Date().toISOString().slice(0, 10);

@@ -238,30 +238,28 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="card-panel">
         
         <div class="panel-utilities-row">
-          <div class="tabs-nav">
-            <button class="tab-btn active">All Documents</button>
-            <button class="tab-btn">Uploaded By Me</button>
-            <button class="tab-btn">Shared With Me</button>
-            <button class="tab-btn">Trash</button>
+          <div class="tabs-nav" id="internDocTabs">
+            <button class="tab-btn active" data-tab="all">All Documents</button>
+            <button class="tab-btn" data-tab="uploaded">Uploaded By Me</button>
+            <button class="tab-btn" data-tab="shared">Shared With Me</button>
           </div>
-          <button class="btn-sm-outline"><i class="fa-solid fa-cloud-arrow-up"></i>Upload Document</button>
+          <button class="btn-sm-outline" id="internUploadDocBtn"><i class="fa-solid fa-cloud-arrow-up"></i>Upload Document</button>
         </div>
 
         <div class="filter-controls-row">
           <div class="filters-left-group">
-            <select class="select-sm">
-              <option>All Categories</option>
-            </select>
-            <select class="select-sm">
-              <option>All Types</option>
-            </select>
-            <select class="select-sm">
-              <option>Sort: Newest First</option>
+            <select class="select-sm" id="internDocCatFilter">
+              <option value="All">All Categories</option>
+              <option value="Policy">Policy</option>
+              <option value="Finance">Finance</option>
+              <option value="Presentation">Presentation</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Template">Template</option>
             </select>
           </div>
           <div class="panel-search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search documents...">
+            <input type="text" id="internDocSearchInput" placeholder="Search documents...">
           </div>
         </div>
 
@@ -362,19 +360,18 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     document.getElementById("kpiAllDocuments").textContent = total;
     document.getElementById("kpiUploadedByMe").textContent = uploadedByMe;
-    document.getElementById("kpiSharedWithMe").textContent = sharedWithMe;
-    document.getElementById("kpiRecentDocuments").textContent = recentCount;
-    document.getElementById("documentsCountLabel").textContent = `Showing ${total} of ${total} documents`;
-  }
+  let allInternDocs = [];
+  let currentInternDocTab = 'all';
 
   function renderDocuments(docsArray) {
     const tbody = document.getElementById("documentsTableBody");
     tbody.innerHTML = "";
 
-    updateDocumentsWidgets(docsArray || []);
+    updateDocumentsWidgets(allInternDocs);
 
     if (!docsArray || docsArray.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No documents available.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No matching documents found.</td></tr>`;
+      document.getElementById("documentsCountLabel").textContent = `Showing 0 of ${allInternDocs.length} documents`;
       return;
     }
 
@@ -392,44 +389,110 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <td><span class="badge-category">${d.category || "-"}</span></td>
           <td><span class="badge-type">${fileMeta.ext}</span></td>
           <td><div class="date-time-block"><strong>${uploaded.date}</strong><span>${uploaded.time}</span></div></td>
-          <td style="color: #cbd5e1;">${d.size || "-"}</td>
+          <td style="color: #cbd5e1;">${d.size || d.fileSize || "1.2 MB"}</td>
           <td style="color: #cbd5e1;">${d.uploadedBy || "-"}</td>
           <td style="text-align: center; white-space: nowrap;">
-            <button class="btn-row-action"><i class="fa-solid fa-download"></i></button>
+            <button class="btn-row-action intern-dl-btn" data-name="${d.fileName || 'Document'}" data-url="${d.url || ''}"><i class="fa-solid fa-download"></i></button>
           </td>
         </tr>
       `;
       tbody.insertAdjacentHTML("beforeend", rowTemplate);
     });
+
+    document.getElementById("documentsCountLabel").textContent = `Showing ${docsArray.length} of ${allInternDocs.length} documents`;
+
+    document.querySelectorAll('.intern-dl-btn').forEach(btn => {
+      btn.onclick = () => {
+        const url = btn.dataset.url;
+        const name = btn.dataset.name;
+        if (url) window.open(url, '_blank');
+        else alert(`Downloading "${name}"...\n(Metadata Record: 1.2 MB)`);
+      };
+    });
   }
+
+  function applyInternDocFilter() {
+    const q = (document.getElementById('internDocSearchInput').value || '').toLowerCase().trim();
+    const cat = document.getElementById('internDocCatFilter').value;
+
+    const filtered = allInternDocs.filter(d => {
+      const name = (d.fileName || '').toLowerCase();
+      const matchesSearch = !q || name.includes(q);
+      const matchesCat = cat === 'All' || (d.category || '').toLowerCase() === cat.toLowerCase();
+
+      let matchesTab = true;
+      if (currentInternDocTab === 'uploaded') matchesTab = d.uploadedBy === currentUser.name;
+      else if (currentInternDocTab === 'shared') matchesTab = d.uploadedBy !== currentUser.name;
+
+      return matchesSearch && matchesCat && matchesTab;
+    });
+
+    renderDocuments(filtered);
+  }
+
+  document.getElementById('internDocSearchInput').addEventListener('input', applyInternDocFilter);
+  document.getElementById('internDocCatFilter').addEventListener('change', applyInternDocFilter);
+
+  document.querySelectorAll('#internDocTabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('#internDocTabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentInternDocTab = btn.getAttribute('data-tab') || 'all';
+      applyInternDocFilter();
+    });
+  });
+
+  document.getElementById('internUploadDocBtn').addEventListener('click', async () => {
+    const fileName = prompt("Enter Document Title / File Name (e.g. Internship_Report.pdf):");
+    if (!fileName || !fileName.trim()) return;
+    const category = prompt("Enter Category (Policy, Finance, Presentation, Engineering, Template):", "Engineering") || "Engineering";
+    try {
+      let myDept = "Engineering";
+      try {
+        const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+        if (meSnap.exists()) myDept = meSnap.data().department || myDept;
+      } catch {}
+      await addDoc(collection(db, "documents"), {
+        fileName: fileName.trim(),
+        title: fileName.trim(),
+        category: category.trim(),
+        department: myDept,
+        status: "Active",
+        uploadedBy: currentUser.name,
+        uploadedOn: new Date().toISOString().slice(0, 10),
+        fileSize: "1.5 MB"
+      });
+      alert("Document uploaded successfully!");
+      loadDocuments();
+    } catch (err) {
+      alert("Failed to upload document: " + err.message);
+    }
+  });
 
   async function loadDocuments() {
     try {
-      // Interns view shared documents relevant to their own department, plus any not tied to a department.
       let deptValue = null;
       try {
         const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
         if (meSnap.exists()) deptValue = meSnap.data().department || null;
-      } catch {
-        // ignore, fall back to showing all documents
-      }
+      } catch {}
 
       const querySnapshot = await getDocs(collection(db, "documents"));
-      let docsArray = [];
+      allInternDocs = [];
       querySnapshot.forEach((docSnap) => {
-        docsArray.push({ id: docSnap.id, ...docSnap.data() });
+        allInternDocs.push({ id: docSnap.id, ...docSnap.data() });
       });
 
       if (deptValue) {
-        docsArray = docsArray.filter((d) => !d.department || d.department === deptValue);
+        allInternDocs = allInternDocs.filter((d) => !d.department || d.department === deptValue);
       }
 
-      renderDocuments(docsArray);
+      renderDocuments(allInternDocs);
     } catch (err) {
       console.error("Error loading documents: ", err);
       const tbody = document.getElementById("documentsTableBody");
       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load documents.</td></tr>`;
-      alert("Could not load documents: " + err.message);
     }
   }
 

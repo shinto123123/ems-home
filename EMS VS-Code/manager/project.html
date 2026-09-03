@@ -239,7 +239,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <p>Track and manage projects assigned to your team.</p>
         </div>
         <div class="header-buttons">
-          <button class="btn-outline"><i class="fa-regular fa-calendar-canva"></i>Project Timeline</button>
+          <button class="btn-outline" id="projectTimelineBtn"><i class="fa-solid fa-calendar-days"></i>Export Project List</button>
           <button class="btn-primary" id="openCreateProjectBtn"><i class="fa-solid fa-plus"></i>Create Project</button>
         </div>
       </div>
@@ -250,67 +250,59 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-solid fa-folder-open"></i></div>
-          <div class="kpi-info"><p>Total Projects</p><h3>12</h3><small>All Time</small></div>
+          <div class="kpi-info"><p>Total Projects</p><h3 id="kpiTotalProjects">0</h3><small>All Time</small></div>
         </div>
         <div class="kpi-card active-p">
           <div class="kpi-icon"><i class="fa-solid fa-spinner"></i></div>
-          <div class="kpi-info"><p>Active Projects</p><h3>7</h3><small style="color: #4ade80">In Progress</small></div>
+          <div class="kpi-info"><p>Active Projects</p><h3 id="kpiActiveProjects">0</h3><small style="color: #4ade80">Ongoing</small></div>
         </div>
         <div class="kpi-card hold-p">
           <div class="kpi-icon"><i class="fa-regular fa-pause-circle"></i></div>
-          <div class="kpi-info"><p>On Hold</p><h3>2</h3><small style="color: #fbbf24">On Hold</small></div>
+          <div class="kpi-info"><p>Planning</p><h3 id="kpiPlanningProjects">0</h3><small style="color: #fbbf24">Upcoming</small></div>
         </div>
         <div class="kpi-card done-p">
           <div class="kpi-icon"><i class="fa-regular fa-check-circle"></i></div>
-          <div class="kpi-info"><p>Completed</p><h3>3</h3><small style="color: #a78bfa">Completed</small></div>
+          <div class="kpi-info"><p>Completed</p><h3 id="kpiDoneProjects">0</h3><small style="color: #a78bfa">Delivered</small></div>
         </div>
         <div class="kpi-card members-p">
           <div class="kpi-icon"><i class="fa-solid fa-users-gear"></i></div>
-          <div class="kpi-info"><p>Team Members</p><h3>18</h3><small style="color: #f43f5e">Working on Projects</small></div>
+          <div class="kpi-info"><p>Team Members</p><h3 id="kpiProjectTeamMembers">0</h3><small style="color: #f43f5e">Assigned</small></div>
         </div>
       </div>
 
       <div class="table-panel">
         
-        <div class="tabs-bar">
-          <a href="#" class="tab-link active">All Projects (12)</a>
-          <a href="#" class="tab-link">Active (7)</a>
-          <a href="#" class="tab-link">On Hold (2)</a>
-          <a href="#" class="tab-link">Completed (3)</a>
-          <a href="#" class="tab-link">Archived (0)</a>
+        <div class="tabs-bar" id="projectFilterTabs">
+          <a href="#" class="tab-link active" data-tab="all">All Projects</a>
+          <a href="#" class="tab-link" data-tab="ongoing">Ongoing</a>
+          <a href="#" class="tab-link" data-tab="planning">Planning</a>
+          <a href="#" class="tab-link" data-tab="completed">Completed</a>
         </div>
 
         <div class="filter-row">
           <div class="filter-item search-box">
             <div class="input-position-wrapper">
               <i class="fa-solid fa-search search-icon"></i>
-              <input type="text" placeholder="Search by project name...">
-            </div>
-          </div>
-          <div class="filter-item select-box">
-            <label>Department</label>
-            <div class="input-position-wrapper">
-              <select><option>All Departments</option></select>
-              <i class="fa-solid fa-chevron-down chevron-icon"></i>
+              <input type="text" id="projectSearchInput" placeholder="Search by project name...">
             </div>
           </div>
           <div class="filter-item select-box">
             <label>Status</label>
             <div class="input-position-wrapper">
-              <select><option>All Status</option></select>
+              <select id="projectStatusFilter"><option value="All">All Status</option><option value="Ongoing">Ongoing</option><option value="Planning">Planning</option><option value="Completed">Completed</option></select>
               <i class="fa-solid fa-chevron-down chevron-icon"></i>
             </div>
           </div>
           <div class="filter-item select-box">
             <label>Priority</label>
             <div class="input-position-wrapper">
-              <select><option>All Priority</option></select>
+              <select id="projectPriorityFilter"><option value="All">All Priority</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
               <i class="fa-solid fa-chevron-down chevron-icon"></i>
             </div>
           </div>
           <div class="filter-buttons-wrap">
-            <button class="btn-outline" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
-            <button class="btn-primary" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
+            <button class="btn-outline" id="resetProjectFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+            <button class="btn-primary" id="applyProjectFilterBtn" style="padding: 8px 14px;"><i class="fa-solid fa-filter"></i>Filter</button>
           </div>
         </div>
 
@@ -493,67 +485,147 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         return [...container.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
     }
 
+    let currentProjectTab = 'all';
+
+    function renderProjectsTable(projects) {
+        tableBody.innerHTML = "";
+
+        if (!projects || projects.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #8898aa;">No matching projects found.</td></tr>`;
+            entriesCounter.innerText = "Showing 0 to 0 of 0 projects";
+            return;
+        }
+
+        projects.forEach((p, idx) => {
+            const progress = Number(p.progress) || 0;
+            const projectName = p.projectName || p.name || 'Untitled Project';
+            const managerName = p.managerName || (p.managerUid === currentUser.uid ? 'You' : '-');
+            const teamUids = Array.isArray(p.teamUids) ? p.teamUids : [];
+            const visibleAvatars = teamUids.slice(0, 3).map(() => `<div class="stack-member-avatar"><i class="fa-regular fa-user"></i></div>`).join('');
+            const remainder = teamUids.length > 3 ? `<div class="stack-member-avatar stack-remainder">+${teamUids.length - 3}</div>` : '';
+
+            const rowTemplate = `
+                <tr>
+                    <td>
+                      <div class="project-identity">
+                        <div class="project-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                        <div class="project-meta"><h4>${projectName}</h4><p>${p.description || ''}</p></div>
+                      </div>
+                    </td>
+                    <td>${p.department || '-'}</td>
+                    <td>${managerName}</td>
+                    <td>${formatDate(p.startDate)}</td>
+                    <td>${formatDate(p.endDate)}</td>
+                    <td>
+                      <div class="progress-cell-container">
+                        <span class="progress-text">${progress}%</span>
+                        <div class="progress-track-bar"><div class="progress-fill-bar" style="width: ${progress}%;"></div></div>
+                      </div>
+                    </td>
+                    <td><span class="badge-tag ${statusClass(p.status)}">${p.status || '-'}</span></td>
+                    <td><span class="badge-tag ${priorityClass(p.priority)}">${p.priority || 'Medium'}</span></td>
+                    <td><div class="avatar-team-stack">${visibleAvatars}${remainder}</div></td>
+                    <td><div style="display:flex; justify-content:center;"><button class="btn-action-trigger assign-btn" data-id="${p.id}" title="Assign Employees"><i class="fa-solid fa-user-plus"></i></button></div></td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+        });
+
+        entriesCounter.innerText = `Showing 1 to ${projects.length} of ${localProjectsCache.length} projects`;
+
+        document.querySelectorAll('.assign-btn').forEach(btn => {
+            btn.addEventListener('click', () => openAssignModal(btn.dataset.id));
+        });
+    }
+
+    function applyProjectFilter() {
+        const queryTerm = (document.getElementById('projectSearchInput').value || '').toLowerCase().trim();
+        const selStatus = document.getElementById('projectStatusFilter').value;
+        const selPriority = document.getElementById('projectPriorityFilter').value;
+
+        const filtered = localProjectsCache.filter(p => {
+            const name = (p.projectName || p.name || '').toLowerCase();
+            const desc = (p.description || '').toLowerCase();
+            const matchesSearch = !queryTerm || name.includes(queryTerm) || desc.includes(queryTerm);
+            const matchesStatus = selStatus === 'All' || p.status === selStatus;
+            const matchesPriority = selPriority === 'All' || (p.priority || 'Medium') === selPriority;
+
+            let matchesTab = true;
+            if (currentProjectTab === 'ongoing') matchesTab = (p.status || '').toLowerCase() === 'ongoing';
+            else if (currentProjectTab === 'planning') matchesTab = (p.status || '').toLowerCase() === 'planning';
+            else if (currentProjectTab === 'completed') matchesTab = (p.status || '').toLowerCase() === 'completed';
+
+            return matchesSearch && matchesStatus && matchesPriority && matchesTab;
+        });
+
+        renderProjectsTable(filtered);
+    }
+
+    document.getElementById('projectSearchInput').addEventListener('input', applyProjectFilter);
+    document.getElementById('projectStatusFilter').addEventListener('change', applyProjectFilter);
+    document.getElementById('projectPriorityFilter').addEventListener('change', applyProjectFilter);
+    document.getElementById('applyProjectFilterBtn').addEventListener('click', applyProjectFilter);
+    document.getElementById('resetProjectFilterBtn').addEventListener('click', () => {
+        document.getElementById('projectSearchInput').value = '';
+        document.getElementById('projectStatusFilter').value = 'All';
+        document.getElementById('projectPriorityFilter').value = 'All';
+        currentProjectTab = 'all';
+        document.querySelectorAll('#projectFilterTabs .tab-link').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === 'all'));
+        renderProjectsTable(localProjectsCache);
+    });
+
+    document.querySelectorAll('#projectFilterTabs .tab-link').forEach(t => {
+        t.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('#projectFilterTabs .tab-link').forEach(tab => tab.classList.remove('active'));
+            t.classList.add('active');
+            currentProjectTab = t.getAttribute('data-tab') || 'all';
+            applyProjectFilter();
+        });
+    });
+
+    document.getElementById('projectTimelineBtn').addEventListener('click', () => {
+        if (!localProjectsCache.length) return alert('No project records to export.');
+        const rows = [["Project Name", "Department", "Manager", "Start Date", "End Date", "Progress", "Status", "Priority", "Team Size"]];
+        localProjectsCache.forEach(p => {
+            rows.push([p.projectName || p.name || '', p.department || '', p.managerName || '', p.startDate || '', p.endDate || '', `${p.progress || 0}%`, p.status || '', p.priority || '', p.teamSize || 0]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Projects-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
     async function loadProjects() {
         try {
             const snap = await getDocs(collection(db, "projects"));
             localProjectsCache = [];
             snap.forEach((s) => localProjectsCache.push({ id: s.id, ...s.data() }));
 
-            tableBody.innerHTML = "";
-            let counter = 0;
-
-            if (localProjectsCache.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #8898aa;">No projects yet. Click "Create Project" to add one.</td></tr>`;
-                entriesCounter.innerText = "Showing 0 to 0 of 0 projects";
-                return;
-            }
-
-            localProjectsCache.forEach((p) => {
-                counter++;
-                const progress = Number(p.progress) || 0;
-                const projectName = p.projectName || p.name || 'Untitled Project';
-                const managerName = p.managerName || (p.managerUid === currentUser.uid ? 'You' : '-');
-                const teamUids = Array.isArray(p.teamUids) ? p.teamUids : [];
-                const visibleAvatars = teamUids.slice(0, 3).map(() => `<div class="stack-member-avatar"><i class="fa-regular fa-user"></i></div>`).join('');
-                const remainder = teamUids.length > 3 ? `<div class="stack-member-avatar stack-remainder">+${teamUids.length - 3}</div>` : '';
-
-                const rowTemplate = `
-                    <tr>
-                        <td>
-                          <div class="project-identity">
-                            <div class="project-icon"><i class="fa-solid fa-diagram-project"></i></div>
-                            <div class="project-meta"><h4>${projectName}</h4><p>${p.description || ''}</p></div>
-                          </div>
-                        </td>
-                        <td>${p.department || '-'}</td>
-                        <td>${managerName}</td>
-                        <td>${formatDate(p.startDate)}</td>
-                        <td>${formatDate(p.endDate)}</td>
-                        <td>
-                          <div class="progress-cell-container">
-                            <span class="progress-text">${progress}%</span>
-                            <div class="progress-track-bar"><div class="progress-fill-bar" style="width: ${progress}%;"></div></div>
-                          </div>
-                        </td>
-                        <td><span class="badge-tag ${statusClass(p.status)}">${p.status || '-'}</span></td>
-                        <td><span class="badge-tag ${priorityClass(p.priority)}">${p.priority || '-'}</span></td>
-                        <td><div class="avatar-team-stack">${visibleAvatars}${remainder}</div></td>
-                        <td><div style="display:flex; justify-content:center;"><button class="btn-action-trigger assign-btn" data-id="${p.id}" title="Assign Employees"><i class="fa-solid fa-user-plus"></i></button></div></td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            // Update dynamic KPIs
+            const total = localProjectsCache.length;
+            const ongoing = localProjectsCache.filter(p => (p.status || '').toLowerCase() === 'ongoing').length;
+            const planning = localProjectsCache.filter(p => (p.status || '').toLowerCase() === 'planning').length;
+            const completed = localProjectsCache.filter(p => (p.status || '').toLowerCase() === 'completed').length;
+            const allAssignedUids = new Set();
+            localProjectsCache.forEach(p => {
+                if (Array.isArray(p.teamUids)) p.teamUids.forEach(uid => allAssignedUids.add(uid));
             });
 
-            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} projects`;
+            document.getElementById('kpiTotalProjects').textContent = total;
+            document.getElementById('kpiActiveProjects').textContent = ongoing;
+            document.getElementById('kpiPlanningProjects').textContent = planning;
+            document.getElementById('kpiDoneProjects').textContent = completed;
+            document.getElementById('kpiProjectTeamMembers').textContent = allAssignedUids.size || 0;
 
-            document.querySelectorAll('.assign-btn').forEach(btn => {
-                btn.addEventListener('click', () => openAssignModal(btn.dataset.id));
-            });
+            renderProjectsTable(localProjectsCache);
 
         } catch (err) {
             console.error("Failed to load projects: ", err);
             tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
-            alert("Error loading projects: " + err.message);
         }
     }
 

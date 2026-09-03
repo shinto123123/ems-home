@@ -386,36 +386,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="card-panel">
         
         <div class="panel-utilities-row">
-          <div class="tabs-nav">
-            <button class="tab-btn active">My Work Logs</button>
-            <button class="tab-btn">Pending Review</button>
-            <button class="tab-btn">Approved Logs</button>
-            <button class="tab-btn">All Logs</button>
+          <div class="tabs-nav" id="internWorkLogTabs">
+            <button class="tab-btn active" data-tab="all">My Work Logs</button>
+            <button class="tab-btn" data-tab="pending">Pending Review</button>
+            <button class="tab-btn" data-tab="approved">Approved Logs</button>
           </div>
           <div class="action-buttons-group">
-            <button class="btn-sm-outline"><i class="fa-solid fa-download"></i>Export Logs</button>
+            <button class="btn-sm-outline" id="exportWorkLogsBtn"><i class="fa-solid fa-download"></i>Export Logs</button>
             <button class="btn-sm-solid" id="openWorkLogModalBtn"><i class="fa-solid fa-plus"></i>Add Work Log</button>
           </div>
         </div>
 
         <div class="filter-controls-row">
-          <div class="filters-left-group">
-            <select class="select-sm">
-              <option>📅 01/05/2025 - 15/05/2025</option>
-            </select>
-            <select class="select-sm">
-              <option>All Projects</option>
-              <option>Employee Management System</option>
-            </select>
-            <select class="select-sm">
-              <option>All Statuses</option>
-              <option>Pending Review</option>
-              <option>Approved</option>
-            </select>
-          </div>
-          <div class="panel-search-box">
+          <div class="panel-search-box" style="width:100%; max-width:400px;">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search work log...">
+            <input type="text" id="workLogSearchInput" placeholder="Search work logs by project or task...">
           </div>
         </div>
 
@@ -554,16 +539,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     document.getElementById("kpiApprovedLogs").textContent = approvedCount;
   }
 
+  let allInternLogs = [];
+  let currentInternLogTab = 'all';
+
   function renderWorkLogs(logsArray) {
     const tbody = document.getElementById("workLogsTableBody");
     const countLabel = document.getElementById("workLogsCountLabel");
     tbody.innerHTML = "";
 
-    updateWorkLogsWidgets(logsArray || []);
+    updateWorkLogsWidgets(allInternLogs);
 
     if (!logsArray || logsArray.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No work logs submitted yet. Click "Add Work Log" to begin.</td></tr>`;
-      countLabel.textContent = "Showing 0 logs";
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No matching work logs found.</td></tr>`;
+      countLabel.textContent = `Showing 0 of ${allInternLogs.length} logs`;
       return;
     }
 
@@ -579,29 +567,80 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <td><span class="badge-status${isApproved ? " approved" : ""}">${log.status || "Pending Review"}</span></td>
           <td><div class="date-meta-text"><strong>${submitted.date}</strong><span>${submitted.time}</span></div></td>
           <td style="text-align: center; white-space: nowrap;">
-            <button class="btn-row-action"><i class="fa-regular fa-eye"></i></button>
+            <button class="btn-row-action view-log-btn" data-desc="${(log.description || '').replace(/"/g, '&quot;')}" data-task="${(log.task || '').replace(/"/g, '&quot;')}" title="View Details"><i class="fa-regular fa-eye"></i></button>
           </td>
         </tr>
       `;
       tbody.insertAdjacentHTML("beforeend", rowTemplate);
     });
 
-    countLabel.textContent = `Showing 1 to ${logsArray.length} of ${logsArray.length} logs`;
+    countLabel.textContent = `Showing ${logsArray.length} of ${allInternLogs.length} logs`;
+
+    document.querySelectorAll('.view-log-btn').forEach(btn => {
+      btn.onclick = () => {
+        alert(`Task: ${btn.dataset.task}\n\nDescription:\n${btn.dataset.desc}`);
+      };
+    });
   }
+
+  function applyInternLogFilter() {
+    const queryTerm = (document.getElementById('workLogSearchInput').value || '').toLowerCase().trim();
+    const filtered = allInternLogs.filter(log => {
+      const proj = (log.project || '').toLowerCase();
+      const task = (log.task || '').toLowerCase();
+      const desc = (log.description || '').toLowerCase();
+      const matchesSearch = !queryTerm || proj.includes(queryTerm) || task.includes(queryTerm) || desc.includes(queryTerm);
+
+      const st = (log.status || 'Pending Review').toLowerCase();
+      let matchesTab = true;
+      if (currentInternLogTab === 'pending') matchesTab = st.includes('pending');
+      else if (currentInternLogTab === 'approved') matchesTab = st.includes('approved');
+
+      return matchesSearch && matchesTab;
+    });
+
+    renderWorkLogs(filtered);
+  }
+
+  document.getElementById('workLogSearchInput').addEventListener('input', applyInternLogFilter);
+
+  document.querySelectorAll('#internWorkLogTabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('#internWorkLogTabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentInternLogTab = btn.getAttribute('data-tab') || 'all';
+      applyInternLogFilter();
+    });
+  });
+
+  document.getElementById('exportWorkLogsBtn').onclick = () => {
+    if (!allInternLogs.length) return alert('No work logs to export.');
+    const rows = [["Date", "Project", "Task", "Description", "Hours", "Status"]];
+    allInternLogs.forEach(l => {
+      rows.push([l.date || '', l.project || '', l.task || '', l.description || '', `${l.hours || 0} hrs`, l.status || '']);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Work-Logs-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
 
   async function loadWorkLogs() {
     try {
       const q = query(collection(db, "workLogs"), where("uid", "==", currentUser.uid));
       const querySnapshot = await getDocs(q);
-      const logsArray = [];
-      querySnapshot.forEach((docSnap) => logsArray.push({ id: docSnap.id, ...docSnap.data() }));
-      logsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-      renderWorkLogs(logsArray);
+      allInternLogs = [];
+      querySnapshot.forEach((docSnap) => allInternLogs.push({ id: docSnap.id, ...docSnap.data() }));
+      allInternLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+      renderWorkLogs(allInternLogs);
     } catch (err) {
       console.error("Error loading work logs: ", err);
       document.getElementById("workLogsTableBody").innerHTML =
         `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load work logs.</td></tr>`;
-      alert("Could not load your work logs: " + err.message);
     }
   }
 

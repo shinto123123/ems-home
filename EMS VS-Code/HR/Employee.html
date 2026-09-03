@@ -238,20 +238,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search by name, email, department...">
+            <input type="text" id="hrEmpSearchInput" placeholder="Search by name, email, department...">
           </div>
-          <select class="filter-select">
-            <option>All Departments</option>
-            <option>Engineering</option>
-            <option>Marketing</option>
-            <option>Sales</option>
+          <select class="filter-select" id="hrEmpDeptFilter">
+            <option value="All">All Departments</option>
           </select>
-          <select class="filter-select">
-            <option>All Status</option>
-            <option>Active</option>
-            <option>On Leave</option>
+          <select class="filter-select" id="hrEmpStatusFilter">
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
           </select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <button class="btn-action" id="hrExportEmpBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
           <button class="btn-action btn-primary" id="openModalBtn"><i class="fa-solid fa-plus"></i> Add Employee</button>
         </div>
 
@@ -693,46 +690,86 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       }
   });
 
-  // READ: org-wide employee directory (HR sees everyone, unlike Manager's department-scoped view)
+  let allEmployeesList = [];
+
+  function renderEmployeeTable(list = allEmployeesList) {
+      tableBody.innerHTML = "";
+      if (list.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">No matching employee records found.</td></tr>`;
+          return;
+      }
+
+      list.forEach((emp, index) => {
+          const formattedId = `EMP${String(index + 1).padStart(3, '0')}`;
+          const statusText = emp.status || 'Active';
+          const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
+
+          const rowHtml = `
+              <tr data-id="${emp.id}" class="emp-row-trigger">
+                  <td>${formattedId}</td>
+                  <td><strong>${emp.name || ''}</strong></td>
+                  <td>${emp.department || ''}</td>
+                  <td>${emp.designation || ''}</td>
+                  <td>${emp.email || ''}</td>
+                  <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                  <td><button class="btn-icon action-view-trigger" data-id="${emp.id}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+              </tr>
+          `;
+          tableBody.insertAdjacentHTML('beforeend', rowHtml);
+      });
+
+      bindRowListeners();
+  }
+
+  function applyFilters() {
+      const q = (document.getElementById('hrEmpSearchInput')?.value || '').toLowerCase().trim();
+      const dept = document.getElementById('hrEmpDeptFilter')?.value || 'All';
+      const status = document.getElementById('hrEmpStatusFilter')?.value || 'All';
+
+      const filtered = allEmployeesList.filter(emp => {
+          const name = (emp.name || '').toLowerCase();
+          const email = (emp.email || '').toLowerCase();
+          const eDept = emp.department || '';
+          const desig = (emp.designation || '').toLowerCase();
+          const eStatus = emp.status || 'Active';
+
+          const matchQ = !q || name.includes(q) || email.includes(q) || eDept.toLowerCase().includes(q) || desig.includes(q);
+          const matchDept = dept === 'All' || eDept === dept;
+          const matchStatus = status === 'All' || eStatus.toLowerCase() === status.toLowerCase();
+
+          return matchQ && matchDept && matchStatus;
+      });
+
+      renderEmployeeTable(filtered);
+  }
+
   async function loadEmployeeRecords() {
       tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading employees...</td></tr>`;
 
       try {
           const querySnapshot = await getDocs(collection(db, "employees"));
-          tableBody.innerHTML = "";
           loadedEmployeesCache = {};
+          allEmployeesList = [];
 
           if (querySnapshot.empty) {
               tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">No employees found. Click 'Add Employee' to create one.</td></tr>`;
               return;
           }
 
-          let counter = 1;
           querySnapshot.forEach((docSnap) => {
               const id = docSnap.id;
               const emp = docSnap.data();
               loadedEmployeesCache[id] = { id, ...emp };
-
-              const formattedId = `EMP${String(counter).padStart(3, '0')}`;
-              const statusText = emp.status || 'Active';
-              const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
-
-              const rowHtml = `
-                  <tr data-id="${id}" class="emp-row-trigger">
-                      <td>${formattedId}</td>
-                      <td><strong>${emp.name || ''}</strong></td>
-                      <td>${emp.department || ''}</td>
-                      <td>${emp.designation || ''}</td>
-                      <td>${emp.email || ''}</td>
-                      <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                      <td><button class="btn-icon action-view-trigger" data-id="${id}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-                  </tr>
-              `;
-              tableBody.insertAdjacentHTML('beforeend', rowHtml);
-              counter++;
+              allEmployeesList.push({ id, ...emp });
           });
 
-          bindRowListeners();
+          const depts = Array.from(new Set(allEmployeesList.map(e => e.department).filter(Boolean))).sort();
+          const deptEl = document.getElementById('hrEmpDeptFilter');
+          if (deptEl) {
+              deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+          }
+
+          applyFilters();
 
       } catch (err) {
           console.error("Failed to load employees: ", err);
@@ -740,7 +777,25 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       }
   }
 
-  // Row click / view-details action -> populate #detailsPanel from cached record
+  document.getElementById('hrEmpSearchInput')?.addEventListener('input', applyFilters);
+  document.getElementById('hrEmpDeptFilter')?.addEventListener('change', applyFilters);
+  document.getElementById('hrEmpStatusFilter')?.addEventListener('change', applyFilters);
+
+  document.getElementById('hrExportEmpBtn')?.addEventListener('click', () => {
+      if (!allEmployeesList.length) return alert('No employee records to export.');
+      const rows = [["Employee ID", "Name", "Department", "Designation", "Email", "Phone", "Status"]];
+      allEmployeesList.forEach((e, idx) => {
+          rows.push([`EMP${String(idx + 1).padStart(3, '0')}`, e.name || '', e.department || '', e.designation || '', e.email || '', e.phone || '', e.status || 'Active']);
+      });
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Employees-${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+  });
+
   function bindRowListeners() {
       document.querySelectorAll('.emp-row-trigger').forEach(row => {
           row.addEventListener('click', () => {

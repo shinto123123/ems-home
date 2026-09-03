@@ -595,6 +595,57 @@ body {
     color:#ffffff;
 }
 
+/* Publish action / status */
+.btn-publish {
+    background:#1b2e6e;
+    color:#ffffff;
+    border:none;
+    padding:6px 12px;
+    border-radius:8px;
+    font-size:11.5px;
+    font-weight:600;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:.2s;
+}
+
+.btn-publish:hover {
+    background:#243b82;
+}
+
+.published-cell {
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.published-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:600;
+    background:rgba(74,222,128,0.15);
+    color:#4ade80;
+}
+
+.btn-unpublish {
+    background:none;
+    border:none;
+    color:#8898aa;
+    cursor:pointer;
+    font-size:11px;
+    text-decoration:underline;
+}
+
+.btn-unpublish:hover {
+    color:#f87171;
+}
+
 /* Table footer */
 .table-footer {
     display:flex;
@@ -912,6 +963,7 @@ body {
                     <option value="On Hold">On Hold</option>
                     <option value="Closed">Closed</option>
                 </select>
+                <button class="btn-action" id="adminExportRecruitBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
                 <button class="btn-action btn-primary" style="margin-left:auto;" id="openAddVacancyBtn"><i class="fa-solid fa-plus"></i> Add Vacancy</button>
             </div>
 
@@ -926,7 +978,7 @@ body {
                             <th>Applications</th>
                             <th>Status</th>
                             <th>Posted On</th>
-                            <th>Action</th>
+                            <th>Publish</th>
                         </tr>
                     </thead>
                     <tbody id="recruitmentTableBody"><tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">Loading vacancies...</td></tr></tbody>
@@ -1050,7 +1102,7 @@ body {
 </div>
 
 <script type="module">
-    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -1103,6 +1155,9 @@ body {
         tableBody.innerHTML = "";
         filtered.forEach((v) => {
             const statusClass = (v.status || 'Active').toLowerCase().replace(/\s+/g, '');
+            const publishCell = v.published
+                ? `<div class="published-cell"><span class="published-badge"><i class="fa-solid fa-circle-check"></i> Published</span><button class="btn-unpublish action-unpublish-trigger" data-id="${v.id}">Unpublish</button></div>`
+                : `<button class="btn-publish action-publish-trigger" data-id="${v.id}"><i class="fa-solid fa-share-nodes"></i> Publish</button>`;
             tableBody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td><strong>${v.jobTitle || '-'}</strong></td>
@@ -1112,11 +1167,51 @@ body {
                     <td>${v.applications ?? 0}</td>
                     <td><span class="status-badge ${statusClass}">${v.status || 'Active'}</span></td>
                     <td>${v.postedOn || '-'}</td>
-                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                    <td>${publishCell}</td>
                 </tr>
             `);
         });
         entriesCounter.textContent = `Showing 1 to ${filtered.length} of ${allVacancies.length} vacancies`;
+        bindPublishTriggers();
+    }
+
+    // One click publishes the vacancy to the public careers page and flags it
+    // as published to Indeed. There's no real Indeed API integration here --
+    // this only records intent/status until that integration exists.
+    function bindPublishTriggers() {
+        document.querySelectorAll('.action-publish-trigger').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "recruitment", id), {
+                        published: true,
+                        publishedToIndeed: true,
+                        publishedOn: new Date().toISOString()
+                    });
+                    const v = allVacancies.find(x => x.id === id);
+                    if (v) { v.published = true; v.publishedToIndeed = true; }
+                    renderVacancies();
+                } catch (error) {
+                    alert("Failed to publish vacancy: " + error.message);
+                }
+            });
+        });
+        document.querySelectorAll('.action-unpublish-trigger').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                try {
+                    await updateDoc(doc(db, "recruitment", id), {
+                        published: false,
+                        publishedToIndeed: false
+                    });
+                    const v = allVacancies.find(x => x.id === id);
+                    if (v) { v.published = false; v.publishedToIndeed = false; }
+                    renderVacancies();
+                } catch (error) {
+                    alert("Failed to unpublish vacancy: " + error.message);
+                }
+            });
+        });
     }
 
     async function loadVacancies() {
@@ -1131,7 +1226,7 @@ body {
                 if (name) deptSelect.insertAdjacentHTML('beforeend', `<option>${name}</option>`);
             });
 
-            allVacancies = recruitmentSnap.docs.map(d => d.data());
+            allVacancies = recruitmentSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
             const totalApplications = allVacancies.reduce((sum, v) => sum + (Number(v.applications) || 0), 0);
             const activeCount = allVacancies.filter(v => v.status === 'Active').length;
@@ -1176,6 +1271,21 @@ body {
         } catch (error) {
             alert("Failed to save vacancy: " + error.message);
         }
+    });
+
+    document.getElementById('adminExportRecruitBtn')?.addEventListener('click', () => {
+        if (!allVacancies.length) return alert('No vacancies to export.');
+        const rows = [["Job Title", "Department", "Employment Type", "Openings", "Applications", "Status", "Posted On", "Published"]];
+        allVacancies.forEach(v => {
+            rows.push([v.jobTitle || '', v.department || '', v.employmentType || '', v.openings ?? '', v.applications ?? 0, v.status || 'Active', v.postedOn || '', v.published ? 'Yes' : 'No']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Admin-Recruitment-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
     });
 
     loadVacancies();

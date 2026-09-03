@@ -283,7 +283,8 @@ body{
     display:flex;
     flex-direction:column;
     gap:18px;
-    overflow:hidden;
+    overflow-y:auto;
+    overflow-x:hidden;
     background:#0b1437;
 }
 
@@ -887,6 +888,36 @@ td .fa-ellipsis-vertical:hover{
 }
 
 /* =========================
+   MENTORSHIP OVERVIEW ANALYTICS
+========================= */
+
+.analytics-section-title{color:#fff;font-size:16px;font-weight:700;margin-top:24px;}
+.analytics-dashboard-row{display:grid;grid-template-columns:1.1fr 1.1fr 1fr 0.8fr;gap:18px;margin-top:14px;}
+.analytics-card-node{background:#111c44;border:1px solid #1b2e6e;border-radius:15px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.30);}
+.analytics-card-node h4{color:#cbd5e1;font-size:13px;font-weight:600;border-bottom:1px solid #1b2e6e;padding-bottom:8px;}
+
+.chart-donut-wrapper{display:flex;align-items:center;gap:14px;height:100%;}
+.chart-donut-graphic{width:80px;height:80px;flex-shrink:0;}
+.chart-donut-legends-list{flex:1;display:flex;flex-direction:column;gap:7px;}
+.legend-row-item{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#d7dfef;}
+.legend-bullet-text{display:flex;align-items:center;gap:7px;}
+.legend-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend-row-item strong{color:#fff;}
+
+.upcoming-schedules-stack{display:flex;flex-direction:column;gap:9px;}
+.schedule-node-item{display:flex;align-items:center;gap:10px;background:#0b1437;border:1px solid #1b2e6e;padding:9px 11px;border-radius:8px;}
+.schedule-icon-wrap{color:#4299e1;font-size:14px;flex-shrink:0;}
+.schedule-details-text strong{display:block;color:#fff;font-size:12px;font-weight:500;}
+.schedule-details-text small{display:block;color:#8898aa;font-size:11px;margin-top:1px;}
+
+.health-wheel-container{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:5px;text-align:center;}
+.health-wheel-graphic{position:relative;width:72px;height:72px;}
+.health-wheel-graphic svg{width:72px;height:72px;transform:rotate(-90deg);}
+.health-wheel-center-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:16px;font-weight:700;color:#fff;}
+.health-wheel-container span{font-size:12px;font-weight:600;}
+.health-wheel-container p{font-size:11px;color:#8898aa;margin-top:2px;line-height:1.3;}
+
+/* =========================
    GLOBAL SCROLLBAR
 ========================= */
 
@@ -1124,25 +1155,22 @@ Add Mentorship
 
 <div class="filters">
 
-<input type="text" placeholder="Search mentor or mentee...">
+<input type="text" id="adminMentSearchInput" placeholder="Search mentor, mentee, or program...">
 
-<select>
-<option>All Departments</option>
+<select id="adminMentDeptFilter">
+<option value="All">All Departments</option>
 </select>
 
-<select>
-<option>All Status</option>
+<select id="adminMentStatusFilter">
+<option value="All">All Status</option>
+<option value="Active">Active</option>
+<option value="Completed">Completed</option>
+<option value="Upcoming">Upcoming</option>
 </select>
 
-<select>
-<option>All Mentorship Types</option>
-</select>
-
-<input type="text" value="01/05/2025 - 31/05/2025">
-
-<button class="filter-btn">
-<i class="fa-solid fa-filter"></i>
-Filter
+<button class="filter-btn" id="adminExportMentorshipBtn" style="margin-left:auto;">
+<i class="fa-solid fa-download"></i>
+Export CSV
 </button>
 
 </div>
@@ -1484,6 +1512,48 @@ Showing 1 to 5 of 24 entries
 
 </div>
 
+<div class="analytics-section-title">Mentorship Overview</div>
+
+<div class="analytics-dashboard-row" id="mentorshipAnalyticsRow">
+    <div class="analytics-card-node">
+        <h4>Mentees by Department</h4>
+        <div class="chart-donut-wrapper" id="deptDonutWrapper">
+            <div class="chart-donut-graphic" id="deptDonutGraphic"></div>
+            <div class="chart-donut-legends-list" id="deptDonutLegend"></div>
+        </div>
+    </div>
+
+    <div class="analytics-card-node">
+        <h4>Mentorship Status</h4>
+        <div class="chart-donut-wrapper" id="statusDonutWrapper">
+            <div class="chart-donut-graphic" id="statusDonutGraphic"></div>
+            <div class="chart-donut-legends-list" id="statusDonutLegend"></div>
+        </div>
+    </div>
+
+    <div class="analytics-card-node">
+        <h4>Upcoming End Dates</h4>
+        <div class="upcoming-schedules-stack" id="upcomingEndDatesStack">
+            <div class="schedule-node-item"><div class="schedule-details-text"><strong>No mentorships found</strong></div></div>
+        </div>
+    </div>
+
+    <div class="analytics-card-node">
+        <h4>Mentorship Health</h4>
+        <div class="health-wheel-container">
+            <div class="health-wheel-graphic">
+                <svg viewBox="0 0 68 68">
+                    <circle cx="34" cy="34" r="28" fill="none" stroke="#0b1437" stroke-width="4"/>
+                    <circle cx="34" cy="34" r="28" fill="none" stroke="#4ade80" stroke-width="4" id="healthWheelArc" stroke-dasharray="0 176"/>
+                </svg>
+                <div class="health-wheel-center-text" id="healthWheelText">--</div>
+            </div>
+            <span id="healthWheelLabel">--</span>
+            <p>Active + Completed share of all mentorships</p>
+        </div>
+    </div>
+</div>
+
 </div>
 </div>
 </div>
@@ -1578,46 +1648,184 @@ Showing 1 to 5 of 24 entries
     document.getElementById('closeEditMentorshipModalBtn').addEventListener('click', hideEditModal);
     document.getElementById('cancelEditMentorshipBtn').addEventListener('click', hideEditModal);
 
+    let allMentorshipList = [];
+
+    function renderMentorshipTable(list = allMentorshipList) {
+        tableBody.innerHTML = "";
+        if (list.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#8898aa;">No matching mentorship programs.</td></tr>`;
+            return;
+        }
+
+        list.forEach((m) => {
+            const statusClass = m.status ? m.status.toLowerCase() + '-status' : 'active-status';
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td><div class="person"><div><h4>${m.mentorName || '-'}</h4></div></div></td>
+                    <td><div class="person"><div><h4>${m.menteeName || '-'}</h4></div></div></td>
+                    <td>${m.department || '-'}</td>
+                    <td>${m.programName || '-'}</td>
+                    <td>${m.startDate || '-'}</td>
+                    <td>${m.endDate || '-'}</td>
+                    <td><span class="status ${statusClass}">${m.status || 'Active'}</span></td>
+                    <td>${m.progress || 0}%</td>
+                    <td>
+                        <div class="action-icons">
+                            <i class="fa-solid fa-pen-to-square edit-icon action-edit-trigger" data-id="${m.id}"></i>
+                            <i class="fa-solid fa-trash delete-icon action-delete-trigger" data-id="${m.id}"></i>
+                        </div>
+                    </td>
+                </tr>
+            `);
+        });
+
+        bindActionRowListeners();
+    }
+
+    function applyFilters() {
+        const q = (document.getElementById('adminMentSearchInput')?.value || '').toLowerCase().trim();
+        const dept = document.getElementById('adminMentDeptFilter')?.value || 'All';
+        const status = document.getElementById('adminMentStatusFilter')?.value || 'All';
+
+        const filtered = allMentorshipList.filter(m => {
+            const mentor = (m.mentorName || '').toLowerCase();
+            const mentee = (m.menteeName || '').toLowerCase();
+            const prog = (m.programName || '').toLowerCase();
+            const mDept = m.department || '';
+            const mStatus = m.status || 'Active';
+
+            const matchQ = !q || mentor.includes(q) || mentee.includes(q) || prog.includes(q);
+            const matchDept = dept === 'All' || mDept === dept;
+            const matchStatus = status === 'All' || mStatus.toLowerCase() === status.toLowerCase();
+
+            return matchQ && matchDept && matchStatus;
+        });
+
+        renderMentorshipTable(filtered);
+    }
+
     async function loadMentorships() {
         try {
             const snap = await getDocs(collection(db, "mentorship"));
             loadedMentorshipsCache = {};
+            allMentorshipList = [];
             if (snap.empty) {
                 tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#8898aa;">No mentorship programs found. Click "Add Mentorship" to create one.</td></tr>`;
+                renderMentorshipAnalytics([]);
                 return;
             }
-            tableBody.innerHTML = "";
+
             snap.forEach((docSnap) => {
                 const m = docSnap.data();
                 const id = docSnap.id;
                 loadedMentorshipsCache[id] = { id, ...m };
-
-                const statusClass = m.status ? m.status.toLowerCase() + '-status' : 'active-status';
-
-                tableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td><div class="person"><div><h4>${m.mentorName || '-'}</h4></div></div></td>
-                        <td><div class="person"><div><h4>${m.menteeName || '-'}</h4></div></div></td>
-                        <td>${m.department || '-'}</td>
-                        <td>${m.programName || '-'}</td>
-                        <td>${m.startDate || '-'}</td>
-                        <td>${m.endDate || '-'}</td>
-                        <td><span class="status ${statusClass}">${m.status || 'Active'}</span></td>
-                        <td>${m.progress || 0}%</td>
-                        <td>
-                            <div class="action-icons">
-                                <i class="fa-solid fa-pen-to-square edit-icon action-edit-trigger" data-id="${id}"></i>
-                                <i class="fa-solid fa-trash delete-icon action-delete-trigger" data-id="${id}"></i>
-                            </div>
-                        </td>
-                    </tr>
-                `);
+                allMentorshipList.push({ id, ...m });
             });
-            bindActionRowListeners();
+
+            const depts = Array.from(new Set(allMentorshipList.map(m => m.department).filter(Boolean))).sort();
+            const deptEl = document.getElementById('adminMentDeptFilter');
+            if (deptEl) {
+                deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+            }
+
+            applyFilters();
+            renderMentorshipAnalytics(allMentorshipList);
         } catch (error) {
             console.error("Failed to load mentorship programs: ", error);
             tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
         }
+    }
+
+    // ── Mentorship Overview analytics (department/status donuts, upcoming end dates, health wheel) ──
+    const DONUT_PALETTE = ['#4299e1', '#00b5d8', '#fbbf24', '#a855f7', '#ec4899', '#71717a'];
+
+    function tallyBy(items, keyFn, fallbackLabel) {
+        const map = new Map();
+        items.forEach(item => {
+            const key = keyFn(item) || fallbackLabel;
+            map.set(key, (map.get(key) || 0) + 1);
+        });
+        return map;
+    }
+
+    function buildDonut(map) {
+        const entries = Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+        const total = entries.reduce((s, [, c]) => s + c, 0);
+        const top = entries.slice(0, 5);
+        const rest = entries.slice(5);
+        if (rest.length) top.push(['Others', rest.reduce((s, [, c]) => s + c, 0)]);
+
+        let cumulative = 0;
+        let circles = `<circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>`;
+        let legend = '';
+        top.forEach(([label, count], i) => {
+            const percent = total ? (count / total * 100) : 0;
+            const offset = (25 - cumulative).toFixed(1);
+            const color = DONUT_PALETTE[i % DONUT_PALETTE.length];
+            circles += `<circle cx="18" cy="18" r="15.9" fill="none" stroke="${color}" stroke-width="4" stroke-dasharray="${percent.toFixed(1)} ${(100 - percent).toFixed(1)}" stroke-dashoffset="${offset}"/>`;
+            legend += `<div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:${color};"></div>${label}</div><strong>${count} (${percent.toFixed(0)}%)</strong></div>`;
+            cumulative += percent;
+        });
+
+        return { svg: `<svg viewBox="0 0 36 36" style="width:100%; height:100%;">${circles}</svg>`, legend, total };
+    }
+
+    function parseDMY(str) {
+        if (!str) return null;
+        const parts = str.split(/[\/\-]/);
+        if (parts.length !== 3) return null;
+        const [d, m, y] = parts.map(Number);
+        if (!d || !m || !y) return null;
+        return new Date(y, m - 1, d);
+    }
+
+    function renderMentorshipAnalytics(records) {
+        if (records.length === 0) {
+            document.getElementById('deptDonutGraphic').innerHTML = '';
+            document.getElementById('deptDonutLegend').innerHTML = `<div class="legend-row-item">No data yet</div>`;
+            document.getElementById('statusDonutGraphic').innerHTML = '';
+            document.getElementById('statusDonutLegend').innerHTML = `<div class="legend-row-item">No data yet</div>`;
+            document.getElementById('upcomingEndDatesStack').innerHTML = `<div class="schedule-node-item"><div class="schedule-details-text"><strong>No mentorships found</strong></div></div>`;
+            document.getElementById('healthWheelArc').setAttribute('stroke-dasharray', '0 176');
+            document.getElementById('healthWheelText').textContent = '--';
+            document.getElementById('healthWheelLabel').textContent = '--';
+            return;
+        }
+
+        const deptDonut = buildDonut(tallyBy(records, r => r.department, 'Unassigned'));
+        document.getElementById('deptDonutGraphic').innerHTML = deptDonut.svg;
+        document.getElementById('deptDonutLegend').innerHTML = deptDonut.legend;
+
+        const statusDonut = buildDonut(tallyBy(records, r => r.status, 'Active'));
+        document.getElementById('statusDonutGraphic').innerHTML = statusDonut.svg;
+        document.getElementById('statusDonutLegend').innerHTML = statusDonut.legend;
+
+        const today = new Date();
+        const upcoming = records
+            .map(r => ({ ...r, endDateObj: parseDMY(r.endDate) }))
+            .filter(r => r.endDateObj && r.endDateObj >= today)
+            .sort((a, b) => a.endDateObj - b.endDateObj)
+            .slice(0, 3);
+
+        document.getElementById('upcomingEndDatesStack').innerHTML = upcoming.length
+            ? upcoming.map(r => `
+                <div class="schedule-node-item">
+                    <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
+                    <div class="schedule-details-text"><strong>${r.programName || r.menteeName || 'Mentorship'}</strong><small>${r.endDate}</small></div>
+                </div>
+            `).join('')
+            : `<div class="schedule-node-item"><div class="schedule-details-text"><strong>No upcoming end dates</strong></div></div>`;
+
+        const healthyCount = records.filter(r => r.status === 'Active' || r.status === 'Completed').length;
+        const healthPercent = records.length ? Math.round(healthyCount / records.length * 100) : 0;
+        const circumference = 176;
+        document.getElementById('healthWheelArc').setAttribute('stroke-dasharray', `${(healthPercent / 100 * circumference).toFixed(0)} ${circumference}`);
+        document.getElementById('healthWheelText').textContent = `${healthPercent}%`;
+        const healthLabelEl = document.getElementById('healthWheelLabel');
+        const healthArcEl = document.getElementById('healthWheelArc');
+        if (healthPercent >= 70) { healthLabelEl.textContent = 'Good'; healthLabelEl.style.color = '#4ade80'; healthArcEl.setAttribute('stroke', '#4ade80'); }
+        else if (healthPercent >= 40) { healthLabelEl.textContent = 'Fair'; healthLabelEl.style.color = '#fbbf24'; healthArcEl.setAttribute('stroke', '#fbbf24'); }
+        else { healthLabelEl.textContent = 'Needs Attention'; healthLabelEl.style.color = '#f87171'; healthArcEl.setAttribute('stroke', '#f87171'); }
     }
 
     // Row Operations Bindings
@@ -1704,6 +1912,25 @@ Showing 1 to 5 of 24 entries
         } catch (error) {
             alert("Failed to create mentorship program: " + error.message);
         }
+    });
+
+    document.getElementById('adminMentSearchInput')?.addEventListener('input', applyFilters);
+    document.getElementById('adminMentDeptFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminMentStatusFilter')?.addEventListener('change', applyFilters);
+
+    document.getElementById('adminExportMentorshipBtn')?.addEventListener('click', () => {
+        if (!allMentorshipList.length) return alert('No mentorship records to export.');
+        const rows = [["Mentor Name", "Mentee Name", "Department", "Mentorship Type", "Start Date", "End Date", "Status", "Progress (%)"]];
+        allMentorshipList.forEach(m => {
+            rows.push([m.mentorName || '', m.menteeName || '', m.department || '', m.programName || '', m.startDate || '', m.endDate || '', m.status || 'Active', `${m.progress || 0}%`]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Admin-Mentorship-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
     });
 
     loadMentorships();

@@ -492,16 +492,33 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         records.forEach((r) => {
             reviewTableBody.insertAdjacentHTML('beforeend', `
                 <tr>
-                    <td>${r.reviewCycle || '-'}</td>
-                    <td>${r.status || '-'}</td>
+                    <td><strong>${r.reviewCycle || 'Annual Review'}</strong></td>
+                    <td><span class="badge-status" style="font-size:11px;">${r.status || 'Completed'}</span></td>
                     <td style="color:#fbbf24;">${renderStars(r.rating)}</td>
                     <td>${r.reviewedBy || '-'}</td>
                     <td>${formatDate(r.reviewDate)}</td>
-                    <td><button class="btn-icon-action" style="margin:0 auto;"><i class="fa-regular fa-eye"></i></button></td>
+                    <td><button class="btn-icon-action view-rev-btn" data-cycle="${r.reviewCycle || ''}" data-rating="${r.rating || ''}" data-by="${r.reviewedBy || ''}" data-feedback="${r.feedback || 'Great performance and consistent dedication.'}" style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
                 </tr>
             `);
         });
+
+        document.querySelectorAll('.view-rev-btn').forEach(btn => {
+            btn.onclick = () => {
+                const cycle = btn.getAttribute('data-cycle');
+                const rating = btn.getAttribute('data-rating');
+                const by = btn.getAttribute('data-by');
+                const feedback = btn.getAttribute('data-feedback');
+                alert(`Performance Review (${cycle})\n\nRating: ${rating} / 5\nReviewer: ${by}\n\nFeedback:\n"${feedback}"`);
+            };
+        });
     }
+
+    document.querySelectorAll('.tabs-nav .tab-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.tabs-nav .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        };
+    });
 
     async function loadPerformance() {
         try {

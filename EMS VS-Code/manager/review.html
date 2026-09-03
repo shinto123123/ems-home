@@ -331,10 +331,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="header-controls">
           <div class="date-box">
             <i class="fa-regular fa-calendar"></i>
-            <span>Review Cycle: May 2024</span>
-            <i class="fa-solid fa-chevron-down"></i>
+            <span>Review Cycle: Q2 2026</span>
           </div>
-          <button class="btn-outline"><i class="fa-solid fa-download"></i>Export Report</button>
+          <button class="btn-outline" id="exportReviewBtn"><i class="fa-solid fa-download"></i>Export Report</button>
         </div>
       </div>
     </div>
@@ -344,23 +343,23 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
-          <div class="kpi-info"><p>Total Team Members</p><h3>18</h3><small>View all</small></div>
+          <div class="kpi-info"><p>Total Team Members</p><h3 id="kpiTeamMembers">0</h3><small>Active department</small></div>
         </div>
         <div class="kpi-card complete-r">
           <div class="kpi-icon"><i class="fa-regular fa-check-square"></i></div>
-          <div class="kpi-info"><p>Reviews Completed</p><h3>8</h3><small style="color: #4ade80">44.4%</small></div>
+          <div class="kpi-info"><p>Reviews Completed</p><h3 id="kpiReviewsCompleted">0</h3><small style="color: #4ade80" id="kpiReviewsCompletedPct">0%</small></div>
         </div>
         <div class="kpi-card progress-r">
           <div class="kpi-icon"><i class="fa-regular fa-clock"></i></div>
-          <div class="kpi-info"><p>In Progress</p><h3>6</h3><small style="color: #4299e1">33.3%</small></div>
+          <div class="kpi-info"><p>In Progress</p><h3 id="kpiInProgress">0</h3><small style="color: #4299e1">Active</small></div>
         </div>
         <div class="kpi-card pending-r">
           <div class="kpi-icon"><i class="fa-regular fa-file-text"></i></div>
-          <div class="kpi-info"><p>Pending Reviews</p><h3>4</h3><small style="color: #fbbf24">22.2%</small></div>
+          <div class="kpi-info"><p>Pending Reviews</p><h3 id="kpiPendingReviews">0</h3><small style="color: #fbbf24">Due</small></div>
         </div>
         <div class="kpi-card rating-r">
           <div class="kpi-icon"><i class="fa-regular fa-star"></i></div>
-          <div class="kpi-info"><p>Average Rating</p><h3>4.2 / 5</h3><small>This Cycle</small></div>
+          <div class="kpi-info"><p>Average Rating</p><h3 id="kpiAverageRating">0.0 / 5</h3><small>Current Cycle</small></div>
         </div>
       </div>
 
@@ -392,44 +391,30 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="left-block-workspace">
           <div class="table-panel">
 
-            <div class="tabs-bar">
-              <a href="#" class="tab-link active">All (18)</a>
-              <a href="#" class="tab-link">Completed (8)</a>
-              <a href="#" class="tab-link">In Progress (6)</a>
-              <a href="#" class="tab-link">Pending (4)</a>
+            <div class="tabs-bar" id="reviewFilterTabs">
+              <a href="#" class="tab-link active" data-tab="all">All Reviews</a>
+              <a href="#" class="tab-link" data-tab="completed">Completed</a>
+              <a href="#" class="tab-link" data-tab="in-progress">In Progress</a>
+              <a href="#" class="tab-link" data-tab="pending">Pending</a>
             </div>
 
             <div class="filter-row">
               <div class="filter-item search-box">
                 <div class="input-position-wrapper">
                   <i class="fa-solid fa-search search-icon"></i>
-                  <input type="text" placeholder="Search by name or ID...">
-                </div>
-              </div>
-              <div class="filter-item select-box">
-                <label>Department</label>
-                <div class="input-position-wrapper">
-                  <select><option>All Departments</option></select>
-                  <i class="fa-solid fa-chevron-down chevron-icon"></i>
-                </div>
-              </div>
-              <div class="filter-item select-box">
-                <label>Designation</label>
-                <div class="input-position-wrapper">
-                  <select><option>All Designations</option></select>
-                  <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                  <input type="text" id="reviewSearchInput" placeholder="Search by name or cycle...">
                 </div>
               </div>
               <div class="filter-item select-box">
                 <label>Status</label>
                 <div class="input-position-wrapper">
-                  <select><option>All Status</option></select>
+                  <select id="reviewStatusFilter"><option value="All">All Status</option><option value="Completed">Completed</option><option value="In Progress">In Progress</option><option value="Pending">Pending</option></select>
                   <i class="fa-solid fa-chevron-down chevron-icon"></i>
                 </div>
               </div>
               <div class="filter-buttons-wrap">
-                <button class="btn-outline" style="padding: 8px 12px;"><i class="fa-solid fa-rotate"></i>Reset</button>
-                <button class="btn-primary" style="padding: 8px 12px;"><i class="fa-solid fa-filter"></i>Filter</button>
+                <button class="btn-outline" id="resetReviewFilterBtn" style="padding: 8px 12px;"><i class="fa-solid fa-rotate"></i>Reset</button>
+                <button class="btn-primary" id="applyReviewFilterBtn" style="padding: 8px 12px;"><i class="fa-solid fa-filter"></i>Filter</button>
               </div>
             </div>
 
@@ -662,57 +647,143 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
             myDept = meSnap.exists() ? meSnap.data().department : null;
         }
-        return myDept;
+    let allReviewsList = [];
+    let currentReviewTab = 'all';
+
+    function renderReviewsTable(reviews) {
+        tableBody.innerHTML = "";
+
+        if (!reviews || reviews.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No matching performance reviews found.</td></tr>`;
+            entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
+            return;
+        }
+
+        reviews.forEach((r, idx) => {
+            const hasRating = r.rating !== undefined && r.rating !== null;
+            const rowTemplate = `
+                <tr>
+                    <td class="chk-cell"><input type="checkbox" class="custom-checkbox"></td>
+                    <td><div class="identity-cell-wrap"><div class="cell-avatar"><i class="fa-regular fa-user"></i></div><div class="cell-name-box"><h4>${r.employeeName || '-'}</h4><span>${r.uid ? r.uid.slice(0, 8) : ''}</span></div></div></td>
+                    <td>${r.department || '-'}</td>
+                    <td>${r.designation || '-'}</td>
+                    <td>${formatDate(r.reviewDate)}</td>
+                    <td>${r.reviewCycle || '-'}</td>
+                    <td><span class="badge-tag ${statusClass(r.status)}">${r.status || 'Pending'}</span></td>
+                    <td>
+                      ${hasRating ? `
+                        <div class="stars-display-box">
+                          <span class="rating-num-text">${Number(r.rating).toFixed(1)}</span>
+                          <div class="stars-row-wrap">${starsHtml(r.rating)}</div>
+                        </div>
+                      ` : `<span style="color:#4a5568; font-weight:600;">—</span>`}
+                    </td>
+                    <td><div class="row-actions-container" style="justify-content: center;"><button class="btn-action-trigger view-review-detail-btn" data-name="${r.employeeName || ''}" data-cycle="${r.reviewCycle || ''}" data-rating="${r.rating || 'N/A'}" data-comments="${r.comments || ''}"><i class="fa-regular fa-eye"></i></button></div></td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+        });
+
+        entriesCounter.innerText = `Showing 1 to ${reviews.length} of ${allReviewsList.length} entries`;
+
+        document.querySelectorAll('.view-review-detail-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert(`Performance Review:\nEmployee: ${btn.getAttribute('data-name')}\nCycle: ${btn.getAttribute('data-cycle')}\nRating: ${btn.getAttribute('data-rating')}\nComments: ${btn.getAttribute('data-comments')}`);
+            });
+        });
     }
+
+    function applyReviewFilter() {
+        const queryTerm = (document.getElementById('reviewSearchInput').value || '').toLowerCase().trim();
+        const selStatus = document.getElementById('reviewStatusFilter').value;
+
+        const filtered = allReviewsList.filter(r => {
+            const matchesSearch = !queryTerm ||
+                (r.employeeName || '').toLowerCase().includes(queryTerm) ||
+                (r.reviewCycle || '').toLowerCase().includes(queryTerm) ||
+                (r.designation || '').toLowerCase().includes(queryTerm);
+            const matchesStatus = selStatus === 'All' || r.status === selStatus;
+            let matchesTab = true;
+            if (currentReviewTab === 'completed') matchesTab = (r.status || '').toLowerCase() === 'completed';
+            else if (currentReviewTab === 'in-progress') matchesTab = (r.status || '').toLowerCase().includes('progress');
+            else if (currentReviewTab === 'pending') matchesTab = (r.status || '').toLowerCase().includes('pending');
+            return matchesSearch && matchesStatus && matchesTab;
+        });
+
+        renderReviewsTable(filtered);
+    }
+
+    document.getElementById('reviewSearchInput').addEventListener('input', applyReviewFilter);
+    document.getElementById('reviewStatusFilter').addEventListener('change', applyReviewFilter);
+    document.getElementById('applyReviewFilterBtn').addEventListener('click', applyReviewFilter);
+    document.getElementById('resetReviewFilterBtn').addEventListener('click', () => {
+        document.getElementById('reviewSearchInput').value = '';
+        document.getElementById('reviewStatusFilter').value = 'All';
+        currentReviewTab = 'all';
+        document.querySelectorAll('#reviewFilterTabs .tab-link').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === 'all'));
+        renderReviewsTable(allReviewsList);
+    });
+
+    document.querySelectorAll('#reviewFilterTabs .tab-link').forEach(t => {
+        t.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('#reviewFilterTabs .tab-link').forEach(tab => tab.classList.remove('active'));
+            t.classList.add('active');
+            currentReviewTab = t.getAttribute('data-tab') || 'all';
+            applyReviewFilter();
+        });
+    });
+
+    document.getElementById('exportReviewBtn').addEventListener('click', () => {
+        if (!allReviewsList.length) return alert('No performance review records to export.');
+        const rows = [["Employee Name", "Department", "Designation", "Review Cycle", "Status", "Rating", "Comments"]];
+        allReviewsList.forEach(r => {
+            rows.push([r.employeeName || '', r.department || '', r.designation || '', r.reviewCycle || '', r.status || '', r.rating || '', r.comments || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Performance-Reviews-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
 
     async function loadReviews() {
         try {
             await ensureDept();
-            const q = query(collection(db, "performance"), where("department", "==", myDept));
-            const querySnapshot = await getDocs(q);
-            tableBody.innerHTML = "";
-            let counter = 0;
+            const [qSnap, teamSnap] = await Promise.all([
+                getDocs(query(collection(db, "performance"), where("department", "==", myDept))),
+                getDocs(query(collection(db, "employees"), where("department", "==", myDept)))
+            ]);
 
-            if (querySnapshot.empty) {
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No performance reviews found for your department.</td></tr>`;
-                entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
-                return;
-            }
-
-            querySnapshot.forEach((docSnap) => {
-                const r = docSnap.data();
-                counter++;
-                const hasRating = r.rating !== undefined && r.rating !== null;
-
-                const rowTemplate = `
-                    <tr>
-                        <td class="chk-cell"><input type="checkbox" class="custom-checkbox"></td>
-                        <td><div class="identity-cell-wrap"><div class="cell-avatar"><i class="fa-regular fa-user"></i></div><div class="cell-name-box"><h4>${r.employeeName || '-'}</h4><span>${r.uid ? r.uid.slice(0, 8) : ''}</span></div></div></td>
-                        <td>${r.department || '-'}</td>
-                        <td>${r.designation || '-'}</td>
-                        <td>${formatDate(r.reviewDate)}</td>
-                        <td>${r.reviewCycle || '-'}</td>
-                        <td><span class="badge-tag ${statusClass(r.status)}">${r.status || 'Pending'}</span></td>
-                        <td>
-                          ${hasRating ? `
-                            <div class="stars-display-box">
-                              <span class="rating-num-text">${Number(r.rating).toFixed(1)}</span>
-                              <div class="stars-row-wrap">${starsHtml(r.rating)}</div>
-                            </div>
-                          ` : `<span style="color:#4a5568; font-weight:600;">—</span>`}
-                        </td>
-                        <td><div class="row-actions-container" style="justify-content: center;"><button class="btn-action-trigger"><i class="fa-regular fa-eye"></i></button></div></td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowTemplate);
+            allReviewsList = [];
+            qSnap.forEach((docSnap) => {
+                allReviewsList.push(docSnap.data());
             });
 
-            entriesCounter.innerText = `Showing 1 to ${counter} of ${counter} entries`;
+            // Dynamic KPIs
+            const totalMembers = teamSnap.size;
+            const completedCount = allReviewsList.filter(r => (r.status || '').toLowerCase() === 'completed').length;
+            const inProgressCount = allReviewsList.filter(r => (r.status || '').toLowerCase().includes('progress')).length;
+            const pendingCount = allReviewsList.filter(r => (r.status || '').toLowerCase().includes('pending')).length;
+            const ratedReviews = allReviewsList.filter(r => r.rating !== undefined && r.rating !== null);
+            const avgRating = ratedReviews.length
+                ? (ratedReviews.reduce((acc, curr) => acc + Number(curr.rating), 0) / ratedReviews.length).toFixed(1)
+                : '0.0';
+
+            document.getElementById('kpiTeamMembers').textContent = totalMembers;
+            document.getElementById('kpiReviewsCompleted').textContent = completedCount;
+            document.getElementById('kpiReviewsCompletedPct').textContent = allReviewsList.length ? `${Math.round((completedCount / allReviewsList.length) * 100)}%` : '0%';
+            document.getElementById('kpiInProgress').textContent = inProgressCount;
+            document.getElementById('kpiPendingReviews').textContent = pendingCount;
+            document.getElementById('kpiAverageRating').textContent = `${avgRating} / 5`;
+
+            renderReviewsTable(allReviewsList);
 
         } catch (err) {
             console.error("Failed to load performance reviews: ", err);
             tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
-            alert("Error loading performance reviews: " + err.message);
         }
     }
 

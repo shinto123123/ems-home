@@ -201,20 +201,21 @@ async function run() {
     // ---------- 5. PROJECTS (status only ever "Planning" / "Ongoing" / "Completed") ----------
     log('=== Projects ===', 'head');
     const projectsData = [
-        { title: 'EMS Platform Revamp',      department: 'Engineering', status: 'Ongoing',   team: [employees.emp1.uid, employees.emp5.uid], mgr: employees.manager, intern: interns.int1, progress: 65,  start: -30, end: 45 },
-        { title: 'Marketing Campaign Q3',    department: 'Marketing',   status: 'Ongoing',   team: [employees.emp2.uid],                       mgr: employees.manager, intern: interns.int2, progress: 40,  start: -15, end: 30 },
-        { title: 'Design System Overhaul',   department: 'Design',      status: 'Planning',  team: [employees.emp4.uid],                       mgr: employees.manager, intern: interns.int4, progress: 10,  start: 5,   end: 60 },
-        { title: 'Sales CRM Integration',    department: 'Sales',       status: 'Completed', team: [employees.emp3.uid],                       mgr: employees.manager, intern: null,         progress: 100, start: -90, end: -10 },
-        { title: 'Mobile App Launch',        department: 'Engineering', status: 'Ongoing',   team: [employees.emp1.uid],                       mgr: employees.manager, intern: interns.int3, progress: 55,  start: -20, end: 20 },
-        { title: 'Internal Tools Cleanup',   department: 'Engineering', status: 'Completed', team: [employees.emp1.uid, employees.emp5.uid], mgr: employees.manager, intern: interns.int5, progress: 100, start: -60, end: -20 },
-        { title: 'HR Portal Self-Service',   department: 'Human Resources', status: 'Planning', team: [],                                     mgr: employees.hr,      intern: null,         progress: 5,   start: 10,  end: 70 },
-        { title: 'Sales Outreach Automation',department: 'Sales',       status: 'Ongoing',   team: [employees.emp3.uid],                       mgr: employees.manager, intern: interns.int6, progress: 25,  start: -10, end: 40 },
+        { title: 'EMS Platform Revamp',      department: 'Engineering', status: 'Ongoing',   team: [employees.emp1.uid, employees.emp5.uid], mgr: employees.manager, intern: interns.int1, progress: 65,  start: -30, end: 45, priority: 'High', description: 'Modernizing core architecture, performance monitoring, and real-time dashboard capabilities.' },
+        { title: 'Marketing Campaign Q3',    department: 'Marketing',   status: 'Ongoing',   team: [employees.emp2.uid],                       mgr: employees.manager, intern: interns.int2, progress: 45,  start: -15, end: 30, priority: 'Medium', description: 'High-impact social media campaign, customer case studies, and brand promotion drive.' },
+        { title: 'Design System Overhaul',   department: 'Design',      status: 'Planning',  team: [employees.emp4.uid],                       mgr: employees.manager, intern: interns.int4, progress: 15,  start: 5,   end: 60, priority: 'Medium', description: 'Unified Figma token system, accessible color contrast standards, and Web components.' },
+        { title: 'Sales CRM Integration',    department: 'Sales',       status: 'Completed', team: [employees.emp3.uid],                       mgr: employees.manager, intern: null,         progress: 100, start: -90, end: -10, priority: 'High', description: 'Automated two-way synchronization between inbound lead pipelines and ERP database.' },
+        { title: 'Mobile App Launch v2.0',   department: 'Engineering', status: 'Ongoing',   team: [employees.emp1.uid],                       mgr: employees.manager, intern: interns.int3, progress: 80,  start: -20, end: 25, priority: 'High', description: 'Cross-platform mobile client for employee check-ins, payslip downloads, and task tracking.' },
+        { title: 'Internal Tools Cleanup',   department: 'Engineering', status: 'Completed', team: [employees.emp1.uid, employees.emp5.uid], mgr: employees.manager, intern: interns.int5, progress: 100, start: -70, end: -15, priority: 'Low', description: 'Refactoring deployment scripts, dockerizing build agents, and automated test runners.' },
+        { title: 'HR Portal Self-Service',   department: 'Human Resources', status: 'Planning', team: [],                                     mgr: employees.hr,      intern: null,         progress: 10,  start: 10,  end: 70, priority: 'Medium', description: 'Automated tax declarations, reimbursement workflows, and leave encashment calculations.' },
+        { title: 'Sales Outreach Automation',department: 'Sales',       status: 'Ongoing',   team: [employees.emp3.uid],                       mgr: employees.manager, intern: interns.int6, progress: 25,  start: -10, end: 40, priority: 'Medium', description: 'Lead nurturing sequences and automated email scheduling.' },
     ];
     for (const p of projectsData) {
         const docData = {
             projectName: p.title, name: p.title, department: p.department, status: p.status,
             managerName: p.mgr.name, managerUid: p.mgr.uid, startDate: ddmmyyyy(p.start), endDate: ddmmyyyy(p.end),
-            teamSize: p.team.length + 1, progress: p.progress, teamUids: p.team, createdByRole: 'admin'
+            teamSize: p.team.length + 1, progress: p.progress, teamUids: p.team, createdByRole: 'admin',
+            priority: p.priority, description: p.description
         };
         if (p.intern) docData.assignedInternUid = p.intern.uid;
         await addRecord('projects', docData, p.title);
@@ -226,63 +227,81 @@ async function run() {
     const attendanceEmployees = [employees.admin, employees.hr, employees.manager, employees.emp1, employees.emp2, employees.emp3, employees.emp4];
     const statusWeights = ['present', 'present', 'present', 'present', 'late', 'absent', 'leave'];
     let attendanceCount = 0;
-    for (let dayOffset = -24; dayOffset <= 0; dayOffset++) {
+    for (let dayOffset = -28; dayOffset <= 0; dayOffset++) {
         const d = new Date();
         d.setDate(d.getDate() + dayOffset);
         const isWeekend = d.getDay() === 0 || d.getDay() === 6;
         if (isWeekend) continue;
+        const dateStr = isoDate(dayOffset);
         for (let i = 0; i < attendanceEmployees.length; i++) {
             const emp = attendanceEmployees[i];
             const status = statusWeights[(i + dayOffset + 70) % statusWeights.length];
+            const isPresent = status === 'present';
+            const isLate = status === 'late';
+            const checkIn = isPresent ? '09:05 AM' : (isLate ? '09:45 AM' : null);
+            const checkOut = (dayOffset === 0) ? null : (isPresent ? '05:35 PM' : (isLate ? '06:15 PM' : null));
+            const workingHours = (dayOffset === 0) ? '4h 15m' : (isPresent ? '8h 30m' : (isLate ? '8h 30m' : null));
+
             await addRecord('attendance', {
-                employeeUid: emp.uid, uid: emp.uid, department: emp.department,
-                date: isoDate(dayOffset), status
-            }, `${emp.name} - ${isoDate(dayOffset)} - ${status}`);
+                employeeUid: emp.uid, uid: emp.uid, employeeName: emp.name, department: emp.department,
+                date: dateStr, status, checkIn, checkOut, workingHours,
+                checkInTimestamp: checkIn ? d.getTime() + 9 * 3600000 : null,
+                checkOutTimestamp: checkOut ? d.getTime() + 17 * 3600000 : null,
+                remarks: isLate ? 'Traffic delay' : ''
+            }, `${emp.name} - ${dateStr} - ${status}`);
             attendanceCount++;
         }
     }
-    log(`  ${attendanceCount} attendance records created (${attendanceEmployees.length} employees x ~18 weekdays)`, 'ok');
+    log(`  ${attendanceCount} attendance records created (${attendanceEmployees.length} employees x ~21 weekdays)`, 'ok');
 
     // ---------- 7. DOCUMENTS (every category x every status) ----------
     log('=== Documents ===', 'head');
     const docCategories = ['Policy', 'Finance', 'Presentation', 'Image', 'Template'];
     const documentsData = [
-        { fileName: 'Employee_Handbook_2026.pdf',   category: 'Policy',       department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name },
-        { fileName: 'Leave_Policy_v2.docx',          category: 'Policy',       department: 'Human Resources', status: 'Inactive', uploadedBy: employees.hr.name },
-        { fileName: 'Q3_Sales_Report.xlsx',          category: 'Finance',      department: 'Sales',           status: 'Active',   uploadedBy: employees.emp3.name },
-        { fileName: 'Annual_Budget_2026.xlsx',       category: 'Finance',      department: 'Administration',  status: 'Active',   uploadedBy: employees.admin.name },
-        { fileName: 'Investor_Deck_Q2.pptx',         category: 'Presentation', department: 'Administration',  status: 'Active',   uploadedBy: employees.admin.name },
-        { fileName: 'Engineering_Onboarding.pptx',   category: 'Presentation', department: 'Engineering',     status: 'Active',   uploadedBy: employees.manager.name },
-        { fileName: 'Team_Offsite_Photo.jpg',        category: 'Image',        department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name },
-        { fileName: 'Product_Mockup_v3.png',         category: 'Image',        department: 'Design',          status: 'Active',   uploadedBy: employees.emp4.name },
-        { fileName: 'Offer_Letter_Template.docx',    category: 'Template',     department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name },
-        { fileName: 'Invoice_Template.xlsx',         category: 'Template',     department: 'Sales',           status: 'Inactive', uploadedBy: employees.emp3.name },
+        { fileName: 'Employee_Handbook_2026.pdf',   title: 'Employee Handbook 2026',        category: 'Policy',       department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name, fileSize: '3.2 MB', fileType: 'PDF' },
+        { fileName: 'Leave_Policy_v2.docx',          title: 'Leave Policy & Guidelines',     category: 'Policy',       department: 'Human Resources', status: 'Active', uploadedBy: employees.hr.name, fileSize: '1.1 MB', fileType: 'DOCX' },
+        { fileName: 'Q3_Sales_Report.xlsx',          title: 'Q3 Sales Report',               category: 'Finance',      department: 'Sales',           status: 'Active',   uploadedBy: employees.emp3.name, fileSize: '2.8 MB', fileType: 'XLSX' },
+        { fileName: 'Annual_Budget_2026.xlsx',       title: 'Annual Company Budget 2026',    category: 'Finance',      department: 'Administration',  status: 'Active',   uploadedBy: employees.admin.name, fileSize: '4.5 MB', fileType: 'XLSX' },
+        { fileName: 'Investor_Deck_Q2.pptx',         title: 'Investor Presentation Deck',    category: 'Presentation', department: 'Administration',  status: 'Active',   uploadedBy: employees.admin.name, fileSize: '15.4 MB', fileType: 'PPTX' },
+        { fileName: 'Engineering_Onboarding.pptx',   title: 'Engineering Onboarding Guide',  category: 'Presentation', department: 'Engineering',     status: 'Active',   uploadedBy: employees.manager.name, fileSize: '11.2 MB', fileType: 'PPTX' },
+        { fileName: 'Team_Offsite_Photo.jpg',        title: 'Team Offsite 2026 Photo',       category: 'Image',        department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name, fileSize: '6.4 MB', fileType: 'JPG' },
+        { fileName: 'Product_Mockup_v3.png',         title: 'Product UI Mockup v3',          category: 'Image',        department: 'Design',          status: 'Active',   uploadedBy: employees.emp4.name, fileSize: '4.8 MB', fileType: 'PNG' },
+        { fileName: 'Offer_Letter_Template.docx',    title: 'Standard Offer Letter Template',category: 'Template',     department: 'Human Resources', status: 'Active',   uploadedBy: employees.hr.name, fileSize: '420 KB', fileType: 'DOCX' },
+        { fileName: 'Invoice_Template.xlsx',         title: 'Client Invoice Template',       category: 'Template',     department: 'Sales',           status: 'Inactive', uploadedBy: employees.emp3.name, fileSize: '580 KB', fileType: 'XLSX' },
     ];
     for (const d of documentsData) {
-        await addRecord('documents', { ...d, uploadedOn: new Date().toLocaleDateString() }, d.fileName);
+        await addRecord('documents', { ...d, uploadedOn: '2026-08-01' }, d.fileName);
     }
     log(`  ${documentsData.length} documents created (covering all ${docCategories.length} categories)`, 'ok');
 
-    // ---------- 8. PAYROLL (two periods per employee: Paid history + current Pending) ----------
+    // ---------- 8. PAYROLL (multi-month history + current Pending) ----------
     log('=== Payroll ===', 'head');
     const payrollEmployees = [employees.admin, employees.hr, employees.manager, employees.emp1, employees.emp2, employees.emp3, employees.emp4];
     const salaryTable = [95000, 72000, 88000, 65000, 58000, 54000, 60000];
+    const payrollMonths = [
+        { label: 'August 2026', status: 'Paid', date: '2026-08-01T10:00:00.000Z' },
+        { label: 'July 2026', status: 'Paid', date: '2026-07-01T10:00:00.000Z' },
+        { label: 'June 2026', status: 'Paid', date: '2026-06-01T10:00:00.000Z' },
+        { label: 'September 2026', status: 'Pending', date: '2026-09-01T10:00:00.000Z' }
+    ];
     let payrollCount = 0;
     for (let i = 0; i < payrollEmployees.length; i++) {
         const emp = payrollEmployees[i];
         const basicSalary = salaryTable[i];
         const allowances = Math.round(basicSalary * 0.15);
         const deductions = Math.round(basicSalary * 0.08);
-        const netPay = basicSalary + allowances - deductions;
-        await addRecord('payroll', {
-            employeeUid: emp.uid, employeeName: emp.name, designation: emp.designation, department: emp.department,
-            basicSalary, allowances, deductions, netPay, status: 'Paid'
-        }, `${emp.name} - Paid`);
-        await addRecord('payroll', {
-            employeeUid: emp.uid, employeeName: emp.name, designation: emp.designation, department: emp.department,
-            basicSalary, allowances, deductions, netPay, status: 'Pending'
-        }, `${emp.name} - Pending`);
-        payrollCount += 2;
+        const grossSalary = basicSalary + allowances;
+        const netPay = grossSalary - deductions;
+
+        for (const m of payrollMonths) {
+            await addRecord('payroll', {
+                employeeUid: emp.uid, employeeName: emp.name, designation: emp.designation, department: emp.department,
+                basicSalary, allowances, deductions, grossSalary, netPay, status: m.status,
+                month: m.label, payPeriod: m.label, paymentDate: m.date, createdOn: m.date,
+                timestamp: serverTimestamp()
+            }, `${emp.name} - ${m.label}`);
+            payrollCount++;
+        }
     }
     log(`  ${payrollCount} payroll records created`, 'ok');
 
@@ -295,7 +314,7 @@ async function run() {
         const subj = reviewSubjects[i];
         const isIntern = !!subj.internName;
         for (let c = 0; c < cycles.length; c++) {
-            const rating = Math.round((3.5 + ((i + c) % 4) * 0.4) * 10) / 10;
+            const rating = Math.round((3.8 + ((i + c) % 4) * 0.3) * 10) / 10;
             await addRecord('performance', {
                 uid: subj.uid, employeeName: subj.name || subj.internName, department: subj.department,
                 designation: subj.designation || 'Intern', revieweeType: isIntern ? 'intern' : 'employee',
@@ -311,18 +330,19 @@ async function run() {
     // ---------- 10. MENTORSHIP ----------
     log('=== Mentorship ===', 'head');
     const mentorshipData = [
-        { programName: 'Engineering Mentorship Track', mentor: employees.emp1, mentee: interns.int1, department: 'Engineering', status: 'Active', progress: 55 },
-        { programName: 'Marketing Buddy Program',       mentor: employees.emp2, mentee: interns.int2, department: 'Marketing',   status: 'Active', progress: 30 },
-        { programName: 'Leadership Shadow Program',     mentor: employees.manager, mentee: interns.int3, department: 'Engineering', status: 'Active', progress: 70 },
-        { programName: 'Design Craft Mentorship',       mentor: employees.emp4, mentee: interns.int4, department: 'Design',     status: 'Active', progress: 15 },
-        { programName: 'Engineering Fast-Track',        mentor: employees.manager, mentee: interns.int5, department: 'Engineering', status: 'Completed', progress: 100 },
-        { programName: 'Sales Floor Mentorship',        mentor: employees.emp3, mentee: interns.int6, department: 'Sales',      status: 'Active', progress: 40 },
+        { programName: 'Engineering Mentorship Track', mentor: employees.emp1, mentee: interns.int1, department: 'Engineering', status: 'Active', progress: 55, meetingsHeld: 8, goalsCompleted: 5 },
+        { programName: 'Marketing Buddy Program',       mentor: employees.emp2, mentee: interns.int2, department: 'Marketing',   status: 'Active', progress: 30, meetingsHeld: 6, goalsCompleted: 3 },
+        { programName: 'Leadership Shadow Program',     mentor: employees.manager, mentee: interns.int3, department: 'Engineering', status: 'Active', progress: 70, meetingsHeld: 10, goalsCompleted: 7 },
+        { programName: 'Design Craft Mentorship',       mentor: employees.emp4, mentee: interns.int4, department: 'Design',     status: 'Active', progress: 15, meetingsHeld: 3, goalsCompleted: 1 },
+        { programName: 'Engineering Fast-Track',        mentor: employees.manager, mentee: interns.int5, department: 'Engineering', status: 'Completed', progress: 100, meetingsHeld: 14, goalsCompleted: 10 },
+        { programName: 'Sales Floor Mentorship',        mentor: employees.emp3, mentee: interns.int6, department: 'Sales',      status: 'Active', progress: 40, meetingsHeld: 5, goalsCompleted: 3 },
     ];
     for (const m of mentorshipData) {
         await addRecord('mentorship', {
             programName: m.programName, mentorName: m.mentor.name, menteeName: m.mentee.internName,
             mentorUid: m.mentor.uid, menteeUid: m.mentee.uid, department: m.department,
-            startDate: ddmmyyyy(-40), endDate: ddmmyyyy(50), status: m.status, progress: m.progress
+            startDate: ddmmyyyy(-40), endDate: ddmmyyyy(50), status: m.status, progress: m.progress,
+            meetingsHeld: m.meetingsHeld, goalsCompleted: m.goalsCompleted
         }, m.programName);
     }
     log(`  ${mentorshipData.length} mentorship programs created`, 'ok');
@@ -354,8 +374,8 @@ async function run() {
         { intern: interns.int1, project: 'EMS Platform Revamp',    task: 'Write API integration tests' },
         { intern: interns.int2, project: 'Marketing Campaign Q3',  task: 'Draft social media copy' },
         { intern: interns.int2, project: 'Marketing Campaign Q3',  task: 'Analyze campaign metrics' },
-        { intern: interns.int3, project: 'Mobile App Launch',      task: 'Write unit tests' },
-        { intern: interns.int3, project: 'Mobile App Launch',      task: 'Fix crash on startup' },
+        { intern: interns.int3, project: 'Mobile App Launch v2.0', task: 'Write unit tests' },
+        { intern: interns.int3, project: 'Mobile App Launch v2.0', task: 'Fix crash on startup' },
         { intern: interns.int4, project: 'Design System Overhaul', task: 'Build component library' },
         { intern: interns.int5, project: 'Internal Tools Cleanup', task: 'Refactor build scripts' },
         { intern: interns.int6, project: 'Sales Outreach Automation', task: 'Set up email templates' },
@@ -376,42 +396,42 @@ async function run() {
     // ---------- 13. NOTIFICATIONS (every audience value) ----------
     log('=== Notifications ===', 'head');
     const notificationsData = [
-        { title: 'Company Town Hall - Friday',       body: 'Join the all-hands town hall this Friday at 4 PM.',        audience: 'All' },
-        { title: 'New Leave Policy Published',       body: 'The updated leave policy document is now available.',     audience: 'All' },
-        { title: 'Office WiFi Maintenance',          body: 'WiFi will be down for maintenance this Saturday night.',   audience: 'All' },
-        { title: 'Manager Sync Rescheduled',         body: 'Weekly manager sync moved to Thursday 11 AM.',             audience: 'Managers' },
-        { title: 'Budget Review Meeting',            body: 'Department budget reviews start next week.',               audience: 'Managers' },
-        { title: 'Payroll Processing This Week',     body: 'Payroll for this cycle will be processed by Friday.',      audience: 'Employees' },
-        { title: 'New Benefits Enrollment Open',     body: 'Annual benefits enrollment window is now open.',           audience: 'Employees' },
-        { title: 'Intern Orientation Reminder',      body: 'Orientation session recordings are now available.',       audience: 'Interns' },
-        { title: 'Internship Certificate Requests',  body: 'Submit certificate requests by end of month.',             audience: 'Interns' },
-        { title: 'New Recruitment Drive Open',       body: 'Referral bonuses apply for the current hiring drive.',     audience: 'HR' },
+        { title: 'Company Town Hall - Friday 4 PM',       body: 'Join the all-hands town hall this Friday at 4 PM.',        audience: 'All', priority: 'High' },
+        { title: 'New Leave Policy Published',       body: 'The updated leave policy document is now available.',     audience: 'All', priority: 'Normal' },
+        { title: 'Office WiFi Maintenance',          body: 'WiFi will be down for maintenance this Saturday night.',   audience: 'All', priority: 'Normal' },
+        { title: 'Manager Sync Rescheduled',         body: 'Weekly manager sync moved to Thursday 11 AM.',             audience: 'Managers', priority: 'High' },
+        { title: 'Budget Review Meeting',            body: 'Department budget reviews start next week.',               audience: 'Managers', priority: 'Normal' },
+        { title: 'Payroll Processing This Week',     body: 'Payroll for this cycle will be processed by Friday.',      audience: 'Employees', priority: 'Normal' },
+        { title: 'New Benefits Enrollment Open',     body: 'Annual benefits enrollment window is now open.',           audience: 'Employees', priority: 'Normal' },
+        { title: 'Intern Orientation Reminder',      body: 'Orientation session recordings are now available.',       audience: 'Interns', priority: 'Normal' },
+        { title: 'Internship Certificate Requests',  body: 'Submit certificate requests by end of month.',             audience: 'Interns', priority: 'Normal' },
+        { title: 'New Recruitment Drive Open',       body: 'Referral bonuses apply for the current hiring drive.',     audience: 'HR', priority: 'Normal' },
     ];
     for (const n of notificationsData) {
         await addRecord('notifications', {
             title: n.title, body: n.body, audience: n.audience, sender: employees.admin.name,
-            createdAt: serverTimestamp(), readByUids: []
+            senderRole: 'admin', priority: n.priority, createdAt: serverTimestamp(), readByUids: []
         }, `${n.title} -> ${n.audience}`);
     }
     log(`  ${notificationsData.length} notifications created (covering all audience values)`, 'ok');
 
-    // ---------- 14. RECRUITMENT (every status x every employment type) ----------
+    // ---------- 14. RECRUITMENT (every status x every employment type with published: true) ----------
     log('=== Recruitment ===', 'head');
     const recruitmentData = [
-        { jobTitle: 'Frontend Engineer',      department: 'Engineering',     employmentType: 'Full Time', openings: 2, applications: 34, status: 'Active' },
-        { jobTitle: 'Backend Engineer',       department: 'Engineering',     employmentType: 'Full Time', openings: 2, applications: 27, status: 'Active' },
-        { jobTitle: 'HR Executive',           department: 'Human Resources', employmentType: 'Full Time', openings: 1, applications: 12, status: 'Active' },
-        { jobTitle: 'Sales Development Rep',  department: 'Sales',           employmentType: 'Full Time', openings: 3, applications: 21, status: 'On Hold' },
-        { jobTitle: 'Product Designer',       department: 'Design',          employmentType: 'Contract',  openings: 1, applications: 18, status: 'Active' },
-        { jobTitle: 'Marketing Intern',       department: 'Marketing',       employmentType: 'Part Time', openings: 2, applications: 9,  status: 'Closed' },
-        { jobTitle: 'QA Engineer',            department: 'Engineering',     employmentType: 'Contract',  openings: 1, applications: 15, status: 'On Hold' },
-        { jobTitle: 'Finance Analyst',        department: 'Administration',  employmentType: 'Full Time', openings: 1, applications: 8,  status: 'Closed' },
+        { jobTitle: 'Frontend Engineer',      title: 'Frontend Engineer',     department: 'Engineering',     employmentType: 'Full Time', openings: 2, applications: 34, status: 'Active', published: true, publishedToIndeed: true },
+        { jobTitle: 'Backend Engineer',       title: 'Backend Engineer',      department: 'Engineering',     employmentType: 'Full Time', openings: 2, applications: 27, status: 'Active', published: true, publishedToIndeed: true },
+        { jobTitle: 'HR Executive',           title: 'HR Executive',          department: 'Human Resources', employmentType: 'Full Time', openings: 1, applications: 12, status: 'Active', published: true, publishedToIndeed: true },
+        { jobTitle: 'Sales Development Rep',  title: 'Sales Development Rep', department: 'Sales',           employmentType: 'Full Time', openings: 3, applications: 21, status: 'On Hold', published: false, publishedToIndeed: false },
+        { jobTitle: 'Product Designer',       title: 'Product Designer',      department: 'Design',          employmentType: 'Contract',  openings: 1, applications: 18, status: 'Active', published: true, publishedToIndeed: true },
+        { jobTitle: 'Marketing Intern',       title: 'Marketing Intern',      department: 'Marketing',       employmentType: 'Part Time', openings: 2, applications: 9,  status: 'Closed', published: false, publishedToIndeed: false },
+        { jobTitle: 'QA Engineer',            title: 'QA Engineer',           department: 'Engineering',     employmentType: 'Contract',  openings: 1, applications: 15, status: 'On Hold', published: false, publishedToIndeed: false },
+        { jobTitle: 'Finance Analyst',        title: 'Finance Analyst',       department: 'Administration',  employmentType: 'Full Time', openings: 1, applications: 8,  status: 'Closed', published: false, publishedToIndeed: false },
     ];
     for (const r of recruitmentData) {
         await addRecord('recruitment', {
             ...r, postedOn: new Date().toLocaleDateString(), description: `We are hiring a ${r.jobTitle} to join our ${r.department} team.`,
             requiredSkills: 'Communication, Ownership, Collaboration', minQualification: "Bachelor's Degree",
-            salaryRange: '6 LPA - 12 LPA', deadline: isoDate(30), postedBy: employees.hr.name, timestamp: serverTimestamp()
+            salaryRange: '6 LPA - 12 LPA', deadline: isoDate(30), location: 'Mumbai, India', postedBy: employees.hr.name, timestamp: serverTimestamp()
         }, r.jobTitle);
     }
     log(`  ${recruitmentData.length} recruitment vacancies created (covering all statuses and employment types)`, 'ok');

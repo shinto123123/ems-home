@@ -212,7 +212,7 @@ select.form-control{cursor:pointer;}
       <div class="profile-hero">
         <div class="hero-avatar-block">
           <div class="hero-avatar"><i class="fa-regular fa-user"></i></div>
-          <button class="btn-sm-action"><i class="fa-solid fa-camera"></i>Change Photo</button>
+          <button class="btn-sm-action" id="changePhotoBtn"><i class="fa-solid fa-camera"></i>Change Photo</button>
         </div>
         
         <div class="hero-meta-left">
@@ -427,6 +427,18 @@ select.form-control{cursor:pointer;}
             loadProfile();
         } catch (err) {
             alert("Failed to update profile: " + err.message);
+        }
+    });
+
+    document.getElementById('changePhotoBtn').addEventListener('click', async () => {
+        const url = prompt("Enter Image URL for profile photo:");
+        if (url !== null && url.trim()) {
+            try {
+                await updateDoc(employeeDocRef, { avatarUrl: url.trim() });
+                alert("Profile photo updated!");
+            } catch (e) {
+                alert("Failed to update photo: " + e.message);
+            }
         }
     });
 

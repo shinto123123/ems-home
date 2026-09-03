@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -913,7 +913,7 @@ Manage and review leave requests submitted by employees.
 
 <div class="header-buttons">
 
-<button class="btn">
+<button class="btn" id="adminExportLeaveBtn">
 
 <i class="fa-solid fa-download"></i>
 
@@ -921,13 +921,13 @@ Export
 
 </button>
 
-<button class="btn">
+<a class="btn" href="reports.html" style="text-decoration:none;">
 
 <i class="fa-solid fa-file"></i>
 
 Leave Reports
 
-</button>
+</a>
 
 <button class="btn add">
 
@@ -950,7 +950,7 @@ Add Leave
 <div class="card">
 
 <div class="icon">
-<i class="fa-regular fa-calendar"></i>
+<i class="fa-regular fa-calendar-days"></i>
 </div>
 
 <div>
@@ -959,7 +959,7 @@ Add Leave
 
 <h2 id="cardTotalRequests">--</h2>
 
-<p>This Month</p>
+<p>12% increase</p>
 
 </div>
 
@@ -971,7 +971,7 @@ Add Leave
 
 <div class="icon">
 
-<i class="fa-solid fa-check"></i>
+<i class="fa-regular fa-circle-check"></i>
 
 </div>
 
@@ -981,7 +981,7 @@ Add Leave
 
 <h2 id="cardApproved">--</h2>
 
-<p>42.86% of total</p>
+<p>57.14% of total</p>
 
 </div>
 
@@ -1003,7 +1003,7 @@ Add Leave
 
 <h2 id="cardPending">--</h2>
 
-<p>33.33% of total</p>
+<p>19.05% of total</p>
 
 </div>
 
@@ -1015,7 +1015,7 @@ Add Leave
 
 <div class="icon">
 
-<i class="fa-solid fa-xmark"></i>
+<i class="fa-regular fa-circle-xmark"></i>
 
 </div>
 
@@ -1061,22 +1061,22 @@ Add Leave
 
 <div class="filter-box">
 
-<input type="text"
-placeholder="Search employee name or ID">
+<input type="text" id="adminLeaveSearchInput"
+placeholder="Search employee name, role or reason">
 
-<input type="text"
-value="May 01, 2025 - May 31, 2025">
-
-<select>
-<option>All Departments</option>
+<select id="adminLeaveDeptFilter">
+<option value="All">All Departments</option>
 </select>
 
-<select>
-<option>All Leave Types</option>
+<select id="adminLeaveTypeFilter">
+<option value="All">All Leave Types</option>
 </select>
 
-<select>
-<option>All Status</option>
+<select id="adminLeaveStatusFilter">
+<option value="All">All Status</option>
+<option value="Approved">Approved</option>
+<option value="Pending">Pending</option>
+<option value="Rejected">Rejected</option>
 </select>
 
 <button class="btn">
@@ -1249,13 +1249,74 @@ Showing 1 to 7 of 42 entries
 
     const tableBody = document.getElementById('leaveTableBody');
     let cachedRequests = {};
+    let allLeaveList = [];
+
+    function renderLeaveTable(list = allLeaveList) {
+        tableBody.innerHTML = "";
+        if (list.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#8898aa;">No matching leave requests.</td></tr>`;
+            return;
+        }
+
+        list.forEach((req) => {
+            const statusClass = (req.status || 'Pending').toLowerCase();
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>${req.id.slice(0, 8)}</td>
+                    <td><div class="employee"><div><h4>${req.employeeName || 'Unknown'}</h4></div></div></td>
+                    <td>${req.department || '-'}</td>
+                    <td>${(req.requesterRole || 'employee').charAt(0).toUpperCase() + (req.requesterRole || 'employee').slice(1)}</td>
+                    <td>${req.leaveType || '-'}</td>
+                    <td>${req.fromDate || '-'} to ${req.toDate || '-'}</td>
+                    <td>${req.totalDays || '-'}</td>
+                    <td>${req.reason || '-'}</td>
+                    <td>${req.appliedOn || '-'}</td>
+                    <td><span class="status ${statusClass}">${req.status || 'Pending'}</span></td>
+                    <td>
+                        <div class="action">
+                            <i class="fa-solid fa-check approve-btn" data-id="${req.id}" title="Approve"></i>
+                            <i class="fa-solid fa-xmark reject-btn" data-id="${req.id}" title="Reject"></i>
+                        </div>
+                    </td>
+                </tr>
+            `);
+        });
+
+        bindActionListeners();
+    }
+
+    function applyFilters() {
+        const q = (document.getElementById('adminLeaveSearchInput')?.value || '').toLowerCase().trim();
+        const dept = document.getElementById('adminLeaveDeptFilter')?.value || 'All';
+        const lType = document.getElementById('adminLeaveTypeFilter')?.value || 'All';
+        const status = document.getElementById('adminLeaveStatusFilter')?.value || 'All';
+
+        const filtered = allLeaveList.filter(req => {
+            const name = (req.employeeName || '').toLowerCase();
+            const reason = (req.reason || '').toLowerCase();
+            const role = (req.requesterRole || '').toLowerCase();
+            const rDept = req.department || '';
+            const rType = req.leaveType || '';
+            const rStatus = req.status || 'Pending';
+
+            const matchQ = !q || name.includes(q) || reason.includes(q) || role.includes(q);
+            const matchDept = dept === 'All' || rDept === dept;
+            const matchType = lType === 'All' || rType === lType;
+            const matchStatus = status === 'All' || rStatus.toLowerCase() === status.toLowerCase();
+
+            return matchQ && matchDept && matchType && matchStatus;
+        });
+
+        renderLeaveTable(filtered);
+    }
 
     async function loadLeaveRequests() {
         tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#8898aa;">Loading leave requests...</td></tr>`;
         try {
             const snap = await getDocs(collection(db, "leaveRequests"));
-            tableBody.innerHTML = "";
             cachedRequests = {};
+            allLeaveList = [];
 
             if (snap.empty) {
                 tableBody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:24px; color:#8898aa;">No leave requests found.</td></tr>`;
@@ -1263,38 +1324,26 @@ Showing 1 to 7 of 42 entries
                 return;
             }
 
-            const allRequests = [];
             snap.forEach((docSnap) => {
                 const req = { id: docSnap.id, ...docSnap.data() };
                 cachedRequests[req.id] = req;
-                allRequests.push(req);
-
-                const statusClass = (req.status || 'Pending').toLowerCase();
-                tableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>${req.id.slice(0, 8)}</td>
-                        <td><div class="employee"><div><h4>${req.employeeName || 'Unknown'}</h4></div></div></td>
-                        <td>${req.department || '-'}</td>
-                        <td>${(req.requesterRole || 'employee').charAt(0).toUpperCase() + (req.requesterRole || 'employee').slice(1)}</td>
-                        <td>${req.leaveType || '-'}</td>
-                        <td>${req.fromDate || '-'} to ${req.toDate || '-'}</td>
-                        <td>${req.totalDays || '-'}</td>
-                        <td>${req.reason || '-'}</td>
-                        <td>${req.appliedOn || '-'}</td>
-                        <td><span class="status ${statusClass}">${req.status || 'Pending'}</span></td>
-                        <td>
-                            <div class="action">
-                                <i class="fa-solid fa-check approve-btn" data-id="${req.id}" title="Approve"></i>
-                                <i class="fa-solid fa-xmark reject-btn" data-id="${req.id}" title="Reject"></i>
-                            </div>
-                        </td>
-                    </tr>
-                `);
+                allLeaveList.push(req);
             });
 
-            updateCards(allRequests);
-            bindActionListeners();
+            const depts = Array.from(new Set(allLeaveList.map(r => r.department).filter(Boolean))).sort();
+            const deptEl = document.getElementById('adminLeaveDeptFilter');
+            if (deptEl) {
+                deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+            }
+
+            const types = Array.from(new Set(allLeaveList.map(r => r.leaveType).filter(Boolean))).sort();
+            const typeEl = document.getElementById('adminLeaveTypeFilter');
+            if (typeEl) {
+                typeEl.innerHTML = `<option value="All">All Leave Types</option>` + types.map(t => `<option value="${t}">${t}</option>`).join('');
+            }
+
+            updateCards(allLeaveList);
+            applyFilters();
 
         } catch (error) {
             console.error("Failed to load leave requests: ", error);
@@ -1312,17 +1361,47 @@ Showing 1 to 7 of 42 entries
     function bindActionListeners() {
         document.querySelectorAll('.approve-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                await updateDoc(doc(db, "leaveRequests", btn.getAttribute('data-id')), { status: "Approved" });
-                loadLeaveRequests();
+                const id = btn.getAttribute('data-id');
+                await updateDoc(doc(db, "leaveRequests", id), { status: "Approved" });
+                if (cachedRequests[id]) cachedRequests[id].status = "Approved";
+                const target = allLeaveList.find(r => r.id === id);
+                if (target) target.status = "Approved";
+                updateCards(allLeaveList);
+                applyFilters();
             });
         });
         document.querySelectorAll('.reject-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                await updateDoc(doc(db, "leaveRequests", btn.getAttribute('data-id')), { status: "Rejected" });
-                loadLeaveRequests();
+                const id = btn.getAttribute('data-id');
+                await updateDoc(doc(db, "leaveRequests", id), { status: "Rejected" });
+                if (cachedRequests[id]) cachedRequests[id].status = "Rejected";
+                const target = allLeaveList.find(r => r.id === id);
+                if (target) target.status = "Rejected";
+                updateCards(allLeaveList);
+                applyFilters();
             });
         });
     }
+
+    document.getElementById('adminLeaveSearchInput')?.addEventListener('input', applyFilters);
+    document.getElementById('adminLeaveDeptFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminLeaveTypeFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('adminLeaveStatusFilter')?.addEventListener('change', applyFilters);
+
+    document.getElementById('adminExportLeaveBtn')?.addEventListener('click', () => {
+        if (!allLeaveList.length) return alert('No leave records to export.');
+        const rows = [["Request ID", "Employee Name", "Department", "Role", "Leave Type", "From Date", "To Date", "Days", "Reason", "Status"]];
+        allLeaveList.forEach(r => {
+            rows.push([r.id, r.employeeName || '', r.department || '', r.requesterRole || 'employee', r.leaveType || '', r.fromDate || '', r.toDate || '', r.totalDays || '', r.reason || '', r.status || 'Pending']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Admin-Leave-Requests-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
 
     loadLeaveRequests();
 </script>

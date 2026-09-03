@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -115,6 +115,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .btn-icon:hover{color:#fff;}
 .btn-table-action{background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:4px 12px;border-radius:6px;font-size:11.5px;cursor:pointer;}
 .btn-table-action:hover{border-color:#4299e1;color:#fff;}
+
+.btn-publish{background:#1b2e6e;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
+.btn-publish:hover{background:#2a449c;}
+.published-cell{display:flex;align-items:center;gap:8px;}
+.published-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(74,222,128,0.1);color:#4ade80;}
+.btn-unpublish{background:none;border:none;color:#8898aa;cursor:pointer;font-size:11px;text-decoration:underline;}
+.btn-unpublish:hover{color:#f87171;}
 
 /* Pagination Panel Footer Component */
 .table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
@@ -251,18 +258,18 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search by job title or department...">
+            <input type="text" id="vacSearchInput" placeholder="Search by job title or department...">
           </div>
-          <select class="filter-select">
-            <option>All Departments</option>
+          <select class="filter-select" id="vacDeptFilter">
+            <option value="All">All Departments</option>
           </select>
-          <select class="filter-select">
-            <option>All Employment Types</option>
+          <select class="filter-select" id="vacStatusFilter">
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Draft">Draft</option>
+            <option value="Closed">Closed</option>
           </select>
-          <select class="filter-select">
-            <option>All Status</option>
-          </select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <button class="btn-action" id="exportRecruitmentBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
           <button class="btn-action btn-primary" style="margin-left: auto;" id="openAddVacancyBtn"><i class="fa-solid fa-plus"></i> Add Vacancy</button>
         </div>
 
@@ -277,7 +284,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 <th>Applications</th>
                 <th>Status</th>
                 <th>Posted On</th>
-                <th>Action</th>
+                <th>Publish</th>
               </tr>
             </thead>
             <tbody>
@@ -389,7 +396,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       </div>
     </div>
 
-    <div class="details-panel" id="detailsPanel">
+    <div class="details-panel d-none" id="detailsPanel">
       <div class="details-header">
         <h3>Add Vacancy</h3>
         <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
@@ -501,7 +508,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 </div>
 
 <script type="module">
-  import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, getDocs, addDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -536,31 +543,103 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   });
 
   const tableBody = document.getElementById('recruitmentTableBody');
+  let allVacancies = [];
+
+  // One click publishes the vacancy to the public careers page and flags it as
+  // published to Indeed. There's no real Indeed API integration here -- this
+  // only records intent/status until that integration exists.
+  function bindPublishTriggers() {
+    document.querySelectorAll('.action-publish-trigger').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        try {
+          await updateDoc(doc(db, "recruitment", id), {
+            published: true,
+            publishedToIndeed: true,
+            publishedOn: new Date().toISOString()
+          });
+          const v = allVacancies.find(x => x.id === id);
+          if (v) { v.published = true; v.publishedToIndeed = true; }
+          renderVacancies();
+        } catch (error) {
+          alert("Failed to publish vacancy: " + error.message);
+        }
+      });
+    });
+    document.querySelectorAll('.action-unpublish-trigger').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        try {
+          await updateDoc(doc(db, "recruitment", id), { published: false, publishedToIndeed: false });
+          const v = allVacancies.find(x => x.id === id);
+          if (v) { v.published = false; v.publishedToIndeed = false; }
+          renderVacancies();
+        } catch (error) {
+          alert("Failed to unpublish vacancy: " + error.message);
+        }
+      });
+    });
+  }
+
+  function renderVacancies(list = allVacancies) {
+    if (list.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">No vacancies match your filter.</td></tr>`;
+      return;
+    }
+    tableBody.innerHTML = "";
+    list.forEach((v) => {
+      const statusClass = (v.status || 'Active').toLowerCase().replace(/\s+/g, '');
+      const publishCell = v.published
+        ? `<div class="published-cell"><span class="published-badge"><i class="fa-solid fa-circle-check"></i> Published</span><button class="btn-unpublish action-unpublish-trigger" data-id="${v.id}">Unpublish</button></div>`
+        : `<button class="btn-publish action-publish-trigger" data-id="${v.id}"><i class="fa-solid fa-share-nodes"></i> Publish</button>`;
+      tableBody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><strong>${v.jobTitle || '-'}</strong></td>
+          <td>${v.department || '-'}</td>
+          <td>${v.employmentType || '-'}</td>
+          <td>${v.openings ?? '-'}</td>
+          <td>${v.applications ?? 0}</td>
+          <td><span class="status-badge ${statusClass}">${v.status || 'Active'}</span></td>
+          <td>${v.postedOn || '-'}</td>
+          <td>${publishCell}</td>
+        </tr>
+      `);
+    });
+    bindPublishTriggers();
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById('vacSearchInput')?.value || '').toLowerCase().trim();
+    const dept = document.getElementById('vacDeptFilter')?.value || 'All';
+    const status = document.getElementById('vacStatusFilter')?.value || 'All';
+
+    const filtered = allVacancies.filter(v => {
+      const title = (v.jobTitle || '').toLowerCase();
+      const vDept = v.department || '';
+      const vStatus = v.status || 'Active';
+
+      const matchQ = !q || title.includes(q) || vDept.toLowerCase().includes(q);
+      const matchDept = dept === 'All' || vDept === dept;
+      const matchStatus = status === 'All' || vStatus.toLowerCase() === status.toLowerCase();
+
+      return matchQ && matchDept && matchStatus;
+    });
+
+    renderVacancies(filtered);
+  }
 
   async function loadVacancies() {
     try {
       const snap = await getDocs(collection(db, "recruitment"));
-      if (snap.empty) {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">No vacancies posted yet.</td></tr>`;
-        return;
+      allVacancies = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const depts = Array.from(new Set(allVacancies.map(v => v.department).filter(Boolean))).sort();
+      const deptFilterEl = document.getElementById('vacDeptFilter');
+      if (deptFilterEl) {
+        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
       }
-      tableBody.innerHTML = "";
-      snap.forEach((docSnap) => {
-        const v = docSnap.data();
-        const statusClass = (v.status || 'Active').toLowerCase().replace(/\s+/g, '');
-        tableBody.insertAdjacentHTML('beforeend', `
-          <tr>
-            <td><strong>${v.jobTitle || '-'}</strong></td>
-            <td>${v.department || '-'}</td>
-            <td>${v.employmentType || '-'}</td>
-            <td>${v.openings ?? '-'}</td>
-            <td>${v.applications ?? 0}</td>
-            <td><span class="status-badge ${statusClass}">${v.status || 'Active'}</span></td>
-            <td>${v.postedOn || '-'}</td>
-            <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-          </tr>
-        `);
-      });
+
+      applyFilters();
     } catch (error) {
       console.error("Failed to load vacancies: ", error);
       tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
@@ -593,6 +672,25 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     } catch (error) {
       alert("Failed to save vacancy: " + error.message);
     }
+  });
+
+  document.getElementById('vacSearchInput')?.addEventListener('input', applyFilters);
+  document.getElementById('vacDeptFilter')?.addEventListener('change', applyFilters);
+  document.getElementById('vacStatusFilter')?.addEventListener('change', applyFilters);
+
+  document.getElementById('exportRecruitmentBtn')?.addEventListener('click', () => {
+    if (!allVacancies.length) return alert('No vacancies to export.');
+    const rows = [["Job Title", "Department", "Employment Type", "Openings", "Applications", "Status", "Posted On", "Published"]];
+    allVacancies.forEach(v => {
+      rows.push([v.jobTitle || '', v.department || '', v.employmentType || '', v.openings ?? '', v.applications ?? 0, v.status || 'Active', v.postedOn || '', v.published ? 'Yes' : 'No']);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Recruitment-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
 
   loadVacancies();

@@ -196,7 +196,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <div class="profile-info-body">
               <div class="avatar-section">
                 <div class="big-avatar"><i class="fa-regular fa-user"></i></div>
-                <button class="btn-outline" style="padding: 5px 10px; font-size: 11px;"><i class="fa-solid fa-camera"></i>Change Photo</button>
+                <button class="btn-outline" id="changePhotoBtn" style="padding: 5px 10px; font-size: 11px;"><i class="fa-solid fa-camera"></i>Change Photo</button>
                 <span>JPG, PNG or GIF.<br>Max size 2MB.</span>
               </div>
               
@@ -240,7 +240,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 <span class="data-label">Password</span>
                 <div class="password-row">
                   <span class="data-value">: ••••••••••••</span>
-                  <button class="btn-outline" style="padding: 4px 10px; font-size: 11px;">Change Password</button>
+                  <button class="btn-outline" id="changePasswordBtn" style="padding: 4px 10px; font-size: 11px;">Change Password</button>
                 </div>
               </div>
               <div class="data-row"><span class="data-label">Role</span><span class="data-value">: Manager</span></div>
@@ -429,6 +429,25 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       console.error(err);
       alert('Failed to save preferences: ' + err.message);
     }
+  });
+
+  // Change photo prompt
+  document.getElementById('changePhotoBtn').addEventListener('click', async () => {
+    const newUrl = prompt("Enter Image URL for profile photo:", profileData.avatarUrl || "");
+    if (newUrl !== null && newUrl.trim()) {
+      try {
+        await updateDoc(employeeDocRef, { avatarUrl: newUrl.trim() });
+        profileData.avatarUrl = newUrl.trim();
+        alert("Profile photo updated!");
+      } catch (e) {
+        alert("Failed to update photo: " + e.message);
+      }
+    }
+  });
+
+  // Change password redirect/prompt
+  document.getElementById('changePasswordBtn').addEventListener('click', () => {
+    window.location.href = "settings.html";
   });
 </script>
 </body>

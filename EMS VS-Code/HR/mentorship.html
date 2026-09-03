@@ -289,43 +289,48 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="mini-kpi-grid">
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-            <div class="mini-info"><p>Total Programs</p><h3>8</h3><small>Active Programs</small></div>
+            <div class="mini-info"><p>Total Programs</p><h3 id="kpiTotalPrograms">--</h3><small>Total Tracked</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
-            <div class="mini-info"><p>Active Mentorships</p><h3>46</h3><small>Ongoing</small></div>
+            <div class="mini-info"><p>Active Mentorships</p><h3 id="kpiActivePrograms">--</h3><small>Ongoing</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="mini-info"><p>Completed Mentorships</p><h3>18</h3><small>Completed</small></div>
+            <div class="mini-info"><p>Completed Mentorships</p><h3 id="kpiCompletedPrograms">--</h3><small>Completed</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
-            <div class="mini-info"><p>Total Mentors</p><h3>25</h3><small>Active Mentors</small></div>
+            <div class="mini-info"><p>Total Mentors</p><h3 id="kpiTotalMentors">--</h3><small>Active Mentors</small></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div>
-            <div class="mini-info"><p>Total Mentees</p><h3>46</h3><small>Active Mentees</small></div>
+            <div class="mini-info"><p>Total Mentees</p><h3 id="kpiTotalMentees">--</h3><small>Active Mentees</small></div>
           </div>
         </div>
 
         <div class="filter-bar">
           <div class="search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search by program, mentor or mentee...">
+            <input type="text" id="mentorSearchInput" placeholder="Search by program, mentor or mentee...">
           </div>
-          <select class="filter-select"><option>All Departments</option></select>
-          <select class="filter-select"><option>All Status</option></select>
-          <select class="filter-select"><option>All Program Status</option></select>
-          <button class="btn-action"><i class="fa-solid fa-filter"></i> Filter</button>
+          <select class="filter-select" id="mentorDeptFilter"><option value="All">All Departments</option></select>
+          <select class="filter-select" id="mentorStatusFilter">
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Pending">Pending</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <button class="btn-action" id="exportMentorshipBtn" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Export CSV</button>
         </div>
 
-        <div class="segment-filter-row">
-          <button class="segment-btn active">All Mentorships</button>
-          <button class="segment-btn">Active</button>
-          <button class="segment-btn">Pending</button>
-          <button class="segment-btn">Completed</button>
-          <button class="segment-btn">Cancelled</button>
+        <div class="segment-filter-row" id="mentorSegmentTabs">
+          <button class="segment-btn active" data-status="All">All Mentorships</button>
+          <button class="segment-btn" data-status="Active">Active</button>
+          <button class="segment-btn" data-status="Pending">Pending</button>
+          <button class="segment-btn" data-status="Completed">Completed</button>
+          <button class="segment-btn" data-status="Cancelled">Cancelled</button>
         </div>
 
         <div class="table-wrap">
@@ -616,19 +621,62 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   let mentorshipCache = {};
   let currentMentorshipId = null;
 
+  let allMentorships = [];
+  let activeSegment = 'All';
+
   async function loadMentorships() {
     try {
       const snap = await getDocs(collection(db, "mentorship"));
-      if (snap.empty) {
-        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No mentorship programs found.</td></tr>`;
-        mentorshipCache = {};
-        return;
-      }
-      tableBody.innerHTML = "";
+      allMentorships = [];
       mentorshipCache = {};
       snap.forEach((docSnap) => {
         const m = { id: docSnap.id, ...docSnap.data() };
         mentorshipCache[m.id] = m;
+        allMentorships.push(m);
+      });
+
+      const depts = Array.from(new Set(allMentorships.map(m => m.department).filter(Boolean))).sort();
+      const deptFilterEl = document.getElementById('mentorDeptFilter');
+      if (deptFilterEl) {
+        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+      }
+
+      applyFilters();
+    } catch (error) {
+      console.error("Failed to load mentorship programs: ", error);
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+    }
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById('mentorSearchInput')?.value || '').toLowerCase().trim();
+    const dept = document.getElementById('mentorDeptFilter')?.value || 'All';
+    const statusSel = document.getElementById('mentorStatusFilter')?.value || 'All';
+
+    const filtered = allMentorships.filter(m => {
+      const prog = (m.programName || '').toLowerCase();
+      const mentor = (m.mentorName || '').toLowerCase();
+      const mentee = (m.menteeName || '').toLowerCase();
+      const mDept = m.department || '';
+      const mStatus = m.status || 'Active';
+
+      const matchQ = !q || prog.includes(q) || mentor.includes(q) || mentee.includes(q);
+      const matchDept = dept === 'All' || mDept === dept;
+      const matchStatusSel = statusSel === 'All' || mStatus === statusSel;
+      const matchSegment = activeSegment === 'All' || mStatus === activeSegment;
+
+      return matchQ && matchDept && matchStatusSel && matchSegment;
+    });
+
+    renderMentorships(filtered);
+  }
+
+  function renderMentorships(list = allMentorships) {
+    if (list.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No mentorship programs match your filters.</td></tr>`;
+    } else {
+      tableBody.innerHTML = "";
+      list.forEach((m) => {
         const statusClass = (m.status || 'Active').toLowerCase();
         tableBody.insertAdjacentHTML('beforeend', `
           <tr class="mentorship-row" data-id="${m.id}">
@@ -645,10 +693,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         `);
       });
       bindMentorshipRowClicks();
-    } catch (error) {
-      console.error("Failed to load mentorship programs: ", error);
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
     }
+
+    const uniqueMentors = new Set(allMentorships.map(m => m.mentorName).filter(Boolean));
+    const uniqueMentees = new Set(allMentorships.map(m => m.menteeName).filter(Boolean));
+
+    document.getElementById('kpiTotalPrograms').textContent = String(allMentorships.length);
+    document.getElementById('kpiActivePrograms').textContent = String(allMentorships.filter(m => (m.status || 'Active') === 'Active').length);
+    document.getElementById('kpiCompletedPrograms').textContent = String(allMentorships.filter(m => m.status === 'Completed').length);
+    document.getElementById('kpiTotalMentors').textContent = String(uniqueMentors.size);
+    document.getElementById('kpiTotalMentees').textContent = String(uniqueMentees.size);
   }
 
   // Row click -> populate the details inspector with the real mentorship record
@@ -748,6 +802,34 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     } catch (error) {
       alert("Failed to create mentorship program: " + error.message);
     }
+  });
+
+  document.getElementById('mentorSearchInput')?.addEventListener('input', applyFilters);
+  document.getElementById('mentorDeptFilter')?.addEventListener('change', applyFilters);
+  document.getElementById('mentorStatusFilter')?.addEventListener('change', applyFilters);
+
+  document.querySelectorAll('#mentorSegmentTabs .segment-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#mentorSegmentTabs .segment-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSegment = btn.getAttribute('data-status') || 'All';
+      applyFilters();
+    });
+  });
+
+  document.getElementById('exportMentorshipBtn')?.addEventListener('click', () => {
+    if (!allMentorships.length) return alert('No mentorship records to export.');
+    const rows = [["Program Name", "Mentor", "Mentee", "Department", "Start Date", "End Date", "Status", "Progress"]];
+    allMentorships.forEach(m => {
+      rows.push([m.programName || '', m.mentorName || '', m.menteeName || '', m.department || '', m.startDate || '', m.endDate || '', m.status || '', `${m.progress || 0}%`]);
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Mentorship-${Date.now()}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
   });
 
   loadMentorships();
