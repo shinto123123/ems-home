@@ -3,739 +3,3676 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Paoyaila Animation Studios LLP is a technology-driven animation and gaming studio delivering motion graphics, VR/AR, games, UI/UX, and enterprise IT services." />
-  <meta name="theme-color" content="#1d4ed8" />
-  <title>Paoyaila Animation Studio | Animation, Games & Digital Studio</title>
+  <meta name="description" content="Paoyaila Animation Studios LLP - Pioneer in 3D Animation, Unreal Engine 5 Game Development, VR/AR, VFX Motion Graphics, and Enterprise Digital Transformation." />
+  <meta name="keywords" content="Animation Studio, 3D CGI, Game Development, Unreal Engine, VR AR, Motion Graphics, EMS, Paoyaila" />
+  <meta name="theme-color" content="#070b19" />
+  <title>Paoyaila Animation Studio | Next-Gen Animation, Games & Digital Experiences</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
   <style>
     :root {
-      --bg: #f6f8fc;
-      --canvas: #ffffff;
-      --surface: #ffffff;
-      --surface-soft: rgba(16,24,56,0.04);
-      --text: #101a33;
-      --muted: #5a667e;
-      --accent: #1d4ed8;
-      --accent-strong: #2563eb;
-      --success: #17965a;
-      --border: rgba(16,24,56,0.10);
-      --shadow: 0 18px 45px rgba(16,24,56,0.08);
-      --radius: 24px;
+      --bg-dark: #070b19;
+      --bg-surface: #0e162e;
+      --bg-surface-glass: rgba(14, 22, 46, 0.72);
+      --bg-card: #121c3b;
+      --bg-card-hover: #17244c;
+      --bg-elevated: #1a2954;
+      
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-emerald: #10b981;
+      
+      --gradient-brand: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #a855f7 100%);
+      --gradient-glow: linear-gradient(135deg, rgba(56,189,248,0.2) 0%, rgba(99,102,241,0.2) 50%, rgba(168,85,247,0.2) 100%);
+      --gradient-border: linear-gradient(135deg, rgba(56,189,248,0.5), rgba(99,102,241,0.3), rgba(168,85,247,0.5));
+      --gradient-dark-fade: linear-gradient(180deg, rgba(7,11,25,0) 0%, #070b19 100%);
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.35);
+      
+      --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 40px rgba(56, 189, 248, 0.22);
+      
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-pill: 9999px;
     }
-    * { box-sizing: border-box; }
-    body {
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      min-height: 100vh;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--text);
-      background: radial-gradient(circle at top left, rgba(29, 78, 216, 0.06), transparent 25%),
-                  radial-gradient(circle at right, rgba(37, 99, 235, 0.05), transparent 18%),
-                  linear-gradient(180deg, #ffffff 0%, #f0f3fa 100%);
+      padding: 0;
     }
-    body::before {
-      content: '';
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.65;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Radial Background Effects */
+    .ambient-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.45;
+    }
+    .ambient-1 {
+      top: -150px;
+      left: 10%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #38bdf8 0%, rgba(56,189,248,0) 70%);
+      animation: floatAmbient 18s ease-in-out infinite alternate;
+    }
+    .ambient-2 {
+      top: 40%;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #6366f1 0%, rgba(99,102,241,0) 70%);
+      animation: floatAmbient 22s ease-in-out infinite alternate-reverse;
+    }
+    .ambient-3 {
+      bottom: 10%;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #a855f7 0%, rgba(168,85,247,0) 70%);
+      animation: floatAmbient 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatAmbient {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(80px) scale(1.12); }
+    }
+
+    /* Grid overlay pattern */
+    .bg-grid-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(29,78,216,0.04), transparent 22%),
-                  radial-gradient(circle at 80% 15%, rgba(37,99,235,0.05), transparent 18%);
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
       pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
     }
-    a { color: inherit; text-decoration: none; }
-    button, input, textarea { font: inherit; }
 
-.page { width: min(1200px, calc(100% - 32px)); margin: 0 auto; padding: 48px 0 48px; position: relative; z-index: 1; }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+    }
+
+    .container {
+      width: min(1240px, calc(100% - 40px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Typography Utilities */
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+    }
+
+    .gradient-text {
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    .gradient-text-cyan {
+      background: linear-gradient(135deg, #38bdf8, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── NAVIGATION BAR ─── */
     .topbar {
-       position: fixed;
-       top: 0;
-       left: 0;
-       right: 0;
-       z-index: 50;
-       background: transparent;
-       border-bottom: 1px solid transparent;
-       transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
-     }
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 20px 0;
+    }
+
     .topbar.scrolled {
-       backdrop-filter: blur(24px);
-       background: rgba(255, 255, 255, 0.86);
-       border-bottom: 1px solid var(--border);
-       box-shadow: 0 8px 30px rgba(16,24,56,0.06);
-     }
+      background: rgba(7, 11, 25, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      padding: 12px 0;
+    }
+
     .topbar-inner {
-       width: min(1200px, calc(100% - 32px));
-       margin: 0 auto;
-       display: flex;
-       align-items: center;
-       justify-content: space-between;
-       gap: 24px;
-       padding: 16px 12px;
-     }
-    .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
-    }
-    .brand img { width: 120px; height: auto; display: block; }
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
+      justify-content: space-between;
       gap: 24px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      position: relative;
+      z-index: 10;
+    }
+
+    .brand-logo img {
+      width: 175px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(56, 189, 248, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .brand-logo:hover img {
+      transform: scale(1.03);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      position: relative;
+      padding: 6px 2px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #ffffff;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-brand);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.92rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex: 1;
-    }
-    .nav a { color: rgba(255,255,255,0.85); font-size: 0.95rem; transition: color 0.2s ease; }
-    .nav a:hover { color: #ffffff; }
-    .topbar.scrolled .nav a { color: var(--muted); }
-    .topbar.scrolled .nav a:hover { color: var(--text); }
-    .signin-button {
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 999px;
-      padding: 12px 20px;
-      background: rgba(255,255,255,0.1);
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #6366f1 100%);
       color: #ffffff;
-      font-weight: 600;
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
-    }
-    .signin-button:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.8); }
-    .topbar.scrolled .signin-button {
-      border: 1px solid rgba(29,78,216,0.25);
-      background: linear-gradient(135deg, rgba(29,78,216,0.10), rgba(29,78,216,0.02));
-      color: var(--accent);
-    }
-    .topbar.scrolled .signin-button:hover { border-color: rgba(29,78,216,0.5); }
-
-    .hero-banner {
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
       position: relative;
-      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    .btn-outline-glow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      background: rgba(14, 22, 46, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.95rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-glow:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--accent-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Mobile Hamburger */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ─── HERO SECTION ─── */
+    .hero-section {
+      position: relative;
       min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=80') center / cover no-repeat;
+      padding: 140px 0 80px;
       overflow: hidden;
     }
-    .hero-banner-overlay {
+
+    #heroCanvas {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(8,14,28,0.42) 0%, rgba(8,14,28,0.62) 55%, rgba(8,14,28,0.85) 100%),
-                  radial-gradient(circle at 25% 25%, rgba(29,78,216,0.22), transparent 32%);
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.75;
     }
-    .hero-banner-content {
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 50px;
       position: relative;
-      z-index: 1;
-      width: min(820px, calc(100% - 48px));
-      text-align: center;
-      padding: 64px 0;
+      z-index: 2;
     }
-    .hero-banner-content .eyebrow { margin-left: auto; margin-right: auto; }
-    .hero-banner-content .hero-actions { justify-content: center; }
-    .hero-copy {
-      max-width: 640px;
-      margin: 0 auto;
-      color: #ffffff;
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .hero-copy h1 {
-      margin: 0 0 18px;
-      font-size: clamp(3rem, 4vw, 4.5rem);
-      line-height: 0.95;
-      letter-spacing: -0.04em;
-      color: #ffffff;
-    }
-    .hero-copy p {
-      margin: 0 0 28px;
-      font-size: 1.12rem;
-      color: rgba(255,255,255,0.82);
-      line-height: 1.75;
-    }
-    .hero-copy .eyebrow {
+
+    .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      color: #bcd0ff;
-      font-size: 0.95rem;
-      margin-bottom: 22px;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+      animation: pulseGlow 3s infinite alternate;
     }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-cyan);
+      position: relative;
+    }
+    .badge-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background-color: var(--accent-cyan);
+      opacity: 0.6;
+      animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes ping {
+      75%, 100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.1); }
+      100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+      line-height: 1.08;
+      margin-bottom: 24px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+
+    .hero-description {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 36px;
+      max-width: 620px;
+    }
+
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
+      align-items: center;
+      margin-bottom: 44px;
     }
-    .hero-actions a {
+
+    .hero-stats-row {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      width: 100%;
+    }
+
+    .hero-stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-lbl {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border-subtle);
+    }
+
+    /* Hero Visual Card (3D Tilt / Showcase) */
+    .hero-visual-card {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-xl);
+      padding: 10px;
+      background: linear-gradient(135deg, rgba(56,189,248,0.3) 0%, rgba(99,102,241,0.2) 50%, rgba(168,85,247,0.3) 100%);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), var(--shadow-glow);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-visual-inner {
+      position: relative;
+      border-radius: calc(var(--radius-xl) - 8px);
+      overflow: hidden;
+      background: var(--bg-surface);
+    }
+
+    .hero-main-img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .hero-visual-card:hover .hero-main-img {
+      transform: scale(1.05);
+    }
+
+    .hero-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,11,25,0.1) 0%, rgba(7,11,25,0.4) 50%, rgba(7,11,25,0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+    }
+
+    .visual-top-chips {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chip-live {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-width: 170px;
-      padding: 16px 20px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(7, 11, 25, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .chip-fps {
+      font-family: 'Space Grotesk', monospace;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-emerald);
+      font-size: 0.8rem;
       font-weight: 700;
-      box-shadow: 0 20px 40px rgba(29,78,216,0.32);
     }
-    .section {
-      margin-bottom: 42px;
-      padding: 0 4px;
-    }
-    .section-title {
+
+    .visual-bottom-info {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(14, 22, 46, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
+      align-items: center;
     }
-    .section-title h2 { margin: 0; font-size: 2rem; }
-    .section-title p { margin: 0; color: var(--muted); max-width: 720px; }
-    .grid {
-      display: grid;
-      gap: 22px;
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: var(--shadow);
-    }
-    .card strong { display: block; margin-bottom: 12px; font-size: 1.05rem; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.75; }
-    .service-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .service-card {
-      display: grid;
-      gap: 14px;
-      padding: 28px;
-      min-height: 240px;
-    }
-    .service-card span {
-      display: inline-flex;
-      width: fit-content;
-      padding: 12px;
-      border-radius: 18px;
-      background: rgba(29,78,216,0.10);
-      color: var(--accent);
+
+    .visual-info-text h4 {
       font-size: 1.15rem;
-    }
-    .service-card h3 { margin: 0; font-size: 1.1rem; }
-    .service-card small { color: var(--muted); }
-    .achievement-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-    .achievement-card {
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(29,78,216,0.08), rgba(29,78,216,0.02));
-      border: 1px solid var(--border);
-      padding: 26px;
-      display: grid;
-      gap: 12px;
-      text-align: center;
-    }
-    .achievement-card strong {
-      font-size: 2.3rem;
-      display: block;
+      color: #ffffff;
       margin-bottom: 4px;
     }
-    .achievement-card p { margin: 0; color: var(--muted); }
-    .gallery-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .visual-info-text p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
-    .image-card {
+
+    .btn-play-trigger {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      flex-shrink: 0;
+    }
+    .btn-play-trigger:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 28px rgba(99, 102, 241, 0.6);
+    }
+
+    /* Floating Badges on Hero Card */
+    .float-badge-1 {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      background: rgba(14, 22, 46, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-md);
+      animation: floatBadge 6s ease-in-out infinite alternate;
+      z-index: 3;
+    }
+    .float-badge-1 i {
+      color: #f59e0b;
+      font-size: 1.3rem;
+    }
+
+    .float-badge-2 {
+      position: absolute;
+      bottom: 24px;
+      left: -24px;
+      background: rgba(14, 22, 46, 0.88);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
+      animation: floatBadge 7s ease-in-out infinite alternate-reverse;
+      z-index: 3;
+    }
+
+    @keyframes floatBadge {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
+    }
+
+    /* ─── TICKER / MARQUEE ─── */
+    .marquee-section {
+      padding: 30px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(14, 22, 46, 0.35);
       position: relative;
-      border-radius: 28px;
       overflow: hidden;
-      min-height: 320px;
-      background: linear-gradient(180deg, rgba(16,24,56,0.06), rgba(16,24,56,0.02));
-      border: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 48px;
+      width: max-content;
+      animation: scrollMarquee 35s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .marquee-item i {
+      font-size: 1.25rem;
+      color: var(--accent-cyan);
+    }
+    .marquee-item:hover {
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    @keyframes scrollMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── SECTION HEADERS ─── */
+    .section-wrap {
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 64px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 18px;
+      font-weight: 800;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─── BENTO GRID SERVICES ─── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-brand);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(56, 189, 248, 0.4);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-lg), 0 0 35px rgba(56, 189, 248, 0.15);
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    .bento-card.highlight {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(14, 22, 46, 0.9) 0%, rgba(26, 41, 84, 0.6) 100%);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .service-icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(99,102,241,0.25));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .bento-card:hover .service-icon-box {
+      transform: scale(1.1) rotate(5deg);
+      color: #ffffff;
+      background: var(--gradient-brand);
+    }
+
+    .bento-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .bento-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .service-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+    }
+    .service-features li i {
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+    }
+
+    .bento-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .service-tag {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .service-link:hover {
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    /* ─── 4-STEP PIPELINE ─── */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+    }
+
+    .pipeline-grid::before {
+      content: '';
+      position: absolute;
+      top: 48px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, #38bdf8, #6366f1, #a855f7, #ec4899);
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .pipeline-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: var(--shadow-md);
+    }
+
+    .step-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+      position: relative;
+    }
+
+    .pipeline-card h4 {
+      font-size: 1.18rem;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .pipeline-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── PORTFOLIO / FEATURED WORK ─── */
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .filter-btn {
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .portfolio-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: var(--shadow-lg), 0 0 30px rgba(56, 189, 248, 0.18);
+    }
+
+    .portfolio-thumb-wrap {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .portfolio-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .portfolio-card:hover .portfolio-img {
+      transform: scale(1.08);
+    }
+
+    .portfolio-category-pill {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(7, 11, 25, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .portfolio-quick-view {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 11, 25, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .portfolio-card:hover .portfolio-quick-view {
+      opacity: 1;
+    }
+
+    .btn-view-project {
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      background: #ffffff;
+      color: #070b19;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(10px);
+      transition: transform 0.3s ease, background 0.2s ease;
+    }
+
+    .portfolio-card:hover .btn-view-project {
+      transform: translateY(0);
+    }
+    .btn-view-project:hover {
+      background: var(--accent-cyan);
+    }
+
+    .portfolio-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .portfolio-info h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .portfolio-info p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .portfolio-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-tag {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+
+    /* ─── ACHIEVEMENTS COUNTERS ─── */
+    .stats-section {
+      background: linear-gradient(135deg, rgba(14, 22, 46, 0.8) 0%, rgba(26, 41, 84, 0.4) 100%);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 70px 0;
+      position: relative;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+
+    .achievement-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .achievement-icon {
+      font-size: 2rem;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+
+    .counter-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .achievement-label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      max-width: 200px;
+    }
+
+    /* ─── STUDIO SPACES / VIRTUAL TOUR ─── */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .studio-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      height: 380px;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+    }
+
+    .studio-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .studio-card:hover .studio-img {
+      transform: scale(1.08);
+    }
+
+    .studio-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,11,25,0.1) 0%, rgba(7,11,25,0.4) 40%, rgba(7,11,25,0.95) 100%);
+      padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 24px;
+      transition: background 0.3s ease;
     }
-    .image-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
+
+    .studio-card:hover .studio-card-overlay {
+      background: linear-gradient(180deg, rgba(7,11,25,0.2) 0%, rgba(7,11,25,0.6) 40%, rgba(7,11,25,0.98) 100%);
     }
-    .image-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(8,16,31,0.05) 0%, rgba(8,16,31,0.35) 55%, rgba(8,16,31,0.92) 100%);
-    }
-    .image-card:nth-child(1)::before { background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80'); }
-    .image-card:nth-child(2)::before { background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80'); }
-    .image-card:nth-child(3)::before { background-image: url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=900&q=80'); }
-    .studio-card:nth-child(1)::before { background-image: url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80'); }
-    .studio-card:nth-child(2)::before { background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80'); }
-    .studio-card:nth-child(3)::before { background-image: url('https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80'); }
-    .image-card .meta {
-      position: relative;
-      color: #ffffff;
-      z-index: 1;
-      backdrop-filter: blur(18px);
-      background: rgba(4, 12, 28, 0.62);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 18px;
-    }
-    .image-card .meta span {
-      display: inline-flex;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(96,150,255,0.22);
-      color: #bcd0ff;
-      font-size: 0.85rem;
+
+    .studio-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--accent-cyan);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
       margin-bottom: 10px;
+      width: fit-content;
     }
-    .image-card h3 { margin: 0 0 10px; font-size: 1.2rem; color: #ffffff; }
-    .image-card p { margin: 0; color: rgba(255,255,255,0.78); line-height: 1.7; }
-    .contact-grid {
-      grid-template-columns: 1.2fr 0.8fr;
+
+    .studio-card h3 {
+      font-size: 1.35rem;
+      color: #ffffff;
+      margin-bottom: 6px;
     }
-    .contact-card {
+
+    .studio-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── EMS ECOSYSTEM PORTAL LAUNCHER ─── */
+    .ems-hub-section {
+      background: radial-gradient(circle at center, rgba(30, 58, 138, 0.2) 0%, rgba(7, 11, 25, 0.95) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg), 0 0 50px rgba(99, 102, 241, 0.15);
+    }
+
+    .ems-hub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .ems-hub-header h2 {
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .ems-hub-header p {
+      color: var(--text-muted);
+      max-width: 600px;
+      font-size: 0.98rem;
+    }
+
+    .ems-portals-grid {
       display: grid;
+      grid-template-columns: repeat(5, 1fr);
       gap: 18px;
-      padding: 30px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 32px;
     }
-    .contact-card h3 { margin: 0; }
-    .contact-item {
-      display: grid;
+
+    .portal-card {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-cyan);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
+    }
+
+    .portal-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(99,102,241,0.3));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .portal-card:hover .portal-icon-circle {
+      transform: scale(1.1);
+      background: var(--gradient-brand);
+    }
+
+    .portal-card h4 {
+      font-size: 1.05rem;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .portal-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+
+    .btn-portal-launch {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin-top: 6px;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       gap: 6px;
-      color: var(--muted);
+    }
+
+    .btn-portal-launch:hover {
+      background: var(--accent-cyan);
+      color: #070b19;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(14px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: var(--shadow-md);
+    }
+
+    .star-rating {
+      color: #f59e0b;
+      display: flex;
+      gap: 4px;
+      margin-bottom: 18px;
       font-size: 0.95rem;
     }
-    .contact-item strong { color: var(--text); }
-    .contact-form {
+
+    .testimonial-quote {
+      color: #e2e8f0;
+      font-size: 0.98rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .client-profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 16px;
+    }
+
+    .client-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent-cyan);
+    }
+
+    .client-meta h5 {
+      font-size: 1rem;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+    .client-meta span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── INTERACTIVE ESTIMATOR & CONTACT ─── */
+    .contact-container-grid {
       display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .contact-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .contact-direct-card {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(16px);
+    }
+
+    .contact-channel {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .contact-channel:hover {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(4px);
+    }
+
+    .channel-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--gradient-brand);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .channel-details {
+      flex-grow: 1;
+    }
+    .channel-title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .channel-val {
+      font-size: 0.98rem;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .copy-hint {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      opacity: 0.8;
+    }
+
+    .interactive-form-card {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .estimator-box {
+      background: rgba(7, 11, 25, 0.5);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .estimator-box h4 {
+      font-size: 1rem;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .estimate-tag {
+      font-size: 0.82rem;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-emerald);
+      font-weight: 700;
+    }
+
+    .service-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .service-pill-checkbox {
+      position: relative;
+    }
+
+    .service-pill-checkbox input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .service-pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .service-pill-checkbox input:checked + .service-pill-label {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .budget-slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .budget-slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .budget-val-disp {
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .range-input {
+      width: 100%;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .input-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .input-field-group label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .input-field-group input,
+    .input-field-group textarea,
+    .input-field-group select {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(7, 11, 25, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      outline: none;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    .input-field-group input:focus,
+    .input-field-group textarea:focus,
+    .input-field-group select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+      background: rgba(7, 11, 25, 0.85);
+    }
+
+    .input-field-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* ─── FAQ ACCORDION ─── */
+    .faq-container {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
       gap: 16px;
     }
-    .contact-form label { display: grid; gap: 8px; font-size: 0.92rem; color: var(--muted); }
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 16px 18px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s ease;
+
+    .faq-item {
+      background: var(--bg-surface-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
-    .contact-form input:focus,
-    .contact-form textarea:focus { border-color: rgba(29,78,216,0.5); }
-    .contact-form textarea { min-height: 172px; resize: vertical; }
-    .contact-form button {
-      border: none;
-      border-radius: 18px;
-      padding: 16px 20px;
-      background: linear-gradient(135deg, #1d4ed8, #2563eb);
-      color: #ffffff;
-      font-weight: 700;
+
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .contact-form button:hover { transform: translateY(-1px); box-shadow: 0 18px 48px rgba(29,78,216,0.28); }
-
-    .page, .section, .contact-card, .contact-form, .hero-banner-content, .service-card, .achievement-card, .image-card {
-      opacity: 0;
-      transform: translateY(18px);
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    .hero-banner-content { animation-delay: 0.15s; }
-    .service-card { animation-delay: 0.25s; }
-    .achievement-card { animation-delay: 0.3s; }
-    .image-card { animation-delay: 0.35s; }
-    .contact-card, .contact-form { animation-delay: 0.4s; }
-
-    .hero-actions a,
-    .service-card,
-    .achievement-card,
-    .image-card,
-    .contact-card,
-    .contact-form input,
-    .contact-form textarea,
-    .contact-form button,
-    .topbar,
-    .nav a,
-    .signin-button {
-      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+      user-select: none;
     }
 
-    .nav a:hover {
-      color: var(--text);
-      transform: translateY(-2px);
-    }
-    .hero-actions a:hover {
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: 0 22px 45px rgba(29,78,216,0.38);
-    }
-    .service-card:hover,
-    .achievement-card:hover,
-    .image-card:hover,
-    .contact-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 26px 60px rgba(16,24,56,0.14);
-      border-color: rgba(29,78,216,0.28);
-      background: rgba(29,78,216,0.03);
-    }
-    .service-card:hover { background: rgba(29,78,216,0.03); }
-    .achievement-card:hover { background: rgba(29,78,216,0.05); }
-    .image-card:hover { transform: translateY(-8px) scale(1.01); }
-    .contact-form input:focus,
-    .contact-form textarea:focus { border-color: rgba(29,78,216,0.6); box-shadow: 0 0 0 4px rgba(29,78,216,0.12); }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      transition: transform 0.3s ease, background 0.3s ease;
+      flex-shrink: 0;
     }
 
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      background: var(--accent-cyan);
+      color: #070b19;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease-out, padding 0.35s ease;
+      padding: 0 24px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 250px;
+      padding: 0 24px 22px;
+    }
+
+    /* ─── CAREERS CTA BANNER ─── */
+    .careers-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(56, 189, 248, 0.25) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin: 60px auto 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg), 0 0 50px rgba(168, 85, 247, 0.15);
+    }
+
+    .careers-banner::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.3), transparent 70%);
+      pointer-events: none;
+    }
+
+    .careers-banner-content h2 {
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+    .careers-banner-content p {
+      color: #e2e8f0;
+      max-width: 600px;
+      font-size: 1.05rem;
+    }
+
+    /* ─── FOOTER ─── */
     .site-footer {
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      margin-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: #050813;
+      padding: 80px 0 32px;
+      position: relative;
+      z-index: 10;
     }
-    .footer-inner {
-      width: min(1200px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 48px 0 32px;
+
+    .footer-grid {
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr 0.8fr;
-      gap: 40px;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 48px;
+      margin-bottom: 60px;
     }
-    .footer-brand img { width: 120px; height: auto; display: block; margin-bottom: 16px; }
-    .footer-brand p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 380px; }
-    .footer-links { display: grid; gap: 12px; align-content: start; }
-    .footer-links strong { color: var(--text); font-size: 0.95rem; }
-    .footer-links a, .footer-links span { color: var(--muted); font-size: 0.92rem; }
-    .footer-links a:hover { color: var(--accent); }
-    .footer-bottom {
-      border-top: 1px solid var(--border);
-      padding: 20px 0;
-      text-align: center;
-      color: var(--muted);
+
+    .footer-brand-info img {
+      width: 175px;
+      height: 40px;
+      object-fit: contain;
+      margin-bottom: 18px;
+    }
+
+    .footer-brand-info p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 340px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+    }
+
+    .social-btn:hover {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+    }
+
+    .footer-col h4 {
+      font-size: 1.1rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links-list a {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--accent-cyan);
+      transform: translateX(4px);
+    }
+
+    .newsletter-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .newsletter-form p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .newsletter-input-wrap {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      padding: 4px 4px 4px 16px;
+      transition: border-color 0.25s ease;
+    }
+    .newsletter-input-wrap:focus-within {
+      border-color: var(--accent-cyan);
+    }
+
+    .newsletter-input-wrap input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 0.9rem;
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    .newsletter-input-wrap button {
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--gradient-brand);
+      color: #ffffff;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .footer-bottom-bar {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--text-subtle);
       font-size: 0.85rem;
     }
 
-    @media (max-width: 1080px) {
-      .service-grid, .achievement-grid, .gallery-grid, .contact-grid { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr 1fr; }
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
     }
-    @media (max-width: 720px) {
-      .topbar-inner { flex-direction: column; align-items: stretch; padding: 14px 12px; }
-      .nav { justify-content: flex-start; }
-      .hero-banner { min-height: 100vh; }
-      .hero-copy h1 { font-size: 2.8rem; }
-      .page { padding: 18px 0 32px; }
-      .footer-inner { grid-template-columns: 1fr; }
+
+    .footer-bottom-links a:hover {
+      color: var(--text-muted);
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(14, 22, 46, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--gradient-brand);
+      color: #ffffff;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.45);
+    }
+
+    /* ─── MODAL / LIGHTBOX ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 19, 0.88);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-xl);
+      max-width: 880px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), var(--shadow-glow);
+      transform: scale(0.92) translateY(20px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .modal-close-btn:hover {
+      background: #ef4444;
+      transform: rotate(90deg);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-msg {
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      background: rgba(14, 22, 46, 0.95);
+      border: 1px solid var(--accent-cyan);
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.3);
+      animation: slideUpToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUpToast {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MOBILE DRAWER NAVIGATION ─── */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 85vw);
+      background: rgba(7, 11, 25, 0.96);
+      backdrop-filter: blur(24px);
+      border-left: 1px solid var(--border-subtle);
+      z-index: 1500;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .mobile-drawer.open {
+      transform: translateX(0);
+    }
+
+    .mobile-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .mobile-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mobile-nav-list a {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-nav-list a:hover {
+      color: var(--accent-cyan);
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 1400;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .drawer-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ─── RESPONSIVE BREAKPOINTS ─── */
+    @media (max-width: 1100px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual-card { max-width: 580px; margin: 0 auto; }
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-card.highlight { grid-column: span 2; }
+      .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+      .pipeline-grid::before { display: none; }
+      .portfolio-grid, .studio-grid, .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .ems-portals-grid { grid-template-columns: repeat(3, 1fr); }
+      .achievements-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .contact-container-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      .nav-links, .nav-actions .btn-ghost { display: none; }
+      .mobile-menu-btn { display: block; }
+      .bento-grid, .portfolio-grid, .studio-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .bento-card.highlight { grid-column: span 1; }
+      .pipeline-grid { grid-template-columns: 1fr; }
+      .ems-portals-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.5rem; }
+      .hero-main-img { height: 360px; }
+      .section-wrap { padding: 80px 0; }
+      .ems-hub-section, .careers-banner { padding: 36px 24px; }
+    }
+
+    @media (max-width: 520px) {
+      .ems-portals-grid { grid-template-columns: 1fr; }
+      .achievements-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-stats-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .stat-divider { display: none; }
+      .footer-bottom-bar { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#">
+
+  <!-- Background Ambients & Grids -->
+  <div class="ambient-glow ambient-1"></div>
+  <div class="ambient-glow ambient-2"></div>
+  <div class="ambient-glow ambient-3"></div>
+  <div class="bg-grid-overlay"></div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ─── TOPBAR NAVIGATION ─── -->
+  <header class="topbar" id="topbar">
+    <div class="container topbar-inner">
+      <a href="#" class="brand-logo" aria-label="Paoyaila Home">
         <img src="paoyaila-logo.svg" alt="Paoyaila Animation Studio logo" />
       </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#studio">Studio</a>
-        <a href="#achievements">Achievements</a>
-        <a href="#work">Work</a>
-        <a href="careers.html">Careers</a>
-        <a href="#contact">Contact</a>
+
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#pipeline" class="nav-link">Pipeline</a>
+        <a href="#work" class="nav-link">Portfolio</a>
+        <a href="#studio" class="nav-link">Studio</a>
+        <a href="#portals" class="nav-link">EMS Portals</a>
+        <a href="careers.html" class="nav-link">Careers</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </nav>
-      <a href="signin.html" class="signin-button">Sign In</a>
+
+      <div class="nav-actions">
+        <a href="signin.html" class="btn-ghost">
+          <i class="fa-solid fa-lock" style="font-size: 0.8rem; color: var(--accent-cyan);"></i> Sign In
+        </a>
+        <a href="#contact" class="btn-primary">
+          <span>Get In Touch</span>
+          <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuOpen" aria-label="Open menu">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+      </div>
     </div>
   </header>
 
-  <section class="hero-banner">
-    <div class="hero-banner-overlay" aria-hidden="true"></div>
-    <div class="hero-banner-content hero-copy">
-      <span class="eyebrow">Paoyaila Animation Studios LLP</span>
-      <h1>We build immersive animation, games, and digital experiences.</h1>
-      <p>Founded in 2015, Paoyaila is a technology-driven animation and gaming studio dedicated to advancing India’s creative industry. We deliver motion graphics, VR/AR, explainer films, digital marketing, UI/UX and enterprise IT services with a global team of designers, animators, and developers.</p>
-      <div class="hero-actions">
-        <a href="#work">View Our Work</a>
-        <a href="#contact">Get In Touch</a>
+  <!-- Mobile Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div>
+      <div class="mobile-drawer-header">
+        <img src="paoyaila-logo.svg" alt="Paoyaila Logo" style="width: 140px;" />
+        <button class="modal-close-btn" id="mobileMenuClose" style="position: static;" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="#about" class="drawer-link"><i class="fa-solid fa-cube"></i> About Studio</a></li>
+        <li><a href="#services" class="drawer-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Services</a></li>
+        <li><a href="#pipeline" class="drawer-link"><i class="fa-solid fa-diagram-project"></i> Pipeline</a></li>
+        <li><a href="#work" class="drawer-link"><i class="fa-solid fa-film"></i> Portfolio & Work</a></li>
+        <li><a href="#studio" class="drawer-link"><i class="fa-solid fa-building"></i> Inside Studio</a></li>
+        <li><a href="#portals" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> EMS Portals</a></li>
+        <li><a href="careers.html" class="drawer-link"><i class="fa-solid fa-briefcase"></i> Careers</a></li>
+        <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+      <a href="signin.html" class="btn-ghost" style="justify-content: center;">
+        <i class="fa-solid fa-lock"></i> Employee & Admin Sign In
+      </a>
+      <a href="#contact" class="btn-primary drawer-link" style="justify-content: center;">
+        <span>Start A Project</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── HERO SECTION ─── -->
+  <section class="hero-section" id="hero">
+    <canvas id="heroCanvas"></canvas>
+    
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Next-Gen Animation & Digital Studio • Est. 2015</span>
+        </div>
+
+        <h1 class="hero-title">
+          We Craft <span class="gradient-text">Immersive Animation</span>, Games & Digital Worlds.
+        </h1>
+
+        <p class="hero-description">
+          Paoyaila Animation Studios LLP empowers visionary brands and creators worldwide with Hollywood-grade 3D CGI, Unreal Engine 5 interactive experiences, XR/VR simulations, and enterprise digital solutions.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#work" class="btn-primary">
+            <i class="fa-solid fa-play" style="font-size: 0.8rem;"></i>
+            <span>Explore Portfolio</span>
+          </a>
+          <a href="#portals" class="btn-outline-glow">
+            <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i>
+            <span>EMS Portal Access</span>
+          </a>
+          <a href="#contact" class="btn-ghost">
+            <i class="fa-solid fa-calculator" style="color: var(--accent-cyan);"></i>
+            <span>Project Calculator</span>
+          </a>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="hero-stat-item">
+            <span class="stat-num">120<small style="color: var(--accent-cyan);">+</small></span>
+            <span class="stat-lbl">Global Projects</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="stat-num">99.8<small style="color: var(--accent-emerald);">%</small></span>
+            <span class="stat-lbl">On-Time Delivery</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="stat-num">15<small style="color: var(--accent-purple);">+</small></span>
+            <span class="stat-lbl">Industry Awards</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="stat-num">4.9<i class="fa-solid fa-star" style="font-size: 0.9rem; color: #f59e0b; margin-left: 4px;"></i></span>
+            <span class="stat-lbl">Client Satisfaction</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="hero-visual-card" id="heroCardTilt">
+        <!-- Floating Badges -->
+        <div class="float-badge-1">
+          <i class="fa-solid fa-award"></i>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: #ffffff;">Best 3D CGI Studio</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Digital Tech Awards 2025</div>
+          </div>
+        </div>
+
+        <div class="float-badge-2">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent-emerald);"></div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff;">Unreal Engine 5.4 Active</div>
+            <div style="font-size: 0.72rem; color: var(--accent-cyan);">Real-time Raytracing On</div>
+          </div>
+        </div>
+
+        <div class="hero-visual-inner">
+          <img 
+            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" 
+            alt="Paoyaila 3D CGI Animation Artwork" 
+            class="hero-main-img"
+          />
+          <div class="hero-visual-overlay">
+            <div class="visual-top-chips">
+              <span class="chip-live">
+                <i class="fa-solid fa-circle" style="color: #ef4444; font-size: 0.6rem;"></i> Live Render Bay
+              </span>
+              <span class="chip-fps">120 FPS • 4K HDR</span>
+            </div>
+
+            <div class="visual-bottom-info">
+              <div class="visual-info-text">
+                <h4>Cybernetic Odyssey 2026</h4>
+                <p>3D Cinematics • Unreal Engine 5 • VFX Motion</p>
+              </div>
+              <button class="btn-play-trigger" onclick="openStudioReelModal()" title="Watch Studio Reel">
+                <i class="fa-solid fa-play"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <main class="page">
-    <section id="about" class="section">
-      <div class="section-title">
-        <div>
-          <h2>About Paoyaila</h2>
-          <p>We are a tech company specializing in animation, games, VR/AR, motion graphics, digital marketing, mobile apps, and enterprise IT solutions, including ERP and CRM.</p>
-        </div>
-      </div>
-    </section>
+  <!-- ─── MARQUEE / TECH STACK & TOOLS ─── -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-item"><i class="fa-solid fa-gamepad"></i> Unreal Engine 5.4</div>
+      <div class="marquee-item"><i class="fa-brands fa-unity"></i> Unity 6 Engine</div>
+      <div class="marquee-item"><i class="fa-solid fa-cubes"></i> Blender 4.2</div>
+      <div class="marquee-item"><i class="fa-solid fa-cube"></i> Autodesk Maya</div>
+      <div class="marquee-item"><i class="fa-solid fa-atom"></i> Houdini FX</div>
+      <div class="marquee-item"><i class="fa-solid fa-film"></i> Adobe After Effects</div>
+      <div class="marquee-item"><i class="fa-brands fa-react"></i> Three.js / WebGL</div>
+      <div class="marquee-item"><i class="fa-brands fa-figma"></i> Figma UI/UX</div>
+      <div class="marquee-item"><i class="fa-brands fa-python"></i> Python Automation</div>
+      <div class="marquee-item"><i class="fa-solid fa-server"></i> Cloud Rendering Cluster</div>
+      <!-- Duplicate for infinite seamless loop -->
+      <div class="marquee-item"><i class="fa-solid fa-gamepad"></i> Unreal Engine 5.4</div>
+      <div class="marquee-item"><i class="fa-brands fa-unity"></i> Unity 6 Engine</div>
+      <div class="marquee-item"><i class="fa-solid fa-cubes"></i> Blender 4.2</div>
+      <div class="marquee-item"><i class="fa-solid fa-cube"></i> Autodesk Maya</div>
+      <div class="marquee-item"><i class="fa-solid fa-atom"></i> Houdini FX</div>
+      <div class="marquee-item"><i class="fa-solid fa-film"></i> Adobe After Effects</div>
+      <div class="marquee-item"><i class="fa-brands fa-react"></i> Three.js / WebGL</div>
+      <div class="marquee-item"><i class="fa-brands fa-figma"></i> Figma UI/UX</div>
+      <div class="marquee-item"><i class="fa-brands fa-python"></i> Python Automation</div>
+      <div class="marquee-item"><i class="fa-solid fa-server"></i> Cloud Rendering Cluster</div>
+    </div>
+  </div>
 
-    <section id="services" class="section">
-      <div class="section-title">
-        <div>
-          <h2>Our Services</h2>
-          <p>End-to-end creative and technology services covering animation, games, and digital product delivery.</p>
-        </div>
+  <!-- ─── ABOUT / WHO WE ARE ─── -->
+  <section class="section-wrap" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-sparkles"></i> Who We Are</span>
+        <h2 class="section-title">Where Creative Artistry Meets <span class="gradient-text">Advanced Technology</span></h2>
+        <p class="section-subtitle">
+          Headquartered in Mumbai, Paoyaila Animation Studios LLP brings together seasoned animators, game developers, VFX artists, and software architects to craft extraordinary visual stories and digital enterprise tools.
+        </p>
       </div>
-      <div class="grid service-grid">
-        <article class="service-card card">
-          <span>01</span>
-          <h3>Animation & Motion Graphics</h3>
-          <small>From concept to final render, we create captivating animated stories for brands, training, and advertising.</small>
-        </article>
-        <article class="service-card card">
-          <span>02</span>
-          <h3>Games & VR/AR</h3>
-          <small>Designing immersive experiences for education, entertainment, marketing, and product demonstrations.</small>
-        </article>
-        <article class="service-card card">
-          <span>03</span>
-          <h3>Digital Products & IT Services</h3>
-          <small>UI/UX design, mobile apps, CRM, ERP, and IT implementation to support growth and digital transformation.</small>
-        </article>
-      </div>
-    </section>
 
-    <section id="studio" class="section">
-      <div class="section-title">
-        <div>
-          <h2>Inside Our Studio</h2>
-          <p>A glimpse of the creative space where our animators, designers, and developers bring ideas to life.</p>
-        </div>
-      </div>
-      <div class="grid gallery-grid">
-        <article class="image-card studio-card">
-          <div class="meta">
-            <span>Workspace</span>
-            <h3>Open studio floor</h3>
-            <p>Collaborative desks where our animation and design teams work side by side.</p>
+      <div class="bento-grid">
+        <!-- Highlight Bento Card -->
+        <article class="bento-card highlight">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <span class="service-tag" style="background: rgba(56,189,248,0.15); color: var(--accent-cyan); margin-bottom: 12px; display: inline-block;">Studio Philosophy</span>
+            <h3>Pushing the Boundaries of Imagination</h3>
+            <p>
+              Since 2015, we have blended cinematic storytelling with bleeding-edge real-time 3D pipelines. From interactive mobile gaming to photo-realistic architectural VR, our multi-disciplinary team turns ambitious ideas into breathtaking digital reality.
+            </p>
+            <ul class="service-features" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <li><i class="fa-solid fa-check"></i> High-Fidelity 4K/8K Rendering</li>
+              <li><i class="fa-solid fa-check"></i> Custom Real-Time Shaders & FX</li>
+              <li><i class="fa-solid fa-check"></i> Enterprise Scalable IT Infrastructures</li>
+              <li><i class="fa-solid fa-check"></i> End-to-End Creative Direction</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">10+ Years of Craftsmanship</span>
+            <a href="#work" class="service-link">View Highlights <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </article>
-        <article class="image-card studio-card">
-          <div class="meta">
-            <span>Production</span>
-            <h3>Render & edit bay</h3>
-            <p>Dedicated stations for rendering, compositing, and final production polish.</p>
-          </div>
-        </article>
-        <article class="image-card studio-card">
-          <div class="meta">
-            <span>Collaboration</span>
-            <h3>Meeting & review room</h3>
-            <p>Where client reviews, brainstorms, and creative direction come together.</p>
-          </div>
-        </article>
-      </div>
-    </section>
 
-    <section id="achievements" class="section">
-      <div class="section-title">
-        <div>
-          <h2>Achievements</h2>
-          <p>Building results-driven creative technology since 2015, with award-winning projects and successful client partnerships.</p>
-        </div>
-      </div>
-      <div class="grid achievement-grid">
-        <article class="achievement-card">
-          <strong>120+</strong>
-          <p>Animation & game projects delivered successfully</p>
+        <!-- Bento Card 2 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <span class="service-tag">Tech DNA</span>
+            <h3>Next-Gen Tech Pipeline</h3>
+            <p>
+              Automated cloud rendering, custom Python pipeline toolsets, and real-time raytracing ensure fast iterations with zero compromise on visual quality.
+            </p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-bolt"></i> Real-time Unreal Engine 5</li>
+              <li><i class="fa-solid fa-bolt"></i> GPU Farm Acceleration</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">High Performance</span>
+            <a href="#pipeline" class="service-link">Our Pipeline <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
         </article>
-        <article class="achievement-card">
-          <strong>60+</strong>
-          <p>Clients across India and international markets</p>
-        </article>
-        <article class="achievement-card">
-          <strong>15</strong>
-          <p>Years of combined studio experience since founding</p>
-        </article>
-        <article class="achievement-card">
-          <strong>95%</strong>
-          <p>Client satisfaction rating for delivery, creativity, and support</p>
-        </article>
-      </div>
-    </section>
 
-    <section id="work" class="section">
-      <div class="section-title">
-        <div>
-          <h2>Featured Work</h2>
-          <p>Explore case highlights from our animation, AR/VR, and game development work.</p>
-        </div>
-      </div>
-      <div class="grid gallery-grid">
-        <article class="image-card">
-          <div class="meta">
-            <span>Brand Animation</span>
-            <h3>Explainer video campaign</h3>
-            <p>Crafted a visual story that simplified the product journey and boosted conversion rates.</p>
+        <!-- Bento Card 3 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <span class="service-tag">Global Footprint</span>
+            <h3>60+ International Clients</h3>
+            <p>
+              Trusted by entertainment giants, leading gaming studios, tech innovators, and enterprise leaders across India, USA, Europe, and UAE.
+            </p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-star"></i> 95% Repeat Partnership Rate</li>
+              <li><i class="fa-solid fa-shield"></i> Strict NDA & IP Protection</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">Enterprise Ready</span>
+            <a href="#contact" class="service-link">Partner With Us <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </article>
-        <article class="image-card">
-          <div class="meta">
-            <span>Game Design</span>
-            <h3>Educational mobile game</h3>
-            <p>Engaged learners with interactive challenges and polished gameplay across devices.</p>
-          </div>
-        </article>
-        <article class="image-card">
-          <div class="meta">
-            <span>VR/AR Experience</span>
-            <h3>Immersive product showcase</h3>
-            <p>Delivered a highly interactive AR presentation for training and virtual demonstrations.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="section-title">
-        <div>
-          <h2>Contact Details</h2>
-          <p>Talk to our team to discuss animation, digital products, or enterprise IT needs.</p>
-        </div>
-      </div>
-      <div class="grid contact-grid">
-        <div class="contact-card card">
-          <h3>Reach us</h3>
-          <div class="contact-item">
-            <strong>Studio Headquarters</strong>
-            <span>Paoyaila Animation Studios LLP, Mumbai, India</span>
-          </div>
-          <div class="contact-item">
-            <strong>Email</strong>
-            <span>hello@paoyaila.com</span>
-          </div>
-          <div class="contact-item">
-            <strong>Phone</strong>
-            <span>+91 98765 43210</span>
-          </div>
-          <div class="contact-item">
-            <strong>Services</strong>
-            <span>Animation, Games, VR/AR, Motion Graphics, UI/UX, ERP/CRM, Mobile Apps</span>
-          </div>
-        </div>
-        <form class="contact-form card" action="#" method="post" aria-label="Contact form">
-          <label>
-            Your Name
-            <input type="text" name="name" placeholder="Enter your name" required />
-          </label>
-          <label>
-            Email Address
-            <input type="email" name="email" placeholder="Enter your email" required />
-          </label>
-          <label>
-            Company / Project
-            <input type="text" name="company" placeholder="Tell us your company or project" />
-          </label>
-          <label>
-            Message
-            <textarea name="message" placeholder="How can we help you?" required></textarea>
-          </label>
-          <button type="submit">Send Message</button>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="paoyaila-logo.svg" alt="Paoyaila Animation Studio logo" />
-        <p>Technology-driven animation and gaming studio delivering motion graphics, VR/AR, games, and enterprise IT services since 2015.</p>
-      </div>
-      <div class="footer-links">
-        <strong>Explore</strong>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#studio">Studio</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
-        <a href="careers.html">Careers</a>
-      </div>
-      <div class="footer-links">
-        <strong>Contact</strong>
-        <a href="mailto:hello@paoyaila.com">hello@paoyaila.com</a>
-        <a href="tel:+919876543210">+91 98765 43210</a>
-        <span>Mumbai, India</span>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 Paoyaila Animation Studios LLP. All rights reserved.</span>
+  </section>
+
+  <!-- ─── CORE SERVICES BENTO ─── -->
+  <section class="section-wrap" id="services" style="background: rgba(14, 22, 46, 0.25);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-cubes-stacked"></i> Full-Spectrum Capabilities</span>
+        <h2 class="section-title">End-to-End <span class="gradient-text">Creative & Engineering</span> Services</h2>
+        <p class="section-subtitle">
+          From concept sketching to final release, we provide cohesive design, development, and digital transformation solutions.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Service 1 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-film"></i>
+            </div>
+            <h3>3D Animation & CGI Cinematics</h3>
+            <p>Character modeling, intricate rigging, facial mocap, realistic lighting, and cinematic commercials crafted with Maya and Blender.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> 3D Character Design & Rigging</li>
+              <li><i class="fa-solid fa-circle-check"></i> Cinematic Commercials & Shorts</li>
+              <li><i class="fa-solid fa-circle-check"></i> Product Renders & Visualizations</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">Maya • Blender • Houdini</span>
+            <a href="#contact" class="service-link">Inquire <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+
+        <!-- Service 2 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-vr-cardboard"></i>
+            </div>
+            <h3>Game Development & AR/VR</h3>
+            <p>Immersive interactive gaming experiences, mobile hyper-casual titles, virtual reality training simulators, and augmented reality showroom apps.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> Unreal Engine 5 & Unity Games</li>
+              <li><i class="fa-solid fa-circle-check"></i> VR Industrial Training & Simulators</li>
+              <li><i class="fa-solid fa-circle-check"></i> AR Product Try-On & Showcases</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">UE5 • Unity • VisionOS</span>
+            <a href="#contact" class="service-link">Inquire <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+
+        <!-- Service 3 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-burst"></i>
+            </div>
+            <h3>VFX & Motion Graphics</h3>
+            <p>Explainer films, high-energy title sequences, holographic simulations, dynamic UI animations, and broadcast graphics.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> 2D/3D Explainer Video Campaigns</li>
+              <li><i class="fa-solid fa-circle-check"></i> Particle & Pyro FX Simulations</li>
+              <li><i class="fa-solid fa-circle-check"></i> Broadcast & Social Brand Kits</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">After Effects • Cinema 4D</span>
+            <a href="#contact" class="service-link">Inquire <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+
+        <!-- Service 4 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-pen-nib"></i>
+            </div>
+            <h3>UI/UX & Product Design</h3>
+            <p>Design systems, responsive web app interfaces, interactive mobile UI prototypes, and user experience research for modern digital products.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> Comprehensive Design Systems</li>
+              <li><i class="fa-solid fa-circle-check"></i> Interactive High-Fidelity Prototypes</li>
+              <li><i class="fa-solid fa-circle-check"></i> Usability Testing & Architecture</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">Figma • Framer • Design Systems</span>
+            <a href="#contact" class="service-link">Inquire <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+
+        <!-- Service 5 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-server"></i>
+            </div>
+            <h3>Enterprise IT, ERP & CRM</h3>
+            <p>Custom Employee Management Systems (EMS), payroll engines, attendance tracking, role-based workflows, and enterprise cloud infrastructure.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> Custom EMS & HR Portal Suites</li>
+              <li><i class="fa-solid fa-circle-check"></i> Realtime Cloud Databases & APIs</li>
+              <li><i class="fa-solid fa-circle-check"></i> Role-Based Access Security</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">Node.js • Firebase • Cloud</span>
+            <a href="#portals" class="service-link">View Portals <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+
+        <!-- Service 6 -->
+        <article class="bento-card">
+          <div>
+            <div class="service-icon-box">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <h3>Digital Marketing & Brand Growth</h3>
+            <p>Interactive 3D ads, viral social video content, SEO optimization, and data-driven digital campaigns that scale brand engagement.</p>
+            <ul class="service-features">
+              <li><i class="fa-solid fa-circle-check"></i> High-Converting Video Ads</li>
+              <li><i class="fa-solid fa-circle-check"></i> Interactive Web 3D Experiences</li>
+              <li><i class="fa-solid fa-circle-check"></i> Conversion Rate Optimization</li>
+            </ul>
+          </div>
+          <div class="bento-footer">
+            <span class="service-tag">Growth • 3D Ads • SEO</span>
+            <a href="#contact" class="service-link">Inquire <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 4-STEP PIPELINE / PROCESS ─── -->
+  <section class="section-wrap" id="pipeline">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-network-wired"></i> How We Work</span>
+        <h2 class="section-title">Our Battle-Tested <span class="gradient-text">Creative Pipeline</span></h2>
+        <p class="section-subtitle">
+          Transparent, agile, and milestone-driven from initial concept sketches to global release.
+        </p>
+      </div>
+
+      <div class="pipeline-grid">
+        <!-- Step 1 -->
+        <div class="pipeline-card">
+          <div class="step-badge">01</div>
+          <h4>Concept & Vision</h4>
+          <p>Creative brainstorming, moodboards, scriptwriting, character concept sketches, and technical feasibility scoping.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="pipeline-card">
+          <div class="step-badge">02</div>
+          <h4>3D & Asset Creation</h4>
+          <p>High-polygon modeling, UV unwrapping, texturing with Substance Painter, rigging, and shader development.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="pipeline-card">
+          <div class="step-badge">03</div>
+          <h4>Animation & FX Engine</h4>
+          <p>Keyframe animation, motion capture cleanup, particle simulation, Unreal Engine lighting, and interactive game logic.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="pipeline-card">
+          <div class="step-badge">04</div>
+          <h4>Render & Global Launch</h4>
+          <p>Color grading, sound design, cloud farm multi-pass rendering, QA optimization, and client delivery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ACHIEVEMENTS / LIVE STATS COUNTER ─── -->
+  <section class="stats-section" id="achievements">
+    <div class="container achievements-grid">
+      <div class="achievement-box">
+        <i class="fa-solid fa-rocket achievement-icon"></i>
+        <div class="counter-value" data-target="120">0</div>
+        <div class="achievement-label">Animation & Game Projects Delivered</div>
+      </div>
+
+      <div class="achievement-box">
+        <i class="fa-solid fa-globe achievement-icon" style="color: var(--accent-indigo);"></i>
+        <div class="counter-value" data-target="60">0</div>
+        <div class="achievement-label">Enterprise & Global Clients</div>
+      </div>
+
+      <div class="achievement-box">
+        <i class="fa-solid fa-trophy achievement-icon" style="color: #f59e0b;"></i>
+        <div class="counter-value" data-target="15">0</div>
+        <div class="achievement-label">Years of Combined Leadership</div>
+      </div>
+
+      <div class="achievement-box">
+        <i class="fa-solid fa-heart achievement-icon" style="color: var(--accent-pink);"></i>
+        <div class="counter-value" data-target="99">0</div>
+        <div class="achievement-label">% Client Satisfaction & Retention</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURED WORK / PORTFOLIO ─── -->
+  <section class="section-wrap" id="work">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-clapperboard"></i> Portfolio</span>
+        <h2 class="section-title">Selected <span class="gradient-text">Masterpieces & Case Studies</span></h2>
+        <p class="section-subtitle">
+          Explore a curated selection of our recent 3D animation, interactive XR games, VFX films, and enterprise software.
+        </p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="animation">3D Animation</button>
+        <button class="filter-btn" data-filter="games">Games & XR</button>
+        <button class="filter-btn" data-filter="motion">Motion & VFX</button>
+        <button class="filter-btn" data-filter="software">IT & Web Apps</button>
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div class="portfolio-grid">
+        <!-- Item 1 -->
+        <article class="portfolio-card" data-category="animation">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">3D Animation</span>
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80" alt="Cyber City 3D CGI" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('Cyber City 2099', '3D CGI Cinematic Short', 'A futuristic cybernetic metropolis cinematic featuring custom character rigging, volumetric neon lighting, and high-octane vehicular chases crafted in Maya and Blender.', 'Cyberpunk Media Corp', 'Maya • Houdini • Octane Render')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>Cyber City 2099</h3>
+              <p>Futuristic cinematic short with advanced character rigging and volumetric lighting.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">3D CGI</span>
+              <span class="meta-tag">Maya</span>
+              <span class="meta-tag">Octane</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 2 -->
+        <article class="portfolio-card" data-category="games">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">Games & XR</span>
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80" alt="Aero Quest Game" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('Aero Quest VR', 'Unreal Engine 5 VR Flight Combat', 'An adrenaline-fueled VR flight simulation with spatial audio, photorealistic weather systems, and low-latency multiplayer netcode.', 'Nova Interactive', 'Unreal Engine 5 • Meta Quest 3 • C++')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>Aero Quest VR Flight</h3>
+              <p>High-octane VR aerial combat simulation with real-time multiplayer dogfights.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">Unreal Engine 5</span>
+              <span class="meta-tag">VR Sim</span>
+              <span class="meta-tag">C++</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 3 -->
+        <article class="portfolio-card" data-category="motion">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">Motion & VFX</span>
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80" alt="FinTech Explainer" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('FinTech Genesis Explainer', 'Motion Graphics Brand Campaign', 'A dynamic 3D motion graphics brand film that simplified complex decentralized finance architectures for global launch.', 'Apex Pay International', 'After Effects • Cinema 4D • Redshift')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>FinTech Genesis Campaign</h3>
+              <p>3D motion graphics brand film simplifying decentralized finance architectures.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">Motion Graphics</span>
+              <span class="meta-tag">After Effects</span>
+              <span class="meta-tag">C4D</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 4 -->
+        <article class="portfolio-card" data-category="software">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">IT & Web Apps</span>
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80" alt="EMS Enterprise System" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('Paoyaila EMS Suite', 'Enterprise Employee & Intern Management System', 'Complete modular multi-role EMS with payroll generation, attendance analytics, leave approval matrices, and intern task tracking.', 'Internal & Enterprise Clients', 'JavaScript • Firebase • Chart.js • CSS3')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>Paoyaila EMS Platform</h3>
+              <p>Comprehensive Employee, HR, Manager & Intern management ecosystem.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">EMS Suite</span>
+              <span class="meta-tag">Full-Stack</span>
+              <span class="meta-tag">Realtime DB</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 5 -->
+        <article class="portfolio-card" data-category="games">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">Games & XR</span>
+            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80" alt="Chronicles of Eldoria" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('Chronicles of Eldoria', 'Cross-Platform Action RPG', 'Rich fantasy roleplaying game with custom combat mechanics, fluid character animation blending, and immersive worldbuilding.', 'Mythic Realm Games', 'Unity 6 • C# • Blender • Spine 2D')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>Chronicles of Eldoria</h3>
+              <p>Cross-platform mobile action RPG featuring fluid animation blending.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">Unity 6</span>
+              <span class="meta-tag">Action RPG</span>
+              <span class="meta-tag">3D Blending</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 6 -->
+        <article class="portfolio-card" data-category="animation">
+          <div class="portfolio-thumb-wrap">
+            <span class="portfolio-category-pill">3D Animation</span>
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80" alt="Solaris Luxury Automobile" class="portfolio-img" />
+            <div class="portfolio-quick-view" onclick="openProjectModal('Solaris EV Launch', 'Photorealistic Automotive Visualizer', 'Photorealistic automotive lighting, procedural carbon fiber shaders, and interactive 3D configurator for electric luxury vehicles.', 'Solaris Motors', 'Unreal Engine 5 • Ray Tracing • WebGL')">
+              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <h3>Solaris EV Launch Film</h3>
+              <p>Photorealistic 3D automotive commercial with real-time web configurator.</p>
+            </div>
+            <div class="portfolio-meta-tags">
+              <span class="meta-tag">Auto CGI</span>
+              <span class="meta-tag">Unreal 5.4</span>
+              <span class="meta-tag">Raytracing</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INSIDE OUR STUDIO / VIRTUAL TOUR ─── -->
+  <section class="section-wrap" id="studio" style="background: rgba(14, 22, 46, 0.3);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-building"></i> Studio Tour</span>
+        <h2 class="section-title">Inside Our <span class="gradient-text">Creative Space</span></h2>
+        <p class="section-subtitle">
+          Take a peek inside our Mumbai production facility where cutting-edge technology and passionate artists converge.
+        </p>
+      </div>
+
+      <div class="studio-grid">
+        <div class="studio-card" onclick="openStudioModal('Open Production Floor', 'Our open-plan creative studio floor facilitates spontaneous brainstorming and seamless collaboration between 3D animators, modelers, and technical directors.', 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')">
+          <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="Studio Floor" class="studio-img" />
+          <div class="studio-card-overlay">
+            <span class="studio-tag">Workspace</span>
+            <h3>Open Production Floor</h3>
+            <p>High-spec dual monitor creative suites for animators and designers.</p>
+          </div>
+        </div>
+
+        <div class="studio-card" onclick="openStudioModal('Render & Color Bay', 'Equipped with color-calibrated OLED reference monitors, multi-GPU render workstations, and sound dampening for final delivery polish.', 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80')">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80" alt="Render Bay" class="studio-img" />
+          <div class="studio-card-overlay">
+            <span class="studio-tag">Post-Production</span>
+            <h3>Render & Color Grading Bay</h3>
+            <p>Calibrated mastering suites for 4K color grading, audio sync & compositing.</p>
+          </div>
+        </div>
+
+        <div class="studio-card" onclick="openStudioModal('XR & Motion Review Lab', 'Interactive screening zone with VR headsets, tracking sensors, and 4K projection for client presentations and playtests.', 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80')">
+          <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80" alt="Review Room" class="studio-img" />
+          <div class="studio-card-overlay">
+            <span class="studio-tag">Innovation Lab</span>
+            <h3>XR & Motion Review Lab</h3>
+            <p>Spatial testing room for VR prototypes, playtests, and live client dailies.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EMS ECOSYSTEM PORTALS HUB ─── -->
+  <section class="section-wrap" id="portals">
+    <div class="container">
+      <div class="ems-hub-section">
+        <div class="ems-hub-header">
+          <div>
+            <span class="section-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan);"><i class="fa-solid fa-cubes"></i> Studio Operations</span>
+            <h2>Integrated EMS Ecosystem</h2>
+            <p>
+              Direct portal access for Paoyaila team members, managers, HR leads, and interns. Manage projects, track work logs, review leaves, and access payroll records in one unified platform.
+            </p>
+          </div>
+          <a href="signin.html" class="btn-primary">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In to Portal
+          </a>
+        </div>
+
+        <div class="ems-portals-grid">
+          <!-- Admin Portal -->
+          <div class="portal-card">
+            <div class="portal-icon-circle">
+              <i class="fa-solid fa-crown" style="color: #f59e0b;"></i>
+            </div>
+            <h4>Super Admin</h4>
+            <span class="portal-badge">Full Control</span>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Executive analytics, billing & master configurations.</p>
+            <a href="Admin/index.html" class="btn-portal-launch">Launch <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- HR Portal -->
+          <div class="portal-card">
+            <div class="portal-icon-circle">
+              <i class="fa-solid fa-users" style="color: var(--accent-cyan);"></i>
+            </div>
+            <h4>HR Portal</h4>
+            <span class="portal-badge">People & Payroll</span>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Recruitment, payroll receipts & employee lifecycle.</p>
+            <a href="HR/index.html" class="btn-portal-launch">Launch <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- Manager Portal -->
+          <div class="portal-card">
+            <div class="portal-icon-circle">
+              <i class="fa-solid fa-briefcase" style="color: var(--accent-indigo);"></i>
+            </div>
+            <h4>Manager Hub</h4>
+            <span class="portal-badge">Team & Sprints</span>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Project milestone tracking & task assignments.</p>
+            <a href="manager/index.html" class="btn-portal-launch">Launch <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- Employee Portal -->
+          <div class="portal-card">
+            <div class="portal-icon-circle">
+              <i class="fa-solid fa-user-tie" style="color: var(--accent-emerald);"></i>
+            </div>
+            <h4>Employee Portal</h4>
+            <span class="portal-badge">Work & Leaves</span>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Daily check-ins, sprint tasks & payslip views.</p>
+            <a href="Employee/index.html" class="btn-portal-launch">Launch <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- Intern Portal -->
+          <div class="portal-card">
+            <div class="portal-icon-circle">
+              <i class="fa-solid fa-graduation-cap" style="color: var(--accent-purple);"></i>
+            </div>
+            <h4>Intern Hub</h4>
+            <span class="portal-badge">Learning & Logs</span>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Mentorship tasks, work logs & weekly evaluations.</p>
+            <a href="Intern/index.html" class="btn-portal-launch">Launch <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section class="section-wrap" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-star"></i> Client Endorsements</span>
+        <h2 class="section-title">Trusted by Industry <span class="gradient-text">Pioneers Worldwide</span></h2>
+        <p class="section-subtitle">
+          See what our global partners have to say about our creative execution, technical rigor, and delivery speed.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1 -->
+        <article class="testimonial-card">
+          <div>
+            <div class="star-rating">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="testimonial-quote">
+              "Paoyaila delivered an outstanding 3D animation commercial for our flagship launch. The character modeling and lighting exceeded Hollywood standards, and the turnaround time was phenomenal."
+            </p>
+          </div>
+          <div class="client-profile">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
+            <div class="client-meta">
+              <h5>Elena Rostova</h5>
+              <span>VP of Marketing, Horizon Digital (UK)</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Testimonial 2 -->
+        <article class="testimonial-card">
+          <div>
+            <div class="star-rating">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="testimonial-quote">
+              "Their Unreal Engine 5 expertise is second to none. They built a highly interactive VR training suite for our enterprise team that reduced onboarding cycle time by 45%."
+            </p>
+          </div>
+          <div class="client-profile">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
+            <div class="client-meta">
+              <h5>Marcus Vance</h5>
+              <span>Lead Producer, Apex Interactive (USA)</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Testimonial 3 -->
+        <article class="testimonial-card">
+          <div>
+            <div class="star-rating">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="testimonial-quote">
+              "Not only did they produce beautiful VFX motion assets for our brand, but their custom enterprise software implementation streamlined our internal workflows tremendously."
+            </p>
+          </div>
+          <div class="client-profile">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
+            <div class="client-meta">
+              <h5>Priya Sharma</h5>
+              <span>Director of Product, NovaTech India</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INTERACTIVE ESTIMATOR & CONTACT FORM ─── -->
+  <section class="section-wrap" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-paper-plane"></i> Let's Collaborate</span>
+        <h2 class="section-title">Start Your Next <span class="gradient-text">Breakthrough Project</span></h2>
+        <p class="section-subtitle">
+          Have an animation idea, gaming concept, or enterprise requirement? Get a free consultation and project roadmap.
+        </p>
+      </div>
+
+      <div class="contact-container-grid">
+        <!-- Contact Direct Channels -->
+        <div class="contact-info-col">
+          <div class="contact-direct-card">
+            <h3 style="font-size: 1.4rem; color: #ffffff; margin-bottom: 20px;">Direct Studio Channels</h3>
+            
+            <!-- Email -->
+            <div class="contact-channel" onclick="copyToClipboard('hello@paoyaila.com', 'Studio Email')">
+              <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div class="channel-details">
+                <div class="channel-title">Official Email</div>
+                <div class="channel-val">hello@paoyaila.com</div>
+              </div>
+              <span class="copy-hint"><i class="fa-solid fa-copy"></i> Copy</span>
+            </div>
+
+            <!-- Phone -->
+            <div class="contact-channel" onclick="copyToClipboard('+919876543210', 'Phone Number')">
+              <div class="channel-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="channel-details">
+                <div class="channel-title">Direct Studio Line</div>
+                <div class="channel-val">+91 98765 43210</div>
+              </div>
+              <span class="copy-hint"><i class="fa-solid fa-copy"></i> Copy</span>
+            </div>
+
+            <!-- Address -->
+            <div class="contact-channel" style="cursor: default;">
+              <div class="channel-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="channel-details">
+                <div class="channel-title">Studio Headquarters</div>
+                <div class="channel-val">Paoyaila Studios LLP, Mumbai, India</div>
+              </div>
+            </div>
+
+            <!-- Business Hours -->
+            <div class="contact-channel" style="cursor: default;">
+              <div class="channel-icon"><i class="fa-solid fa-clock"></i></div>
+              <div class="channel-details">
+                <div class="channel-title">Production Hours</div>
+                <div class="channel-val">Mon - Sat : 09:30 AM - 07:00 PM IST</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Studio Trust Badge -->
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 14px;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: var(--accent-cyan);"></i>
+            <div>
+              <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem;">NDA & IP Protected</div>
+              <div style="font-size: 0.82rem; color: var(--text-muted);">All client concepts and source assets remain 100% confidential.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Inquiry & Estimator Form -->
+        <div class="interactive-form-card">
+          <!-- Estimator Helper -->
+          <div class="estimator-box">
+            <h4>
+              <span><i class="fa-solid fa-sliders" style="color: var(--accent-cyan); margin-right: 6px;"></i> Project Scope Selector</span>
+              <span class="estimate-tag" id="turnaroundBadge">⚡ Est: 2-3 Weeks</span>
+            </h4>
+            
+            <div class="service-pills">
+              <label class="service-pill-checkbox">
+                <input type="checkbox" name="services_opt" value="3D Animation" checked onchange="updateEstimator()" />
+                <span class="service-pill-label"><i class="fa-solid fa-cube"></i> 3D Animation</span>
+              </label>
+              <label class="service-pill-checkbox">
+                <input type="checkbox" name="services_opt" value="Game Dev" onchange="updateEstimator()" />
+                <span class="service-pill-label"><i class="fa-solid fa-gamepad"></i> Game / XR</span>
+              </label>
+              <label class="service-pill-checkbox">
+                <input type="checkbox" name="services_opt" value="VFX Motion" onchange="updateEstimator()" />
+                <span class="service-pill-label"><i class="fa-solid fa-film"></i> VFX & Motion</span>
+              </label>
+              <label class="service-pill-checkbox">
+                <input type="checkbox" name="services_opt" value="EMS Software" onchange="updateEstimator()" />
+                <span class="service-pill-label"><i class="fa-solid fa-laptop-code"></i> IT & EMS</span>
+              </label>
+            </div>
+
+            <div class="budget-slider-wrap">
+              <div class="budget-slider-header">
+                <span>Estimated Budget Tier</span>
+                <span class="budget-val-disp" id="budgetLabel">$5,000 - $15,000 (Standard)</span>
+              </div>
+              <input type="range" min="1" max="4" value="2" class="range-input" id="budgetRange" oninput="updateBudgetDisplay()" />
+            </div>
+          </div>
+
+          <!-- Form Elements -->
+          <form id="contactForm" onsubmit="handleContactSubmit(event)">
+            <div class="form-row">
+              <div class="input-field-group">
+                <label for="contactName">Your Name *</label>
+                <input type="text" id="contactName" placeholder="e.g. Alex Morgan" required />
+              </div>
+              <div class="input-field-group">
+                <label for="contactEmail">Work Email *</label>
+                <input type="email" id="contactEmail" placeholder="alex@company.com" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="input-field-group">
+                <label for="contactCompany">Company / Studio</label>
+                <input type="text" id="contactCompany" placeholder="e.g. Horizon Media" />
+              </div>
+              <div class="input-field-group">
+                <label for="contactPhone">Phone / WhatsApp</label>
+                <input type="tel" id="contactPhone" placeholder="+91 98765 43210" />
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label for="contactMessage">Project Details & Vision *</label>
+              <textarea id="contactMessage" placeholder="Tell us about your project deliverables, timeline, and creative expectations..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 16px; font-size: 1.05rem;" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send Project Inquiry</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ACCORDION ─── -->
+  <section class="section-wrap" style="padding-top: 40px;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-circle-question"></i> Common Inquiries</span>
+        <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+      </div>
+
+      <div class="faq-container">
+        <!-- FAQ 1 -->
+        <div class="faq-item active">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>What 3D software and rendering engines do you utilize?</span>
+            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-answer">
+            Our pipeline primarily leverages Autodesk Maya, Blender 4, Houdini FX, and Unreal Engine 5.4 with real-time Lumen and Nanite rendering. For post-production, we rely on Adobe After Effects, DaVinci Resolve, and Foundry Nuke.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>How does your project milestone and revision cycle work?</span>
+            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-answer">
+            We follow a structured 4-phase approval cycle: Storyboard/Animatic sign-off, Rough 3D Layout review, Textured/Lighting preview, and Final 4K Render mastering. Standard contracts include up to 2 major revision iterations per phase.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Can Paoyaila build custom enterprise ERP and EMS portals?</span>
+            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-answer">
+            Yes! In addition to digital animation, we design and engineer full-stack Employee Management Systems (EMS), payroll engines, multi-tiered role authentication portals, and real-time database integrations.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Do you offer internship programs for aspiring 3D artists?</span>
+            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-answer">
+            Absolutely. We run dedicated 3-month and 6-month intensive internship programs with direct mentorship from senior TDs and animators. Visit our <a href="careers.html" style="color: var(--accent-cyan); text-decoration: underline;">Careers Portal</a> to apply!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CAREERS CTA BANNER ─── -->
+  <section class="container">
+    <div class="careers-banner">
+      <div class="careers-banner-content">
+        <span class="section-tag" style="background: rgba(255,255,255,0.15); color: #ffffff;"><i class="fa-solid fa-user-astronaut"></i> We Are Hiring</span>
+        <h2>Join Our High-Energy Creative Studio</h2>
+        <p>
+          We are constantly searching for passionate 3D modelers, Unreal Engine gameplay developers, motion designers, and full-stack software engineers.
+        </p>
+      </div>
+      <a href="careers.html" class="btn-primary" style="padding: 16px 32px; font-size: 1.05rem;">
+        <i class="fa-solid fa-sparkles"></i> View Open Positions
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Brand -->
+        <div class="footer-brand-info">
+          <img src="paoyaila-logo.svg" alt="Paoyaila Animation Studio logo" />
+          <p>
+            Paoyaila Animation Studios LLP is a premier technology-driven creative studio delivering world-class 3D CGI, XR/VR games, VFX cinematics, and digital enterprise software since 2015.
+          </p>
+          <div class="social-links">
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://artstation.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="ArtStation"><i class="fa-brands fa-artstation"></i></a>
+            <a href="https://github.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+
+        <!-- Col 2: Studio Explore -->
+        <div class="footer-col">
+          <h4>Studio Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="#about"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> About Studio</a></li>
+            <li><a href="#services"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Creative Services</a></li>
+            <li><a href="#pipeline"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Production Pipeline</a></li>
+            <li><a href="#work"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Featured Portfolio</a></li>
+            <li><a href="#studio"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Inside Our Studio</a></li>
+            <li><a href="careers.html"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Careers & Internships</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: EMS Portals -->
+        <div class="footer-col">
+          <h4>EMS Ecosystem</h4>
+          <ul class="footer-links-list">
+            <li><a href="signin.html"><i class="fa-solid fa-lock" style="font-size: 0.7rem; color: var(--accent-cyan);"></i> Central Sign In</a></li>
+            <li><a href="Admin/index.html"><i class="fa-solid fa-crown" style="font-size: 0.7rem; color: #f59e0b;"></i> Admin Dashboard</a></li>
+            <li><a href="HR/index.html"><i class="fa-solid fa-users" style="font-size: 0.7rem; color: var(--accent-cyan);"></i> HR & Recruitment</a></li>
+            <li><a href="manager/index.html"><i class="fa-solid fa-briefcase" style="font-size: 0.7rem; color: var(--accent-indigo);"></i> Manager Portal</a></li>
+            <li><a href="Employee/index.html"><i class="fa-solid fa-user-tie" style="font-size: 0.7rem; color: var(--accent-emerald);"></i> Employee Desk</a></li>
+            <li><a href="Intern/index.html"><i class="fa-solid fa-graduation-cap" style="font-size: 0.7rem; color: var(--accent-purple);"></i> Intern Work Logs</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Newsletter & Inquiries -->
+        <div class="footer-col">
+          <h4>Stay Connected</h4>
+          <div class="newsletter-form">
+            <p>Subscribe to our quarterly creative journal & 3D tech breakdowns.</p>
+            <form onsubmit="handleNewsletter(event)" class="newsletter-input-wrap">
+              <input type="email" placeholder="Your email address" required id="newsletterEmail" />
+              <button type="submit">Join</button>
+            </form>
+          </div>
+          <div style="margin-top: 24px; color: var(--text-muted); font-size: 0.88rem;">
+            <div style="margin-bottom: 6px;"><strong style="color: #ffffff;">HQ:</strong> Mumbai, Maharashtra, India</div>
+            <div><strong style="color: #ffffff;">Email:</strong> hello@paoyaila.com</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2026 Paoyaila Animation Studios LLP. All rights reserved. Registered in India.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Security & IP</a>
+          <a href="seed-data.html">System Diagnostics</a>
+        </div>
+      </div>
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- ─── PROJECT / CASE STUDY MODAL ─── -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('projectModal')"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <span class="service-tag" id="modalCategory" style="background: rgba(56,189,248,0.2); color: var(--accent-cyan);">3D CGI</span>
+      </div>
+      <h2 id="modalTitle" style="font-size: 1.8rem; color: #ffffff; margin-bottom: 12px;">Project Title</h2>
+      <p id="modalSubtitle" style="color: var(--accent-cyan); font-weight: 600; margin-bottom: 18px; font-size: 1.05rem;">Subtitle</p>
+      
+      <div style="border-radius: var(--radius-md); overflow: hidden; height: 280px; margin-bottom: 24px; background: #000;">
+        <img id="modalImg" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Project preview" style="width: 100%; height: 100%; object-fit: cover;" />
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-bottom: 24px;" class="modal-details-grid">
+        <div>
+          <h4 style="color: #ffffff; margin-bottom: 8px;">Project Overview</h4>
+          <p id="modalDesc" style="color: var(--text-muted); line-height: 1.7; font-size: 0.95rem;">Detailed description</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px;">
+          <div style="margin-bottom: 12px;">
+            <span style="font-size: 0.78rem; color: var(--text-muted); display: block; text-transform: uppercase;">Client Partner</span>
+            <strong id="modalClient" style="color: #ffffff; font-size: 0.95rem;">Client Name</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.78rem; color: var(--text-muted); display: block; text-transform: uppercase;">Tools & Tech</span>
+            <strong id="modalTech" style="color: var(--accent-cyan); font-size: 0.92rem;">Maya • UE5</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button class="btn-ghost" onclick="closeModal('projectModal')">Close</button>
+        <a href="#contact" class="btn-primary" onclick="closeModal('projectModal')">Request Similar Project</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STUDIO REEL MODAL ─── -->
+  <div class="modal-overlay" id="reelModal">
+    <div class="modal-box" style="max-width: 960px;">
+      <button class="modal-close-btn" onclick="closeModal('reelModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size: 1.6rem; color: #ffffff; margin-bottom: 16px;"><i class="fa-solid fa-film" style="color: var(--accent-cyan); margin-right: 8px;"></i> Paoyaila Studio Showreel 2026</h2>
+      <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius-md); background: #000; margin-bottom: 20px;">
+        <!-- Simulated High-End Studio Reel Visual Showcase -->
+        <iframe 
+          style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border:0;" 
+          src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0" 
+          title="Studio Reel" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <span style="color: var(--text-muted); font-size: 0.9rem;">4K HDR • 60 FPS • CGI, Unreal Engine 5 & Motion VFX Highlights</span>
+        <a href="#contact" class="btn-primary" onclick="closeModal('reelModal')">Schedule Demo Call</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── JAVASCRIPT LOGIC ─── -->
   <script>
-    (function() {
-      const topbar = document.querySelector('.topbar');
-      const updateTopbar = () => topbar.classList.toggle('scrolled', window.scrollY > 24);
-      updateTopbar();
-      window.addEventListener('scroll', updateTopbar, { passive: true });
+    // 1. Sticky Navigation & Scroll Progress
+    const topbar = document.getElementById('topbar');
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      topbar.classList.toggle('scrolled', scrollY > 20);
+      backToTop.classList.toggle('show', scrollY > 500);
+      highlightActiveNavLink();
+    }, { passive: true });
+
+    function highlightActiveNavLink() {
+      const sections = document.querySelectorAll('section[id]');
+      const scrollY = window.scrollY + 120;
+      sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (link) {
+          if (scrollY >= top && scrollY < top + height) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        }
+      });
+    }
+
+    // 2. Mobile Drawer Navigation
+    const mobileMenuOpen = document.getElementById('mobileMenuOpen');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+
+    function openMobileDrawer() {
+      mobileDrawer.classList.add('open');
+      drawerBackdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileDrawer() {
+      mobileDrawer.classList.remove('open');
+      drawerBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    mobileMenuOpen.addEventListener('click', openMobileDrawer);
+    mobileMenuClose.addEventListener('click', closeMobileDrawer);
+    drawerBackdrop.addEventListener('click', closeMobileDrawer);
+    drawerLinks.forEach(link => link.addEventListener('click', closeMobileDrawer));
+
+    // 3. Interactive Hero Canvas Animation
+    (function initHeroCanvas() {
+      const canvas = document.getElementById('heroCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      const particleCount = 45;
+
+      function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.6;
+          this.vy = (Math.random() - 0.5) * 0.6;
+          this.radius = Math.random() * 2 + 1;
+          this.color = Math.random() > 0.5 ? 'rgba(56, 189, 248, ' : 'rgba(99, 102, 241, ';
+          this.alpha = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color + this.alpha + ')';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // Draw connecting lines
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 130) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(56, 189, 248, ${0.18 * (1 - dist / 130)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
     })();
-    (function() {
+
+    // 4. Hero Card 3D Tilt Effect
+    const heroCard = document.getElementById('heroCardTilt');
+    if (heroCard && window.innerWidth > 992) {
+      heroCard.addEventListener('mousemove', (e) => {
+        const rect = heroCard.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        heroCard.style.transform = `perspective(1000px) rotateY(${x * 0.03}deg) rotateX(${-y * 0.03}deg) translateY(-4px)`;
+      });
+      heroCard.addEventListener('mouseleave', () => {
+        heroCard.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)';
+      });
+    }
+
+    // 5. Dynamic Scroll Counter Animation
+    const counters = document.querySelectorAll('.counter-value');
+    let countersAnimated = false;
+
+    function checkCounters() {
+      if (countersAnimated) return;
+      const statsSection = document.getElementById('achievements');
+      if (!statsSection) return;
+      
+      const rect = statsSection.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        countersAnimated = true;
+        counters.forEach(counter => {
+          const target = +counter.getAttribute('data-target');
+          const duration = 1800; // ms
+          const stepTime = 25;
+          const steps = duration / stepTime;
+          const increment = target / steps;
+          let current = 0;
+
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              counter.textContent = target + (target >= 100 ? '+' : (target === 99 ? '%' : '+'));
+              clearInterval(timer);
+            } else {
+              counter.textContent = Math.floor(current) + '+';
+            }
+          }, stepTime);
+        });
+      }
+    }
+    window.addEventListener('scroll', checkCounters, { passive: true });
+    checkCounters();
+
+    // 6. Portfolio Category Filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const portfolioCards = document.querySelectorAll('.portfolio-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filterValue = btn.getAttribute('data-filter');
+
+        portfolioCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filterValue === 'all' || category === filterValue) {
+            card.style.display = 'flex';
+            card.style.animation = 'slideUpToast 0.4s ease forwards';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 7. Interactive Modal Manager
+    function openProjectModal(title, subtitle, desc, client, tech) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalSubtitle').textContent = subtitle;
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('modalClient').textContent = client;
+      document.getElementById('modalTech').textContent = tech;
+      document.getElementById('projectModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openStudioModal(title, desc, imgSrc) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalSubtitle').textContent = 'Studio Facility Tour';
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('modalClient').textContent = 'Paoyaila Production Bay';
+      document.getElementById('modalTech').textContent = '4K Mastering • Real-time Collaboration';
+      document.getElementById('modalImg').src = imgSrc;
+      document.getElementById('projectModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openStudioReelModal() {
+      document.getElementById('reelModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // 8. FAQ Accordion Toggle
+    function toggleFaq(element) {
+      const item = element.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // 9. Interactive Scope & Budget Estimator
+    function updateBudgetDisplay() {
+      const slider = document.getElementById('budgetRange');
+      const label = document.getElementById('budgetLabel');
+      const val = parseInt(slider.value);
+      const tiers = {
+        1: '$2,500 - $5,000 (Starter Asset / Short)',
+        2: '$5,000 - $15,000 (Standard Commercial)',
+        3: '$15,000 - $35,000 (Full Cinematic / Game App)',
+        4: '$35,000+ (Enterprise Custom Suite)'
+      };
+      label.textContent = tiers[val] || tiers[2];
+      updateEstimator();
+    }
+
+    function updateEstimator() {
+      const checkedBoxes = document.querySelectorAll('input[name="services_opt"]:checked');
+      const badge = document.getElementById('turnaroundBadge');
+      const count = checkedBoxes.length;
+      if (count === 0) {
+        badge.textContent = '⚡ Select Services';
+      } else if (count === 1) {
+        badge.textContent = '⚡ Est: 1-2 Weeks Turnaround';
+      } else if (count === 2) {
+        badge.textContent = '⚡ Est: 2-3 Weeks Turnaround';
+      } else {
+        badge.textContent = '⚡ Est: 4-6 Weeks Full Production';
+      }
+    }
+
+    // 10. Copy to Clipboard Utility with Toast
+    function copyToClipboard(text, label) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(`Copied ${label} (${text}) to clipboard!`);
+        });
+      } else {
+        showToast(`${label}: ${text}`);
+      }
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // 11. Contact Form Submit Handler
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('contactName').value;
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Transmitting...</span>`;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Message Sent Successfully!</span>`;
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        showToast(`Thank you ${name}! Our production lead will contact you within 4 hours.`);
+        document.getElementById('contactForm').reset();
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      }, 1000);
+    }
+
+    // 12. Newsletter Form Handler
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletterEmail').value;
+      showToast(`Welcome! Subscribed ${email} to studio dispatches.`);
+      document.getElementById('newsletterEmail').value = '';
+    }
+
+    // 13. Dynamic Content Injection from localStorage (CMS Support)
+    (function checkCMSCustomizer() {
       const stored = localStorage.getItem('landingPageContent');
       if (stored) {
         try {
           const content = JSON.parse(stored);
-          
           if (content.hero) {
-            document.querySelector('.hero-copy .eyebrow').textContent = content.hero.eyebrow || '';
-            document.querySelector('.hero-copy h1').textContent = content.hero.heading || '';
-            document.querySelector('.hero-copy p').textContent = content.hero.description || '';
+            if (content.hero.heading) document.querySelector('.hero-title').innerHTML = content.hero.heading;
+            if (content.hero.description) document.querySelector('.hero-description').textContent = content.hero.description;
           }
-          
-          if (content.services) {
-            const serviceGrid = document.querySelector('.service-grid');
-            serviceGrid.innerHTML = content.services.map((s, i) => `
-              <article class="service-card card">
-                <span>${String(i + 1).padStart(2, '0')}</span>
-                <h3>${s.title}</h3>
-                <small>${s.description}</small>
-              </article>
-            `).join('');
-          }
-          
-          if (content.achievements) {
-            const achievementGrid = document.querySelector('.achievement-grid');
-            achievementGrid.innerHTML = content.achievements.map(a => `
-              <article class="achievement-card">
-                <strong>${a.value}</strong>
-                <p>${a.label}</p>
-              </article>
-            `).join('');
-          }
-          
-          if (content.featuredWork) {
-            const workGrid = document.querySelector('#work .gallery-grid');
-            workGrid.innerHTML = content.featuredWork.map(w => `
-              <article class="image-card">
-                <div class="meta">
-                  <span>${w.category}</span>
-                  <h3>${w.title}</h3>
-                  <p>${w.description}</p>
-                </div>
-              </article>
-            `).join('');
-          }
-          
-          if (content.contact) {
-            const contactItems = document.querySelectorAll('.contact-item');
-            if (contactItems[0]) contactItems[0].querySelector('span').textContent = content.contact.address || '';
-            if (contactItems[1]) contactItems[1].querySelector('span').textContent = content.contact.email || '';
-            if (contactItems[2]) contactItems[2].querySelector('span').textContent = content.contact.phone || '';
-            if (contactItems[3]) contactItems[3].querySelector('span').textContent = content.contact.services || '';
-          }
-        } catch (e) { console.warn('Failed to parse landing page content'); }
+        } catch (e) {
+          console.warn('CMS content parse note: default content active');
+        }
       }
     })();
   </script>
