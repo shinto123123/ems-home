@@ -141,6 +141,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 /* Context Row Status Badges */
 .badge-tag{padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
 .badge-tag.completed{background:rgba(74,222,128,0.15);color:#4ade80;}
+
+/* Submission Speed Badges */
+.speed-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap;}
+.speed-badge.ahead{background:rgba(74,222,128,0.15);color:#4ade80;}
+.speed-badge.ontime{background:rgba(66,153,225,0.15);color:#4299e1;}
+.speed-badge.delayed{background:rgba(248,113,113,0.15);color:#f87171;}
 .badge-tag.in-progress{background:rgba(66,153,225,0.15);color:#4299e1;}
 .badge-tag.pending{background:rgba(251,191,36,0.15);color:#fbbf24;}
 
@@ -426,6 +432,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                     <th>Employee</th>
                     <th>Department</th>
                     <th>Designation</th>
+                    <th>Submission Speed</th>
                     <th>Last Review</th>
                     <th>Review Cycle</th>
                     <th>Status</th>
@@ -434,7 +441,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                   </tr>
                 </thead>
                 <tbody id="reviewsTableBody">
-                  <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading performance reviews...</td></tr>
+                  <tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">Loading performance reviews...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -554,15 +561,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                     </div>
                     <div class="form-group full-width d-none" id="reviewProjectGroup">
                         <label>Project</label>
-                        <input type="text" id="reviewProjectNameDisplay" disabled>
-                    </div>
-                    <div class="form-group">
+                        <input type                    <div class="form-group">
                         <label for="reviewCycleInput">Review Cycle</label>
                         <input type="text" id="reviewCycleInput" placeholder="e.g. May 2024" required>
                     </div>
                     <div class="form-group">
-                        <label for="reviewRatingInput">Rating (1-5)</label>
-                        <input type="number" id="reviewRatingInput" min="1" max="5" step="0.1" placeholder="e.g. 4.5" required>
+                        <label for="reviewSpeedInput">Work Submission Speed</label>
+                        <select id="reviewSpeedInput">
+                            <option value="ahead" selected>⚡ Fast / Ahead of Time (+Bonus 4.8)</option>
+                            <option value="ontime">⏱ On Time (Standard 4.2)</option>
+                            <option value="delayed">⚠️ Delayed / Late (3.2)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="reviewRatingInput">Auto Rating (1-5)</label>
+                        <input type="number" id="reviewRatingInput" min="1" max="5" step="0.1" value="4.8" placeholder="e.g. 4.8" required>
                     </div>
                     <div class="form-group full-width">
                         <label for="reviewCommentsInput">Comments</label>
@@ -616,6 +629,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     let teamEmployees = [];
     let lockedPerson = null;
 
+    // Auto-calculate score on submission speed selection
+    document.getElementById('reviewSpeedInput')?.addEventListener('change', (e) => {
+        const speed = e.target.value;
+        const scoreInput = document.getElementById('reviewRatingInput');
+        if (speed === 'ahead') scoreInput.value = '4.8';
+        else if (speed === 'ontime') scoreInput.value = '4.2';
+        else if (speed === 'delayed') scoreInput.value = '3.2';
+    });
+
     function formatDate(value) {
         if (!value) return '-';
         if (typeof value.toDate === 'function') {
@@ -647,6 +669,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
             myDept = meSnap.exists() ? meSnap.data().department : null;
         }
+    }
     let allReviewsList = [];
     let currentReviewTab = 'all';
 
@@ -654,19 +677,29 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         tableBody.innerHTML = "";
 
         if (!reviews || reviews.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #8898aa;">No matching performance reviews found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #8898aa;">No matching performance reviews found.</td></tr>`;
             entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
             return;
         }
 
         reviews.forEach((r, idx) => {
             const hasRating = r.rating !== undefined && r.rating !== null;
+            const rVal = Number(r.rating) || 4.0;
+            const speed = r.submissionSpeed || (rVal >= 4.5 ? 'ahead' : (rVal >= 3.8 ? 'ontime' : 'delayed'));
+            const speedMap = {
+                ahead: { cls: 'ahead', icon: 'fa-solid fa-bolt', label: 'Fast (Ahead)' },
+                ontime: { cls: 'ontime', icon: 'fa-solid fa-clock', label: 'On Time' },
+                delayed: { cls: 'delayed', icon: 'fa-solid fa-triangle-exclamation', label: 'Delayed' }
+            };
+            const sp = speedMap[speed] || speedMap.ontime;
+
             const rowTemplate = `
                 <tr>
                     <td class="chk-cell"><input type="checkbox" class="custom-checkbox"></td>
                     <td><div class="identity-cell-wrap"><div class="cell-avatar"><i class="fa-regular fa-user"></i></div><div class="cell-name-box"><h4>${r.employeeName || '-'}</h4><span>${r.uid ? r.uid.slice(0, 8) : ''}</span></div></div></td>
                     <td>${r.department || '-'}</td>
                     <td>${r.designation || '-'}</td>
+                    <td><span class="speed-badge ${sp.cls}"><i class="${sp.icon}"></i> ${sp.label}</span></td>
                     <td>${formatDate(r.reviewDate)}</td>
                     <td>${r.reviewCycle || '-'}</td>
                     <td><span class="badge-tag ${statusClass(r.status)}">${r.status || 'Pending'}</span></td>
@@ -678,7 +711,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                         </div>
                       ` : `<span style="color:#4a5568; font-weight:600;">—</span>`}
                     </td>
-                    <td><div class="row-actions-container" style="justify-content: center;"><button class="btn-action-trigger view-review-detail-btn" data-name="${r.employeeName || ''}" data-cycle="${r.reviewCycle || ''}" data-rating="${r.rating || 'N/A'}" data-comments="${r.comments || ''}"><i class="fa-regular fa-eye"></i></button></div></td>
+                    <td><div class="row-actions-container" style="justify-content: center;"><button class="btn-action-trigger view-review-detail-btn" data-name="${r.employeeName || ''}" data-cycle="${r.reviewCycle || ''}" data-speed="${sp.label}" data-rating="${r.rating || 'N/A'}" data-comments="${r.comments || ''}"><i class="fa-regular fa-eye"></i></button></div></td>
                 </tr>
             `;
             tableBody.insertAdjacentHTML('beforeend', rowTemplate);
@@ -688,7 +721,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         document.querySelectorAll('.view-review-detail-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                alert(`Performance Review:\nEmployee: ${btn.getAttribute('data-name')}\nCycle: ${btn.getAttribute('data-cycle')}\nRating: ${btn.getAttribute('data-rating')}\nComments: ${btn.getAttribute('data-comments')}`);
+                alert(`Performance Review:\nEmployee: ${btn.getAttribute('data-name')}\nCycle: ${btn.getAttribute('data-cycle')}\nSpeed: ${btn.getAttribute('data-speed')}\nRating: ${btn.getAttribute('data-rating')} / 5.0\nComments: ${btn.getAttribute('data-comments')}`);
             });
         });
     }
@@ -736,9 +769,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     document.getElementById('exportReviewBtn').addEventListener('click', () => {
         if (!allReviewsList.length) return alert('No performance review records to export.');
-        const rows = [["Employee Name", "Department", "Designation", "Review Cycle", "Status", "Rating", "Comments"]];
+        const rows = [["Employee Name", "Department", "Designation", "Submission Speed", "Review Cycle", "Status", "Rating", "Comments"]];
         allReviewsList.forEach(r => {
-            rows.push([r.employeeName || '', r.department || '', r.designation || '', r.reviewCycle || '', r.status || '', r.rating || '', r.comments || '']);
+            rows.push([r.employeeName || '', r.department || '', r.designation || '', r.submissionSpeed || 'ontime', r.reviewCycle || '', r.status || '', r.rating || '', r.comments || '']);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -783,7 +816,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         } catch (err) {
             console.error("Failed to load performance reviews: ", err);
-            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
         }
     }
 
@@ -930,6 +963,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const projectId = document.getElementById('reviewProjectId').value;
         const revieweeType = document.getElementById('reviewRevieweeType').value;
         const projectName = document.getElementById('reviewProjectNameDisplay').value;
+        const submissionSpeed = document.getElementById('reviewSpeedInput').value;
 
         let reviewee;
         if (lockedPerson) {
@@ -952,6 +986,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 designation: reviewee.designation || '',
                 revieweeType: reviewee.type || 'employee',
                 reviewCycle: document.getElementById('reviewCycleInput').value,
+                submissionSpeed: submissionSpeed,
                 rating: parseFloat(document.getElementById('reviewRatingInput').value),
                 status: "Completed",
                 reviewedBy: currentUser.name,
@@ -977,6 +1012,5 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     loadReviews();
     loadCompletedProjects();
 </script>
-
 </body>
 </html>

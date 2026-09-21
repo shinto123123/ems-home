@@ -101,20 +101,20 @@ async function run() {
     // ---------- 1. EMPLOYEES ----------
     log('=== Employees ===', 'head');
     const employeesData = [
-        { key: 'admin',   name: 'Alice Admin',   email: 'admin@company.com',    department: 'Administration',   designation: 'System Administrator', role: 'admin',    phone: '9876500001', status: 'Active' },
-        { key: 'hr',      name: 'Priya Sharma',  email: 'hr@company.com',       department: 'Human Resources',  designation: 'HR Manager',           role: 'hr',       phone: '9876500002', status: 'Active' },
-        { key: 'manager', name: 'Rahul Verma',   email: 'manager@company.com',  department: 'Engineering',      designation: 'Engineering Manager',  role: 'manager',  phone: '9876500003', status: 'Active' },
-        { key: 'emp1',    name: 'Sara Khan',     email: 'employee1@company.com',department: 'Engineering',      designation: 'Software Engineer',    role: 'employee', phone: '9876500004', status: 'Active' },
-        { key: 'emp2',    name: 'Dev Patel',     email: 'employee2@company.com',department: 'Marketing',        designation: 'Marketing Specialist', role: 'employee', phone: '9876500005', status: 'Active' },
-        { key: 'emp3',    name: 'Karan Mehta',   email: 'employee3@company.com',department: 'Sales',            designation: 'Sales Executive',      role: 'employee', phone: '9876500006', status: 'Active' },
-        { key: 'emp4',    name: 'Ritu Bose',     email: 'employee4@company.com',department: 'Design',           designation: 'Product Designer',     role: 'employee', phone: '9876500007', status: 'Active' },
-        { key: 'emp5',    name: 'Vikram Rao',    email: 'employee5@company.com',department: 'Engineering',      designation: 'QA Engineer',          role: 'employee', phone: '9876500008', status: 'Inactive' },
+        { key: 'admin',   customId: 'ADM001', name: 'Alice Admin',   email: 'admin@company.com',    department: 'Administration',   designation: 'System Administrator', role: 'admin',    phone: '9876500001', status: 'Active' },
+        { key: 'hr',      customId: 'HR001',  name: 'Priya Sharma',  email: 'hr@company.com',       department: 'Human Resources',  designation: 'HR Manager',           role: 'hr',       phone: '9876500002', status: 'Active' },
+        { key: 'manager', customId: 'MG001',  name: 'Rahul Verma',   email: 'manager@company.com',  department: 'Engineering',      designation: 'Engineering Manager',  role: 'manager',  phone: '9876500003', status: 'Active' },
+        { key: 'emp1',    customId: 'EMP001', name: 'Sara Khan',     email: 'employee1@company.com',department: 'Engineering',      designation: 'Software Engineer',    role: 'employee', phone: '9876500004', status: 'Active' },
+        { key: 'emp2',    customId: 'EMP002', name: 'Dev Patel',     email: 'employee2@company.com',department: 'Marketing',        designation: 'Marketing Specialist', role: 'employee', phone: '9876500005', status: 'Active' },
+        { key: 'emp3',    customId: 'EMP003', name: 'Karan Mehta',   email: 'employee3@company.com',department: 'Sales',            designation: 'Sales Executive',      role: 'employee', phone: '9876500006', status: 'Active' },
+        { key: 'emp4',    customId: 'EMP004', name: 'Ritu Bose',     email: 'employee4@company.com',department: 'Design',           designation: 'Product Designer',     role: 'employee', phone: '9876500007', status: 'Active' },
+        { key: 'emp5',    customId: 'EMP005', name: 'Vikram Rao',    email: 'employee5@company.com',department: 'Engineering',      designation: 'QA Engineer',          role: 'employee', phone: '9876500008', status: 'Inactive' },
     ];
     const employees = {};
     for (const e of employeesData) {
         const uid = await createAuthAccount(e.email, PASSWORD);
         const docData = {
-            uid, name: e.name, email: e.email, password: await hashPassword(PASSWORD),
+            uid, customId: e.customId, name: e.name, email: e.email, password: await hashPassword(PASSWORD),
             department: e.department, designation: e.designation, phone: e.phone, role: e.role,
             status: e.status, avatarUrl: '', employmentType: 'Full Time', dateOfJoining: ddmmyyyy(-180),
             timestamp: serverTimestamp()

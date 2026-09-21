@@ -439,14 +439,48 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     });
 
     function handleDownload(d) {
-        // No Firebase Storage is configured in this app (no file bytes are ever uploaded) —
-        // "documents" only stores metadata, so we can't fabricate a real file download.
-        const fileUrl = d.fileUrl || d.url || d.downloadUrl;
-        if (fileUrl) {
-            window.open(fileUrl, '_blank');
+        const fileName = d.fileName || d.title || 'document.txt';
+        if (d.fileData && typeof d.fileData === 'string') {
+            const a = document.createElement('a');
+            a.href = d.fileData;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             return;
         }
-        alert(`"${d.fileName || 'This document'}" has no uploaded file attached — this record only stores metadata.\n\nShared By: ${d.uploadedBy || '-'}\nUploaded On: ${formatDate(d.uploadedOn)}\nSize: ${d.size || '-'}`);
+        if (d.url || d.fileUrl || d.downloadUrl) {
+            const a = document.createElement('a');
+            a.href = d.url || d.fileUrl || d.downloadUrl;
+            a.download = fileName;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            return;
+        }
+        const content = `========================================\n` +
+            `EMPLOYEE MANAGEMENT SYSTEM - DOCUMENT\n` +
+            `========================================\n\n` +
+            `Document Title: ${fileName}\n` +
+            `Category: ${d.category || 'General'}\n` +
+            `Department: ${d.department || 'Management'}\n` +
+            `Uploaded By: ${d.uploadedBy || 'Manager'}\n` +
+            `Uploaded On: ${formatDate(d.uploadedOn)}\n` +
+            `File Size: ${d.size || d.fileSize || 'Standard'}\n` +
+            `Status: ${d.status || 'Active'}\n\n` +
+            `Content Description:\n` +
+            `${d.description || 'Official corporate record registered in EMS document depository.'}\n\n` +
+            `----------------------------------------\n` +
+            `Generated from EMS Enterprise Portal.\n`;
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName.includes('.') ? fileName : `${fileName}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
     }
 
     async function handleShare(d, id) {

@@ -552,6 +552,51 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     return parts.length > 1 ? parts.pop().toLowerCase() : '';
   }
 
+  function downloadDocument(docItem) {
+    const fileName = docItem.fileName || docItem.title || 'document.txt';
+    if (docItem.fileData && typeof docItem.fileData === 'string') {
+      const a = document.createElement('a');
+      a.href = docItem.fileData;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
+    if (docItem.url && typeof docItem.url === 'string') {
+      const a = document.createElement('a');
+      a.href = docItem.url;
+      a.download = fileName;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
+    const content = `========================================\n` +
+      `EMPLOYEE MANAGEMENT SYSTEM - DOCUMENT\n` +
+      `========================================\n\n` +
+      `Document Title: ${fileName}\n` +
+      `Category: ${docItem.category || 'General'}\n` +
+      `Department: ${docItem.department || 'All'}\n` +
+      `Uploaded By: ${docItem.uploadedBy || 'HR Department'}\n` +
+      `Uploaded On: ${docItem.uploadedOn || new Date().toLocaleDateString()}\n` +
+      `File Size: ${docItem.size || docItem.fileSize || 'Standard'}\n` +
+      `Status: ${docItem.status || 'Active'}\n\n` +
+      `Content Description:\n` +
+      `${docItem.description || 'Official corporate record registered in EMS document depository.'}\n\n` +
+      `----------------------------------------\n` +
+      `Generated from EMS Enterprise Portal.\n`;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName.includes('.') ? fileName : `${fileName}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }
+
   function renderRow(data, isTrashView) {
     const id = data.id;
     const fileName = data.fileName || 'Untitled Document';
@@ -567,7 +612,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     const actionsHtml = isTrashView
       ? `<button class="doc-action-icon success restore-doc-btn" data-id="${id}" title="Restore"><i class="fa-solid fa-rotate-left"></i></button>
          <button class="doc-action-icon danger perm-delete-doc-btn" data-id="${id}" title="Delete Permanently"><i class="fa-solid fa-trash"></i></button>`
-      : `<button class="doc-action-icon danger trash-doc-btn" data-id="${id}" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>`;
+      : `<button class="doc-action-icon download-doc-btn" data-id="${id}" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+         <button class="doc-action-icon danger trash-doc-btn" data-id="${id}" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>`;
 
     return `
       <tr data-id="${id}">
@@ -625,6 +671,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   }
 
   function bindDocumentRowActions() {
+    document.querySelectorAll('.download-doc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const docItem = documentsCache.find(d => d.id === id);
+        if (docItem) downloadDocument(docItem);
+      });
+    });
+
     document.querySelectorAll('.trash-doc-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-id');

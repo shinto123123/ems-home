@@ -600,6 +600,7 @@ body {
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 .legend-dot.present { background: #4ade80; }
 .legend-dot.late { background: #f59e0b; }
+.legend-dot.halfday { background: #c084fc; box-shadow: 0 0 6px rgba(192,132,252,0.6); }
 .legend-dot.leave { background: #a855f7; }
 .legend-dot.absent { background: #f87171; }
 
@@ -689,10 +690,14 @@ body {
 .day.present .status-label-badge { background: rgba(74,222,128,0.16); color: #4ade80; }
 .day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.08); }
 .day.late .status-label-badge { background: rgba(245,158,11,0.25); color: #fbbf24; }
+.day.halfday { border-left: 4px solid #c084fc; background: rgba(168,85,247,0.14); }
+.day.halfday .status-label-badge { background: rgba(168,85,247,0.30); color: #e9d5ff; }
 .day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.08); }
 .day.leave .status-label-badge { background: rgba(168,85,247,0.25); color: #c084fc; }
 .day.absent { border-left: 4px solid #f87171; }
 .day.absent .status-label-badge { background: rgba(248,113,113,0.16); color: #f87171; }
+
+.emp-status-pill.halfday { background: rgba(168,85,247,0.20); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
 
 /* =========================
    MODAL
@@ -966,6 +971,7 @@ body {
                     <div class="calendar-legend">
                         <div class="legend-item"><div class="legend-dot present"></div>Present</div>
                         <div class="legend-item"><div class="legend-dot late"></div>Late Arrival</div>
+                        <div class="legend-item"><div class="legend-dot halfday"></div>Half Day (3x Late)</div>
                         <div class="legend-item"><div class="legend-dot leave"></div>On Leave</div>
                         <div class="legend-item"><div class="legend-dot absent"></div>Absent</div>
                     </div>
@@ -1008,6 +1014,7 @@ body {
                     <select id="attStatus">
                         <option value="present" selected>Present</option>
                         <option value="late">Late Arrival</option>
+                        <option value="halfday">Half Day (3x Late / Half Shift)</option>
                         <option value="leave">On Leave</option>
                         <option value="absent">Absent</option>
                     </select>
@@ -1020,12 +1027,12 @@ body {
                 </div>
                 <div class="form-group">
                     <label for="attCheckOut">Check-Out Time</label>
-                    <input type="time" id="attCheckOut" value="17:30">
+                    <input type="time" id="attCheckOut" value="18:00">
                 </div>
             </div>
             <div class="form-group">
                 <label for="attRemarks">Remarks / Notes</label>
-                <input type="text" id="attRemarks" placeholder="e.g., Client meeting, Traffic delay...">
+                <input type="text" id="attRemarks" placeholder="Optional remarks e.g. 3 consecutive late check-in rule applied">
             </div>
             <div class="form-actions">
                 <button type="button" class="btn-secondary" id="cancelLogAttBtn">Cancel</button>
@@ -1124,6 +1131,7 @@ body {
 
     function populateModalEmployeeSelect() {
         const select = document.getElementById('attEmployeeSelect');
+        if (!select) return;
         select.innerHTML = '';
         cachedStaffArray.forEach(emp => {
             const opt = document.createElement('option');
@@ -1138,6 +1146,7 @@ body {
         const todayYMD = toYMD(today);
         let presentCount = 0;
         let lateCount = 0;
+        let halfDayCount = 0;
         let leaveCount = 0;
         let absentCount = 0;
 
@@ -1153,6 +1162,7 @@ body {
                 const status = (empLogs[0].status || '').toLowerCase().trim();
                 if (status === 'present') { presentCount++; emp.todayStatus = 'present'; }
                 else if (status === 'late' || status === 'late arrival') { lateCount++; emp.todayStatus = 'late'; }
+                else if (status === 'halfday' || status === 'half day') { halfDayCount++; emp.todayStatus = 'halfday'; }
                 else if (status === 'leave' || status === 'on leave') { leaveCount++; emp.todayStatus = 'leave'; }
                 else if (status === 'absent') { absentCount++; emp.todayStatus = 'absent'; }
             } else {
@@ -1170,23 +1180,45 @@ body {
         document.getElementById('statAbsentToday').textContent = absentCount;
     }
 
+    // ── 3 CONSECUTIVE LATE CHECK-IN TO HALF DAY ATTENDANCE LOGIC ──
     function bucketizeAttendance(records) {
-        const buckets = { presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {} };
+        const buckets = { presentDays: {}, lateDays: {}, halfDayDays: {}, leaveDays: {}, absentDays: {} };
         const targetYear = currentCalendarDate.getFullYear();
         const targetMonth = currentCalendarDate.getMonth();
 
-        records.forEach(rec => {
-            const dateObj = parseAttendanceDate(rec.date);
-            if (!dateObj || dateObj.getFullYear() !== targetYear || dateObj.getMonth() !== targetMonth) return;
+        // Sort records chronologically
+        const sortedRecords = [...records].map(rec => {
+            return { ...rec, dateObj: parseAttendanceDate(rec.date) };
+        }).filter(r => r.dateObj).sort((a, b) => a.dateObj - b.dateObj);
 
-            const day = dateObj.getDate();
+        let consecutiveLateCount = 0;
+
+        sortedRecords.forEach(rec => {
+            const dateObj = rec.dateObj;
+            if (!dateObj) return;
             const status = (rec.status || "").toLowerCase().trim();
             const timeInfo = rec.checkIn ? `${rec.checkIn}` : '';
+            const isTargetMonth = (dateObj.getFullYear() === targetYear && dateObj.getMonth() === targetMonth);
+            const day = dateObj.getDate();
 
-            if (status === "present") buckets.presentDays[day] = timeInfo;
-            else if (status === "late" || status === "late arrival") buckets.lateDays[day] = timeInfo;
-            else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
-            else if (status === "absent") buckets.absentDays[day] = 'Absent';
+            const isLate = (status === "late" || status === "late arrival");
+            if (isLate) {
+                consecutiveLateCount++;
+                if (consecutiveLateCount >= 3) {
+                    // 3rd continuous late check-in gets converted to Half Day attendance
+                    if (isTargetMonth) buckets.halfDayDays[day] = timeInfo || '09:45 AM';
+                } else {
+                    if (isTargetMonth) buckets.lateDays[day] = timeInfo || '09:30 AM';
+                }
+            } else {
+                consecutiveLateCount = 0;
+                if (isTargetMonth) {
+                    if (status === "present") buckets.presentDays[day] = timeInfo || '09:00 AM';
+                    else if (status === "halfday" || status === "half day") buckets.halfDayDays[day] = timeInfo || '10:00 AM';
+                    else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
+                    else if (status === "absent") buckets.absentDays[day] = 'Absent';
+                }
+            }
         });
 
         return buckets;
@@ -1202,21 +1234,34 @@ body {
         const buckets = bucketizeAttendance(empRecords);
         activeEmployee.presentDays = buckets.presentDays;
         activeEmployee.lateDays = buckets.lateDays;
+        activeEmployee.halfDayDays = buckets.halfDayDays;
         activeEmployee.leaveDays = buckets.leaveDays;
         activeEmployee.absentDays = buckets.absentDays;
 
-        // If no records exist for this month in cache, generate realistic default weekday attendance for active staff
+        // If no records exist for this month in cache, generate realistic default weekday attendance with 3x late demo
         const totalDaysInMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0).getDate();
-        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
+        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.halfDayDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
 
         if (hasAnyInMonth === 0) {
+            let simLateStreak = 0;
             for (let d = 1; d <= Math.min(today.getDate(), totalDaysInMonth); d++) {
                 const checkDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), d);
                 const dayOfWeek = checkDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Weekdays
-                    if (d % 11 === 0) activeEmployee.lateDays[d] = '09:40 AM';
-                    else if (d % 17 === 0) activeEmployee.leaveDays[d] = 'Leave';
-                    else activeEmployee.presentDays[d] = '09:05 AM';
+                    if (d >= 8 && d <= 10) { // 3 consecutive late days demo (8, 9, 10)
+                        simLateStreak++;
+                        if (simLateStreak >= 3) {
+                            activeEmployee.halfDayDays[d] = '09:50 AM'; // 3rd continuous day is Half Day!
+                        } else {
+                            activeEmployee.lateDays[d] = '09:45 AM';
+                        }
+                    } else if (d % 17 === 0) {
+                        simLateStreak = 0;
+                        activeEmployee.leaveDays[d] = 'Leave';
+                    } else {
+                        simLateStreak = 0;
+                        activeEmployee.presentDays[d] = '09:05 AM';
+                    }
                 }
             }
         }
@@ -1241,10 +1286,11 @@ body {
         const now = new Date();
         const presentDays = activeEmployee ? (activeEmployee.presentDays || {}) : {};
         const lateDays = activeEmployee ? (activeEmployee.lateDays || {}) : {};
+        const halfDayDays = activeEmployee ? (activeEmployee.halfDayDays || {}) : {};
         const leaveDays = activeEmployee ? (activeEmployee.leaveDays || {}) : {};
         const absentDays = activeEmployee ? (activeEmployee.absentDays || {}) : {};
 
-        let pCount = 0, lCount = 0, lvCount = 0, aCount = 0;
+        let pCount = 0, lCount = 0, hCount = 0, lvCount = 0, aCount = 0;
 
         for (let day = 1; day <= totalDaysInMonth; day++) {
             const dayCell = document.createElement('div');
@@ -1259,6 +1305,10 @@ body {
                 dayCell.classList.add('present');
                 dayCell.innerHTML += `<span class="status-label-badge">Present</span><span class="time-stamp">${presentDays[day] || '09:00 AM'}</span>`;
                 pCount++;
+            } else if (halfDayDays[day] !== undefined) {
+                dayCell.classList.add('halfday');
+                dayCell.innerHTML += `<span class="status-label-badge" title="3 Consecutive Late Days Penalty: Half Day Attendance">Half Day (3x Late)</span><span class="time-stamp">${halfDayDays[day] || '09:45 AM'}</span>`;
+                hCount++;
             } else if (lateDays[day] !== undefined) {
                 dayCell.classList.add('late');
                 dayCell.innerHTML += `<span class="status-label-badge">Late</span><span class="time-stamp">${lateDays[day] || '09:45 AM'}</span>`;
@@ -1284,8 +1334,8 @@ body {
         }
 
         // Update monthly summary strip
-        const totalLogged = pCount + lCount + lvCount + aCount;
-        const rate = totalLogged > 0 ? Math.round(((pCount + lCount) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
+        const totalLogged = pCount + lCount + hCount + lvCount + aCount;
+        const rate = totalLogged > 0 ? Math.round(((pCount + lCount + (hCount * 0.5)) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
         document.getElementById('mStatPresent').textContent = pCount;
         document.getElementById('mStatLate').textContent = lCount;
         document.getElementById('mStatLeave').textContent = lvCount;
@@ -1301,6 +1351,27 @@ body {
     document.getElementById('prevMonthBtn').addEventListener('click', () => changeMonth(-1));
     document.getElementById('nextMonthBtn').addEventListener('click', () => changeMonth(1));
 
+    function getRoleCustomId(emp, index, allList) {
+        if (emp.customId && emp.customId.trim()) return emp.customId.trim();
+        const role = (emp.role || '').toLowerCase();
+        let prefix = 'EMP';
+        if (role === 'manager') prefix = 'MG';
+        else if (role === 'hr') prefix = 'HR';
+        else if (role === 'admin') prefix = 'ADM';
+        else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
+        
+        const sameRoleList = (allList || []).filter(e => {
+            const r = (e.role || '').toLowerCase();
+            if (prefix === 'MG') return r === 'manager';
+            if (prefix === 'HR') return r === 'hr';
+            if (prefix === 'ADM') return r === 'admin';
+            return r !== 'manager' && r !== 'hr' && r !== 'admin';
+        });
+        const roleIdx = sameRoleList.findIndex(e => e.uid === emp.uid || e.id === emp.id);
+        const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
+        return `${prefix}${String(num).padStart(3, '0')}`;
+    }
+
     async function fetchAttendanceAndRoster() {
         try {
             const [empSnap, attSnap] = await Promise.all([
@@ -1312,21 +1383,23 @@ body {
             attSnap.forEach(d => allAttendanceCache.push({ id: d.id, ...d.data() }));
 
             cachedStaffArray = [];
-            let indexCount = 1;
+            const rawEmps = [];
+            empSnap.forEach(d => rawEmps.push({ id: d.id, ...d.data() }));
 
-            empSnap.forEach((docSnap) => {
-                const data = docSnap.data();
-                const formattedId = "EMP" + String(indexCount).padStart(3, '0');
+            rawEmps.forEach((data, idx) => {
+                const formattedId = getRoleCustomId(data, idx, rawEmps);
                 cachedStaffArray.push({
                     id: formattedId,
+                    customId: formattedId,
                     uid: data.uid,
                     name: data.name,
+                    role: data.role,
+                    designation: data.designation,
                     department: data.department || "General",
                     status: data.status || "Active",
                     todayStatus: 'present',
-                    presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {}
+                    presentDays: {}, lateDays: {}, halfDayDays: {}, leaveDays: {}, absentDays: {}
                 });
-                indexCount++;
             });
 
             computeTopKpis();

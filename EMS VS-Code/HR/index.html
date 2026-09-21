@@ -660,13 +660,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   async function loadUpcomingEvents() {
     const container = document.getElementById('upcomingEventsList');
     try {
-      const [internsSnap, recruitmentSnap] = await Promise.all([
+      const [internsSnap, recruitmentSnap, eventsSnap] = await Promise.all([
         getDocs(collection(db, "interns")),
-        getDocs(collection(db, "recruitment"))
+        getDocs(collection(db, "recruitment")),
+        getDocs(collection(db, "events")).catch(() => ({ docs: [] }))
       ]);
 
       const now = new Date();
       const events = [];
+
+      (eventsSnap.docs || []).forEach(d => {
+        const ev = d.data();
+        const date = toJsDate(ev.date || ev.eventDate || ev.startDate);
+        if (date) {
+          events.push({
+            date,
+            title: ev.title || ev.eventName || 'Company Event',
+            sub: ev.type || ev.category || ev.description || 'Company Event'
+          });
+        }
+      });
 
       internsSnap.docs.forEach(d => {
         const i = d.data();

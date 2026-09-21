@@ -304,6 +304,27 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     let allMembers = [];
 
+    function getRoleCustomId(emp, index, allList) {
+        if (emp.customId && emp.customId.trim()) return emp.customId.trim();
+        const role = (emp.role || '').toLowerCase();
+        let prefix = 'EMP';
+        if (role === 'manager') prefix = 'MG';
+        else if (role === 'hr') prefix = 'HR';
+        else if (role === 'admin') prefix = 'ADM';
+        else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
+        
+        const sameRoleList = (allList || []).filter(e => {
+            const r = (e.role || '').toLowerCase();
+            if (prefix === 'MG') return r === 'manager';
+            if (prefix === 'HR') return r === 'hr';
+            if (prefix === 'ADM') return r === 'admin';
+            return r !== 'manager' && r !== 'hr' && r !== 'admin';
+        });
+        const roleIdx = sameRoleList.findIndex(e => e.id === emp.id);
+        const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
+        return `${prefix}${String(num).padStart(3, '0')}`;
+    }
+
     function renderMembersTable(members) {
         tableBody.innerHTML = "";
 
@@ -314,13 +335,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         }
 
         members.forEach((emp, index) => {
-            const formattedId = `EMP${String(index + 1).padStart(3, '0')}`;
+            const formattedId = getRoleCustomId(emp, index, allMembers);
             const statusClass = emp.status && emp.status.toLowerCase() === 'active' ? 'active' : 'inactive';
             const avatarUrl = emp.avatarUrl || 'https://i.pravatar.cc/50?img=' + (index + 10);
 
             const rowTemplate = `
                 <tr>
-                    <td><span class="emp-id-text">${formattedId}</span></td>
+                    <td><span class="emp-id-text" style="background:rgba(66,153,225,0.12); color:#60a5fa; border:1px solid #1b2e6e; padding:4px 8px; border-radius:6px; font-weight:700; font-size:12px; font-family:monospace; letter-spacing:0.5px;">${formattedId}</span></td>
                     <td>
                         <div class="user-identity-cell">
                             <img src="${avatarUrl}" alt="${emp.name}" style="width:32px;height:32px;border-radius:50%;border:1px solid #4299e1;">

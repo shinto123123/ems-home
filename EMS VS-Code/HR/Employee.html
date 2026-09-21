@@ -692,6 +692,27 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
   let allEmployeesList = [];
 
+  function getRoleCustomId(emp, index, allList) {
+      if (emp.customId && emp.customId.trim()) return emp.customId.trim();
+      const role = (emp.role || '').toLowerCase();
+      let prefix = 'EMP';
+      if (role === 'manager') prefix = 'MG';
+      else if (role === 'hr') prefix = 'HR';
+      else if (role === 'admin') prefix = 'ADM';
+      else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
+      
+      const sameRoleList = (allList || []).filter(e => {
+          const r = (e.role || '').toLowerCase();
+          if (prefix === 'MG') return r === 'manager';
+          if (prefix === 'HR') return r === 'hr';
+          if (prefix === 'ADM') return r === 'admin';
+          return r !== 'manager' && r !== 'hr' && r !== 'admin';
+      });
+      const roleIdx = sameRoleList.findIndex(e => e.id === emp.id);
+      const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
+      return `${prefix}${String(num).padStart(3, '0')}`;
+  }
+
   function renderEmployeeTable(list = allEmployeesList) {
       tableBody.innerHTML = "";
       if (list.length === 0) {
@@ -700,13 +721,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       }
 
       list.forEach((emp, index) => {
-          const formattedId = `EMP${String(index + 1).padStart(3, '0')}`;
+          const formattedId = getRoleCustomId(emp, index, allEmployeesList);
           const statusText = emp.status || 'Active';
           const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
 
           const rowHtml = `
               <tr data-id="${emp.id}" class="emp-row-trigger">
-                  <td>${formattedId}</td>
+                  <td><span style="background:rgba(66,153,225,0.12); color:#60a5fa; border:1px solid #1b2e6e; padding:4px 8px; border-radius:6px; font-weight:700; font-size:12px; font-family:monospace; letter-spacing:0.5px;">${formattedId}</span></td>
                   <td><strong>${emp.name || ''}</strong></td>
                   <td>${emp.department || ''}</td>
                   <td>${emp.designation || ''}</td>
@@ -726,14 +747,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       const dept = document.getElementById('hrEmpDeptFilter')?.value || 'All';
       const status = document.getElementById('hrEmpStatusFilter')?.value || 'All';
 
-      const filtered = allEmployeesList.filter(emp => {
+      const filtered = allEmployeesList.filter((emp, idx) => {
+          const id = getRoleCustomId(emp, idx, allEmployeesList).toLowerCase();
           const name = (emp.name || '').toLowerCase();
           const email = (emp.email || '').toLowerCase();
           const eDept = emp.department || '';
           const desig = (emp.designation || '').toLowerCase();
           const eStatus = emp.status || 'Active';
 
-          const matchQ = !q || name.includes(q) || email.includes(q) || eDept.toLowerCase().includes(q) || desig.includes(q);
+          const matchQ = !q || id.includes(q) || name.includes(q) || email.includes(q) || eDept.toLowerCase().includes(q) || desig.includes(q);
           const matchDept = dept === 'All' || eDept === dept;
           const matchStatus = status === 'All' || eStatus.toLowerCase() === status.toLowerCase();
 
@@ -785,7 +807,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       if (!allEmployeesList.length) return alert('No employee records to export.');
       const rows = [["Employee ID", "Name", "Department", "Designation", "Email", "Phone", "Status"]];
       allEmployeesList.forEach((e, idx) => {
-          rows.push([`EMP${String(idx + 1).padStart(3, '0')}`, e.name || '', e.department || '', e.designation || '', e.email || '', e.phone || '', e.status || 'Active']);
+          const id = getRoleCustomId(e, idx, allEmployeesList);
+          rows.push([id, e.name || '', e.department || '', e.designation || '', e.email || '', e.phone || '', e.status || 'Active']);
       });
       const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -813,6 +836,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
       const statusText = emp.status || 'Active';
       const statusClass = statusText.toLowerCase() === 'active' ? 'active' : 'leave';
+      const roleId = getRoleCustomId(emp, 0, allEmployeesList);
 
       document.getElementById('detailAvatar').innerHTML = emp.avatarUrl
           ? `<img src="${emp.avatarUrl}" alt="${emp.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
@@ -822,7 +846,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       document.getElementById('detailRoleDept').textContent = `${emp.designation || '—'} • ${emp.department || '—'}`;
       document.getElementById('detailContact').innerHTML = `<i class="fa-regular fa-envelope" style="margin-right:4px;"></i> ${emp.email || '—'} • <i class="fa-solid fa-phone" style="margin-right:4px;"></i> ${emp.phone || '—'}`;
 
-      document.getElementById('detailEmpId').textContent = id;
+      document.getElementById('detailEmpId').textContent = roleId;
       document.getElementById('detailFullName').textContent = emp.name || '—';
       document.getElementById('detailEmail').textContent = emp.email || '—';
       document.getElementById('detailPhone').textContent = emp.phone || '—';
@@ -874,12 +898,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                   internAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 1}`
               });
 
-              alert(`Intern "${firstName} ${lastName}" created successfully.`);
+              alert(`Intern "${firstName} ${lastName}" created successfully with ID ${assignedCustomId}.`);
           } else {
               const phone = document.getElementById('empPhone').value.trim();
               const designation = document.getElementById('empDesignation').value;
               const dateOfJoining = document.getElementById('empDOJ').value;
               const employmentType = document.getElementById('empEmploymentType').value;
+
+              let prefix = 'EMP';
+              if (role === 'manager') prefix = 'MG';
+              else if (role === 'hr') prefix = 'HR';
+              else if (role === 'admin') prefix = 'ADM';
+              else if (designation.toLowerCase().includes('developer')) prefix = 'DEV';
+              
+              const sameRoleCount = allEmployeesList.filter(e => (e.role || '').toLowerCase() === role.toLowerCase()).length;
+              const customId = `${prefix}${String(sameRoleCount + 1).padStart(3, '0')}`;
 
               // 1. Create the real Firebase Auth account
               const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -891,6 +924,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               // 3. Write the employee profile document
               await addDoc(collection(db, "employees"), {
                   uid: user.uid,
+                  customId: customId,
                   name: `${firstName} ${lastName}`,
                   email: email,
                   password: securedPasswordHash,
@@ -905,7 +939,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                   timestamp: serverTimestamp()
               });
 
-              alert(`Employee "${firstName} ${lastName}" created successfully.`);
+              alert(`Employee "${firstName} ${lastName}" created successfully with ID ${customId}.`);
           }
 
           closeAddModal();

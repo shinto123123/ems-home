@@ -983,6 +983,7 @@ tbody tr:hover {
                             <th>Lead / Manager</th>
                             <th>Team Size</th>
                             <th>Assigned</th>
+                            <th>Progress</th>
                             <th>Status</th>
                             <th>Start Date</th>
                             <th>End Date</th>
@@ -990,7 +991,7 @@ tbody tr:hover {
                         </tr>
                     </thead>
                     <tbody id="projectTableBody">
-                        <tr><td colspan="9" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading projects...</td></tr>
+                        <tr><td colspan="10" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading projects...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1059,6 +1060,26 @@ tbody tr:hover {
                         <option value="Medium" selected>Medium</option>
                         <option value="Low">Low</option>
                     </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Work Sections Completion (<span id="addProjectPctText" style="color:#4ade80; font-weight:700;">0% Complete</span>)</label>
+                <div class="phases-checklist" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="add-phase-cb" data-phase="planning" value="20"> Planning & Scope (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="add-phase-cb" data-phase="design" value="20"> UI/UX Design (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="add-phase-cb" data-phase="coding" value="20"> Coding & Dev (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="add-phase-cb" data-phase="testing" value="20"> QA & Testing (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer; grid-column:span 2;">
+                        <input type="checkbox" class="add-phase-cb" data-phase="marketing" value="20"> Marketing & Launch (20%)
+                    </label>
                 </div>
             </div>
             <div class="form-row">
@@ -1133,6 +1154,26 @@ tbody tr:hover {
                 </div>
             </div>
             <div class="form-group">
+                <label>Work Sections Completion (<span id="editProjectPctText" style="color:#4ade80; font-weight:700;">0% Complete</span>)</label>
+                <div class="phases-checklist" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="edit-phase-cb" data-phase="planning" value="20"> Planning & Scope (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="edit-phase-cb" data-phase="design" value="20"> UI/UX Design (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="edit-phase-cb" data-phase="coding" value="20"> Coding & Dev (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+                        <input type="checkbox" class="edit-phase-cb" data-phase="testing" value="20"> QA & Testing (20%)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer; grid-column:span 2;">
+                        <input type="checkbox" class="edit-phase-cb" data-phase="marketing" value="20"> Marketing & Launch (20%)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>Assigned Staff / Interns</label>
                 <p id="editAssignedInfo" style="color:#cbd5e1; font-size:13px; background:#0b1437; padding:10px 12px; border-radius:8px; border:1px solid #1b2e6e;">-</p>
             </div>
@@ -1192,14 +1233,65 @@ tbody tr:hover {
   const addProjectForm = document.getElementById('addProjectForm');
   const editProjectForm = document.getElementById('editProjectForm');
 
-  openModalBtn.addEventListener('click', () => modal.classList.add('show'));
-  const hideModal = () => { modal.classList.remove('show'); addProjectForm.reset(); };
+  openModalBtn.addEventListener('click', () => {
+      modal.classList.add('show');
+      updateAddProjectProgress();
+  });
+  const hideModal = () => { modal.classList.remove('show'); addProjectForm.reset(); updateAddProjectProgress(); };
   closeModalBtn.addEventListener('click', hideModal);
   cancelModalBtn.addEventListener('click', hideModal);
 
   const hideEditModal = () => { editModal.classList.remove('show'); editProjectForm.reset(); };
   document.getElementById('closeEditModalBtn').addEventListener('click', hideEditModal);
   document.getElementById('cancelEditModalBtn').addEventListener('click', hideEditModal);
+
+  function updateAddProjectProgress() {
+      let pct = 0;
+      document.querySelectorAll('.add-phase-cb').forEach(cb => {
+          if (cb.checked) pct += parseInt(cb.value, 10);
+      });
+      const pctText = document.getElementById('addProjectPctText');
+      if (pctText) pctText.textContent = `${pct}% Complete`;
+      if (pct === 100) {
+          const statusEl = document.getElementById('status');
+          if (statusEl && statusEl.value !== 'Completed') statusEl.value = 'Completed';
+      }
+  }
+
+  function updateEditProjectProgress() {
+      let pct = 0;
+      document.querySelectorAll('.edit-phase-cb').forEach(cb => {
+          if (cb.checked) pct += parseInt(cb.value, 10);
+      });
+      const pctText = document.getElementById('editProjectPctText');
+      if (pctText) pctText.textContent = `${pct}% Complete`;
+      if (pct === 100) {
+          const statusEl = document.getElementById('editStatus');
+          if (statusEl && statusEl.value !== 'Completed') statusEl.value = 'Completed';
+      }
+  }
+
+  document.querySelectorAll('.add-phase-cb').forEach(cb => {
+      cb.addEventListener('change', updateAddProjectProgress);
+  });
+  document.querySelectorAll('.edit-phase-cb').forEach(cb => {
+      cb.addEventListener('change', updateEditProjectProgress);
+  });
+
+  function calculateProjectProgress(project) {
+      if (project.progress !== undefined && project.progress !== null) {
+          return Number(project.progress);
+      }
+      if (project.phases && typeof project.phases === 'object') {
+          let count = 0;
+          Object.values(project.phases).forEach(v => { if (v) count++; });
+          return count * 20;
+      }
+      const st = (project.status || 'Planning').toLowerCase();
+      if (st === 'completed') return 100;
+      if (st === 'ongoing') return 60;
+      return 20;
+  }
 
   function formatDate(dateString) {
       if (!dateString || dateString.trim() === "") return '-';
@@ -1227,7 +1319,7 @@ tbody tr:hover {
       tableBody.innerHTML = '';
 
       if (!projectsArray || projectsArray.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:28px; color:#8898aa;">No projects found. Click "+ Add Project" to create one.</td></tr>`;
+          tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:28px; color:#8898aa;">No projects found. Click "+ Add Project" to create one.</td></tr>`;
           countDisplay.textContent = `Showing 0 entries`;
           return;
       }
@@ -1237,6 +1329,8 @@ tbody tr:hover {
           const statusKey = (project.status || 'Planning').toLowerCase();
           const teamUids = Array.isArray(project.teamUids) ? project.teamUids : [];
           const assignedText = teamUids.length ? `${teamUids.length} assigned` : (project.assignedInternUid ? '1 Intern' : 'Unassigned');
+          const progressPct = calculateProjectProgress(project);
+          const phasesCount = Math.round(progressPct / 20);
 
           const row = `
               <tr>
@@ -1255,6 +1349,17 @@ tbody tr:hover {
                   </td>
                   <td>${project.teamSize || 0}</td>
                   <td>${assignedText}</td>
+                  <td>
+                      <div style="min-width:110px;">
+                          <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; font-weight:600;">
+                              <span style="color:#e2e8f0;">${progressPct}%</span>
+                              <span style="color:#8898aa; font-size:10px;">${phasesCount}/5 phases</span>
+                          </div>
+                          <div style="background:#0b1437; height:6px; border-radius:10px; overflow:hidden; border:1px solid #1b2e6e;">
+                              <div style="background:${progressPct === 100 ? '#4ade80' : '#4299e1'}; height:100%; width:${progressPct}%;"></div>
+                          </div>
+                      </div>
+                  </td>
                   <td><span class="status-badge ${statusKey}">${project.status || 'Planning'}</span></td>
                   <td>${project.startDate || '-'}</td>
                   <td>${endFormatted}</td>
@@ -1292,6 +1397,14 @@ tbody tr:hover {
                   document.getElementById('editAssignedInfo').textContent = teamUids.length
                       ? `${teamUids.length} employee(s) assigned. Manage distribution from HR or Manager workspace.`
                       : (targetProj.assignedInternUid ? '1 Intern assigned.' : 'No staff currently assigned.');
+
+                  // Populate edit phases checkboxes
+                  const phases = targetProj.phases || {};
+                  document.querySelectorAll('.edit-phase-cb').forEach(cb => {
+                      const ph = cb.getAttribute('data-phase');
+                      cb.checked = !!phases[ph] || (targetProj.status === 'Completed');
+                  });
+                  updateEditProjectProgress();
 
                   editModal.classList.add('show');
               }
@@ -1353,7 +1466,7 @@ tbody tr:hover {
           runSearchFilter();
       } catch (err) {
           console.error("Error loading projects: ", err);
-          document.getElementById('projectTableBody').innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load projects: ${err.message}</td></tr>`;
+          document.getElementById('projectTableBody').innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#f87171;">Failed to load projects: ${err.message}</td></tr>`;
       }
   }
 
@@ -1369,6 +1482,14 @@ tbody tr:hover {
           const rawStart = document.getElementById('startDate').value;
           const rawEnd = document.getElementById('endDate').value;
 
+          const phases = {};
+          let progress = 0;
+          document.querySelectorAll('.add-phase-cb').forEach(cb => {
+              const ph = cb.getAttribute('data-phase');
+              phases[ph] = cb.checked;
+              if (cb.checked) progress += parseInt(cb.value, 10);
+          });
+
           const newProject = {
               projectName: pName,
               name: pName,
@@ -1377,6 +1498,8 @@ tbody tr:hover {
               teamSize: tSize,
               status: pStatus,
               priority: pPriority,
+              phases: phases,
+              progress: progress,
               startDate: formatDate(rawStart),
               endDate: rawEnd ? formatDate(rawEnd) : '-',
               managerAvatar: `https://i.pravatar.cc/50?img=${Math.floor(Math.random() * 40) + 10}`,
@@ -1396,6 +1519,15 @@ tbody tr:hover {
   editProjectForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const pId = document.getElementById('editProjectId').value;
+
+      const phases = {};
+      let progress = 0;
+      document.querySelectorAll('.edit-phase-cb').forEach(cb => {
+          const ph = cb.getAttribute('data-phase');
+          phases[ph] = cb.checked;
+          if (cb.checked) progress += parseInt(cb.value, 10);
+      });
+
       const updatedFields = {
           projectName: document.getElementById('editProjectName').value.trim(),
           name: document.getElementById('editProjectName').value.trim(),
@@ -1404,6 +1536,8 @@ tbody tr:hover {
           teamSize: parseInt(document.getElementById('editTeamSize').value, 10) || 1,
           status: document.getElementById('editStatus').value,
           priority: document.getElementById('editPriority').value,
+          phases: phases,
+          progress: progress,
           startDate: formatDate(document.getElementById('editStartDate').value),
           endDate: document.getElementById('editEndDate').value || '-'
       };
@@ -1421,13 +1555,14 @@ tbody tr:hover {
 
   document.getElementById('adminExportProjectsBtn')?.addEventListener('click', () => {
       if (!localProjectsCache.length) return alert('No projects to export.');
-      const rows = [["Project Name", "Department", "Manager", "Team Size", "Status", "Priority", "Start Date", "End Date"]];
+      const rows = [["Project Name", "Department", "Manager", "Team Size", "Progress (%)", "Status", "Priority", "Start Date", "End Date"]];
       localProjectsCache.forEach(p => {
           rows.push([
               p.projectName || p.name || '',
               p.department || '',
               p.managerName || '',
               p.teamSize || 0,
+              `${calculateProjectProgress(p)}%`,
               p.status || 'Planning',
               p.priority || 'Medium',
               p.startDate || '',

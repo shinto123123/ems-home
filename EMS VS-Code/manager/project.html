@@ -369,9 +369,29 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <label for="cpStatus">Status</label>
           <select id="cpStatus">
             <option value="Planning">Planning</option>
-            <option value="Ongoing">Ongoing</option>
+            <option value="Ongoing" selected>Ongoing</option>
             <option value="Completed">Completed</option>
           </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Work Sections Completion (<span id="mgrAddProjectPctText" style="color:#4ade80; font-weight:700;">0% Complete</span>)</label>
+        <div class="phases-checklist" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-add-phase-cb" data-phase="planning" value="20"> Planning & Scope (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-add-phase-cb" data-phase="design" value="20"> UI/UX Design (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-add-phase-cb" data-phase="coding" value="20"> Coding & Dev (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-add-phase-cb" data-phase="testing" value="20"> QA & Testing (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer; grid-column:span 2;">
+            <input type="checkbox" class="mgr-add-phase-cb" data-phase="marketing" value="20"> Marketing & Launch (20%)
+          </label>
         </div>
       </div>
       <div class="form-row">
@@ -391,6 +411,61 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="form-actions">
         <button type="button" class="btn-cancel" id="cancelCreateProjectBtn">Cancel</button>
         <button type="submit" class="btn-submit">Save Project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit / Update Project Progress Modal -->
+<div class="modal-overlay" id="editProgressModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Update Project Progress</h3>
+      <button class="modal-close" id="closeEditProgressBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="editProgressForm">
+      <input type="hidden" id="editMgrProjectId">
+      <div class="form-group">
+        <label for="editMgrProjName">Project Name</label>
+        <input type="text" id="editMgrProjName" readonly style="opacity:0.85;">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editMgrProjDept">Department</label>
+          <input type="text" id="editMgrProjDept" readonly style="opacity:0.85;">
+        </div>
+        <div class="form-group">
+          <label for="editMgrProjStatus">Status</label>
+          <select id="editMgrProjStatus">
+            <option value="Planning">Planning</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Work Sections Completion (<span id="mgrEditProjectPctText" style="color:#4ade80; font-weight:700;">0% Complete</span>)</label>
+        <div class="phases-checklist" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-edit-phase-cb" data-phase="planning" value="20"> Planning & Scope (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-edit-phase-cb" data-phase="design" value="20"> UI/UX Design (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-edit-phase-cb" data-phase="coding" value="20"> Coding & Dev (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer;">
+            <input type="checkbox" class="mgr-edit-phase-cb" data-phase="testing" value="20"> QA & Testing (20%)
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#cbd5e1; cursor:pointer; grid-column:span 2;">
+            <input type="checkbox" class="mgr-edit-phase-cb" data-phase="marketing" value="20"> Marketing & Launch (20%)
+          </label>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelEditProgressBtn">Cancel</button>
+        <button type="submit" class="btn-submit">Save Progress</button>
       </div>
     </form>
   </div>
@@ -459,6 +534,62 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         return 'priority-med';
     }
 
+    function calculateProjectProgress(project) {
+        if (project.progress !== undefined && project.progress !== null) {
+            return Number(project.progress);
+        }
+        if (project.phases && typeof project.phases === 'object') {
+            let count = 0;
+            Object.values(project.phases).forEach(v => { if (v) count++; });
+            return count * 20;
+        }
+        const st = (project.status || 'Planning').toLowerCase();
+        if (st === 'completed') return 100;
+        if (st === 'ongoing') return 60;
+        return 20;
+    }
+
+    function getProjectPhases(project) {
+        if (project.phases && typeof project.phases === 'object') return project.phases;
+        const progress = calculateProjectProgress(project);
+        return {
+            planning: progress >= 20,
+            design: progress >= 40,
+            coding: progress >= 60,
+            testing: progress >= 80,
+            marketing: progress >= 100
+        };
+    }
+
+    function updateMgrAddProjectProgress() {
+        let pct = 0;
+        document.querySelectorAll('.mgr-add-phase-cb').forEach(cb => {
+            if (cb.checked) pct += parseInt(cb.value, 10);
+        });
+        const pctText = document.getElementById('mgrAddProjectPctText');
+        if (pctText) pctText.textContent = `${pct}% Complete`;
+        if (pct === 100) {
+            const st = document.getElementById('cpStatus');
+            if (st && st.value !== 'Completed') st.value = 'Completed';
+        }
+    }
+
+    function updateMgrEditProjectProgress() {
+        let pct = 0;
+        document.querySelectorAll('.mgr-edit-phase-cb').forEach(cb => {
+            if (cb.checked) pct += parseInt(cb.value, 10);
+        });
+        const pctText = document.getElementById('mgrEditProjectPctText');
+        if (pctText) pctText.textContent = `${pct}% Complete`;
+        if (pct === 100) {
+            const st = document.getElementById('editMgrProjStatus');
+            if (st && st.value !== 'Completed') st.value = 'Completed';
+        }
+    }
+
+    document.querySelectorAll('.mgr-add-phase-cb').forEach(cb => cb.addEventListener('change', updateMgrAddProjectProgress));
+    document.querySelectorAll('.mgr-edit-phase-cb').forEach(cb => cb.addEventListener('change', updateMgrEditProjectProgress));
+
     let localProjectsCache = [];
     let employeesCache = [];
 
@@ -496,8 +627,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             return;
         }
 
-        projects.forEach((p, idx) => {
-            const progress = Number(p.progress) || 0;
+        projects.forEach((p) => {
+            const progress = calculateProjectProgress(p);
             const projectName = p.projectName || p.name || 'Untitled Project';
             const managerName = p.managerName || (p.managerUid === currentUser.uid ? 'You' : '-');
             const teamUids = Array.isArray(p.teamUids) ? p.teamUids : [];
@@ -525,7 +656,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                     <td><span class="badge-tag ${statusClass(p.status)}">${p.status || '-'}</span></td>
                     <td><span class="badge-tag ${priorityClass(p.priority)}">${p.priority || 'Medium'}</span></td>
                     <td><div class="avatar-team-stack">${visibleAvatars}${remainder}</div></td>
-                    <td><div style="display:flex; justify-content:center;"><button class="btn-action-trigger assign-btn" data-id="${p.id}" title="Assign Employees"><i class="fa-solid fa-user-plus"></i></button></div></td>
+                    <td>
+                      <div style="display:flex; justify-content:center; gap:6px;">
+                        <button class="btn-action-trigger edit-progress-btn" data-id="${p.id}" title="Update Progress"><i class="fa-solid fa-chart-pie"></i></button>
+                        <button class="btn-action-trigger assign-btn" data-id="${p.id}" title="Assign Employees"><i class="fa-solid fa-user-plus"></i></button>
+                      </div>
+                    </td>
                 </tr>
             `;
             tableBody.insertAdjacentHTML('beforeend', rowTemplate);
@@ -535,6 +671,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         document.querySelectorAll('.assign-btn').forEach(btn => {
             btn.addEventListener('click', () => openAssignModal(btn.dataset.id));
+        });
+        document.querySelectorAll('.edit-progress-btn').forEach(btn => {
+            btn.addEventListener('click', () => openEditProgressModal(btn.dataset.id));
         });
     }
 
@@ -588,7 +727,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         if (!localProjectsCache.length) return alert('No project records to export.');
         const rows = [["Project Name", "Department", "Manager", "Start Date", "End Date", "Progress", "Status", "Priority", "Team Size"]];
         localProjectsCache.forEach(p => {
-            rows.push([p.projectName || p.name || '', p.department || '', p.managerName || '', p.startDate || '', p.endDate || '', `${p.progress || 0}%`, p.status || '', p.priority || '', p.teamSize || 0]);
+            rows.push([p.projectName || p.name || '', p.department || '', p.managerName || '', p.startDate || '', p.endDate || '', `${calculateProjectProgress(p)}%`, p.status || '', p.priority || '', (p.teamUids || []).length]);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -639,6 +778,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     const createModal = document.getElementById('createProjectModal');
     const createForm = document.getElementById('createProjectForm');
     document.getElementById('openCreateProjectBtn').addEventListener('click', () => {
+        document.querySelectorAll('.mgr-add-phase-cb').forEach(cb => cb.checked = false);
+        updateMgrAddProjectProgress();
         renderEmployeePicker(document.getElementById('createEmployeePicker'), []);
         createModal.classList.add('show');
     });
@@ -655,18 +796,70 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const endDate = document.getElementById('cpEndDate').value;
         const teamUids = getCheckedUids(document.getElementById('createEmployeePicker'));
 
+        const phases = {};
+        let calculatedProgress = 0;
+        document.querySelectorAll('.mgr-add-phase-cb').forEach(cb => {
+            phases[cb.dataset.phase] = cb.checked;
+            if (cb.checked) calculatedProgress += parseInt(cb.value, 10);
+        });
+
         try {
             await addDoc(collection(db, "projects"), {
                 projectName, department, status,
                 managerName: currentUser.name, managerUid: currentUser.uid,
                 startDate: startDate || '-', endDate: endDate || '-',
-                teamSize: teamUids.length, progress: 0,
+                teamSize: teamUids.length, progress: calculatedProgress,
+                phases,
                 teamUids, createdByRole: "manager"
             });
             hideCreateModal();
             await loadProjects();
         } catch (err) {
             alert("Failed to create project: " + err.message);
+        }
+    });
+
+    // Edit Progress Modal
+    const editProgressModal = document.getElementById('editProgressModal');
+    const editProgressForm = document.getElementById('editProgressForm');
+    function openEditProgressModal(projectId) {
+        const p = localProjectsCache.find(item => item.id === projectId);
+        if (!p) return;
+        document.getElementById('editMgrProjectId').value = p.id;
+        document.getElementById('editMgrProjName').value = p.projectName || p.name || '';
+        document.getElementById('editMgrProjDept').value = p.department || '-';
+        document.getElementById('editMgrProjStatus').value = p.status || 'Ongoing';
+
+        const phases = getProjectPhases(p);
+        document.querySelectorAll('.mgr-edit-phase-cb').forEach(cb => {
+            cb.checked = !!phases[cb.dataset.phase];
+        });
+        updateMgrEditProjectProgress();
+        editProgressModal.classList.add('show');
+    }
+    const hideEditProgressModal = () => { editProgressModal.classList.remove('show'); editProgressForm.reset(); };
+    document.getElementById('closeEditProgressBtn').addEventListener('click', hideEditProgressModal);
+    document.getElementById('cancelEditProgressBtn').addEventListener('click', hideEditProgressModal);
+
+    editProgressForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const projectId = document.getElementById('editMgrProjectId').value;
+        const status = document.getElementById('editMgrProjStatus').value;
+        const phases = {};
+        let calculatedProgress = 0;
+        document.querySelectorAll('.mgr-edit-phase-cb').forEach(cb => {
+            phases[cb.dataset.phase] = cb.checked;
+            if (cb.checked) calculatedProgress += parseInt(cb.value, 10);
+        });
+
+        try {
+            await updateDoc(doc(db, "projects", projectId), {
+                status, phases, progress: calculatedProgress
+            });
+            hideEditProgressModal();
+            await loadProjects();
+        } catch (err) {
+            alert("Failed to update project progress: " + err.message);
         }
     });
 

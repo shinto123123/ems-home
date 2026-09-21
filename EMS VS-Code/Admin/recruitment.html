@@ -582,6 +582,26 @@ body {
     color:#f87171;
 }
 
+.mode-badge {
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:600;
+}
+.mode-badge.onsite {
+    background:rgba(59,130,246,0.15);
+    color:#60a5fa;
+}
+.mode-badge.wfh {
+    background:rgba(168,85,247,0.15);
+    color:#c084fc;
+}
+.mode-badge.hybrid {
+    background:rgba(20,184,166,0.15);
+    color:#2dd4bf;
+}
+
 .btn-icon {
     background:none;
     border:none;
@@ -957,6 +977,12 @@ body {
                     <i class="fa-solid fa-search"></i>
                     <input type="text" id="recruitmentSearchInput" placeholder="Search by job title or department...">
                 </div>
+                <select class="filter-select" id="recruitmentModeFilter">
+                    <option value="">All Work Modes</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Work from Home">Work from Home</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select>
                 <select class="filter-select" id="recruitmentStatusFilter">
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
@@ -973,6 +999,7 @@ body {
                         <tr>
                             <th>Job Title</th>
                             <th>Department</th>
+                            <th>Mode of Work</th>
                             <th>Employment Type</th>
                             <th>Openings</th>
                             <th>Applications</th>
@@ -981,7 +1008,7 @@ body {
                             <th>Publish</th>
                         </tr>
                     </thead>
-                    <tbody id="recruitmentTableBody"><tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">Loading vacancies...</td></tr></tbody>
+                    <tbody id="recruitmentTableBody"><tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading vacancies...</td></tr></tbody>
                 </table>
 
                 <div class="table-footer">
@@ -1019,6 +1046,14 @@ body {
 
             <div class="form-grid-layout">
                 <div class="form-group">
+                    <label>Mode of Work<span>*</span></label>
+                    <select id="vacWorkMode">
+                        <option value="On-site" selected>On-site</option>
+                        <option value="Work from Home">Work from Home</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Employment Type<span>*</span></label>
                     <select id="vacEmploymentType">
                         <option hidden selected>Select type</option>
@@ -1040,7 +1075,7 @@ body {
                     <label>Openings<span>*</span></label>
                     <input type="number" id="vacOpenings" placeholder="No. of openings">
                 </div>
-                <div class="form-group">
+                <div class="form-group full-width">
                     <label>Notice Period</label>
                     <select id="vacNoticePeriod">
                         <option hidden selected>Select notice period</option>
@@ -1130,6 +1165,7 @@ body {
     const entriesCounter = document.getElementById('recruitmentEntriesCounter');
     const searchInput = document.getElementById('recruitmentSearchInput');
     const statusFilter = document.getElementById('recruitmentStatusFilter');
+    const modeFilter = document.getElementById('recruitmentModeFilter');
     const deptSelect = document.getElementById('vacDepartment');
 
     let allVacancies = [];
@@ -1137,17 +1173,19 @@ body {
     function renderVacancies() {
         const searchTerm = (searchInput.value || "").toLowerCase();
         const statusTerm = statusFilter.value;
+        const modeTerm = modeFilter ? modeFilter.value : "";
 
         const filtered = allVacancies.filter(v => {
             const matchesSearch = !searchTerm ||
                 (v.jobTitle || "").toLowerCase().includes(searchTerm) ||
                 (v.department || "").toLowerCase().includes(searchTerm);
             const matchesStatus = !statusTerm || v.status === statusTerm;
-            return matchesSearch && matchesStatus;
+            const matchesMode = !modeTerm || (v.workMode || "On-site") === modeTerm;
+            return matchesSearch && matchesStatus && matchesMode;
         });
 
         if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#8898aa;">No vacancies found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No vacancies found.</td></tr>`;
             entriesCounter.textContent = "Showing 0 to 0 of 0 vacancies";
             return;
         }
@@ -1155,6 +1193,8 @@ body {
         tableBody.innerHTML = "";
         filtered.forEach((v) => {
             const statusClass = (v.status || 'Active').toLowerCase().replace(/\s+/g, '');
+            const workMode = v.workMode || 'On-site';
+            const modeClass = workMode === 'Work from Home' ? 'wfh' : (workMode === 'Hybrid' ? 'hybrid' : 'onsite');
             const publishCell = v.published
                 ? `<div class="published-cell"><span class="published-badge"><i class="fa-solid fa-circle-check"></i> Published</span><button class="btn-unpublish action-unpublish-trigger" data-id="${v.id}">Unpublish</button></div>`
                 : `<button class="btn-publish action-publish-trigger" data-id="${v.id}"><i class="fa-solid fa-share-nodes"></i> Publish</button>`;
@@ -1162,6 +1202,7 @@ body {
                 <tr>
                     <td><strong>${v.jobTitle || '-'}</strong></td>
                     <td>${v.department || '-'}</td>
+                    <td><span class="mode-badge ${modeClass}">${workMode}</span></td>
                     <td>${v.employmentType || '-'}</td>
                     <td>${v.openings ?? '-'}</td>
                     <td>${v.applications ?? 0}</td>
@@ -1238,12 +1279,13 @@ body {
             renderVacancies();
         } catch (error) {
             console.error("Failed to load vacancies: ", error);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
         }
     }
 
     searchInput.addEventListener('input', renderVacancies);
     statusFilter.addEventListener('change', renderVacancies);
+    modeFilter.addEventListener('change', renderVacancies);
 
     document.getElementById('saveVacancyBtn').addEventListener('click', async () => {
         const jobTitle = document.getElementById('vacJobTitle').value;
@@ -1253,6 +1295,7 @@ body {
             await addDoc(collection(db, "recruitment"), {
                 jobTitle,
                 department: deptSelect.value,
+                workMode: document.getElementById('vacWorkMode').value || 'On-site',
                 employmentType: document.getElementById('vacEmploymentType').value,
                 openings: Number(document.getElementById('vacOpenings').value) || 0,
                 applications: 0,
@@ -1275,9 +1318,9 @@ body {
 
     document.getElementById('adminExportRecruitBtn')?.addEventListener('click', () => {
         if (!allVacancies.length) return alert('No vacancies to export.');
-        const rows = [["Job Title", "Department", "Employment Type", "Openings", "Applications", "Status", "Posted On", "Published"]];
+        const rows = [["Job Title", "Department", "Work Mode", "Employment Type", "Openings", "Applications", "Status", "Posted On", "Published"]];
         allVacancies.forEach(v => {
-            rows.push([v.jobTitle || '', v.department || '', v.employmentType || '', v.openings ?? '', v.applications ?? 0, v.status || 'Active', v.postedOn || '', v.published ? 'Yes' : 'No']);
+            rows.push([v.jobTitle || '', v.department || '', v.workMode || 'On-site', v.employmentType || '', v.openings ?? '', v.applications ?? 0, v.status || 'Active', v.postedOn || '', v.published ? 'Yes' : 'No']);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

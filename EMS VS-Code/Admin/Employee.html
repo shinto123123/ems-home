@@ -1013,6 +1013,27 @@ Showing 0 to 0 of 0 entries
     closeEditIcon.addEventListener('click', closeEditModal);
     closeEditBtn.addEventListener('click', closeEditModal);
 
+    function getRoleCustomId(emp, index, allList) {
+        if (emp.customId && emp.customId.trim()) return emp.customId.trim();
+        const role = (emp.role || '').toLowerCase();
+        let prefix = 'EMP';
+        if (role === 'manager') prefix = 'MG';
+        else if (role === 'hr') prefix = 'HR';
+        else if (role === 'admin') prefix = 'ADM';
+        else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
+        
+        const sameRoleList = (allList || []).filter(e => {
+            const r = (e.role || '').toLowerCase();
+            if (prefix === 'MG') return r === 'manager';
+            if (prefix === 'HR') return r === 'hr';
+            if (prefix === 'ADM') return r === 'admin';
+            return r !== 'manager' && r !== 'hr' && r !== 'admin';
+        });
+        const roleIdx = sameRoleList.findIndex(e => e.id === emp.id);
+        const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
+        return `${prefix}${String(num).padStart(3, '0')}`;
+    }
+
     function renderTable(list) {
         tableBody.innerHTML = "";
         if (!list || list.length === 0) {
@@ -1022,7 +1043,7 @@ Showing 0 to 0 of 0 entries
         }
 
         list.forEach((emp, index) => {
-            const formattedId = String(index + 1).padStart(3, '0');
+            const formattedId = getRoleCustomId(emp, index, allEmpList);
             const statusClass = (emp.status || 'Active').toLowerCase() === 'active' ? 'active' : 'inactive';
             const profileAvatarHTML = emp.avatarUrl
                 ? `<img src="${emp.avatarUrl}" alt="User">`
@@ -1031,7 +1052,7 @@ Showing 0 to 0 of 0 entries
 
             const rowTemplate = `
                 <tr>
-                    <td>${formattedId}</td>
+                    <td><span style="background:rgba(66,153,225,0.12); color:#60a5fa; border:1px solid #1b2e6e; padding:4px 8px; border-radius:6px; font-weight:700; font-size:12px; font-family:monospace; letter-spacing:0.5px;">${formattedId}</span></td>
                     <td>
                         <div class="employee">
                             ${profileAvatarHTML}
@@ -1061,13 +1082,14 @@ Showing 0 to 0 of 0 entries
 
     function filterEmployees() {
         const queryTerm = (document.getElementById('empSearchInput').value || '').toLowerCase().trim();
-        const filtered = allEmpList.filter(emp => {
+        const filtered = allEmpList.filter((emp, idx) => {
+            const id = getRoleCustomId(emp, idx, allEmpList).toLowerCase();
             const name = (emp.name || '').toLowerCase();
             const email = (emp.email || '').toLowerCase();
             const dept = (emp.department || '').toLowerCase();
             const role = (emp.role || '').toLowerCase();
             const desig = (emp.designation || '').toLowerCase();
-            return !queryTerm || name.includes(queryTerm) || email.includes(queryTerm) || dept.includes(queryTerm) || role.includes(queryTerm) || desig.includes(queryTerm);
+            return !queryTerm || id.includes(queryTerm) || name.includes(queryTerm) || email.includes(queryTerm) || dept.includes(queryTerm) || role.includes(queryTerm) || desig.includes(queryTerm);
         });
         renderTable(filtered);
     }
@@ -1078,7 +1100,8 @@ Showing 0 to 0 of 0 entries
         if (!allEmpList.length) return alert('No employee records to export.');
         const rows = [["ID", "Name", "Department", "Designation", "Email", "Phone", "Role", "Status"]];
         allEmpList.forEach((e, idx) => {
-            rows.push([String(idx + 1).padStart(3, '0'), e.name || '', e.department || '', e.designation || '', e.email || '', e.phone || '', e.role || '', e.status || '']);
+            const empId = getRoleCustomId(e, idx, allEmpList);
+            rows.push([empId, e.name || '', e.department || '', e.designation || '', e.email || '', e.phone || '', e.role || '', e.status || '']);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1166,6 +1189,16 @@ Showing 0 to 0 of 0 entries
         const role = document.getElementById('empRole').value;
         const status = document.getElementById('empStatus').value;
 
+        // Generate Role Custom ID
+        let prefix = 'EMP';
+        if (role === 'manager') prefix = 'MG';
+        else if (role === 'hr') prefix = 'HR';
+        else if (role === 'admin') prefix = 'ADM';
+        else if (designation.toLowerCase().includes('developer')) prefix = 'DEV';
+
+        const sameRoleCount = allEmpList.filter(e => (e.role || '').toLowerCase() === role.toLowerCase()).length;
+        const customId = `${prefix}${String(sameRoleCount + 1).padStart(3, '0')}`;
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -1173,6 +1206,7 @@ Showing 0 to 0 of 0 entries
 
             await addDoc(collection(db, "employees"), {
                 uid: user.uid,
+                customId: customId,
                 name: name,
                 email: email,
                 password: securedPasswordHash,
@@ -1185,7 +1219,7 @@ Showing 0 to 0 of 0 entries
                 timestamp: serverTimestamp()
             });
 
-            alert(`Successfully created profile for ${name}!`);
+            alert(`Successfully created profile for ${name} with ID ${customId}!`);
             closeModal();
             loadEmployeeRecords();
 
@@ -1199,13 +1233,26 @@ Showing 0 to 0 of 0 entries
         e.preventDefault();
         const docId = document.getElementById('editDocId').value;
         const passwordValue = document.getElementById('editEmpPassword').value;
+        const currentData = loadedEmployeesCache[docId] || {};
+        const newRole = document.getElementById('editEmpRole').value;
+        
+        let customId = currentData.customId;
+        if (!customId || (currentData.role !== newRole)) {
+            let prefix = 'EMP';
+            if (newRole === 'manager') prefix = 'MG';
+            else if (newRole === 'hr') prefix = 'HR';
+            else if (newRole === 'admin') prefix = 'ADM';
+            const sameRoleCount = allEmpList.filter(e => e.id !== docId && (e.role || '').toLowerCase() === newRole.toLowerCase()).length;
+            customId = `${prefix}${String(sameRoleCount + 1).padStart(3, '0')}`;
+        }
         
         const updatedProfile = {
+            customId: customId,
             name: document.getElementById('editEmpName').value,
             department: document.getElementById('editEmpDept').value,
             designation: document.getElementById('editEmpDesignation').value,
             phone: document.getElementById('editEmpPhone').value,
-            role: document.getElementById('editEmpRole').value,
+            role: newRole,
             status: document.getElementById('editEmpStatus').value
         };
 

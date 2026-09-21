@@ -593,20 +593,47 @@ tbody tr:hover {
 
 .status-tag {
     display: inline-block;
-    padding: 3px 10px;
+    padding: 3px 8px;
     border-radius: 6px;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 600;
 }
 
 .status-tag.completed {
-    background: rgba(74, 222, 128, 0.1);
+    background: rgba(74, 222, 128, 0.15);
     color: #4ade80;
 }
 
 .status-tag.inprogress {
-    background: rgba(66, 153, 225, 0.1);
-    color: #60a5fa;
+    background: rgba(66, 153, 225, 0.15);
+    color: #4299e1;
+}
+
+/* Submission Speed Badges */
+.speed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.speed-badge.ahead {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+.speed-badge.ontime {
+    background: rgba(66, 153, 225, 0.15);
+    color: #4299e1;
+}
+
+.speed-badge.delayed {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
 }
 
 .action-btns {
@@ -1006,6 +1033,7 @@ tbody tr:hover {
                             <tr>
                                 <th>Employee</th>
                                 <th>Project</th>
+                                <th>Submission Speed</th>
                                 <th>KPI Score</th>
                                 <th>Rating</th>
                                 <th>Status</th>
@@ -1015,7 +1043,7 @@ tbody tr:hover {
                             </tr>
                         </thead>
                         <tbody id="performanceTableBody">
-                            <tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading performance records...</td></tr>
+                            <tr><td colspan="9" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading performance records...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1174,16 +1202,24 @@ tbody tr:hover {
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="revScore">Score (out of 5.0)</label>
-                    <input type="number" id="revScore" min="1" max="5" step="0.1" value="4.5" required>
-                </div>
-                <div class="form-group">
-                    <label for="revStatus">Status</label>
-                    <select id="revStatus">
-                        <option value="Completed" selected>Completed</option>
-                        <option value="In Progress">In Progress</option>
+                    <label for="revSubmissionSpeed">Work / Task Submission Speed</label>
+                    <select id="revSubmissionSpeed">
+                        <option value="ahead" selected>⚡ Fast / Ahead of Time (+Bonus 4.8)</option>
+                        <option value="ontime">⏱ On Time (Standard 4.2)</option>
+                        <option value="delayed">⚠️ Delayed / Late Submission (3.2)</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="revScore">Auto Score (out of 5.0)</label>
+                    <input type="number" id="revScore" min="1" max="5" step="0.1" value="4.8" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="revStatus">Status</label>
+                <select id="revStatus">
+                    <option value="Completed" selected>Completed</option>
+                    <option value="In Progress">In Progress</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="revComments">Evaluation Feedback / Comments</label>
@@ -1269,6 +1305,15 @@ tbody tr:hover {
     closeAddReviewModalBtn?.addEventListener('click', hideAddReviewModal);
     cancelAddReviewModalBtn?.addEventListener('click', hideAddReviewModal);
 
+    // Auto-calculate score on submission speed selection
+    document.getElementById('revSubmissionSpeed')?.addEventListener('change', (e) => {
+        const speed = e.target.value;
+        const scoreInput = document.getElementById('revScore');
+        if (speed === 'ahead') scoreInput.value = '4.8';
+        else if (speed === 'ontime') scoreInput.value = '4.2';
+        else if (speed === 'delayed') scoreInput.value = '3.2';
+    });
+
     function ratingClass(pct) {
         if (pct >= 90) return { cls: 'excellent', label: 'Excellent' };
         if (pct >= 80) return { cls: 'verygood', label: 'Very Good' };
@@ -1282,7 +1327,7 @@ tbody tr:hover {
         const countDisplay = document.getElementById('perfEntriesCount');
 
         if (!list || list.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;">No matching performance records.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:28px; color:#8898aa;">No matching performance records.</td></tr>`;
             if (countDisplay) countDisplay.textContent = 'Showing 0 entries';
             return;
         }
@@ -1294,6 +1339,15 @@ tbody tr:hover {
             const statusKey = (p.status || 'Completed').toLowerCase().replace(/\s+/g, '');
             const isIntern = p.revieweeType === 'intern' || !!p.internName;
             const revieweeLabel = isIntern ? ' <span style="font-size:10.5px; color:#4299e1;">(Intern)</span>' : '';
+
+            // Auto determine submission speed tag
+            const speed = p.submissionSpeed || (ratingPct >= 90 ? 'ahead' : (ratingPct >= 75 ? 'ontime' : 'delayed'));
+            const speedMap = {
+                ahead: { cls: 'ahead', icon: 'fa-solid fa-bolt', label: 'Fast (Ahead)' },
+                ontime: { cls: 'ontime', icon: 'fa-solid fa-clock', label: 'On Time' },
+                delayed: { cls: 'delayed', icon: 'fa-solid fa-triangle-exclamation', label: 'Delayed' }
+            };
+            const sp = speedMap[speed] || speedMap.ontime;
 
             tableBody.insertAdjacentHTML('beforeend', `
                 <tr>
@@ -1307,6 +1361,7 @@ tbody tr:hover {
                         </div>
                     </td>
                     <td>${p.projectName || p.project || '-'}</td>
+                    <td><span class="speed-badge ${sp.cls}"><i class="${sp.icon}"></i> ${sp.label}</span></td>
                     <td>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <span>${ratingPct}%</span>
@@ -1343,6 +1398,13 @@ tbody tr:hover {
                     const ratingPct = Math.round(rawRating > 5 ? rawRating : rawRating * 20);
                     const r = ratingClass(ratingPct);
 
+                    const speed = p.submissionSpeed || (ratingPct >= 90 ? 'ahead' : (ratingPct >= 75 ? 'ontime' : 'delayed'));
+                    const speedLabels = {
+                        ahead: '⚡ Fast / Ahead of Time (+High Performance)',
+                        ontime: '⏱ On Time (Standard Delivery)',
+                        delayed: '⚠️ Delayed / Late Turnaround'
+                    };
+
                     const content = document.getElementById('modalDetailsContent');
                     content.innerHTML = `
                         <div class="detail-row">
@@ -1356,6 +1418,10 @@ tbody tr:hover {
                         <div class="detail-row">
                             <span class="detail-label">Project Assessed</span>
                             <span class="detail-val">${p.projectName || p.project || '-'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Submission Speed</span>
+                            <span class="detail-val">${speedLabels[speed] || speed}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Review Cycle</span>
@@ -1457,7 +1523,7 @@ tbody tr:hover {
             applyFilters();
         } catch (error) {
             console.error("Failed to load performance records: ", error);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load records: ${error.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load records: ${error.message}</td></tr>`;
         }
     }
 
@@ -1475,6 +1541,7 @@ tbody tr:hover {
             const revType = document.getElementById('revType').value;
             const project = document.getElementById('revProject').value.trim();
             const cycle = document.getElementById('revCycle').value;
+            const submissionSpeed = document.getElementById('revSubmissionSpeed').value;
             const score = parseFloat(document.getElementById('revScore').value) || 4.0;
             const status = document.getElementById('revStatus').value;
             const comments = document.getElementById('revComments').value.trim();
@@ -1487,6 +1554,7 @@ tbody tr:hover {
                 projectName: project,
                 project: project,
                 reviewCycle: cycle,
+                submissionSpeed: submissionSpeed,
                 rating: score,
                 status: status,
                 comments: comments || 'Consistent contribution and strong collaboration.',
@@ -1506,7 +1574,7 @@ tbody tr:hover {
 
     document.getElementById('adminExportPerfBtn')?.addEventListener('click', () => {
         if (!allPerfList.length) return alert('No performance records to export.');
-        const rows = [["Employee", "Department", "Project", "Rating (%)", "Status", "Review Cycle", "Reviewed By", "Comments"]];
+        const rows = [["Employee", "Department", "Project", "Submission Speed", "Rating (%)", "Status", "Review Cycle", "Reviewed By", "Comments"]];
         allPerfList.forEach(p => {
             const rawRating = typeof p.rating === 'number' ? p.rating : (parseFloat(p.rating) || 4.0);
             const ratingPct = Math.round(rawRating > 5 ? rawRating : rawRating * 20);
@@ -1514,6 +1582,7 @@ tbody tr:hover {
                 p.employeeName || p.name || '',
                 p.department || '',
                 p.projectName || p.project || '',
+                p.submissionSpeed || 'ontime',
                 `${ratingPct}%`,
                 p.status || 'Completed',
                 p.reviewCycle || '',

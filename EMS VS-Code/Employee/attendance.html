@@ -671,10 +671,13 @@ body {
 .day.present .status-label-badge { background: rgba(74,222,128,0.16); color: #4ade80; }
 .day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.08); }
 .day.late .status-label-badge { background: rgba(245,158,11,0.25); color: #fbbf24; }
+.day.halfday { border-left: 4px solid #f97316; background: rgba(249,115,22,0.12); }
+.day.halfday .status-label-badge { background: rgba(249,115,22,0.25); color: #fb923c; }
 .day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.08); }
 .day.leave .status-label-badge { background: rgba(168,85,247,0.25); color: #c084fc; }
 .day.absent { border-left: 4px solid #f87171; }
 .day.absent .status-label-badge { background: rgba(248,113,113,0.16); color: #f87171; }
+.legend-dot.halfday { background: #f97316; }
 
 /* =========================
    RESPONSIVE
@@ -861,6 +864,7 @@ body {
                     <div class="calendar-legend">
                         <div class="legend-item"><div class="legend-dot present"></div>Present</div>
                         <div class="legend-item"><div class="legend-dot late"></div>Late Arrival</div>
+                        <div class="legend-item"><div class="legend-dot halfday"></div>Half Day (3x Late)</div>
                         <div class="legend-item"><div class="legend-dot leave"></div>On Leave</div>
                         <div class="legend-item"><div class="legend-dot absent"></div>Absent</div>
                     </div>
@@ -949,23 +953,44 @@ body {
         return null;
     }
 
+    // ── 3 CONSECUTIVE LATE CHECK-IN TO HALF DAY ATTENDANCE LOGIC ──
     function bucketizeAttendance(records) {
-        const buckets = { presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {} };
+        const buckets = { presentDays: {}, lateDays: {}, halfDayDays: {}, leaveDays: {}, absentDays: {} };
         const targetYear = currentCalendarDate.getFullYear();
         const targetMonth = currentCalendarDate.getMonth();
 
-        records.forEach(rec => {
-            const dateObj = parseAttendanceDate(rec.date);
-            if (!dateObj || dateObj.getFullYear() !== targetYear || dateObj.getMonth() !== targetMonth) return;
+        const sortedRecords = [...records].map(rec => {
+            return { ...rec, dateObj: parseAttendanceDate(rec.date) };
+        }).filter(r => r.dateObj).sort((a, b) => a.dateObj - b.dateObj);
 
-            const day = dateObj.getDate();
+        let consecutiveLateCount = 0;
+
+        sortedRecords.forEach(rec => {
+            const dateObj = rec.dateObj;
+            if (!dateObj) return;
             const status = (rec.status || "").toLowerCase().trim();
             const timeInfo = rec.checkIn ? `${rec.checkIn}` : '';
+            const isTargetMonth = (dateObj.getFullYear() === targetYear && dateObj.getMonth() === targetMonth);
+            const day = dateObj.getDate();
 
-            if (status === "present") buckets.presentDays[day] = timeInfo;
-            else if (status === "late" || status === "late arrival") buckets.lateDays[day] = timeInfo;
-            else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
-            else if (status === "absent") buckets.absentDays[day] = 'Absent';
+            const isLate = (status === "late" || status === "late arrival");
+            if (isLate) {
+                consecutiveLateCount++;
+                if (consecutiveLateCount >= 3) {
+                    // 3rd continuous late check-in gets converted to Half Day attendance
+                    if (isTargetMonth) buckets.halfDayDays[day] = timeInfo || '09:45 AM';
+                } else {
+                    if (isTargetMonth) buckets.lateDays[day] = timeInfo || '09:30 AM';
+                }
+            } else {
+                consecutiveLateCount = 0;
+                if (isTargetMonth) {
+                    if (status === "present") buckets.presentDays[day] = timeInfo || '09:00 AM';
+                    else if (status === "halfday" || status === "half day") buckets.halfDayDays[day] = timeInfo || '10:00 AM';
+                    else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
+                    else if (status === "absent") buckets.absentDays[day] = 'Absent';
+                }
+            }
         });
 
         return buckets;
@@ -988,27 +1013,40 @@ body {
         }
 
         const buckets = bucketizeAttendance(myAttendanceCache);
-        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
+        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.halfDayDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
 
-        // Realistic fallback for weekdays if no records logged yet
+        // Realistic fallback for weekdays if no records logged yet (with 3x late demo)
         if (hasAnyInMonth === 0) {
+            let simLateStreak = 0;
             for (let d = 1; d <= Math.min(today.getDate(), totalDaysInMonth); d++) {
                 const checkDate = new Date(targetYear, targetMonth, d);
                 const dayOfWeek = checkDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    if (d % 11 === 0) buckets.lateDays[d] = '09:40 AM';
-                    else if (d % 17 === 0) buckets.leaveDays[d] = 'Leave';
-                    else buckets.presentDays[d] = '09:05 AM';
+                    if (d >= 8 && d <= 10) { // 3 consecutive late days demo (8, 9, 10)
+                        simLateStreak++;
+                        if (simLateStreak >= 3) {
+                            buckets.halfDayDays[d] = '09:50 AM'; // 3rd continuous day is Half Day!
+                        } else {
+                            buckets.lateDays[d] = '09:45 AM';
+                        }
+                    } else if (d % 17 === 0) {
+                        simLateStreak = 0;
+                        buckets.leaveDays[d] = 'Leave';
+                    } else {
+                        simLateStreak = 0;
+                        buckets.presentDays[d] = '09:05 AM';
+                    }
                 }
             }
         }
 
         const presentDays = buckets.presentDays;
         const lateDays = buckets.lateDays;
+        const halfDayDays = buckets.halfDayDays;
         const leaveDays = buckets.leaveDays;
         const absentDays = buckets.absentDays;
 
-        let pCount = 0, lCount = 0, lvCount = 0, aCount = 0;
+        let pCount = 0, lCount = 0, hCount = 0, lvCount = 0, aCount = 0;
 
         for (let day = 1; day <= totalDaysInMonth; day++) {
             const dayCell = document.createElement('div');
@@ -1023,6 +1061,10 @@ body {
                 dayCell.classList.add('present');
                 dayCell.innerHTML += `<span class="status-label-badge">Present</span><span class="time-stamp">${presentDays[day] || '09:00 AM'}</span>`;
                 pCount++;
+            } else if (halfDayDays[day] !== undefined) {
+                dayCell.classList.add('halfday');
+                dayCell.innerHTML += `<span class="status-label-badge" title="3 Consecutive Late Days Penalty: Half Day Attendance">Half Day (3x Late)</span><span class="time-stamp">${halfDayDays[day] || '09:45 AM'}</span>`;
+                hCount++;
             } else if (lateDays[day] !== undefined) {
                 dayCell.classList.add('late');
                 dayCell.innerHTML += `<span class="status-label-badge">Late</span><span class="time-stamp">${lateDays[day] || '09:45 AM'}</span>`;
@@ -1040,16 +1082,16 @@ body {
             calendarGrid.appendChild(dayCell);
         }
 
-        const totalLogged = pCount + lCount + lvCount + aCount;
-        const rate = totalLogged > 0 ? Math.round(((pCount + lCount) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
+        const totalLogged = pCount + lCount + hCount + lvCount + aCount;
+        const rate = totalLogged > 0 ? Math.round(((pCount + lCount + (hCount * 0.5)) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
         document.getElementById('mStatPresent').textContent = pCount;
-        document.getElementById('mStatLate').textContent = lCount;
+        document.getElementById('mStatLate').textContent = lCount + (hCount ? ` (${hCount} half-day)` : '');
         document.getElementById('mStatLeave').textContent = lvCount;
         document.getElementById('mStatAbsent').textContent = aCount;
         document.getElementById('mStatRate').textContent = `${rate}%`;
 
         document.getElementById('statPresentDays').textContent = pCount;
-        document.getElementById('statLateDays').textContent = lCount;
+        document.getElementById('statLateDays').textContent = lCount + (hCount ? ` (${hCount} half-day)` : '');
         document.getElementById('statLeaveDays').textContent = lvCount;
         document.getElementById('statAttRate').textContent = `${rate}%`;
     }

@@ -411,6 +411,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         <div class="card-panel">
           <div class="panel-header">
+            <h3>Company Events</h3>
+            <span style="font-size:11px; color:#4299e1;"><i class="fa-regular fa-calendar-check"></i> Calendar</span>
+          </div>
+          <div id="empUpcomingEvents">
+            <div class="list-item"><div class="item-text" style="color:#8898aa;">Loading company events...</div></div>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
             <h3>Quick Links</h3>
           </div>
           <div class="quick-links-grid">
@@ -776,6 +786,44 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         }
     }
 
+    async function loadCompanyEvents() {
+        const container = document.getElementById('empUpcomingEvents');
+        if (!container) return;
+        try {
+            const snap = await getDocs(collection(db, "events"));
+            const events = [];
+            snap.forEach(d => events.push({ id: d.id, ...d.data() }));
+
+            events.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const future = events.filter(e => !e.date || e.date >= todayStr).slice(0, 3);
+
+            if (future.length === 0) {
+                container.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No upcoming company events scheduled.</div></div>`;
+                return;
+            }
+
+            container.innerHTML = future.map(e => {
+                const dateLabel = e.date ? new Date(e.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD';
+                const typeIcon = (e.type === 'Holiday') ? 'fa-gift' : (e.type === 'Training' ? 'fa-chalkboard-user' : (e.type === 'Deadline' ? 'fa-flag-checkered' : 'fa-calendar-day'));
+                return `
+                    <div class="list-item" style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #1b2e6e;">
+                        <div style="width:30px; height:30px; border-radius:6px; background:rgba(56,189,248,0.12); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;">
+                            <i class="fa-solid ${typeIcon}"></i>
+                        </div>
+                        <div class="item-text" style="flex:1; overflow:hidden;">
+                            <h4 style="font-size:12.5px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${e.title || 'Company Event'}</h4>
+                            <small style="color:#8898aa; font-size:11px;">${e.type || 'Event'} &bull; ${dateLabel}</small>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error("Failed to load events: ", err);
+            container.innerHTML = `<div class="list-item"><div class="item-text" style="color:#8898aa;">No upcoming events.</div></div>`;
+        }
+    }
+
     // Pending Tasks: no dedicated "tasks" collection exists in this project.
     document.getElementById('metricPendingTasks').textContent = 0;
     document.getElementById('navEnvelopeBadge').textContent = 0;
@@ -787,7 +835,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         loadAttendanceThisMonth(),
         loadNotificationsWidgets(),
         loadRecentDocuments(),
-        loadPerformanceWidget()
+        loadPerformanceWidget(),
+        loadCompanyEvents()
     ]);
 </script>
 

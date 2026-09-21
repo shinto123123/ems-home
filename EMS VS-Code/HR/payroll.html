@@ -173,28 +173,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="breadcrumb">Dashboard &gt; <span>Payroll</span></div>
       </div>
       
-      <div class="directory-content">
-        
-        <div class="mini-kpi-grid">
+      <        <div class="mini-kpi-grid">
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-users"></i></div>
-            <div class="mini-info"><p>Total Employees</p><h3>250</h3></div>
+            <div class="mini-info"><p>Total Employees</p><h3 id="hrKpiTotalEmp">0</h3></div>
           </div>
           <div class="mini-kpi">
             <div class="mini-icon"><i class="fa-solid fa-wallet"></i></div>
-            <div class="mini-info"><p>Total Payroll (May 2025)</p><h3>₹1,25,00,000</h3></div>
+            <div class="mini-info"><p>Total Payroll</p><h3 id="hrKpiTotalPayroll">$0.00</h3></div>
           </div>
           <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-regular fa-circle-check"></i></div>
-            <div class="mini-info"><p>Paid Employees</p><h3>220 <span style="font-size:11px; color:#4ade80; font-weight:normal; margin-left:4px;">88%</span></h3></div>
+            <div class="mini-icon" style="color:#4ade80;"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="mini-info"><p>Paid Amount</p><h3 id="hrKpiPaidAmount" style="color:#4ade80;">$0.00</h3></div>
           </div>
           <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="mini-info"><p>Pending Employees</p><h3>30 <span style="font-size:11px; color:#fbbf24; font-weight:normal; margin-left:4px;">12%</span></h3></div>
+            <div class="mini-icon" style="color:#fbbf24;"><i class="fa-regular fa-clock"></i></div>
+            <div class="mini-info"><p>Pending Amount</p><h3 id="hrKpiPendingAmount" style="color:#fbbf24;">$0.00</h3></div>
           </div>
           <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-solid fa-building-columns"></i></div>
-            <div class="mini-info"><p>Total Deductions</p><h3>₹15,00,000</h3></div>
+            <div class="mini-icon" style="color:#60a5fa;"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="mini-info"><p>Balance Amount</p><h3 id="hrKpiBalanceAmount" style="color:#60a5fa;">$0.00</h3></div>
           </div>
         </div>
 
@@ -224,25 +222,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 <th>Employee ID</th>
                 <th>Employee Name</th>
                 <th>Department</th>
-                <th>Designation</th>
-                <th>Gross Salary (₹)</th>
-                <th>Net Pay (₹)</th>
+                <th>Net Pay</th>
+                <th>Paid Amount</th>
+                <th>Balance / Pending</th>
                 <th>Status</th>
                 <th>Receipt</th>
+                <th>Invoice</th>
                 <th style="text-align:center;">Action</th>
               </tr>
             </thead>
             <tbody id="payrollTableBody">
-              <tr class="selected">
-                <td class="chk-cell"><input type="checkbox" checked></td>
-                <td>EMP001</td>
-                <td><strong>John Doe</strong></td>
-                <td>Engineering</td>
-                <td>Software Engineer</td>
-                <td>80,000</td>
-                <td>71,650</td>
-                <td><span class="status-badge paid">Paid</span></td>
-              </tr>
+              <tr><td colspan="11" style="text-align:center; padding:20px; color:#8898aa;">Loading payroll records...</td></tr>
             </tbody>
           </table>
 
@@ -261,19 +251,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
-    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
+    import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["hr"]);
     paintNavProfile(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
@@ -283,30 +273,62 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     function formatMoney(n) {
         const num = Number(n) || 0;
-        return num.toLocaleString('en-IN');
+        return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     function buildActionCell(id, status) {
-        if (status === 'Paid') return '';
-        return `<button class="btn-icon-dot mark-paid-btn" data-id="${id}" title="Mark as Paid"><i class="fa-solid fa-circle-check"></i></button>`;
+        if (status === 'Paid') return '<i class="fa-solid fa-circle-check" style="color:#4ade80;" title="Payment Completed"></i>';
+        return `<button class="btn-icon-dot mark-paid-btn" data-id="${id}" title="Mark as Paid"><i class="fa-solid fa-check"></i></button>`;
+    }
+
+    function updateHrKpis(records) {
+        let totalNet = 0;
+        let totalPaid = 0;
+        let totalPending = 0;
+        let totalBalance = 0;
+
+        records.forEach(p => {
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const status = p.status || 'Pending';
+            let paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
+            let bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+
+            totalNet += net;
+            totalPaid += paid;
+            totalPending += (status !== 'Paid' ? bal : 0);
+            totalBalance += bal;
+        });
+
+        document.getElementById('hrKpiTotalEmp').textContent = records.length;
+        document.getElementById('hrKpiTotalPayroll').textContent = formatMoney(totalNet);
+        document.getElementById('hrKpiPaidAmount').textContent = formatMoney(totalPaid);
+        document.getElementById('hrKpiPendingAmount').textContent = formatMoney(totalPending);
+        document.getElementById('hrKpiBalanceAmount').textContent = formatMoney(totalBalance);
     }
 
     function rowTemplate(id, pay) {
+        const net = Number(pay.netPay) || ((Number(pay.basicSalary) || 0) + (Number(pay.allowances) || 0) - (Number(pay.deductions) || 0));
         const status = pay.status || 'Pending';
         const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
-        const grossSalary = pay.grossSalary ?? pay.basicSalary;
-        const receiptCell = `<button class="btn-table-action view-receipt-btn" data-id="${id}">View</button>`;
+        const paid = pay.paidAmount !== undefined ? Number(pay.paidAmount) : (status === 'Paid' ? net : 0);
+        const bal = pay.balanceAmount !== undefined ? Number(pay.balanceAmount) : Math.max(0, net - paid);
+        const empCustomId = pay.customId || pay.employeeId || pay.employeeUid || id.slice(0, 8);
+
+        const receiptCell = `<button class="btn-table-action view-receipt-btn" data-id="${id}" style="color:#4299e1;"><i class="fa-solid fa-receipt"></i> Receipt</button>`;
+        const invoiceCell = `<button class="btn-table-action view-invoice-btn" data-id="${id}" style="color:#a855f7;"><i class="fa-solid fa-file-invoice"></i> Invoice</button>`;
+
         return `
             <tr data-id="${id}">
                 <td class="chk-cell"><input type="checkbox"></td>
-                <td>${pay.employeeUid || ''}</td>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">${empCustomId}</span></td>
                 <td><strong>${pay.employeeName || ''}</strong></td>
                 <td>${pay.department || ''}</td>
-                <td>${pay.designation || ''}</td>
-                <td>${formatMoney(grossSalary)}</td>
-                <td>${formatMoney(pay.netPay)}</td>
+                <td style="font-weight:600;">${formatMoney(net)}</td>
+                <td style="color:#4ade80; font-weight:600;">${formatMoney(paid)}</td>
+                <td style="color:#fbbf24; font-weight:600;">${formatMoney(bal)}</td>
                 <td><span class="status-badge ${statusCls}">${status}</span></td>
                 <td>${receiptCell}</td>
+                <td>${invoiceCell}</td>
                 <td style="text-align:center;">${buildActionCell(id, status)}</td>
             </tr>
         `;
@@ -317,8 +339,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     function renderPayrollTable(list = allPayrollList) {
         payrollTableBody.innerHTML = "";
         if (list.length === 0) {
-            payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">No matching payroll records found.</td></tr>`;
+            payrollTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:30px; color:#8898aa;">No matching payroll records found.</td></tr>`;
             document.getElementById('payrollEntriesCounter').textContent = `Showing 0 of ${allPayrollList.length} employees`;
+            updateHrKpis([]);
             return;
         }
 
@@ -327,6 +350,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         });
 
         document.getElementById('payrollEntriesCounter').textContent = `Showing ${list.length} of ${allPayrollList.length} employees`;
+        updateHrKpis(list);
         bindMarkPaidTriggers();
         bindReceiptTriggers();
     }
@@ -339,11 +363,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const filtered = allPayrollList.filter(p => {
             const name = (p.employeeName || '').toLowerCase();
             const uid = (p.employeeUid || '').toLowerCase();
+            const customId = (p.customId || p.employeeId || '').toLowerCase();
             const desig = (p.designation || '').toLowerCase();
             const pDept = p.department || '';
             const pStatus = p.status || 'Pending';
 
-            const matchQ = !q || name.includes(q) || uid.includes(q) || desig.includes(q);
+            const matchQ = !q || name.includes(q) || uid.includes(q) || customId.includes(q) || desig.includes(q);
             const matchDept = dept === 'All' || pDept === dept;
             const matchStatus = status === 'All' || pStatus.toLowerCase() === status.toLowerCase();
 
@@ -355,7 +380,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     // Cloud Firestore Live Database Sync Fetcher (org-wide read, no department filter)
     async function fetchPayrollRecords() {
-        payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>`;
+        payrollTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>`;
 
         try {
             const querySnapshot = await getDocs(collection(db, "payroll"));
@@ -363,8 +388,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             allPayrollList = [];
 
             if (querySnapshot.empty) {
-                payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
+                payrollTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
                 document.getElementById('payrollEntriesCounter').textContent = 'Showing 0 employees';
+                updateHrKpis([]);
                 return;
             }
 
@@ -385,7 +411,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         } catch (error) {
             console.error("Firestore loading failure context: ", error);
-            payrollTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#f87171;">Failed reading collection: ${error.message}</td></tr>`;
+            payrollTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:30px; color:#f87171;">Failed reading collection: ${error.message}</td></tr>`;
         }
     }
 
@@ -394,11 +420,26 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         document.querySelectorAll('.mark-paid-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
+                const rec = loadedPayrollCache[id];
+                const net = Number(rec?.netPay) || 0;
                 try {
-                    await updateDoc(doc(db, "payroll", id), { status: "Paid" });
-                    if (loadedPayrollCache[id]) loadedPayrollCache[id].status = "Paid";
+                    const updatePayload = {
+                        status: "Paid",
+                        paidAmount: net,
+                        balanceAmount: 0
+                    };
+                    await updateDoc(doc(db, "payroll", id), updatePayload);
+                    if (loadedPayrollCache[id]) {
+                        loadedPayrollCache[id].status = "Paid";
+                        loadedPayrollCache[id].paidAmount = net;
+                        loadedPayrollCache[id].balanceAmount = 0;
+                    }
                     const item = allPayrollList.find(p => p.id === id);
-                    if (item) item.status = "Paid";
+                    if (item) {
+                        item.status = "Paid";
+                        item.paidAmount = net;
+                        item.balanceAmount = 0;
+                    }
                     applyFilters();
                 } catch (err) {
                     alert("Error updating payroll status: " + err.message);
@@ -407,13 +448,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         });
     }
 
-    // Attach receipt view listeners dynamically
+    // Attach receipt and invoice view listeners dynamically
     function bindReceiptTriggers() {
         document.querySelectorAll('.view-receipt-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
                 const record = loadedPayrollCache[id];
                 if (record) openReceiptWindow(record, id);
+            });
+        });
+
+        document.querySelectorAll('.view-invoice-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const record = loadedPayrollCache[id];
+                if (record) openInvoiceWindow(record, id);
             });
         });
     }
@@ -424,15 +473,18 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     document.getElementById('exportPayrollBtn')?.addEventListener('click', () => {
         if (!allPayrollList.length) return alert('No payroll records to export.');
-        const rows = [["Employee ID", "Employee Name", "Department", "Designation", "Gross Salary", "Net Pay", "Status"]];
+        const rows = [["Employee ID", "Employee Name", "Department", "Designation", "Net Pay", "Paid Amount", "Balance Amount", "Status"]];
         allPayrollList.forEach(p => {
-            rows.push([p.employeeUid || '', p.employeeName || '', p.department || '', p.designation || '', p.grossSalary ?? p.basicSalary ?? '', p.netPay || '', p.status || 'Pending']);
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (p.status === 'Paid' ? net : 0);
+            const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+            rows.push([p.customId || p.employeeUid || '', p.employeeName || '', p.department || '', p.designation || '', net, paid, bal, p.status || 'Pending']);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `Payroll-${Date.now()}.csv`;
+        link.download = `HR-Payroll-${Date.now()}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
     });
@@ -440,6 +492,5 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     // Initialize Page Loop Data Fetch instantly
     fetchPayrollRecords();
 </script>
-
 </body>
 </html>

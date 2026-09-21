@@ -1042,7 +1042,8 @@ tbody tr:hover {
             <button class="modal-close" id="closeViewModalBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="viewModalContent"></div>
-        <div class="form-actions">
+        <div class="form-actions" style="display:flex; justify-content:space-between; align-items:center;">
+            <button type="button" class="btn-submit" id="viewDownloadBtn" style="background:#1b2e6e;"><i class="fa-solid fa-download"></i> Download Document</button>
             <button type="button" class="btn-cancel" id="closeViewInfoBtn">Close</button>
         </div>
     </div>
@@ -1075,6 +1076,7 @@ tbody tr:hover {
   });
 
   let localDocsCache = [];
+  let currentlyViewedDoc = null;
 
   // Modals
   const modal = document.getElementById('uploadModal');
@@ -1093,10 +1095,58 @@ tbody tr:hover {
 
   document.getElementById('closeViewModalBtn').addEventListener('click', () => viewModal.classList.remove('show'));
   document.getElementById('closeViewInfoBtn').addEventListener('click', () => viewModal.classList.remove('show'));
+  document.getElementById('viewDownloadBtn').addEventListener('click', () => {
+      if (currentlyViewedDoc) downloadDocument(currentlyViewedDoc);
+  });
 
   const hideEditModal = () => { editModal.classList.remove('show'); editDocForm.reset(); };
   document.getElementById('closeEditDocModalBtn').addEventListener('click', hideEditModal);
   document.getElementById('cancelEditDocModalBtn').addEventListener('click', hideEditModal);
+
+  function downloadDocument(docItem) {
+      const fileName = docItem.fileName || docItem.title || 'document.txt';
+      if (docItem.fileData && typeof docItem.fileData === 'string') {
+          const a = document.createElement('a');
+          a.href = docItem.fileData;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          return;
+      }
+      if (docItem.url && typeof docItem.url === 'string') {
+          const a = document.createElement('a');
+          a.href = docItem.url;
+          a.download = fileName;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          return;
+      }
+      const content = `========================================\n` +
+          `EMPLOYEE MANAGEMENT SYSTEM - DOCUMENT\n` +
+          `========================================\n\n` +
+          `Document Title: ${fileName}\n` +
+          `Category: ${docItem.category || 'General'}\n` +
+          `Department: ${docItem.department || 'All'}\n` +
+          `Uploaded By: ${docItem.uploadedBy || 'System'}\n` +
+          `Uploaded On: ${docItem.uploadedOn || new Date().toLocaleDateString()}\n` +
+          `File Size: ${docItem.size || docItem.fileSize || 'Standard'}\n` +
+          `Status: ${docItem.status || 'Active'}\n\n` +
+          `Content Description:\n` +
+          `${docItem.description || 'Official corporate record registered in EMS document depository.'}\n\n` +
+          `----------------------------------------\n` +
+          `Generated from EMS Enterprise Portal.\n`;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName.includes('.') ? fileName : `${fileName}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+  }
 
   function getFileIconClass(fileName) {
       if (!fileName) return 'fa-regular fa-file generic';
@@ -1166,6 +1216,7 @@ tbody tr:hover {
                   <td>
                       <div class="actions">
                           <i class="fa-regular fa-eye view-btn" title="View Details" data-id="${docItem.id}"></i>
+                          <i class="fa-solid fa-download download-btn" title="Download Document" data-id="${docItem.id}" style="color:#60a5fa; cursor:pointer;"></i>
                           <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="${docItem.id}"></i>
                           <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="${docItem.id}"></i>
                       </div>
@@ -1185,6 +1236,7 @@ tbody tr:hover {
               const docId = e.currentTarget.getAttribute('data-id');
               const targetDoc = localDocsCache.find(d => d.id === docId);
               if (targetDoc) {
+                  currentlyViewedDoc = targetDoc;
                   document.getElementById('viewModalContent').innerHTML = `
                       <div class="detail-item"><span>File Name</span><span>${targetDoc.fileName || targetDoc.title || '-'}</span></div>
                       <div class="detail-item"><span>Category</span><span>${targetDoc.category || '-'}</span></div>
@@ -1196,6 +1248,14 @@ tbody tr:hover {
                   `;
                   viewModal.classList.add('show');
               }
+          });
+      });
+
+      document.querySelectorAll('.download-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              const docId = e.currentTarget.getAttribute('data-id');
+              const targetDoc = localDocsCache.find(d => d.id === docId);
+              if (targetDoc) downloadDocument(targetDoc);
           });
       });
 

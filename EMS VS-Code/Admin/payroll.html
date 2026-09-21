@@ -862,32 +862,32 @@ tbody tr:hover{
                 <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
                 <div>
                     <h4>Total Payroll</h4>
-                    <h2>$125,000</h2>
-                    <p>May 2025</p>
+                    <h2 id="statTotalPayroll">$0.00</h2>
+                    <p>Total Net Salary</p>
                 </div>
             </div>
             <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="card-icon" style="color:#4ade80;"><i class="fa-solid fa-circle-check"></i></div>
                 <div>
-                    <h4>Total Employees</h4>
-                    <h2>52</h2>
-                    <p>May 2025</p>
+                    <h4>Total Paid Amount</h4>
+                    <h2 id="statTotalPaid" style="color:#4ade80;">$0.00</h2>
+                    <p>Disbursed to Staff</p>
                 </div>
             </div>
             <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div class="card-icon" style="color:#fbbf24;"><i class="fa-solid fa-clock"></i></div>
                 <div>
-                    <h4>Total Deductions</h4>
-                    <h2>$18,500</h2>
-                    <p>May 2025</p>
+                    <h4>Total Pending Amount</h4>
+                    <h2 id="statTotalPending" style="color:#fbbf24;">$0.00</h2>
+                    <p>Pending Disbursements</p>
                 </div>
             </div>
             <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-building-columns"></i></div>
+                <div class="card-icon" style="color:#60a5fa;"><i class="fa-solid fa-scale-balanced"></i></div>
                 <div>
-                    <h4>Net Payroll</h4>
-                    <h2>$106,500</h2>
-                    <p>May 2025</p>
+                    <h4>Total Balance Amount</h4>
+                    <h2 id="statTotalBalance" style="color:#60a5fa;">$0.00</h2>
+                    <p>Remaining Outstandings</p>
                 </div>
             </div>
         </div>
@@ -915,12 +915,12 @@ tbody tr:hover{
                         <th>Employee ID</th>
                         <th>Employee Name</th>
                         <th>Department</th>
-                        <th>Basic Salary</th>
-                        <th>Allowances</th>
-                        <th>Deductions</th>
                         <th>Net Pay</th>
+                        <th>Paid Amount</th>
+                        <th>Balance / Pending</th>
                         <th>Status</th>
                         <th>Receipt</th>
+                        <th>Invoice</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -952,28 +952,38 @@ tbody tr:hover{
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="payBasicSalary">Basic Salary</label>
-                    <input type="number" id="payBasicSalary" min="0" step="0.01" required>
+                    <label for="payBasicSalary">Basic Salary ($)</label>
+                    <input type="number" id="payBasicSalary" min="0" step="0.01" required placeholder="0.00">
                 </div>
                 <div class="form-group">
-                    <label for="payAllowances">Allowances</label>
-                    <input type="number" id="payAllowances" min="0" step="0.01" value="0">
+                    <label for="payAllowances">Allowances ($)</label>
+                    <input type="number" id="payAllowances" min="0" step="0.01" value="0" placeholder="0.00">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="payDeductions">Deductions</label>
-                    <input type="number" id="payDeductions" min="0" step="0.01" value="0">
+                    <label for="payDeductions">Deductions ($)</label>
+                    <input type="number" id="payDeductions" min="0" step="0.01" value="0" placeholder="0.00">
                 </div>
                 <div class="form-group">
-                    <label for="payStatus">Status</label>
+                    <label for="payStatus">Payment Status</label>
                     <select id="payStatus">
-                        <option value="Pending">Pending</option>
                         <option value="Paid">Paid</option>
+                        <option value="Pending" selected>Pending</option>
                     </select>
                 </div>
             </div>
-            <p style="color:#8898aa; font-size:12px; margin-top:-4px;">A receipt is generated automatically once this record is saved. It will be visible to HR, managers, and the employee.</p>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="payPaidAmount">Paid Amount ($)</label>
+                    <input type="number" id="payPaidAmount" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Balance Amount ($)</label>
+                    <input type="text" id="payBalanceAmount" readonly style="background:#0b1437; opacity:0.85;" placeholder="$0.00">
+                </div>
+            </div>
+            <p style="color:#8898aa; font-size:12px; margin-top:-4px;">Receipts and invoices are generated automatically for this payroll record.</p>
             <div class="form-actions">
                 <button type="button" class="btn-cancel" id="cancelAddPayrollBtn">Cancel</button>
                 <button type="submit" class="btn-submit">Save Record</button>
@@ -986,19 +996,19 @@ tbody tr:hover{
     import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
-    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
+    import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
@@ -1007,15 +1017,44 @@ tbody tr:hover{
     let employeesCache = {};
     let payrollCacheById = {};
 
+    function formatMoney(n) {
+        const num = Number(n) || 0;
+        return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
     // Add Payroll Modal DOM Hooks
     const addPayrollModal = document.getElementById('addPayrollModal');
     const addPayrollForm = document.getElementById('addPayrollForm');
     const payEmployeeSelect = document.getElementById('payEmployeeSelect');
 
     document.getElementById('openAddPayrollBtn').addEventListener('click', () => addPayrollModal.classList.add('show'));
-    const hideAddPayrollModal = () => { addPayrollModal.classList.remove('show'); addPayrollForm.reset(); };
+    const hideAddPayrollModal = () => { addPayrollModal.classList.remove('show'); addPayrollForm.reset(); recalcAddModalAmounts(); };
     document.getElementById('closeAddPayrollModalBtn').addEventListener('click', hideAddPayrollModal);
     document.getElementById('cancelAddPayrollBtn').addEventListener('click', hideAddPayrollModal);
+
+    function recalcAddModalAmounts() {
+        const basic = Number(document.getElementById('payBasicSalary').value) || 0;
+        const allow = Number(document.getElementById('payAllowances').value) || 0;
+        const ded = Number(document.getElementById('payDeductions').value) || 0;
+        const status = document.getElementById('payStatus').value;
+        const net = Math.max(0, basic + allow - ded);
+
+        let paidInput = document.getElementById('payPaidAmount');
+        if (status === 'Paid' && (!paidInput.value || Number(paidInput.value) === 0)) {
+            paidInput.value = net;
+        } else if (status === 'Pending' && !paidInput.value) {
+            paidInput.value = 0;
+        }
+
+        const paid = Number(paidInput.value) || 0;
+        const bal = Math.max(0, net - paid);
+        document.getElementById('payBalanceAmount').value = formatMoney(bal);
+    }
+
+    ['payBasicSalary', 'payAllowances', 'payDeductions', 'payPaidAmount'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', recalcAddModalAmounts);
+    });
+    document.getElementById('payStatus')?.addEventListener('change', recalcAddModalAmounts);
 
     // Populate employee picker from the employees collection
     async function loadEmployeesForPicker() {
@@ -1026,7 +1065,8 @@ tbody tr:hover{
             snap.forEach((docSnap) => {
                 const emp = docSnap.data();
                 employeesCache[docSnap.id] = { id: docSnap.id, ...emp };
-                payEmployeeSelect.insertAdjacentHTML('beforeend', `<option value="${docSnap.id}">${emp.name || 'Unnamed'}</option>`);
+                const customId = emp.customId || emp.employeeId || emp.uid || docSnap.id.slice(0, 6);
+                payEmployeeSelect.insertAdjacentHTML('beforeend', `<option value="${docSnap.id}">${emp.name || 'Unnamed'} (${customId} - ${emp.department || '-'})</option>`);
             });
         } catch (error) {
             console.error("Failed to load employees for payroll picker: ", error);
@@ -1035,6 +1075,30 @@ tbody tr:hover{
     }
 
     let allPayrollRecords = [];
+
+    function updateKpis(records) {
+        let totalNet = 0;
+        let totalPaid = 0;
+        let totalPending = 0;
+        let totalBalance = 0;
+
+        records.forEach(p => {
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const status = p.status || 'Pending';
+            let paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
+            let bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+
+            totalNet += net;
+            totalPaid += paid;
+            totalPending += (status !== 'Paid' ? bal : 0);
+            totalBalance += bal;
+        });
+
+        document.getElementById('statTotalPayroll').textContent = formatMoney(totalNet);
+        document.getElementById('statTotalPaid').textContent = formatMoney(totalPaid);
+        document.getElementById('statTotalPending').textContent = formatMoney(totalPending);
+        document.getElementById('statTotalBalance').textContent = formatMoney(totalBalance);
+    }
 
     function renderPayrollTable(records = allPayrollRecords) {
         tableBody.innerHTML = "";
@@ -1047,19 +1111,29 @@ tbody tr:hover{
 
         records.forEach((p) => {
             payrollCacheById[p.id] = p;
-            const statusClass = (p.status || 'Pending').toLowerCase();
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const status = p.status || 'Pending';
+            const statusClass = status.toLowerCase();
+            const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
+            const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+            const empCustomId = p.customId || p.employeeId || p.employeeUid || p.id.slice(0, 8);
+
             tableBody.insertAdjacentHTML('beforeend', `
                 <tr>
-                    <td>${p.id.slice(0, 8)}</td>
+                    <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">${empCustomId}</span></td>
                     <td><div class="employee"><div><h4>${p.employeeName || '-'}</h4><p>${p.designation || ''}</p></div></div></td>
                     <td>${p.department || '-'}</td>
-                    <td>${p.basicSalary ?? '-'}</td>
-                    <td>${p.allowances ?? '-'}</td>
-                    <td>${p.deductions ?? '-'}</td>
-                    <td class="salary">${p.netPay ?? '-'}</td>
-                    <td><span class="status ${statusClass}">${p.status || 'Pending'}</span></td>
-                    <td><a href="#" class="view-receipt-btn" data-id="${p.id}" style="color:#4299e1;">View</a></td>
-                    <td><div class="action"><i class="fa-solid fa-check toggle-paid-btn" data-id="${p.id}" data-status="${p.status || 'Pending'}" style="cursor:pointer;" title="Toggle Paid/Pending"></i></div></td>
+                    <td class="salary">${formatMoney(net)}</td>
+                    <td style="color:#4ade80; font-weight:600;">${formatMoney(paid)}</td>
+                    <td style="color:#fbbf24; font-weight:600;">${formatMoney(bal)}</td>
+                    <td><span class="status ${statusClass}">${status}</span></td>
+                    <td><a href="#" class="view-receipt-btn" data-id="${p.id}" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</a></td>
+                    <td><a href="#" class="view-invoice-btn" data-id="${p.id}" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</a></td>
+                    <td>
+                      <div class="action">
+                        <i class="fa-solid fa-check toggle-paid-btn" data-id="${p.id}" data-status="${status}" style="cursor:pointer;" title="Toggle Paid/Pending"></i>
+                      </div>
+                    </td>
                 </tr>
             `);
         });
@@ -1073,15 +1147,34 @@ tbody tr:hover{
             });
         });
 
+        document.querySelectorAll('.view-invoice-btn').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = link.getAttribute('data-id');
+                const record = payrollCacheById[id];
+                if (record) openInvoiceWindow(record, id);
+            });
+        });
+
         document.querySelectorAll('.toggle-paid-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                const newStatus = btn.getAttribute('data-status') === 'Paid' ? 'Pending' : 'Paid';
-                await updateDoc(doc(db, "payroll", btn.getAttribute('data-id')), { status: newStatus });
+                const currentSt = btn.getAttribute('data-status');
+                const newStatus = currentSt === 'Paid' ? 'Pending' : 'Paid';
+                const id = btn.getAttribute('data-id');
+                const rec = payrollCacheById[id];
+                const net = Number(rec?.netPay) || 0;
+                const updatePayload = {
+                    status: newStatus,
+                    paidAmount: newStatus === 'Paid' ? net : 0,
+                    balanceAmount: newStatus === 'Paid' ? 0 : net
+                };
+                await updateDoc(doc(db, "payroll", id), updatePayload);
                 loadPayroll();
             });
         });
 
         document.getElementById('payrollEntriesCounter').textContent = `Showing ${records.length} entries`;
+        updateKpis(records);
     }
 
     function applyFilters() {
@@ -1092,10 +1185,11 @@ tbody tr:hover{
         const filtered = allPayrollRecords.filter(p => {
             const name = (p.employeeName || '').toLowerCase();
             const id = (p.id || '').toLowerCase();
+            const customId = (p.customId || p.employeeId || p.employeeUid || '').toLowerCase();
             const pDept = p.department || '';
             const pStatus = p.status || 'Pending';
 
-            const matchQ = !q || name.includes(q) || id.includes(q);
+            const matchQ = !q || name.includes(q) || id.includes(q) || customId.includes(q);
             const matchDept = dept === 'All' || pDept === dept;
             const matchStatus = status === 'All' || pStatus.toLowerCase() === status.toLowerCase();
 
@@ -1112,6 +1206,7 @@ tbody tr:hover{
             if (snap.empty) {
                 tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#8898aa;">No payroll records found.</td></tr>`;
                 document.getElementById('payrollEntriesCounter').textContent = 'Showing 0 entries';
+                updateKpis([]);
                 return;
             }
 
@@ -1138,9 +1233,12 @@ tbody tr:hover{
 
     document.getElementById('adminExportPayrollBtn')?.addEventListener('click', () => {
         if (!allPayrollRecords.length) return alert('No payroll records to export.');
-        const rows = [["Payroll ID", "Employee Name", "Designation", "Department", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status", "Date"]];
+        const rows = [["Payroll ID", "Custom ID", "Employee Name", "Designation", "Department", "Net Pay", "Paid Amount", "Balance Amount", "Status", "Date"]];
         allPayrollRecords.forEach(p => {
-            rows.push([p.id || '', p.employeeName || '', p.designation || '', p.department || '', p.basicSalary ?? '', p.allowances ?? '', p.deductions ?? '', p.netPay ?? '', p.status || 'Pending', p.createdOn || '']);
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (p.status === 'Paid' ? net : 0);
+            const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+            rows.push([p.id || '', p.customId || p.employeeUid || '', p.employeeName || '', p.designation || '', p.department || '', net, paid, bal, p.status || 'Pending', p.createdOn || '']);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1165,24 +1263,30 @@ tbody tr:hover{
         const allowances = Number(document.getElementById('payAllowances').value) || 0;
         const deductions = Number(document.getElementById('payDeductions').value) || 0;
         const status = document.getElementById('payStatus').value;
+        const netPay = Math.max(0, basicSalary + allowances - deductions);
+        const paidAmount = Number(document.getElementById('payPaidAmount').value) || (status === 'Paid' ? netPay : 0);
+        const balanceAmount = Math.max(0, netPay - paidAmount);
 
         try {
             const record = {
                 employeeUid: selectedEmployee.uid || selectedEmployee.id,
+                customId: selectedEmployee.customId || selectedEmployee.employeeId || selectedEmployee.uid || '',
                 employeeName: selectedEmployee.name || '-',
                 designation: selectedEmployee.designation || '',
                 department: selectedEmployee.department || '',
                 basicSalary: basicSalary,
                 allowances: allowances,
                 deductions: deductions,
-                netPay: basicSalary + allowances - deductions,
+                netPay: netPay,
+                paidAmount: paidAmount,
+                balanceAmount: balanceAmount,
                 status: status,
                 createdOn: new Date().toISOString()
             };
 
             await addDoc(collection(db, "payroll"), record);
 
-            alert(`Payroll record created for ${selectedEmployee.name}! A receipt has been generated automatically.`);
+            alert(`Payroll record created for ${selectedEmployee.name}! Receipt and Invoice have been generated automatically.`);
             hideAddPayrollModal();
             loadPayroll();
         } catch (error) {

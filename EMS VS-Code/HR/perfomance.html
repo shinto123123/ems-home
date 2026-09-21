@@ -104,6 +104,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .status-badge.inprogress{background:rgba(66,153,225,0.1);color:#4299e1;}
 .status-badge.notstarted{background:rgba(148,163,184,0.1);color:#94a3b8;}
 
+/* Submission Speed Badges */
+.speed-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap;}
+.speed-badge.ahead{background:rgba(74,222,128,0.15);color:#4ade80;}
+.speed-badge.ontime{background:rgba(66,153,225,0.15);color:#4299e1;}
+.speed-badge.delayed{background:rgba(248,113,113,0.15);color:#f87171;}
+
 /* Interactive Star Icons Matrix Graphic Component */
 .star-rating{color:#fbbf24;font-size:11px;display:flex;gap:2px;}
 .star-rating i.muted{color:#374151;}
@@ -355,6 +361,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 <th>Employee</th>
                 <th>Department</th>
                 <th>Designation</th>
+                <th>Submission Speed</th>
                 <th>Review Cycle</th>
                 <th>Status</th>
                 <th>Overall Rating</th>
@@ -363,32 +370,13 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </thead>
             <tbody id="perfTableBody">
-              <tr class="selected">
-                <td>
-                  <div class="user-cell">
-                    <div class="user-avatar-mini"><i class="fa-regular fa-user"></i></div>
-                    <div class="user-meta-info"><strong>John Doe</strong><small>EMP001</small></div>
-                  </div>
-                </td>
-                <td>Engineering</td>
-                <td>Software Engineer</td>
-                <td>2024-25 Annual</td>
-                <td><span class="status-badge completed">Completed</span></td>
-                <td>
-                  <div class="star-rating">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star muted"></i>
-                  </div>
-                </td>
-                <td><strong>4.2</strong></td>
-                <td><button class="btn-table-dropdown">Rate / View <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></button></td>
-              </tr>
+              <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading performance reviews...</td></tr>
             </tbody>
           </table>
           
           <div class="table-footer">
-            <span>Showing 1 to 8 of 250 employees</span>
+            <span>Showing 1 to 8 of 250 reviews</span>
             <div class="pagination">
-              <a href="#" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
               <a href="#" class="page-link active">1</a>
               <a href="#" class="page-link">2</a>
               <a href="#" class="page-link">3</a>
@@ -556,8 +544,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                         <input type="text" id="reviewCycleInput" placeholder="e.g. May 2024" required>
                     </div>
                     <div class="form-group">
-                        <label for="reviewRatingInput">Rating (1-5)</label>
-                        <input type="number" id="reviewRatingInput" min="1" max="5" step="0.1" placeholder="e.g. 4.5" required>
+                        <label for="reviewSpeedInput">Work Submission Speed</label>
+                        <select id="reviewSpeedInput">
+                            <option value="ahead" selected>⚡ Fast / Ahead of Time (+Bonus 4.8)</option>
+                            <option value="ontime">⏱ On Time (Standard 4.2)</option>
+                            <option value="delayed">⚠️ Delayed / Late (3.2)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="reviewRatingInput">Auto Rating (1-5)</label>
+                        <input type="number" id="reviewRatingInput" min="1" max="5" step="0.1" value="4.8" placeholder="e.g. 4.8" required>
                     </div>
                     <div class="form-group full-width">
                         <label for="reviewCommentsInput">Comments</label>
@@ -605,6 +601,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     const perfTableBody = document.getElementById('perfTableBody');
 
+    // Auto-calculate score on submission speed selection
+    document.getElementById('reviewSpeedInput')?.addEventListener('change', (e) => {
+        const speed = e.target.value;
+        const scoreInput = document.getElementById('reviewRatingInput');
+        if (speed === 'ahead') scoreInput.value = '4.8';
+        else if (speed === 'ontime') scoreInput.value = '4.2';
+        else if (speed === 'delayed') scoreInput.value = '3.2';
+    });
+
     // Maps a free-text status string to the existing .status-badge CSS variant
     function statusClassFor(status) {
         const key = (status || '').toLowerCase().replace(/\s+/g, '');
@@ -631,6 +636,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const scoreCell = hasRating ? `<strong>${Math.round((Number(perf.rating) / 5) * 100)}%</strong>` : '<span style="color:#4a5568;">-</span>';
         const statusLabel = perf.status || 'Not Started';
 
+        const rVal = Number(perf.rating) || 4.0;
+        const speed = perf.submissionSpeed || (rVal >= 4.5 ? 'ahead' : (rVal >= 3.8 ? 'ontime' : 'delayed'));
+        const speedMap = {
+            ahead: { cls: 'ahead', icon: 'fa-solid fa-bolt', label: 'Fast (Ahead)' },
+            ontime: { cls: 'ontime', icon: 'fa-solid fa-clock', label: 'On Time' },
+            delayed: { cls: 'delayed', icon: 'fa-solid fa-triangle-exclamation', label: 'Delayed' }
+        };
+        const sp = speedMap[speed] || speedMap.ontime;
+
         return `
             <tr>
                 <td>
@@ -641,6 +655,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 </td>
                 <td>${perf.department || ''}</td>
                 <td>${perf.designation || ''}</td>
+                <td><span class="speed-badge ${sp.cls}"><i class="${sp.icon}"></i> ${sp.label}</span></td>
                 <td>${perf.reviewCycle || ''}</td>
                 <td><span class="status-badge ${statusClassFor(perf.status)}">${statusLabel}</span></td>
                 <td>${ratingCell}</td>
@@ -652,7 +667,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     // Cloud Firestore Live Database Sync Fetcher (org-wide read, no department filter)
     async function fetchPerformanceRecords() {
-        perfTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading performance reviews...</td></tr>`;
+        perfTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading performance reviews...</td></tr>`;
 
         try {
             const querySnapshot = await getDocs(collection(db, "performance"));
@@ -828,6 +843,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         const projectId = document.getElementById('reviewProjectId').value;
         const projectName = document.getElementById('reviewProjectNameDisplay').value;
+        const submissionSpeed = document.getElementById('reviewSpeedInput').value;
 
         let reviewee;
         if (lockedPerson) {
@@ -850,6 +866,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 designation: reviewee.designation || '',
                 revieweeType: reviewee.type || 'employee',
                 reviewCycle: document.getElementById('reviewCycleInput').value,
+                submissionSpeed: submissionSpeed,
                 rating: parseFloat(document.getElementById('reviewRatingInput').value),
                 status: "Completed",
                 reviewedBy: currentUser.name,

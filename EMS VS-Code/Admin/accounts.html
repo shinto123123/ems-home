@@ -159,24 +159,24 @@ tbody tr:hover { background:#16265c; }
 
 <div class="stats-row">
     <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="stat-icon" style="color:#60a5fa;"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        <div>
+            <div class="stat-label">Total Receiving Amount</div>
+            <div class="stat-value" id="statTotalReceiving">-</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="color:#4ade80;"><i class="fa-solid fa-sack-dollar"></i></div>
         <div>
             <div class="stat-label">Total Paid Out</div>
             <div class="stat-value" id="statTotalPaid">-</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+        <div class="stat-icon" style="color:#fbbf24;"><i class="fa-regular fa-clock"></i></div>
         <div>
-            <div class="stat-label">Pending Payouts</div>
+            <div class="stat-label">Pending / Balance</div>
             <div class="stat-value" id="statTotalPending">-</div>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
-        <div>
-            <div class="stat-label">This Month</div>
-            <div class="stat-value" id="statThisMonth">-</div>
         </div>
     </div>
     <div class="stat-card">
@@ -211,13 +211,14 @@ tbody tr:hover { background:#16265c; }
     <th>Transaction</th>
     <th>Department</th>
     <th>Type</th>
-    <th>Amount</th>
+    <th>Receiving Amount</th>
+    <th>Paid Amount</th>
     <th>Status</th>
-    <th>Receipt</th>
+    <th>Receipt & Invoice</th>
 </tr>
 </thead>
 <tbody id="transactionsTableBody">
-<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>
+<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>
 </tbody>
 </table>
 </div>
@@ -235,7 +236,7 @@ tbody tr:hover { background:#16265c; }
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
-    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
+    import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
@@ -274,9 +275,8 @@ tbody tr:hover { background:#16265c; }
     }
 
     // Every payroll record is one company-to-employee salary transaction.
-    // This is the only kind of company transaction currently tracked in Firestore.
     async function loadTransactions() {
-        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>`;
 
         try {
             const snap = await getDocs(collection(db, "payroll"));
@@ -299,19 +299,20 @@ tbody tr:hover { background:#16265c; }
             renderTransactions();
         } catch (err) {
             console.error("Failed to load transactions: ", err);
-            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#f87171;">Failed to load transactions: ${err.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#f87171;">Failed to load transactions: ${err.message}</td></tr>`;
         }
     }
 
     function renderStats() {
+        const totalReceiving = allTransactions.reduce((s, t) => s + (t.netPay || 0), 0);
         const paid = allTransactions.filter(t => t.status === 'Paid');
         const pending = allTransactions.filter(t => t.status !== 'Paid');
-        const now = new Date();
-        const thisMonth = allTransactions.filter(t => t.dateObj && t.dateObj.getMonth() === now.getMonth() && t.dateObj.getFullYear() === now.getFullYear());
+        const totalPaid = paid.reduce((s, t) => s + (t.netPay || 0), 0);
+        const totalPending = pending.reduce((s, t) => s + (t.netPay || 0), 0);
 
-        document.getElementById('statTotalPaid').textContent = money(paid.reduce((s, t) => s + t.netPay, 0));
-        document.getElementById('statTotalPending').textContent = money(pending.reduce((s, t) => s + t.netPay, 0));
-        document.getElementById('statThisMonth').textContent = money(thisMonth.reduce((s, t) => s + t.netPay, 0));
+        document.getElementById('statTotalReceiving').textContent = money(totalReceiving);
+        document.getElementById('statTotalPaid').textContent = money(totalPaid);
+        document.getElementById('statTotalPending').textContent = money(totalPending);
         document.getElementById('statTotalCount').textContent = allTransactions.length;
     }
 
@@ -331,15 +332,16 @@ tbody tr:hover { background:#16265c; }
         });
 
         if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">No transactions match your filters.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No transactions match your filters.</td></tr>`;
             entriesCounter.textContent = "Showing 0 to 0 of 0 entries";
             return;
         }
 
         tableBody.innerHTML = filtered.map(t => {
-            const isPaid = t.status === 'Paid';
+            const isPaid = (t.status || '').toLowerCase() === 'paid';
             const statusClass = isPaid ? 'paid' : 'pending';
             const dateLabel = t.dateObj ? t.dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+            const paidVal = isPaid ? money(t.netPay) : '$0.00';
 
             return `
                 <tr>
@@ -355,9 +357,15 @@ tbody tr:hover { background:#16265c; }
                     </td>
                     <td>${t.department || '-'}</td>
                     <td>Salary Payment</td>
-                    <td class="amount-cell">${money(t.netPay)}</td>
+                    <td class="amount-cell" style="color:#60a5fa;">${money(t.netPay)}</td>
+                    <td class="amount-cell" style="color:${isPaid ? '#4ade80' : '#8898aa'};">${paidVal}</td>
                     <td><span class="status ${statusClass}">${t.status || 'Pending'}</span></td>
-                    <td><button class="receipt-btn action-view-receipt" data-id="${t.id}">View</button></td>
+                    <td>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View / Print Receipt"><i class="fa-solid fa-receipt"></i> Receipt</button>
+                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" style="border-color:#4299e1; color:#60a5fa;" title="View / Print Invoice"><i class="fa-solid fa-file-invoice-dollar"></i> Invoice</button>
+                        </div>
+                    </td>
                 </tr>
             `;
         }).join('');
@@ -369,6 +377,14 @@ tbody tr:hover { background:#16265c; }
                 const id = btn.getAttribute('data-id');
                 const record = allTransactions.find(t => t.id === id);
                 if (record) openReceiptWindow(record, id);
+            });
+        });
+
+        document.querySelectorAll('.action-view-invoice').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const record = allTransactions.find(t => t.id === id);
+                if (record) openInvoiceWindow(record, id);
             });
         });
     }

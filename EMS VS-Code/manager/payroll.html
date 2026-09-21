@@ -138,19 +138,20 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <table class="data-table">
             <thead>
               <tr>
-                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
                 <th>Department</th>
                 <th>Designation</th>
-                <th>Basic Salary</th>
-                <th>Allowances</th>
-                <th>Deductions</th>
                 <th>Net Pay</th>
+                <th>Paid Amount</th>
+                <th>Balance / Pending</th>
                 <th>Status</th>
                 <th>Receipt</th>
+                <th>Invoice</th>
               </tr>
             </thead>
             <tbody id="payrollTableBody">
-              <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>
+              <tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>
             </tbody>
           </table>
         </div>
@@ -164,19 +165,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
-    import { openReceiptWindow } from "../assets/js/payroll-receipt.js";
+    import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
 
     const currentUser = requireRole(["manager"]);
     paintNavProfile(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
@@ -186,14 +187,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     function formatMoney(n) {
         const num = Number(n) || 0;
-        return num.toLocaleString('en-IN');
+        return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     async function loadPayroll() {
         try {
             const snap = await getDocs(collection(db, "payroll"));
             if (snap.empty) {
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
                 return;
             }
             tableBody.innerHTML = "";
@@ -201,20 +202,28 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             snap.forEach((docSnap) => {
                 const p = docSnap.data();
                 payrollCacheById[docSnap.id] = p;
-                const statusCls = (p.status || 'Pending').toLowerCase();
-                const grossSalary = p.grossSalary ?? p.basicSalary;
-                const receiptCell = `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}">View</button>`;
+                const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+                const status = p.status || 'Pending';
+                const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
+                const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
+                const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+                const empCustomId = p.customId || p.employeeId || p.employeeUid || docSnap.id.slice(0, 8);
+
+                const receiptCell = `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button>`;
+                const invoiceCell = `<button class="btn-link view-invoice-btn" data-id="${docSnap.id}" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button>`;
+
                 tableBody.insertAdjacentHTML('beforeend', `
                     <tr>
+                        <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">${empCustomId}</span></td>
                         <td><strong>${p.employeeName || '-'}</strong></td>
                         <td>${p.department || '-'}</td>
                         <td>${p.designation || '-'}</td>
-                        <td>${formatMoney(grossSalary)}</td>
-                        <td>${formatMoney(p.allowances)}</td>
-                        <td>${formatMoney(p.deductions)}</td>
-                        <td>${formatMoney(p.netPay)}</td>
-                        <td><span class="status-badge ${statusCls}">${p.status || 'Pending'}</span></td>
+                        <td style="font-weight:600;">${formatMoney(net)}</td>
+                        <td style="color:#4ade80; font-weight:600;">${formatMoney(paid)}</td>
+                        <td style="color:#fbbf24; font-weight:600;">${formatMoney(bal)}</td>
+                        <td><span class="status-badge ${statusCls}">${status}</span></td>
                         <td>${receiptCell}</td>
+                        <td>${invoiceCell}</td>
                     </tr>
                 `);
             });
@@ -227,9 +236,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 });
             });
 
+            document.querySelectorAll('.view-invoice-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const record = payrollCacheById[id];
+                    if (record) openInvoiceWindow(record, id);
+                });
+            });
+
         } catch (error) {
             console.error("Failed to load payroll: ", error);
-            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
         }
     }
 
