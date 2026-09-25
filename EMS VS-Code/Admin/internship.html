@@ -843,7 +843,7 @@ tbody tr:hover {
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Email Notification">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
@@ -879,6 +879,7 @@ tbody tr:hover {
             <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
             <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
             <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
             <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
             <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
             <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
@@ -1131,9 +1132,11 @@ tbody tr:hover {
   import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
   import { db, auth } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+  import { initEmailModal } from "../assets/js/email-modal.js";
 
   const currentUser = requireRole(["admin"]);
   paintNavProfile(currentUser);
+  initEmailModal(currentUser);
 
   // Sidebar toggle
   document.getElementById('hamburgerToggle')?.addEventListener('click', () => {

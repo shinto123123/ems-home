@@ -184,7 +184,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">5</span></a>
-    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
@@ -197,20 +197,22 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
 <div class="body-wrap">
 
-  <div class="sidebar">
+    <div class="sidebar">
     <ul>
       <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
-      <li class="active"><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-user-group"></i>Employees</a></li>
+      <li class="active"><a href="department.html"><i class="fa-solid fa-building"></i>Department</a></li>
       <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
       <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
-      <li><a href="#"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
       <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-briefcase"></i>Recruitment</a></li>
       <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
-      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
       <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-graduation-cap"></i>Internship</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-chalkboard-user"></i>Mentorship</a></li>
+      <li><a href="project-management.html"><i class="fa-solid fa-diagram-project"></i>Projects</a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports &amp; Analytics</a></li>
       <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
       <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
     </ul>
@@ -394,6 +396,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+  import { initEmailModal } from "../assets/js/email-modal.js";
 
   const closePanelBtn = document.getElementById('closePanelBtn');
   const detailsPanel = document.getElementById('detailsPanel');
@@ -405,6 +408,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
   const currentUser = requireRole(["hr"]);
   paintNavProfile(currentUser);
+  initEmailModal(currentUser);
 
   document.getElementById('navProfileToggle').addEventListener('click', (e) => {
       e.stopPropagation();

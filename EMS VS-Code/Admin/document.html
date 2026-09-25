@@ -809,7 +809,7 @@ tbody tr:hover {
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Email Notification">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
@@ -845,6 +845,7 @@ tbody tr:hover {
             <li class="active"><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
             <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
             <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
             <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
             <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
             <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
@@ -916,14 +917,167 @@ tbody tr:hover {
                         </tr>
                     </thead>
                     <tbody id="documentTableBody">
-                        <tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading documents...</td></tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-pdf pdf"></i>
+                                    <span>Employee_Handbook_2026.pdf</span>
+                                </div>
+                            </td>
+                            <td>Policy</td>
+                            <td>Human Resources</td>
+                            <td>Sarah Johnson</td>
+                            <td>Jan 15, 2026, 10:30 AM</td>
+                            <td>4.8 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-01"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-01" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-01"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-01"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-excel excel"></i>
+                                    <span>Annual_Financial_Audit_2025.xlsx</span>
+                                </div>
+                            </td>
+                            <td>Finance</td>
+                            <td>Administration</td>
+                            <td>Michael Brown</td>
+                            <td>Feb 02, 2026, 02:15 PM</td>
+                            <td>2.4 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-02"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-02" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-02"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-02"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-pdf pdf"></i>
+                                    <span>Engineering_Architecture_Blueprint.pdf</span>
+                                </div>
+                            </td>
+                            <td>Presentation</td>
+                            <td>Engineering</td>
+                            <td>David Chen</td>
+                            <td>Mar 10, 2026, 11:45 AM</td>
+                            <td>6.1 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-03"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-03" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-03"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-03"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-pdf pdf"></i>
+                                    <span>Brand_Design_Guidelines_v4.pdf</span>
+                                </div>
+                            </td>
+                            <td>Template</td>
+                            <td>Design</td>
+                            <td>Emma Watson</td>
+                            <td>Mar 14, 2026, 09:20 AM</td>
+                            <td>12.5 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-04"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-04" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-04"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-04"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-powerpoint ppt"></i>
+                                    <span>Q1_Sales_Strategy_Deck.pptx</span>
+                                </div>
+                            </td>
+                            <td>Presentation</td>
+                            <td>Sales</td>
+                            <td>Robert Taylor</td>
+                            <td>Mar 18, 2026, 04:00 PM</td>
+                            <td>8.3 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-05"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-05" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-05"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-05"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-pdf pdf"></i>
+                                    <span>Data_Privacy_Compliance_GDPR.pdf</span>
+                                </div>
+                            </td>
+                            <td>Policy</td>
+                            <td>Administration</td>
+                            <td>Legal Ops</td>
+                            <td>Mar 20, 2026, 01:10 PM</td>
+                            <td>3.2 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-06"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-06" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-06"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-06"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document">
+                                    <i class="fa-regular fa-file-word word"></i>
+                                    <span>Internship_Program_Onboarding_Kit.docx</span>
+                                </div>
+                            </td>
+                            <td>Template</td>
+                            <td>Human Resources</td>
+                            <td>Jessica Miller</td>
+                            <td>Mar 22, 2026, 03:30 PM</td>
+                            <td>1.1 MB</td>
+                            <td><span class="active-status">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <i class="fa-regular fa-eye view-btn" title="View Details" data-id="ADM-DOC-07"></i>
+                                    <i class="fa-solid fa-download download-btn" title="Download Document" data-id="ADM-DOC-07" style="color:#60a5fa; cursor:pointer;"></i>
+                                    <i class="fa-regular fa-pen-to-square edit-btn" title="Edit Metadata" data-id="ADM-DOC-07"></i>
+                                    <i class="fa-regular fa-trash-can delete-btn" title="Delete" data-id="ADM-DOC-07"></i>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Footer / Entries counter -->
             <div class="footer">
-                <div class="entries" id="entriesCount">Showing 0 entries</div>
+                <div class="entries" id="entriesCount">Showing 7 of 7 entries</div>
                 <div class="pagination">
                     <div class="page"><i class="fa-solid fa-angle-left"></i></div>
                     <div class="page active">1</div>
@@ -1053,9 +1207,11 @@ tbody tr:hover {
   import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+  import { initEmailModal } from "../assets/js/email-modal.js";
 
   const currentUser = requireRole(["admin"]);
   paintNavProfile(currentUser);
+  initEmailModal(currentUser);
 
   // Sidebar toggle
   document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
@@ -1168,19 +1324,33 @@ tbody tr:hover {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
+  const sampleAdminDocs = [
+      { id: "ADM-DOC-01", fileName: "Employee_Handbook_2026.pdf", title: "Employee_Handbook_2026.pdf", category: "Policy", department: "Human Resources", uploadedBy: "Sarah Johnson", uploadedOn: "Jan 15, 2026, 10:30 AM", size: "4.8 MB", fileSize: "4.8 MB", status: "Active" },
+      { id: "ADM-DOC-02", fileName: "Annual_Financial_Audit_2025.xlsx", title: "Annual_Financial_Audit_2025.xlsx", category: "Finance", department: "Administration", uploadedBy: "Michael Brown", uploadedOn: "Feb 02, 2026, 02:15 PM", size: "2.4 MB", fileSize: "2.4 MB", status: "Active" },
+      { id: "ADM-DOC-03", fileName: "Engineering_Architecture_Blueprint.pdf", title: "Engineering_Architecture_Blueprint.pdf", category: "Presentation", department: "Engineering", uploadedBy: "David Chen", uploadedOn: "Mar 10, 2026, 11:45 AM", size: "6.1 MB", fileSize: "6.1 MB", status: "Active" },
+      { id: "ADM-DOC-04", fileName: "Brand_Design_Guidelines_v4.pdf", title: "Brand_Design_Guidelines_v4.pdf", category: "Template", department: "Design", uploadedBy: "Emma Watson", uploadedOn: "Mar 14, 2026, 09:20 AM", size: "12.5 MB", fileSize: "12.5 MB", status: "Active" },
+      { id: "ADM-DOC-05", fileName: "Q1_Sales_Strategy_Deck.pptx", title: "Q1_Sales_Strategy_Deck.pptx", category: "Presentation", department: "Sales", uploadedBy: "Robert Taylor", uploadedOn: "Mar 18, 2026, 04:00 PM", size: "8.3 MB", fileSize: "8.3 MB", status: "Active" },
+      { id: "ADM-DOC-06", fileName: "Data_Privacy_Compliance_GDPR.pdf", title: "Data_Privacy_Compliance_GDPR.pdf", category: "Policy", department: "Administration", uploadedBy: "Legal Ops", uploadedOn: "Mar 20, 2026, 01:10 PM", size: "3.2 MB", fileSize: "3.2 MB", status: "Active" },
+      { id: "ADM-DOC-07", fileName: "Internship_Program_Onboarding_Kit.docx", title: "Internship_Program_Onboarding_Kit.docx", category: "Template", department: "Human Resources", uploadedBy: "Jessica Miller", uploadedOn: "Mar 22, 2026, 03:30 PM", size: "1.1 MB", fileSize: "1.1 MB", status: "Active" }
+  ];
+
   async function fetchDocuments() {
-      const tableBody = document.getElementById('documentTableBody');
-      tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading document records...</td></tr>`;
       try {
           const snapshot = await getDocs(collection(db, "documents"));
-          localDocsCache = [];
+          let loaded = [];
           snapshot.forEach((docSnap) => {
-              localDocsCache.push({ id: docSnap.id, ...docSnap.data() });
+              loaded.push({ id: docSnap.id, ...docSnap.data() });
           });
+          if (loaded.length > 0) {
+              localDocsCache = loaded;
+          } else {
+              localDocsCache = [...sampleAdminDocs];
+          }
           renderTable(localDocsCache);
       } catch (err) {
-          console.error("Error loading documents: ", err);
-          tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load documents: ${err.message}</td></tr>`;
+          console.warn("Using sample admin docs fallback: ", err);
+          localDocsCache = [...sampleAdminDocs];
+          renderTable(localDocsCache);
       }
   }
 

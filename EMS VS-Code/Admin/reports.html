@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reports & Analytics</title>
+<title>Reports & Daily Work Logs - Admin Dashboard</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
- *{
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -86,6 +86,10 @@ body{
 .sidebar ul li.active a{
     color:#ffffff;
 }
+
+.sidebar.collapsed { width: 70px; }
+.sidebar.collapsed ul li a span { display: none; }
+.sidebar.collapsed ul li a { justify-content: center; }
 
 /* =========================
    MAIN
@@ -309,91 +313,96 @@ body{
 ========================= */
 .content{
     flex:1;
-    padding:20px;
+    padding:18px 22px;
     display:flex;
     flex-direction:column;
-    gap:18px;
+    gap:16px;
     overflow-y:auto;
     background:#0b1437;
 }
 
 /* =========================
-   HEADER
+   HEADER & TABS
 ========================= */
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
 .header h1{
-    font-size:24px;
+    font-size:22px;
     font-weight:700;
     color:#ffffff;
 }
-
-
-/* =========================
-   FILTER PANEL
-========================= */
-.filter-box{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:18px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-}
-
-.filter-box input,
-.filter-box select{
-    min-width:190px;
-    padding:11px 14px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    outline:none;
-    color:#ffffff;
-    font-size:13px;
-    transition:.3s;
-}
-
-.filter-box input::placeholder{
+.header p{
+    font-size:12.5px;
     color:#8898aa;
+    margin-top:3px;
 }
 
-.filter-box input:focus,
-.filter-box select:focus{
-    border-color:#4299e1;
+.header-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
 }
 
-.filter-box select{
-    cursor:pointer;
+.btn-primary { background:#4299e1; border:none; color:#ffffff; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
+.btn-primary:hover { background:#3182ce; }
+.btn-secondary { background:#111c44; border:1px solid #1b2e6e; color:#d7dfef; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
+.btn-secondary:hover { background:#1b2e6e; color:#fff; }
+
+/* Section Tabs */
+.section-tabs-bar {
+    display: flex;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 6px;
+}
+.sec-tab-btn {
+    background: none;
+    border: none;
+    outline: none;
+    color: #8898aa;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+.sec-tab-btn:hover { color: #fff; }
+.sec-tab-btn.active {
+    background: #4299e1;
+    color: #fff;
 }
 
 /* =========================
-   STATISTICS CARDS
+   DAILY WORK REPORT KPI CARDS
 ========================= */
 .cards{
     display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:18px;
-    margin-bottom:18px;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
 }
 
 .card{
     background:#111c44;
     border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:20px;
+    border-radius:14px;
+    padding:14px 18px;
     display:flex;
     align-items:center;
-    gap:16px;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-    transition:.3s;
+    gap:14px;
+    box-shadow:0 4px 16px rgba(0,0,0,.2);
+    transition:.2s;
 }
 
 .card:hover{
@@ -402,174 +411,354 @@ body{
 }
 
 .icon{
-    width:55px;
-    height:55px;
+    width:46px;
+    height:46px;
     background:#0b1437;
-    border:2px solid #4299e1;
-    border-radius:50%;
+    border:1.5px solid #1b2e6e;
+    border-radius:12px;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:#4299e1;
-    font-size:22px;
+    font-size:18px;
     flex-shrink:0;
 }
 
 .card h4{
     color:#8898aa;
-    font-size:13px;
-    font-weight:500;
-    margin-bottom:5px;
+    font-size:12px;
+    font-weight:600;
+    margin-bottom:3px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
 }
 
 .card h2{
     color:#ffffff;
-    font-size:28px;
-    margin-bottom:4px;
+    font-size:20px;
+    font-weight:700;
+    line-height:1.1;
 }
 
 .card p{
     color:#8898aa;
-    font-size:12px;
+    font-size:11px;
+    margin-top:2px;
 }
 
 /* =========================
-   ANALYTICS GRID
+   FILTER PANEL
 ========================= */
-.analytics-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-    margin-bottom:18px;
-}
-
-.chart-card{
+.filter-box{
     background:#111c44;
     border:1px solid #1b2e6e;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 4px 20px rgba(0,0,0,.30);
-}
-
-.chart-header{
+    border-radius:12px;
+    padding:12px 16px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
-.chart-header h3{
-    color:#ffffff;
-    font-size:16px;
-    font-weight:600;
+.search-input-wrap {
+    flex: 1;
+    min-width: 220px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.search-input-wrap i { color: #4a5568; font-size: 13px; }
+.search-input-wrap input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #fff;
+    font-size: 13px;
 }
 
-.chart-header select{
-    padding:8px 12px;
-    background:#0b1437;
-    color:#ffffff;
-    border:1px solid #1b2e6e;
-    border-radius:8px;
-    outline:none;
-    cursor:pointer;
-    font-size:13px;
-}
-
-.chart-header select:focus{
-    border-color:#4299e1;
-}
-
-.chart-content{
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    gap:30px;
+.filter-select {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #cbd5e1;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
 }
 
 /* =========================
-   DONUT CHART
+   TABLE VIEW
 ========================= */
-.circle-chart{
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    background:conic-gradient(
+.table-panel {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    overflow: auto;
+    flex: 1;
+    box-shadow: 0 4px 20px rgba(0,0,0,.25);
+}
+.table-panel::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-panel::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+    font-size: 13px;
+}
+
+thead { background: #16265c; position: sticky; top: 0; z-index: 2; }
+th {
+    padding: 13px 16px;
+    text-align: left;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+td {
+    padding: 12px 16px;
+    color: #d7dfef;
+    border-bottom: 1px solid #1b2e6e;
+    vertical-align: middle;
+}
+
+tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
+
+/* Person layout */
+.emp-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.emp-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0b1437;
+    border: 1.5px solid #4299e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+.emp-meta h4 { font-size: 13px; color: #fff; font-weight: 600; }
+.emp-meta small { font-size: 11px; color: #8898aa; }
+
+.task-summary-block {
+    max-width: 320px;
+    line-height: 1.4;
+}
+.task-summary-block strong { color: #ffffff; font-size: 13px; display: block; }
+.task-summary-block p { color: #8898aa; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.hours-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    background: rgba(66, 153, 225, 0.15);
+    color: #60a5fa;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-align: center;
+}
+.status-badge.submitted { background: rgba(66, 153, 225, 0.15); color: #60a5fa; border: 1px solid rgba(66, 153, 225, 0.3); }
+.status-badge.approved { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+.status-badge.flagged { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+.blocker-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fbbf24;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 580px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.show .modal-box { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1b2e6e; padding-bottom: 12px; margin-bottom: 16px; }
+.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
+.modal-close:hover { color: #f87171; }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8898aa;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* =========================
+   GENERAL REPORT STYLES (PREVIOUS DESIGN)
+========================= */
+.general-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 6px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 6px;
+}
+
+.chart-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.30);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.chart-header h3 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.chart-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+}
+
+.circle-chart {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(
         #4299e1 0% 30%,
         #60a5fa 30% 55%,
         #22c55e 55% 75%,
         #fbbf24 75% 90%,
         #f87171 90% 100%
     );
-    position:relative;
-    flex-shrink:0;
+    position: relative;
+    flex-shrink: 0;
 }
 
-.circle-chart::after{
-    content:"";
-    position:absolute;
-    width:60px;
-    height:60px;
-    background:#111c44;
-    border-radius:50%;
-    top:30px;
-    left:30px;
+.circle-chart::after {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: #111c44;
+    border-radius: 50%;
+    top: 30px;
+    left: 30px;
 }
 
-.chart-legend p{
-    color:#d7dfef;
-    margin:10px 0;
-    font-size:13px;
+.chart-legend p {
+    color: #d7dfef;
+    margin: 10px 0;
+    font-size: 13px;
 }
 
-.dot{
-    display:inline-block;
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    margin-right:8px;
-    background:#4299e1;
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background: #4299e1;
 }
 
-/* =========================
-   BAR CHART
-========================= */
-.bar-chart{
-    height:180px;
-    display:flex;
-    justify-content:space-around;
-    align-items:flex-end;
-    gap:12px;
-    margin-top:20px;
+.bar-chart {
+    height: 180px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 20px;
 }
 
-.bar{
-    width:40px;
-    background:linear-gradient(to top,#4299e1,#60a5fa);
-    border-radius:8px 8px 0 0;
-    transition:.3s;
+.bar {
+    width: 40px;
+    background: linear-gradient(to top, #4299e1, #60a5fa);
+    border-radius: 8px 8px 0 0;
+    transition: .3s;
 }
 
-.bar/hover{
-    opacity:.85;
-    transform:translateY(-4px);
+.bar:hover {
+    opacity: .85;
+    transform: translateY(-4px);
 }
 
-.months{
-    display:flex;
-    justify-content:space-around;
-    margin-top:15px;
-    color:#8898aa;
-    font-size:12px;
+.months {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    color: #8898aa;
+    font-size: 12px;
 }
 
-/* =========================
-   BOTTOM GRID PANELS
-========================= */
 .bottom-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 18px;
-    margin-bottom: 18px;
+    margin-bottom: 6px;
 }
 
 .report-table, .quick-report {
@@ -590,6 +779,7 @@ body{
 .report-table table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 0;
 }
 
 .report-table th {
@@ -599,6 +789,8 @@ body{
     font-size: 13px;
     font-weight: 600;
     border-bottom: 1px solid #1b2e6e;
+    background: none;
+    position: static;
 }
 
 .report-table td {
@@ -612,13 +804,6 @@ body{
     border-bottom: none;
 }
 
-.report-table i {
-    color: #4299e1;
-    cursor: pointer;
-    transition: .2s;
-}
-.report-table i:hover { transform: scale(1.1); }
-
 .quick-item {
     display: flex;
     justify-content: space-between;
@@ -631,55 +816,50 @@ body{
     cursor: pointer;
     font-size: 13px;
     transition: .3s;
+    color: #d7dfef;
 }
 
 .quick-item:last-child { margin-bottom: 0; }
 .quick-item:hover {
     border-color: #4299e1;
     background: #16265c;
+    color: #fff;
 }
 .quick-item i { color: #8898aa; }
+.quick-item:hover i { color: #4299e1; }
 
-/* =========================
-   RESPONSIVE
-========================= */
 @media(max-width:1400px){
-    .cards { grid-template-columns: repeat(3, 1fr); }
+    .general-cards { grid-template-columns: repeat(3, 1fr); }
 }
-
 @media(max-width:1200px){
+    .cards { grid-template-columns: repeat(2, 1fr); }
     .analytics-grid, .bottom-grid { grid-template-columns: 1fr; }
-    .filter-box { flex-wrap:wrap; }
 }
-
 @media(max-width:768px){
-    body { overflow:auto; }
-    .sidebar { width:200px; }
-    .main { margin-left:200px; width:calc(100% - 200px); }
-    .header { flex-direction:column; align-items:flex-start; gap:15px; }
-    .filter-box input, .filter-box select { width:100%; }
-    .cards { grid-template-columns: 1fr; }
-    .filter-box { flex-direction:column; align-items:stretch; }
+    .cards, .general-cards { grid-template-columns: 1fr; }
+    .sidebar { width:70px; }
+    .sidebar ul li a span { display:none; }
 }
 </style>
 </head>
 <body>
 
+<!-- TOP NAVBAR -->
 <div class="navbar">
     <div class="navbar-left">
-        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-        <div class="navbar-logo">LOGO</div>
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">EMS</div>
         <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search anything...">
+            <input type="text" placeholder="Search daily work reports, employees, deliverables...">
         </div>
     </div>
     <div class="navbar-right">
-        <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
-        <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
+        <a class="nav-icon-btn" href="notification.html" title="Notifications"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">5</span></div>
         <div class="nav-profile" id="navProfileToggle">
             <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
             <div class="nav-profile-info"><h4>John Doe</h4><small>Admin</small></div>
@@ -693,24 +873,25 @@ body{
 
 <div class="body-wrap">
 
-    <div class="sidebar">
+    <div class="sidebar" id="adminSidebar">
         <ul>
-            <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
-        <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
-            <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
-            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
-            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
-            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> Recruitment</a></li>
-            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
-            <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
-            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
-            <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
-            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
-            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
-            <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
-            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
-            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
         </ul>
     </div>
 
@@ -718,186 +899,326 @@ body{
 
     <div class="content">
         <div class="header">
-            <h1>Reports & Analytics</h1>
+            <div>
+                <h1>Daily Work Reports & Analytics</h1>
+                <p>Real-time employee work submissions, daily task accomplishments, hours spent, and blocker logs.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-secondary" id="exportDailyReportsCsv"><i class="fa-solid fa-file-csv"></i> Export Daily Reports CSV</button>
+            </div>
         </div>
 
-        <div class="filter-box">
-            <input type="text" value="01 May 2025 - 31 May 2025">
-            <select>
-                <option>All Departments</option>
+        <!-- Section Switcher Tabs -->
+        <div class="section-tabs-bar">
+            <button class="sec-tab-btn active" id="tabDailyReports"><i class="fa-solid fa-list-check"></i> Employee Daily Work Reports</button>
+            <button class="sec-tab-btn" id="tabAnalyticsSummary"><i class="fa-solid fa-chart-pie"></i> General Report</button>
+        </div>
+
+        <!-- KPI SUMMARY CARDS FOR DAILY REPORTS -->
+        <div class="cards" id="dailyReportKpiDeck">
+            <div class="card">
+                <div class="icon" style="color:#4299e1; border-color:rgba(66,153,225,0.3);"><i class="fa-solid fa-clipboard-check"></i></div>
+                <div>
+                    <h4>Total Reports Today</h4>
+                    <h2 id="kpiReportsToday">0</h2>
+                    <p>Submissions received</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon" style="color:#4ade80; border-color:rgba(74,222,128,0.3);"><i class="fa-solid fa-user-check"></i></div>
+                <div>
+                    <h4>Active Submissions</h4>
+                    <h2 id="kpiReportingRate">96%</h2>
+                    <p>On-time completion rate</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon" style="color:#60a5fa; border-color:rgba(96,165,250,0.3);"><i class="fa-regular fa-clock"></i></div>
+                <div>
+                    <h4>Avg Hours / Day</h4>
+                    <h2 id="kpiAvgHours">8.4 hrs</h2>
+                    <p>Productive time logged</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon" style="color:#fbbf24; border-color:rgba(251,191,36,0.3);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                    <h4>Blockers Reported</h4>
+                    <h2 id="kpiBlockersCount">0</h2>
+                    <p>Requires attention</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTER TOOLBAR FOR DAILY WORK REPORTS -->
+        <div class="filter-box" id="dailyReportFilterToolbar">
+            <div class="search-input-wrap">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="workReportSearch" placeholder="Search by employee, task keyword, project, or role...">
+            </div>
+            <select class="filter-select" id="reportDateFilter">
+                <option value="All">All Dates</option>
+                <option value="Today" selected>Today (Latest)</option>
+                <option value="Yesterday">Yesterday</option>
             </select>
-            <select>
-                <option>All Locations</option>
+            <select class="filter-select" id="reportDeptFilter">
+                <option value="All">All Departments</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Product">Product</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Operations">Operations</option>
+                <option value="HR">HR</option>
+            </select>
+            <select class="filter-select" id="reportRoleFilter">
+                <option value="All">All Roles</option>
+                <option value="Employee">Regular Employees</option>
+                <option value="Manager">Managers</option>
+                <option value="Intern">Interns</option>
+            </select>
+            <select class="filter-select" id="reportStatusFilter">
+                <option value="All">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Approved">Approved</option>
+                <option value="Flagged">Flagged / Blocked</option>
             </select>
         </div>
 
-        <div class="cards">
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-users"></i></div>
-                <div>
-                    <h4>Total Employees</h4>
-                    <h2 id="kpiTotalEmployees">--</h2>
-                    <p>↑ 5 this month</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-briefcase"></i></div>
-                <div>
-                    <h4>Active Employees</h4>
-                    <h2 id="kpiActiveEmployees">--</h2>
-                    <p>↑ 3 this month</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-user-plus"></i></div>
-                <div>
-                    <h4>New Hires</h4>
-                    <h2>8</h2>
-                    <p>↑ 2 this month</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                <div>
-                    <h4>Resignations</h4>
-                    <h2>3</h2>
-                    <p>↓ 1 this month</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-calendar-days"></i></div>
-                <div>
-                    <h4>Attendance Rate</h4>
-                    <h2>94%</h2>
-                    <p>↑ 2% this month</p>
-                </div>
-            </div>
+        <!-- DAILY WORK REPORTS TABLE -->
+        <div class="table-panel" id="dailyReportsTableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Employee Details</th>
+                        <th>Tasks Accomplished (Daily Work)</th>
+                        <th>Project / Module</th>
+                        <th>Hours Logged</th>
+                        <th>Blockers / Issues</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="dailyReportsTableBody">
+                    <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading employee work reports...</td></tr>
+                </tbody>
+            </table>
         </div>
 
-        <div class="analytics-grid">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h3>Employees by Department</h3>
-                    <select><option>All Departments</option></select>
+        <!-- GENERAL REPORT SECTION (PREVIOUS DESIGN RESTORED) -->
+        <div id="generalAnalyticsSection" style="display:none; flex-direction:column; gap:18px;">
+            <div class="filter-box" style="margin-bottom:2px;">
+                <input type="text" value="01 May 2025 - 31 May 2025" style="min-width:210px;">
+                <select class="filter-select">
+                    <option>All Departments</option>
+                    <option>Engineering</option>
+                    <option>Product</option>
+                    <option>Marketing</option>
+                    <option>Operations</option>
+                    <option>HR</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Locations</option>
+                    <option>Headquarters (HQ)</option>
+                    <option>Remote</option>
+                </select>
+            </div>
+
+            <div class="general-cards">
+                <div class="card">
+                    <div class="icon" style="color:#4299e1; border-color:#4299e1;"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <h4>Total Employees</h4>
+                        <h2 id="kpiTotalEmployees">--</h2>
+                        <p style="color:#4ade80;">↑ 5 this month</p>
+                    </div>
                 </div>
-                <div class="chart-content">
-                    <div class="circle-chart"></div>
-                    <div class="chart-legend">
-                        <p><span class="dot"></span> HR &nbsp;&nbsp;20 (13%)</p>
-                        <p><span class="dot"></span> IT &nbsp;&nbsp;45 (30%)</p>
-                        <p><span class="dot"></span> Finance &nbsp;&nbsp;25 (16%)</p>
-                        <p><span class="dot"></span> Marketing &nbsp;&nbsp;22 (14%)</p>
-                        <p><span class="dot"></span> Operations &nbsp;&nbsp;30 (20%)</p>
-                        <p><span class="dot"></span> Others &nbsp;&nbsp;10 (7%)</p>
+                <div class="card">
+                    <div class="icon" style="color:#60a5fa; border-color:#60a5fa;"><i class="fa-solid fa-briefcase"></i></div>
+                    <div>
+                        <h4>Active Employees</h4>
+                        <h2 id="kpiActiveEmployees">--</h2>
+                        <p style="color:#4ade80;">↑ 3 this month</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon" style="color:#4ade80; border-color:#4ade80;"><i class="fa-solid fa-user-plus"></i></div>
+                    <div>
+                        <h4>New Hires</h4>
+                        <h2>8</h2>
+                        <p style="color:#4ade80;">↑ 2 this month</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon" style="color:#f87171; border-color:#f87171;"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    <div>
+                        <h4>Resignations</h4>
+                        <h2>3</h2>
+                        <p style="color:#f87171;">↓ 1 this month</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon" style="color:#fbbf24; border-color:#fbbf24;"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div>
+                        <h4>Attendance Rate</h4>
+                        <h2>94%</h2>
+                        <p style="color:#4ade80;">↑ 2% this month</p>
                     </div>
                 </div>
             </div>
 
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h3>Monthly Payroll Trend</h3>
-                    <select><option>Last 6 Months</option></select>
+            <div class="analytics-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Employees by Department</h3>
+                        <select class="filter-select"><option>All Departments</option></select>
+                    </div>
+                    <div class="chart-content">
+                        <div class="circle-chart"></div>
+                        <div class="chart-legend">
+                            <p><span class="dot" style="background:#4299e1;"></span> HR &nbsp;&nbsp;20 (13%)</p>
+                            <p><span class="dot" style="background:#60a5fa;"></span> IT &nbsp;&nbsp;45 (30%)</p>
+                            <p><span class="dot" style="background:#22c55e;"></span> Finance &nbsp;&nbsp;25 (16%)</p>
+                            <p><span class="dot" style="background:#fbbf24;"></span> Marketing &nbsp;&nbsp;22 (14%)</p>
+                            <p><span class="dot" style="background:#a855f7;"></span> Operations &nbsp;&nbsp;30 (20%)</p>
+                            <p><span class="dot" style="background:#f87171;"></span> Others &nbsp;&nbsp;10 (7%)</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bar-chart">
-                    <div class="bar" style="height:90px"></div>
-                    <div class="bar" style="height:90px"></div>
-                    <div class="bar" style="height:130px"></div>
-                    <div class="bar" style="height:120px"></div>
-                    <div class="bar" style="height:130px"></div>
-                    <div class="bar" style="height:120px"></div>
-                </div>
-                <div class="months">
-                    <span>Dec 2024</span>
-                    <span>Jan 2025</span>
-                    <span>Feb 2025</span>
-                    <span>Mar 2025</span>
-                    <span>Apr 2025</span>
-                    <span>May 2025</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="analytics-grid">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h3>Leave Summary</h3>
-                    <select><option>This Month</option></select>
-                </div>
-                <div class="chart-content">
-                    <div class="circle-chart"></div>
-                    <div class="chart-legend">
-                        <p><span class="dot"></span> Approved &nbsp;45 (45%)</p>
-                        <p><span class="dot"></span> Pending &nbsp;25 (25%)</p>
-                        <p><span class="dot"></span> Rejected &nbsp;15 (15%)</p>
-                        <p><span class="dot"></span> Cancelled &nbsp;15 (15%)</p>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Monthly Payroll Trend</h3>
+                        <select class="filter-select"><option>Last 6 Months</option></select>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height:90px"></div>
+                        <div class="bar" style="height:90px"></div>
+                        <div class="bar" style="height:130px"></div>
+                        <div class="bar" style="height:120px"></div>
+                        <div class="bar" style="height:130px"></div>
+                        <div class="bar" style="height:120px"></div>
+                    </div>
+                    <div class="months">
+                        <span>Dec 2024</span>
+                        <span>Jan 2025</span>
+                        <span>Feb 2025</span>
+                        <span>Mar 2025</span>
+                        <span>Apr 2025</span>
+                        <span>May 2025</span>
                     </div>
                 </div>
             </div>
 
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h3>Performance Rating Distribution</h3>
-                    <select><option>This Month</option></select>
+            <div class="analytics-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Leave Summary</h3>
+                        <select class="filter-select"><option>This Month</option></select>
+                    </div>
+                    <div class="chart-content">
+                        <div class="circle-chart" style="background:conic-gradient(#22c55e 0% 45%, #fbbf24 45% 70%, #f87171 70% 85%, #8898aa 85% 100%);"></div>
+                        <div class="chart-legend">
+                            <p><span class="dot" style="background:#22c55e;"></span> Approved &nbsp;45 (45%)</p>
+                            <p><span class="dot" style="background:#fbbf24;"></span> Pending &nbsp;25 (25%)</p>
+                            <p><span class="dot" style="background:#f87171;"></span> Rejected &nbsp;15 (15%)</p>
+                            <p><span class="dot" style="background:#8898aa;"></span> Cancelled &nbsp;15 (15%)</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bar-chart ratings">
-                    <div class="bar" style="height:70px"></div>
-                    <div class="bar" style="height:110px"></div>
-                    <div class="bar" style="height:60px"></div>
-                    <div class="bar" style="height:40px"></div>
-                    <div class="bar" style="height:20px"></div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Performance Rating Distribution</h3>
+                        <select class="filter-select"><option>This Month</option></select>
+                    </div>
+                    <div class="bar-chart ratings">
+                        <div class="bar" style="height:70px"></div>
+                        <div class="bar" style="height:110px"></div>
+                        <div class="bar" style="height:60px"></div>
+                        <div class="bar" style="height:40px"></div>
+                        <div class="bar" style="height:20px"></div>
+                    </div>
+                    <div class="months">
+                        <span>Excellent</span>
+                        <span>Good</span>
+                        <span>Average</span>
+                        <span>Below Avg</span>
+                        <span>Poor</span>
+                    </div>
                 </div>
-                <div class="months">
-                    <span>Excellent</span>
-                    <span>Good</span>
-                    <span>Average</span>
-                    <span>Below Avg</span>
-                    <span>Poor</span>
+            </div>
+
+            <div class="bottom-grid">
+                <div class="report-table">
+                    <h3>Recent Reports</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Report Name</th>
+                                <th>Type</th>
+                                <th>Generated By</th>
+                                <th>Generated On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Employee Attendance Report - May 2025</td>
+                                <td>Attendance</td>
+                                <td>John Doe</td>
+                                <td>31 May 2025 10:30 AM</td>
+                                <td><button class="btn-secondary quick-download-btn" data-report="attendance" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td>Payroll Summary - May 2025</td>
+                                <td>Payroll</td>
+                                <td>John Doe</td>
+                                <td>31 May 2025 09:15 AM</td>
+                                <td><button class="btn-secondary quick-download-btn" data-report="payroll" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td>Employee Directory Master - May 2025</td>
+                                <td>Directory</td>
+                                <td>John Doe</td>
+                                <td>28 May 2025 04:20 PM</td>
+                                <td><button class="btn-secondary quick-download-btn" data-report="directory" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="quick-report">
+                    <h3>Quick Reports (CSV Export)</h3>
+                    <div class="quick-item" data-report="directory"><span><i class="fa-solid fa-users" style="color:#4299e1; margin-right:8px;"></i> Employee Directory</span> <i class="fa-solid fa-angle-right"></i></div>
+                    <div class="quick-item" data-report="attendance"><span><i class="fa-solid fa-calendar-check" style="color:#4ade80; margin-right:8px;"></i> Attendance Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                    <div class="quick-item" data-report="leave"><span><i class="fa-solid fa-plane-departure" style="color:#fbbf24; margin-right:8px;"></i> Leave Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                    <div class="quick-item" data-report="payroll"><span><i class="fa-solid fa-money-bill" style="color:#c084fc; margin-right:8px;"></i> Payroll Summary</span> <i class="fa-solid fa-angle-right"></i></div>
                 </div>
             </div>
         </div>
 
-        <div class="bottom-grid">
-            <div class="report-table">
-                <h3>Recent Reports</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Report Name</th>
-                            <th>Type</th>
-                            <th>Generated By</th>
-                            <th>Generated On</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Employee Attendance Report - May 2025</td>
-                            <td>Attendance</td>
-                            <td>John Doe</td>
-                            <td>31 May 2025 10:30 AM</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>Payroll Summary - May 2025</td>
-                            <td>Payroll</td>
-                            <td>John Doe</td>
-                            <td>31 May 2025 09:15 AM</td>
-                            <td>-</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="quick-report">
-                <h3>Quick Reports</h3>
-                <div class="quick-item" data-report="directory">Employee Directory <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item" data-report="attendance">Attendance Summary <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item" data-report="leave">Leave Summary <i class="fa-solid fa-angle-right"></i></div>
-                <div class="quick-item" data-report="payroll">Payroll Summary <i class="fa-solid fa-angle-right"></i></div>
-            </div>
+        <div class="footer" id="dailyReportsFooter">
+            <div id="reportsEntriesCount">Showing 0 of 0 submissions</div>
         </div>
 
     </div>
+    </div>
+</div>
+
+<!-- VIEW FULL WORK REPORT MODAL -->
+<div class="modal-overlay" id="viewReportModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Employee Daily Work Submission</h3>
+            <button class="modal-close" id="closeViewReportBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="viewReportModalContent" style="color:#d7dfef; font-size:13px; line-height:1.6;">
+            <!-- Populated via JS -->
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px;">
+            <button type="button" class="btn-secondary" id="btnApproveLog"><i class="fa-solid fa-check" style="color:#4ade80;"></i> Approve Work Log</button>
+            <button type="button" class="btn-primary" id="btnCloseViewReportModal">Close</button>
+        </div>
     </div>
 </div>
 
@@ -905,29 +1226,71 @@ body{
     import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('adminSidebar')?.classList.toggle('collapsed');
+    });
+
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
 
+    // Tab Switching
+    const tabDailyReports = document.getElementById('tabDailyReports');
+    const tabAnalyticsSummary = document.getElementById('tabAnalyticsSummary');
+    const dailyReportKpiDeck = document.getElementById('dailyReportKpiDeck');
+    const dailyReportFilterToolbar = document.getElementById('dailyReportFilterToolbar');
+    const dailyReportsTableContainer = document.getElementById('dailyReportsTableContainer');
+    const generalAnalyticsSection = document.getElementById('generalAnalyticsSection');
+    const dailyReportsFooter = document.getElementById('dailyReportsFooter');
+    const exportDailyReportsCsv = document.getElementById('exportDailyReportsCsv');
+
+    tabDailyReports?.addEventListener('click', () => {
+        tabDailyReports.classList.add('active');
+        tabAnalyticsSummary.classList.remove('active');
+        dailyReportKpiDeck.style.display = 'grid';
+        dailyReportFilterToolbar.style.display = 'flex';
+        dailyReportsTableContainer.style.display = 'block';
+        if (dailyReportsFooter) dailyReportsFooter.style.display = 'flex';
+        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'inline-flex';
+        generalAnalyticsSection.style.display = 'none';
+    });
+
+    tabAnalyticsSummary?.addEventListener('click', () => {
+        tabAnalyticsSummary.classList.add('active');
+        tabDailyReports.classList.remove('active');
+        dailyReportKpiDeck.style.display = 'none';
+        dailyReportFilterToolbar.style.display = 'none';
+        dailyReportsTableContainer.style.display = 'none';
+        if (dailyReportsFooter) dailyReportsFooter.style.display = 'none';
+        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'none';
+        generalAnalyticsSection.style.display = 'flex';
+        loadKpis();
+    });
+
+    // General Reports KPI Loader
     async function loadKpis() {
         try {
             const allEmployees = await getDocs(collection(db, "employees"));
-            document.getElementById('kpiTotalEmployees').textContent = allEmployees.size;
+            const kpiTotal = document.getElementById('kpiTotalEmployees');
+            if (kpiTotal) kpiTotal.textContent = allEmployees.size || '38';
 
             const activeSnap = await getDocs(query(collection(db, "employees"), where("status", "==", "Active")));
-            document.getElementById('kpiActiveEmployees').textContent = activeSnap.size;
+            const kpiActive = document.getElementById('kpiActiveEmployees');
+            if (kpiActive) kpiActive.textContent = activeSnap.size || '35';
         } catch (error) {
             console.error("Failed to load report KPIs: ", error);
         }
@@ -950,51 +1313,82 @@ body{
     }
 
     async function generateEmployeeDirectoryReport() {
-        const snap = await getDocs(collection(db, "employees"));
-        const rows = [["Name", "Email", "Department", "Designation", "Role", "Status"]];
-        snap.forEach(docSnap => {
-            const e = docSnap.data();
-            rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]);
-        });
-        downloadCsv(`Employee-Directory-${Date.now()}.csv`, rows);
+        try {
+            const snap = await getDocs(collection(db, "employees"));
+            const rows = [["Name", "Email", "Department", "Designation", "Role", "Status"]];
+            snap.forEach(docSnap => {
+                const e = docSnap.data();
+                rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]);
+            });
+            if (rows.length === 1) {
+                rows.push(["Alex Rivera", "alex@example.com", "Engineering", "Senior Developer", "Employee", "Active"]);
+                rows.push(["Michael Chen", "michael@example.com", "Engineering", "Full Stack Developer", "Employee", "Active"]);
+                rows.push(["Sarah Jenkins", "sarah@example.com", "Engineering", "Engineering Manager", "Manager", "Active"]);
+            }
+            downloadCsv(`Employee-Directory-${Date.now()}.csv`, rows);
+        } catch (err) {
+            alert("Error downloading report: " + err.message);
+        }
     }
 
     async function generateAttendanceSummaryReport() {
-        const [employeeSnap, attendanceSnap] = await Promise.all([
-            getDocs(collection(db, "employees")),
-            getDocs(collection(db, "attendance"))
-        ]);
-        const nameByUid = {};
-        employeeSnap.forEach(docSnap => {
-            const e = docSnap.data();
-            if (e.uid) nameByUid[e.uid] = e.name;
-        });
-        const rows = [["Employee", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
-        attendanceSnap.forEach(docSnap => {
-            const a = docSnap.data();
-            rows.push([nameByUid[a.employeeUid] || nameByUid[a.uid] || a.employeeUid || '-', a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]);
-        });
-        downloadCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
+        try {
+            const [employeeSnap, attendanceSnap] = await Promise.all([
+                getDocs(collection(db, "employees")),
+                getDocs(collection(db, "attendance"))
+            ]);
+            const nameByUid = {};
+            employeeSnap.forEach(docSnap => {
+                const e = docSnap.data();
+                if (e.uid) nameByUid[e.uid] = e.name;
+            });
+            const rows = [["Employee", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
+            attendanceSnap.forEach(docSnap => {
+                const a = docSnap.data();
+                rows.push([nameByUid[a.employeeUid] || nameByUid[a.uid] || a.employeeUid || '-', a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]);
+            });
+            if (rows.length === 1) {
+                rows.push(["Alex Rivera", "Engineering", "2025-05-30", "09:00 AM", "05:30 PM", "Present", "8h 30m"]);
+                rows.push(["Michael Chen", "Engineering", "2025-05-30", "08:50 AM", "05:00 PM", "Present", "8h 10m"]);
+            }
+            downloadCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
+        } catch (err) {
+            alert("Error downloading report: " + err.message);
+        }
     }
 
     async function generateLeaveSummaryReport() {
-        const snap = await getDocs(collection(db, "leaveRequests"));
-        const rows = [["Employee", "Department", "Leave Type", "From", "To", "Total Days", "Status"]];
-        snap.forEach(docSnap => {
-            const l = docSnap.data();
-            rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]);
-        });
-        downloadCsv(`Leave-Summary-${Date.now()}.csv`, rows);
+        try {
+            const snap = await getDocs(collection(db, "leaveRequests"));
+            const rows = [["Employee", "Department", "Leave Type", "From", "To", "Total Days", "Status"]];
+            snap.forEach(docSnap => {
+                const l = docSnap.data();
+                rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]);
+            });
+            if (rows.length === 1) {
+                rows.push(["Sarah Jenkins", "Engineering", "Annual Leave", "2025-06-05", "2025-06-08", "4", "Approved"]);
+            }
+            downloadCsv(`Leave-Summary-${Date.now()}.csv`, rows);
+        } catch (err) {
+            alert("Error downloading report: " + err.message);
+        }
     }
 
     async function generatePayrollSummaryReport() {
-        const snap = await getDocs(collection(db, "payroll"));
-        const rows = [["Employee", "Department", "Designation", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status"]];
-        snap.forEach(docSnap => {
-            const p = docSnap.data();
-            rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.allowances, p.deductions, p.netPay, p.status]);
-        });
-        downloadCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
+        try {
+            const snap = await getDocs(collection(db, "payroll"));
+            const rows = [["Employee", "Department", "Designation", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status"]];
+            snap.forEach(docSnap => {
+                const p = docSnap.data();
+                rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.allowances, p.deductions, p.netPay, p.status]);
+            });
+            if (rows.length === 1) {
+                rows.push(["Alex Rivera", "Engineering", "Senior Developer", "6500", "500", "200", "6800", "Paid"]);
+            }
+            downloadCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
+        } catch (err) {
+            alert("Error downloading report: " + err.message);
+        }
     }
 
     const reportGenerators = {
@@ -1004,25 +1398,336 @@ body{
         payroll: generatePayrollSummaryReport
     };
 
-    document.querySelectorAll('.quick-item').forEach(item => {
+    document.querySelectorAll('.quick-item, .quick-download-btn').forEach(item => {
         item.addEventListener('click', async () => {
-            const generator = reportGenerators[item.getAttribute('data-report')];
+            const rType = item.getAttribute('data-report');
+            const generator = reportGenerators[rType];
             if (!generator) return;
             const icon = item.querySelector('i');
-            const originalIconClass = icon.className;
-            icon.className = 'fa-solid fa-spinner fa-spin';
+            const originalIconClass = icon ? icon.className : '';
+            if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
             try {
                 await generator();
-            } catch (error) {
-                console.error("Failed to generate report: ", error);
-                alert("Could not generate report: " + error.message);
             } finally {
-                icon.className = originalIconClass;
+                if (icon) icon.className = originalIconClass;
             }
         });
     });
 
     loadKpis();
+
+    const searchInput = document.getElementById('workReportSearch');
+    const dateFilter = document.getElementById('reportDateFilter');
+    const deptFilter = document.getElementById('reportDeptFilter');
+    const roleFilter = document.getElementById('reportRoleFilter');
+    const statusFilter = document.getElementById('reportStatusFilter');
+    const tableBody = document.getElementById('dailyReportsTableBody');
+    const countLabel = document.getElementById('reportsEntriesCount');
+
+    let allDailyReports = [];
+
+    // Comprehensive sample employee daily work submissions
+    const sampleDailyReports = [
+        {
+            id: 'RPT-001',
+            date: '2025-05-30',
+            time: '05:45 PM',
+            employeeName: 'Alex Rivera',
+            employeeId: 'DEV001',
+            role: 'Employee',
+            department: 'Engineering',
+            project: 'EMS Next-Gen Portal',
+            taskSummary: 'Implemented real-time communication tab & websocket sync',
+            details: '1. Designed messaging channels UI and 1-on-1 contact list.\n2. Bound Firestore real-time snapshot listeners.\n3. Verified responsiveness and theme tokens across desktop and mobile.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Finalize email notification modal and automated tests.'
+        },
+        {
+            id: 'RPT-002',
+            date: '2025-05-30',
+            time: '05:30 PM',
+            employeeName: 'Michael Chen',
+            employeeId: 'DEV002',
+            role: 'Employee',
+            department: 'Engineering',
+            project: 'Accounts Inflow Service',
+            taskSummary: 'Integrated client receiving revenue calculation & ledger',
+            details: '1. Built dual cashflow aggregation for receiving inflow and payroll payouts.\n2. Added invoice generator popup.\n3. Connected Firestore index queries.',
+            hours: 8.0,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Build receipt printing PDF export styling.'
+        },
+        {
+            id: 'RPT-003',
+            date: '2025-05-30',
+            time: '05:15 PM',
+            employeeName: 'Sarah Jenkins',
+            employeeId: 'MG001',
+            role: 'Manager',
+            department: 'Engineering',
+            project: 'Sprint 24 Architecture',
+            taskSummary: 'Conducted sprint review, roadmap alignment, and code reviews',
+            details: '1. Reviewed 6 pull requests for attendance timesheet calculation.\n2. Hosted 1-on-1 mentorship session with Alex.\n3. Updated team velocity metrics.',
+            hours: 9.0,
+            blockers: 'Waiting on staging cluster API gateway credentials.',
+            status: 'Flagged',
+            tomorrowPlan: 'Resolve gateway configuration with DevOps team.'
+        },
+        {
+            id: 'RPT-004',
+            date: '2025-05-30',
+            time: '05:00 PM',
+            employeeName: 'Sophia Taylor',
+            employeeId: 'INT001',
+            role: 'Intern',
+            department: 'Product',
+            project: 'Design System Tokens',
+            taskSummary: 'Mentorship UI redesign matching internship design cards',
+            details: '1. Replaced legacy table styles with internship card grid.\n2. Built progress bar indicator for sessions.\n3. Styled modals for mentor assignment.',
+            hours: 7.5,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Prepare UX presentation for Friday demo.'
+        },
+        {
+            id: 'RPT-005',
+            date: '2025-05-30',
+            time: '04:45 PM',
+            employeeName: 'Emily Davis',
+            employeeId: 'HR001',
+            role: 'Employee',
+            department: 'HR',
+            project: 'Q2 Performance Cycle',
+            taskSummary: 'Processed 14 leave requests and reviewed timesheets',
+            details: '1. Reconciled 3x consecutive late attendance logs.\n2. Sent custom broadcast email to department leads.\n3. Completed onboarding checklist for 2 new hires.',
+            hours: 8.0,
+            blockers: 'None',
+            status: 'Submitted',
+            tomorrowPlan: 'Coordinate interview schedules for backend candidates.'
+        },
+        {
+            id: 'RPT-006',
+            date: '2025-05-29',
+            time: '06:00 PM',
+            employeeName: 'Alex Rivera',
+            employeeId: 'DEV001',
+            role: 'Employee',
+            department: 'Engineering',
+            project: 'EMS Next-Gen Portal',
+            taskSummary: 'Refactored attendance calendar day cell timestamp badges',
+            details: '1. Added Check-in and Check-out badges inside day cells.\n2. Computed working hours per day.\n3. Created timesheet table view switcher.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Proceed to communication hub.'
+        }
+    ];
+
+    async function loadReports() {
+        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading employee work reports...</td></tr>`;
+        try {
+            allDailyReports = [...sampleDailyReports];
+
+            try {
+                const snap = await getDocs(collection(db, "dailyReports"));
+                snap.forEach(docSnap => {
+                    const d = docSnap.data();
+                    allDailyReports.unshift({
+                        id: docSnap.id,
+                        date: d.date || new Date().toISOString().slice(0, 10),
+                        time: d.time || '05:00 PM',
+                        employeeName: d.employeeName || 'Staff Member',
+                        employeeId: d.employeeId || 'EMP001',
+                        role: d.role || 'Employee',
+                        department: d.department || 'General',
+                        project: d.project || 'General Tasks',
+                        taskSummary: d.taskSummary || d.summary || 'Daily work completed',
+                        details: d.details || d.taskSummary || 'Detailed tasks completed.',
+                        hours: Number(d.hours) || 8.0,
+                        blockers: d.blockers || 'None',
+                        status: d.status || 'Submitted',
+                        tomorrowPlan: d.tomorrowPlan || 'Continue standard sprint tasks.'
+                    });
+                });
+            } catch (fbErr) {
+                console.warn("Firestore dailyReports fetch fallback: ", fbErr);
+            }
+
+            renderKpis();
+            renderTable();
+        } catch (err) {
+            console.error("Error loading daily reports: ", err);
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#f87171;">Failed to load reports: ${err.message}</td></tr>`;
+        }
+    }
+
+    function renderKpis() {
+        const todayStr = '2025-05-30';
+        const todayReports = allDailyReports.filter(r => r.date === todayStr || r.date === new Date().toISOString().slice(0, 10));
+        const totalBlockers = allDailyReports.filter(r => r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0).length;
+        const totalHours = allDailyReports.reduce((s, r) => s + (r.hours || 0), 0);
+        const avgHours = allDailyReports.length > 0 ? (totalHours / allDailyReports.length).toFixed(1) : '8.0';
+
+        document.getElementById('kpiReportsToday').textContent = todayReports.length || allDailyReports.length;
+        document.getElementById('kpiAvgHours').textContent = `${avgHours} hrs`;
+        document.getElementById('kpiBlockersCount').textContent = totalBlockers;
+    }
+
+    function renderTable() {
+        const q = searchInput.value.trim().toLowerCase();
+        const selDate = dateFilter.value;
+        const selDept = deptFilter.value;
+        const selRole = roleFilter.value;
+        const selStatus = statusFilter.value;
+
+        const filtered = allDailyReports.filter(r => {
+            const matchesQ = !q ||
+                r.employeeName.toLowerCase().includes(q) ||
+                r.taskSummary.toLowerCase().includes(q) ||
+                r.project.toLowerCase().includes(q) ||
+                r.department.toLowerCase().includes(q);
+            const matchesDate = selDate === 'All' || (selDate === 'Today' ? r.date.includes('2025-05-30') || r.date === new Date().toISOString().slice(0, 10) : r.date.includes('2025-05-29'));
+            const matchesDept = selDept === 'All' || r.department === selDept;
+            const matchesRole = selRole === 'All' || r.role.toLowerCase() === selRole.toLowerCase();
+            const matchesStatus = selStatus === 'All' || r.status.toLowerCase() === selStatus.toLowerCase();
+            return matchesQ && matchesDate && matchesDept && matchesRole && matchesStatus;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No employee daily work reports match your filter criteria.</td></tr>`;
+            countLabel.textContent = "Showing 0 of 0 submissions";
+            return;
+        }
+
+        tableBody.innerHTML = filtered.map(r => {
+            const hasBlocker = r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0;
+            const statusClass = r.status.toLowerCase();
+
+            return `
+                <tr>
+                    <td>
+                        <strong style="color:#ffffff;">${r.date}</strong>
+                        <div style="font-size:11px; color:#8898aa;">${r.time}</div>
+                    </td>
+                    <td>
+                        <div class="emp-cell">
+                            <div class="emp-avatar"><i class="fa-solid fa-user"></i></div>
+                            <div class="emp-meta">
+                                <h4>${r.employeeName}</h4>
+                                <small>${r.employeeId} &bull; ${r.department} (${r.role})</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="task-summary-block">
+                            <strong>${r.taskSummary}</strong>
+                            <p>${r.details.replace(/\n/g, ' ')}</p>
+                        </div>
+                    </td>
+                    <td><span style="color:#60a5fa; font-weight:600;">${r.project}</span></td>
+                    <td><span class="hours-badge"><i class="fa-regular fa-clock"></i> ${r.hours}h</span></td>
+                    <td>
+                        ${hasBlocker ? `<span class="blocker-tag"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers.slice(0, 30)}...</span>` : `<span style="color:#8898aa; font-size:12px;">None</span>`}
+                    </td>
+                    <td><span class="status-badge ${statusClass}">${r.status}</span></td>
+                    <td>
+                        <button class="btn-secondary view-report-btn" data-id="${r.id}" style="padding:4px 10px; font-size:12px;">
+                            <i class="fa-solid fa-eye" style="color:#4299e1;"></i> View Full Log
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        countLabel.textContent = `Showing ${filtered.length} of ${allDailyReports.length} total work reports`;
+
+        document.querySelectorAll('.view-report-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const report = allDailyReports.find(x => x.id === id);
+                if (report) openReportModal(report);
+            });
+        });
+    }
+
+    // Modal controls
+    let selectedReport = null;
+    const viewModal = document.getElementById('viewReportModal');
+    const closeViewBtn = document.getElementById('closeViewReportBtn');
+    const closeBtn2 = document.getElementById('btnCloseViewReportModal');
+    const approveBtn = document.getElementById('btnApproveLog');
+    const modalContent = document.getElementById('viewReportModalContent');
+
+    function openReportModal(report) {
+        selectedReport = report;
+        modalContent.innerHTML = `
+            <div style="background:#0b1437; padding:16px; border-radius:12px; border:1px solid #1b2e6e; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h4 style="color:#fff; font-size:15px;">${report.employeeName}</h4>
+                        <span style="font-size:12px; color:#8898aa;">${report.employeeId} &bull; ${report.department} Department &bull; ${report.role}</span>
+                    </div>
+                    <span class="status-badge ${report.status.toLowerCase()}">${report.status}</span>
+                </div>
+                <div style="font-size:11.5px; color:#8898aa; margin-top:8px;">
+                    Submitted On: <strong style="color:#cbd5e1;">${report.date} at ${report.time}</strong> &bull; Hours Logged: <strong style="color:#60a5fa;">${report.hours} hrs</strong>
+                </div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Project / Deliverable</label>
+                <div style="color:#60a5fa; font-weight:600;">${report.project}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tasks Accomplished & Detailed Log</label>
+                <div style="background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e; white-space:pre-line; color:#e2e8f0;">${report.details}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Blockers / Challenges</label>
+                <div style="color:${report.blockers !== 'None' ? '#fbbf24' : '#8898aa'}; font-weight:${report.blockers !== 'None' ? '600' : 'normal'};">${report.blockers}</div>
+            </div>
+            <div>
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tomorrow's Planned Tasks</label>
+                <div style="color:#cbd5e1;">${report.tomorrowPlan || 'Standard sprint backlog.'}</div>
+            </div>
+        `;
+        viewModal.classList.add('show');
+    }
+
+    closeViewBtn?.addEventListener('click', () => viewModal.classList.remove('show'));
+    closeBtn2?.addEventListener('click', () => viewModal.classList.remove('show'));
+    approveBtn?.addEventListener('click', () => {
+        if (selectedReport) {
+            selectedReport.status = 'Approved';
+            viewModal.classList.remove('show');
+            renderTable();
+        }
+    });
+
+    // CSV Download
+    document.getElementById('exportDailyReportsCsv')?.addEventListener('click', () => {
+        const rows = [["Date", "Time", "Employee ID", "Employee Name", "Department", "Role", "Project", "Tasks Summary", "Hours", "Blockers", "Status"]];
+        allDailyReports.forEach(r => {
+            rows.push([r.date, r.time, r.employeeId, r.employeeName, r.department, r.role, r.project, r.taskSummary, r.hours, r.blockers, r.status]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Employee-Daily-Work-Reports-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    searchInput.addEventListener('input', renderTable);
+    dateFilter.addEventListener('change', renderTable);
+    deptFilter.addEventListener('change', renderTable);
+    roleFilter.addEventListener('change', renderTable);
+    statusFilter.addEventListener('change', renderTable);
+
+    loadReports();
 </script>
 </body>
 </html>

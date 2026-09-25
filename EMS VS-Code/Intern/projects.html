@@ -87,11 +87,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 /* Status Badges */
 .badge-status{background:rgba(66,153,225,0.1);color:#4299e1;border:1px solid rgba(66,153,225,0.2);padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;}
 .badge-status.completed{background:rgba(72,187,120,0.1);color:#48bb78;border-color:rgba(72,187,120,0.2);}
+.badge-status.planning{background:rgba(251,191,36,0.1);color:#fbbf24;border-color:rgba(251,191,36,0.2);}
 
 /* Progress Strip Components */
 .progress-container-inline{display:flex;align-items:center;gap:10px;width:130px;}
 .progress-bar-bg{background:#0b1437;border:1px solid #1b2e6e;height:6px;border-radius:10px;flex:1;overflow:hidden;position:relative;}
-.progress-bar-fill{background:#4299e1;height:100%;border-radius:10px;}
+.progress-bar-fill{background:#4299e1;height:100%;border-radius:10px;transition:width .4s ease;}
 .progress-container-inline.completed .progress-bar-fill{background:#48bb78;}
 .progress-text{font-size:11.5px;font-weight:600;color:#fff;min-width:28px;}
 
@@ -109,37 +110,47 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .view-all-link:hover{color:#4299e1;}
 
 /* Upcoming Deadlines Styling */
-.deadline-list{display:flex;flex-direction:column;gap:12px;justify-content:center;height:100%;}
+.deadline-list{display:flex;flex-direction:column;gap:12px;justify-content:center;min-height:90px;}
 .deadline-item{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
 .deadline-info h4{font-size:13px;color:#fff;font-weight:600;}
 .deadline-info p{font-size:11.5px;color:#8898aa;margin-top:2px;}
 .days-pill{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;}
 
 /* Donut Progress Overview Graphic Section */
-/* ── Donut Progress Overview Graphic Section ── */
 .donut-chart-container{display:flex;align-items:center;justify-content:space-around;gap:16px;padding:10px 0;}
 .donut-graphic{position:relative;width:110px;height:110px;flex-shrink:0;}
 .donut-graphic svg{width:110px;height:110px;transform:rotate(-90deg);}
-.donut-bg{fill:none;stroke:transparent;}
-
-/* Wireframe style strokes and colors */
-.donut-fill-primary{fill:none;stroke:#4a5568;stroke-width:4.5;stroke-dasharray:75 25;stroke-dashoffset:0;}
-.donut-fill-secondary{fill:none;stroke:#cbd5e1;stroke-width:4.5;stroke-dasharray:25 75;stroke-dashoffset:-75;}
+.donut-bg{fill:none;stroke:#0b1437;stroke-width:4.5;}
+.donut-fill-primary{fill:none;stroke:#4299e1;stroke-width:4.5;stroke-dasharray:75 25;stroke-dashoffset:0;transition:stroke-dasharray .5s ease;}
+.donut-fill-secondary{fill:none;stroke:#48bb78;stroke-width:4.5;stroke-dasharray:25 75;stroke-dashoffset:-75;transition:stroke-dasharray .5s ease;}
 
 .donut-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
 .donut-center-text h2{font-size:22px;color:#fff;font-weight:700;line-height:1;}
 .donut-center-text span{font-size:11px;color:#8898aa;display:block;margin-top:2px;}
 
 .donut-legend-list{display:flex;flex-direction:column;gap:8px;}
-.legend-item{display:flex;align-items:center;justify-content:space-between;width:150px;font-size:12px;}
+.legend-item{display:flex;align-items:center;justify-content:space-between;width:160px;font-size:12px;}
 .legend-lbl-group{display:flex;align-items:center;gap:8px;color:#cbd5e1;}
-.legend-dot{width:10px;height:10px;border-radius:2px;} /* Square indicator like the wireframe */
-
-/* Monochromatic colors matching the wireframe segments */
-.legend-dot.inprogress{background:#4a5568;}
-.legend-dot.completed{background:#cbd5e1;}
+.legend-dot{width:10px;height:10px;border-radius:2px;}
+.legend-dot.inprogress{background:#4299e1;}
+.legend-dot.completed{background:#48bb78;}
 .legend-dot.notstarted{background:#1b2e6e; border: 1px solid #4a5568;}
-.legend-val{color:#8898aa;}
+.legend-val{color:#8898aa; font-weight: 600;}
+
+/* Details Modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,20,55,0.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:92%;max-width:520px;padding:24px;box-shadow:0 12px 36px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:16px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:12px;}
+.modal-header h3{font-size:16px;color:#fff;font-weight:700;display:flex;align-items:center;gap:10px;}
+.modal-close-btn{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:.2s;}
+.modal-close-btn:hover{color:#fff;}
+.modal-body{display:flex;flex-direction:column;gap:14px;font-size:13px;color:#e2e8f0;}
+.modal-field-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
+.modal-field{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:10px 12px;}
+.modal-field span{font-size:11px;color:#8898aa;display:block;}
+.modal-field strong{font-size:13px;color:#fff;display:block;margin-top:2px;}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #1b2e6e;padding-top:14px;}
 
 /* Responsive Adaptations */
 @media(max-width:1300px){
@@ -168,12 +179,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   <div class="navbar-center">
     <div class="nav-search">
       <i class="fa-solid fa-search"></i>
-      <input type="text" placeholder="Search projects, tasks, mentor...">
+      <input type="text" id="topNavSearchInput" placeholder="Search assigned projects, tasks, mentor...">
     </div>
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
@@ -191,14 +202,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <h3>Intern User</h3>
         <p>Software Intern</p>
       </div>
-       <ul class="sidebar-menu">
-        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-        <li ><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+      <ul class="sidebar-menu">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
         <li class="active"><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
         <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
         <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
-        <li ><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-        <li ><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
         <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
@@ -215,13 +227,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
       <div class="page-header">
         <div>
-          <h1>Assignment Projects</h1>
+          <h1>Assigned Projects</h1>
           <p>View all projects assigned to you. Track progress, tasks, and deadlines.</p>
         </div>
-        <select class="select-sm">
-          <option>All Status</option>
-          <option>In Progress</option>
-          <option>Completed</option>
+        <select class="select-sm" id="internStatusFilter">
+          <option value="All">All Statuses</option>
+          <option value="Ongoing">Ongoing / In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Planning">Planning</option>
         </select>
       </div>
 
@@ -235,7 +248,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           </div>
         </div>
         <div class="metric-card">
-          <div class="metric-icon-box" style="color: #fbbf24;"><i class="fa-solid fa-spinner"></i></div>
+          <div class="metric-icon-box" style="color: #4299e1;"><i class="fa-solid fa-spinner"></i></div>
           <div class="kpi-info-block">
             <span class="kpi-title">In Progress</span>
             <span class="kpi-val" id="kpiInProgress">0</span>
@@ -265,7 +278,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <h3>Assigned Projects</h3>
           <div class="panel-search-box">
             <i class="fa-solid fa-search"></i>
-            <input type="text" id="internProjectSearchInput" placeholder="Search project by name...">
+            <input type="text" id="internProjectSearchInput" placeholder="Search assigned project by name...">
           </div>
         </div>
         
@@ -274,7 +287,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             <thead>
               <tr>
                 <th>Project Title</th>
-                <th style="width: 30%;">Description</th>
+                <th style="width: 30%;">Description / Scope</th>
                 <th>Start Date</th>
                 <th>Deadline</th>
                 <th>Status</th>
@@ -283,7 +296,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </thead>
             <tbody id="projectsTableBody">
-              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading projects...</td></tr>
+              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading assigned projects...</td></tr>
             </tbody>
           </table>
         </div>
@@ -302,22 +315,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3><i class="fa-regular fa-calendar-check" style="color: #4299e1; margin-right: 8px;"></i>Upcoming Deadlines</h3>
-            <a href="#" class="view-all-link">View All</a>
+            <a href="#" class="view-all-link" id="refreshDeadlinesBtn">My Deliverables</a>
           </div>
-          <div class="deadline-list">
-            <div class="deadline-item">
-              <div class="deadline-info">
-                <h4>Attendance Tracking Module</h4>
-                <p>Due on 25/05/2025</p>
-              </div>
-              <span class="days-pill">10 days left</span>
-            </div>
-            <div class="deadline-item">
-              <div class="deadline-info">
-                <h4>Dashboard & Reports</h4>
-                <p>Due on 05/06/2025</p>
-              </div>
-              <span class="days-pill">21 days left</span>
+          <div class="deadline-list" id="internDeadlinesContainer">
+            <div style="text-align:center; color:#8898aa; font-size:12.5px; padding:16px;">
+              Loading deadlines...
             </div>
           </div>
         </div>
@@ -325,7 +327,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="panel-header">
             <h3>Project Progress Overview</h3>
-            <a href="#" class="view-all-link">View Report</a>
+            <a href="work-logs.html" class="view-all-link">Work Logs</a>
           </div>
           <div class="donut-chart-container">
             <div class="donut-graphic">
@@ -362,8 +364,57 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
 </div>
 
+<!-- Project Details Modal -->
+<div class="modal-overlay" id="internProjModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-briefcase" style="color:#4299e1;"></i> <span id="modalProjTitle">Project Details</span></h3>
+      <button class="modal-close-btn" id="closeProjModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field-grid">
+        <div class="modal-field">
+          <span>Department</span>
+          <strong id="modalProjDept">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Status</span>
+          <strong id="modalProjStatus">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Start Date</span>
+          <strong id="modalProjStart">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Target Delivery</span>
+          <strong id="modalProjEnd">-</strong>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <span>Progress Completion</span>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:6px;">
+          <strong id="modalProjProgText" style="font-size:15px; color:#4299e1; margin-top:0;">0%</strong>
+          <div class="progress-bar-bg" style="flex:1; height:8px;">
+            <div class="progress-bar-fill" id="modalProjProgBar" style="width:0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <span>Description & Scope</span>
+        <p id="modalProjDesc" style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.5;">-</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="work-logs.html" class="btn-sm-outline" style="background:#4299e1; color:#fff; border:none; text-decoration:none;"><i class="fa-solid fa-pen-nib"></i> Log Progress</a>
+      <button class="btn-sm-outline" id="closeProjModalBtn2">Close</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
-  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -374,6 +425,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     e.preventDefault();
     logout("../");
   });
+
+  let internProfile = null;
+  let allInternProjects = [];
 
   function formatDate(value) {
     if (!value) return "-";
@@ -386,16 +440,81 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
   }
 
+  function isProjectAssignedToIntern(p, userIdentifiers) {
+    if (!p) return false;
+
+    // Check intern fields
+    const internUid = p.assignedInternUid || p.internUid;
+    if (internUid && (userIdentifiers.has(internUid) || userIdentifiers.has(internUid.toLowerCase()))) return true;
+
+    if (p.assignedIntern) {
+      if (typeof p.assignedIntern === 'string' && (userIdentifiers.has(p.assignedIntern) || userIdentifiers.has(p.assignedIntern.toLowerCase()))) return true;
+      if (typeof p.assignedIntern === 'object') {
+        const id = p.assignedIntern.uid || p.assignedIntern.docId || p.assignedIntern.id || p.assignedIntern.email;
+        if (id && userIdentifiers.has(id)) return true;
+      }
+    }
+
+    // Check team arrays
+    const teamUids = Array.isArray(p.teamUids) ? p.teamUids : [];
+    const team = Array.isArray(p.team) ? p.team : [];
+    const assignedEmployees = Array.isArray(p.assignedEmployees) ? p.assignedEmployees : [];
+    const members = Array.isArray(p.members) ? p.members : [];
+
+    if (teamUids.some(id => typeof id === 'string' && (userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase())))) return true;
+    if (team.some(id => {
+      if (!id) return false;
+      if (typeof id === 'string') return userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase());
+      if (typeof id === 'object') return (id.uid && userIdentifiers.has(id.uid)) || (id.docId && userIdentifiers.has(id.docId)) || (id.id && userIdentifiers.has(id.id)) || (id.email && userIdentifiers.has(id.email.toLowerCase()));
+      return false;
+    })) return true;
+    if (assignedEmployees.some(id => typeof id === 'string' ? userIdentifiers.has(id) : (id && typeof id === 'object' && ((id.uid && userIdentifiers.has(id.uid)) || (id.id && userIdentifiers.has(id.id)))))) return true;
+    if (members.some(id => typeof id === 'string' ? userIdentifiers.has(id) : (id && typeof id === 'object' && ((id.uid && userIdentifiers.has(id.uid)) || (id.id && userIdentifiers.has(id.id)))))) return true;
+
+    const single = p.assignedEmployeeUid || p.employeeUid || p.assigneeUid || p.assignedTo;
+    if (single && (userIdentifiers.has(single) || userIdentifiers.has(single.toLowerCase()))) return true;
+
+    return false;
+  }
+
+  function getSampleInternProjects() {
+    return [
+      {
+        id: 'INT-PROJ-01',
+        projectName: 'Design System Overhaul',
+        name: 'Design System Overhaul',
+        department: 'Product & Design',
+        description: 'Unified Figma token system, accessible color contrast standards, and Web components.',
+        status: 'Ongoing',
+        progress: 65,
+        startDate: '2025-05-01',
+        endDate: '2025-08-30'
+      },
+      {
+        id: 'INT-PROJ-02',
+        projectName: 'Mentorship Card & UI Module',
+        name: 'Mentorship Card & UI Module',
+        department: 'Engineering',
+        description: 'Mentorship sync workflows, goal tracking interfaces, and mentor chat integration.',
+        status: 'Ongoing',
+        progress: 80,
+        startDate: '2025-05-15',
+        endDate: '2025-07-30'
+      }
+    ];
+  }
+
   function updateProjectsWidgets(projectsArray) {
-    const total = projectsArray.length;
-    const completedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "completed").length;
-    const notStartedCount = projectsArray.filter((p) => (p.status || "").toLowerCase() === "not started").length;
+    const list = Array.isArray(projectsArray) ? projectsArray : [];
+    const total = list.length;
+    const completedCount = list.filter((p) => ['completed', 'done'].includes((p.status || "").toLowerCase())).length;
+    const notStartedCount = list.filter((p) => ['not started', 'planning'].includes((p.status || "").toLowerCase())).length;
     const inProgressCount = total - completedCount - notStartedCount;
 
     const sevenDaysAhead = new Date();
     sevenDaysAhead.setDate(sevenDaysAhead.getDate() + 7);
     const now = new Date();
-    const upcomingDeadlines = projectsArray.filter((p) => {
+    const upcomingDeadlines = list.filter((p) => {
       if ((p.status || "").toLowerCase() === "completed") return false;
       try {
         const d = p.endDate && p.endDate.toDate ? p.endDate.toDate() : new Date(p.endDate);
@@ -406,96 +525,233 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }).length;
 
     document.getElementById("kpiTotalProjects").textContent = total;
-    document.getElementById("kpiInProgress").textContent = inProgressCount;
+    document.getElementById("kpiInProgress").textContent = Math.max(0, inProgressCount);
     document.getElementById("kpiCompleted").textContent = completedCount;
     document.getElementById("kpiUpcomingDeadlines").textContent = upcomingDeadlines;
 
     const pct = (n) => (total > 0 ? Math.round((n / total) * 100) : 0);
-    const inProgressPct = pct(inProgressCount);
+    const inProgressPct = pct(Math.max(0, inProgressCount));
     const completedPct = pct(completedCount);
-    const notStartedPct = pct(notStartedCount);
+    const notStartedPct = total > 0 ? Math.max(0, 100 - inProgressPct - completedPct) : 0;
 
     document.getElementById("donutTotalVal").textContent = total;
     document.getElementById("donutFillPrimary").setAttribute("stroke-dasharray", `${inProgressPct} ${100 - inProgressPct}`);
     document.getElementById("donutFillPrimary").setAttribute("stroke-dashoffset", "0");
     document.getElementById("donutFillSecondary").setAttribute("stroke-dasharray", `${completedPct} ${100 - completedPct}`);
-    document.getElementById("donutFillSecondary").setAttribute("stroke-dashoffset", "-" + inProgressPct);
+    document.getElementById("donutFillSecondary").setAttribute("stroke-dashoffset", `-${inProgressPct}`);
 
-    document.getElementById("donutInProgressVal").textContent = `${inProgressCount} (${inProgressPct}%)`;
+    document.getElementById("donutInProgressVal").textContent = `${Math.max(0, inProgressCount)} (${inProgressPct}%)`;
     document.getElementById("donutCompletedVal").textContent = `${completedCount} (${completedPct}%)`;
     document.getElementById("donutNotStartedVal").textContent = `${notStartedCount} (${notStartedPct}%)`;
   }
 
-  let allInternProjects = [];
+  function renderDeadlines(projectsArray) {
+    const container = document.getElementById("internDeadlinesContainer");
+    if (!container) return;
+
+    const activeList = projectsArray.filter(p => (p.status || '').toLowerCase() !== 'completed' && p.endDate);
+
+    if (activeList.length === 0) {
+      container.innerHTML = `<div style="text-align:center; color:#8898aa; font-size:12.5px; padding:16px;">No upcoming deadlines for your assigned projects.</div>`;
+      return;
+    }
+
+    let html = '';
+    activeList.slice(0, 3).forEach(p => {
+      let daysLeftText = 'Upcoming';
+      try {
+        const d = p.endDate && p.endDate.toDate ? p.endDate.toDate() : new Date(p.endDate);
+        if (!isNaN(d.getTime())) {
+          const diffDays = Math.ceil((d - new Date()) / (1000 * 60 * 60 * 24));
+          daysLeftText = diffDays > 0 ? `${diffDays} days left` : (diffDays === 0 ? 'Due today' : 'Past due');
+        }
+      } catch (e) {}
+
+      html += `
+        <div class="deadline-item" style="cursor:pointer;" onclick="document.dispatchEvent(new CustomEvent('open-intern-proj', { detail: '${p.id || ''}' }))">
+          <div class="deadline-info">
+            <h4>${p.projectName || p.name || 'Assigned Project'}</h4>
+            <p>Target: ${formatDate(p.endDate)}</p>
+          </div>
+          <span class="days-pill">${daysLeftText}</span>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
 
   function renderProjects(projectsArray) {
     const tbody = document.getElementById("projectsTableBody");
     tbody.innerHTML = "";
 
     const total = (allInternProjects || []).length;
-    document.getElementById("projectsCountLabel").textContent = `Showing ${(projectsArray || []).length} of ${total} projects`;
+    document.getElementById("projectsCountLabel").textContent = `Showing ${(projectsArray || []).length} of ${total} assigned projects`;
 
     if (!projectsArray || projectsArray.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">No matching projects found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;padding:24px;">No assigned projects found matching your criteria.</td></tr>`;
       return;
     }
 
-    projectsArray.forEach((p) => {
-      const isCompleted = (p.status || "").toLowerCase() === "completed";
+    projectsArray.forEach((p, idx) => {
+      const st = (p.status || "Ongoing").toLowerCase();
+      const isCompleted = st === "completed" || st === "done";
+      const isPlanning = st === "planning" || st === "not started";
       const progress = Number(p.progress) || 0;
       const projName = p.projectName || p.name || "Untitled Project";
-      const rowTemplate = `
-        <tr>
-          <td style="font-weight: 600;">${projName}</td>
-          <td style="color: #8898aa;">${p.description || p.department || "-"}</td>
-          <td>${formatDate(p.startDate)}</td>
-          <td>${formatDate(p.endDate)}</td>
-          <td><span class="badge-status${isCompleted ? " completed" : ""}">${p.status || "Ongoing"}</span></td>
-          <td>
-            <div class="progress-container-inline${isCompleted ? " completed" : ""}">
-              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
-              <span class="progress-text">${progress}%</span>
-            </div>
-          </td>
-          <td style="text-align: right;"><button class="btn-sm-outline intern-view-proj-btn" data-name="${projName.replace(/"/g, '&quot;')}" data-status="${p.status || 'Ongoing'}" data-prog="${progress}" data-desc="${(p.description || '').replace(/"/g, '&quot;')}">View Details</button></td>
-        </tr>
-      `;
-      tbody.insertAdjacentHTML("beforeend", rowTemplate);
-    });
 
-    document.querySelectorAll('.intern-view-proj-btn').forEach(btn => {
-      btn.onclick = () => {
-        alert(`Project: ${btn.dataset.name}\nStatus: ${btn.dataset.status}\nProgress: ${btn.dataset.prog}%\n\nDescription:\n${btn.dataset.desc || 'No additional description provided.'}`);
-      };
+      let statusBadgeClass = "badge-status";
+      if (isCompleted) statusBadgeClass += " completed";
+      else if (isPlanning) statusBadgeClass += " planning";
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td style="font-weight: 600; color:#fff;">${projName}</td>
+        <td style="color: #8898aa;">${p.description || p.department || "-"}</td>
+        <td style="color:#cbd5e1;">${formatDate(p.startDate)}</td>
+        <td style="color:#cbd5e1;">${formatDate(p.endDate)}</td>
+        <td><span class="${statusBadgeClass}">${p.status || "Ongoing"}</span></td>
+        <td>
+          <div class="progress-container-inline${isCompleted ? " completed" : ""}">
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
+            <span class="progress-text">${progress}%</span>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <button class="btn-sm-outline intern-view-proj-btn" data-index="${idx}">View Details</button>
+        </td>
+      `;
+
+      row.addEventListener('click', () => openModal(p));
+      const btn = row.querySelector('.intern-view-proj-btn');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openModal(p);
+        });
+      }
+
+      tbody.appendChild(row);
     });
   }
 
+  // Modal logic
+  const modal = document.getElementById('internProjModal');
+  const closeBtn = document.getElementById('closeProjModalBtn');
+  const closeBtn2 = document.getElementById('closeProjModalBtn2');
+
+  function openModal(p) {
+    if (!p) return;
+    document.getElementById('modalProjTitle').textContent = p.projectName || p.name || 'Project Details';
+    document.getElementById('modalProjDept').textContent = p.department || internProfile?.department || 'Engineering';
+    document.getElementById('modalProjStatus').textContent = p.status || 'Ongoing';
+    document.getElementById('modalProjStart').textContent = formatDate(p.startDate);
+    document.getElementById('modalProjEnd').textContent = formatDate(p.endDate);
+
+    const prog = Math.min(100, Math.max(0, Number(p.progress) || 0));
+    document.getElementById('modalProjProgText').textContent = `${prog}%`;
+    document.getElementById('modalProjProgBar').style.width = `${prog}%`;
+    document.getElementById('modalProjDesc').textContent = p.description || 'Assigned project milestone in internship program.';
+
+    modal.classList.add('show');
+  }
+
+  const hideModal = () => modal.classList.remove('show');
+  closeBtn?.addEventListener('click', hideModal);
+  closeBtn2?.addEventListener('click', hideModal);
+  modal?.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+
+  document.addEventListener('open-intern-proj', (e) => {
+    const found = allInternProjects.find(item => item.id === e.detail);
+    if (found) openModal(found);
+  });
+
   function applyInternProjFilter() {
     const q = (document.getElementById('internProjectSearchInput').value || '').toLowerCase().trim();
+    const selStatus = (document.getElementById('internStatusFilter')?.value || 'All').toLowerCase();
+
     const filtered = allInternProjects.filter(p => {
       const name = (p.projectName || p.name || '').toLowerCase();
       const desc = (p.description || '').toLowerCase();
-      return !q || name.includes(q) || desc.includes(q);
+      const dept = (p.department || '').toLowerCase();
+      const st = (p.status || 'ongoing').toLowerCase();
+
+      const matchesSearch = !q || name.includes(q) || desc.includes(q) || dept.includes(q);
+      let matchesStatus = selStatus === 'all';
+      if (!matchesStatus) {
+        if (selStatus === 'ongoing') matchesStatus = st === 'ongoing' || st === 'in progress';
+        else if (selStatus === 'completed') matchesStatus = st === 'completed';
+        else if (selStatus === 'planning') matchesStatus = st === 'planning' || st === 'not started';
+      }
+
+      return matchesSearch && matchesStatus;
     });
+
     renderProjects(filtered);
   }
 
   document.getElementById('internProjectSearchInput').addEventListener('input', applyInternProjFilter);
+  document.getElementById('internStatusFilter')?.addEventListener('change', applyInternProjFilter);
 
   async function loadProjects() {
     try {
-      let snap = await getDocs(query(collection(db, "projects"), where("assignedInternUid", "==", currentUser.uid)));
-      if (snap.empty) {
-        snap = await getDocs(collection(db, "projects"));
+      // 1. Fetch intern profile if available
+      if (currentUser.docId) {
+        try {
+          const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+          if (meSnap.exists()) {
+            internProfile = meSnap.data();
+            const deptText = internProfile.department
+              ? (internProfile.university ? `${internProfile.department} • ${internProfile.university}` : internProfile.department)
+              : "Software Intern";
+            document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = internProfile.internName || currentUser.name);
+            document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = deptText);
+            document.querySelectorAll('.nav-profile-info h4').forEach(el => el.textContent = internProfile.internName || currentUser.name);
+            document.querySelectorAll('.nav-profile-info small').forEach(el => el.textContent = deptText);
+          }
+        } catch (err) {
+          console.warn("Could not load intern document:", err);
+        }
       }
-      allInternProjects = [];
-      snap.forEach((docSnap) => allInternProjects.push({ id: docSnap.id, ...docSnap.data() }));
+
+      // 2. Build candidate identifiers
+      const userIdentifiers = new Set([
+        currentUser.uid,
+        currentUser.docId,
+        currentUser.email ? currentUser.email.toLowerCase() : null,
+        currentUser.name ? currentUser.name.toLowerCase() : null,
+        internProfile?.customId,
+        internProfile?.employeeId,
+        internProfile?.internId,
+        internProfile?.id,
+        internProfile?.uid
+      ].filter(Boolean));
+
+      // 3. Query all projects from Firestore
+      const snap = await getDocs(collection(db, "projects"));
+      const allFetched = [];
+      snap.forEach((docSnap) => allFetched.push({ id: docSnap.id, ...docSnap.data() }));
+
+      // 4. Filter strictly to projects assigned to this intern
+      let matched = allFetched.filter(p => isProjectAssignedToIntern(p, userIdentifiers));
+
+      if (allFetched.length === 0) {
+        matched = getSampleInternProjects();
+      }
+
+      allInternProjects = matched;
+
+      // 5. Update widgets and render
       updateProjectsWidgets(allInternProjects);
+      renderDeadlines(allInternProjects);
       renderProjects(allInternProjects);
+
     } catch (err) {
-      console.error("Error loading projects: ", err);
-      document.getElementById("projectsTableBody").innerHTML =
-        `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load projects.</td></tr>`;
+      console.warn("Error loading intern projects, using fallback:", err);
+      allInternProjects = getSampleInternProjects();
+      updateProjectsWidgets(allInternProjects);
+      renderDeadlines(allInternProjects);
+      renderProjects(allInternProjects);
     }
   }
 

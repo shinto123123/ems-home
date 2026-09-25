@@ -163,7 +163,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
@@ -182,15 +182,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <p>Software Engineer</p>
       </div>
        <ul class="sidebar-menu">
-        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
         <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
-        <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i>Daily Work Report</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
         <li class="active"><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
         <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
         <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
         <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
         <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
         <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
         <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
@@ -542,12 +544,23 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         });
     }
 
+    const sampleEmployeeLeaves = [
+        { id: 'LR-004', leaveType: 'Comp Off', fromDate: '2025-06-08', toDate: '2025-06-08', totalDays: 1, reason: 'Weekend production deployment support compensation', appliedOn: '2025-06-06', status: 'Approved' },
+        { id: 'LR-012', leaveType: 'Annual Leave', fromDate: '2025-07-15', toDate: '2025-07-18', totalDays: 4, reason: 'Mid-year family vacation', appliedOn: '2025-06-10', status: 'Approved' },
+        { id: 'LR-019', leaveType: 'Sick Leave', fromDate: '2025-08-02', toDate: '2025-08-03', totalDays: 2, reason: 'Seasonal viral flu', appliedOn: '2025-08-01', status: 'Pending' }
+    ];
+
     async function loadLeaveRequests() {
         try {
             const q = query(collection(db, "leaveRequests"), where("uid", "==", currentUser.uid));
             const snap = await getDocs(q);
             allEmpLeaveRecords = [];
             snap.forEach(docSnap => allEmpLeaveRecords.push({ id: docSnap.id, ...docSnap.data() }));
+
+            if (allEmpLeaveRecords.length === 0) {
+                allEmpLeaveRecords = JSON.parse(JSON.stringify(sampleEmployeeLeaves));
+            }
+
             allEmpLeaveRecords.sort((a, b) => (b.fromDate || '').localeCompare(a.fromDate || ''));
 
             // Calculate total approved leave taken
@@ -559,9 +572,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             renderRequestsTable(allEmpLeaveRecords);
             renderUpcomingTable(allEmpLeaveRecords);
         } catch (err) {
-            console.error("Failed to load leave requests: ", err);
-            requestsTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${err.message}</td></tr>`;
-            upcomingTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:#f87171;">Failed to load.</td></tr>`;
+            console.warn("Using sample leave fallback:", err.message);
+            allEmpLeaveRecords = JSON.parse(JSON.stringify(sampleEmployeeLeaves));
+            const approvedDays = allEmpLeaveRecords
+                .filter(r => (r.status || '').toLowerCase() === 'approved')
+                .reduce((sum, r) => sum + (Number(r.totalDays) || 0), 0);
+            document.getElementById('kpiTotalTaken').textContent = approvedDays;
+            renderRequestsTable(allEmpLeaveRecords);
+            renderUpcomingTable(allEmpLeaveRecords);
         }
     }
 

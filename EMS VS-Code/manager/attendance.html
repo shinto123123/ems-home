@@ -211,7 +211,7 @@ body {
 }
 
 /* =========================
-   SIDEBAR (Manager)
+   SIDEBAR
 ========================= */
 .sidebar {
     width: 240px;
@@ -385,7 +385,7 @@ body {
     min-height: 450px;
 }
 
-/* Left Team Panel */
+/* Left Employee Panel */
 .employee-panel {
     width: 310px;
     flex-shrink: 0;
@@ -448,51 +448,44 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    min-width: 0;
 }
 
-.employee-avatar-placeholder {
-    width: 36px;
-    height: 36px;
+.emp-avatar {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #0b1437;
-    border: 1.5px solid #1b2e6e;
+    border: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #8898aa;
-    font-size: 14px;
-    flex-shrink: 0;
-}
-.employee.active .employee-avatar-placeholder { border-color: #4299e1; color: #4299e1; }
-
-.employee-info h4 {
+    color: #4299e1;
     font-size: 13px;
-    font-weight: 600;
-    color: #ffffff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 700;
 }
 
-.employee-info span {
+.emp-details h4 {
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.emp-details span {
     font-size: 11px;
     color: #8898aa;
-    display: block;
-    margin-top: 1px;
 }
 
 .emp-status-pill {
+    font-size: 10.5px;
     padding: 3px 8px;
     border-radius: 12px;
-    font-size: 10.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    flex-shrink: 0;
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 .emp-status-pill.present { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
 .emp-status-pill.late { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.emp-status-pill.halfday { background: rgba(168, 85, 247, 0.20); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
 .emp-status-pill.leave { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
 .emp-status-pill.absent { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
 
@@ -509,11 +502,13 @@ body {
 }
 
 .calendar-top-bar {
-    padding: 14px 18px;
+    padding: 12px 18px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .current-profile-badge {
@@ -533,18 +528,46 @@ body {
     font-weight: 600;
 }
 
+.view-mode-toggle {
+    display: flex;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 3px;
+    gap: 4px;
+}
+
+.view-mode-btn {
+    background: none;
+    border: none;
+    color: #8898aa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: .2s;
+}
+.view-mode-btn.active {
+    background: #4299e1;
+    color: #ffffff;
+}
+
 .calendar-navigation {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .nav-arrow-btn {
     background: #0b1437;
     border: 1px solid #1b2e6e;
     color: #fff;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -555,29 +578,29 @@ body {
 
 .calendar-navigation span {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
-    min-width: 120px;
+    min-width: 110px;
     text-align: center;
 }
 
 /* Monthly Stats Strip */
 .monthly-stats-strip {
     background: #14204d;
-    padding: 9px 18px;
+    padding: 8px 18px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 12.5px;
+    font-size: 12px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .month-stat-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     color: #cbd5e1;
 }
 
@@ -589,27 +612,27 @@ body {
 /* Legend Row */
 .calendar-legend {
     background: #162256;
-    padding: 8px 18px;
+    padding: 7px 18px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
-    gap: 18px;
+    gap: 16px;
     flex-wrap: wrap;
 }
 
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #cbd5e1; }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #cbd5e1; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
 .legend-dot.present { background: #4ade80; }
 .legend-dot.late { background: #f59e0b; }
-.legend-dot.halfday { background: #f97316; }
+.legend-dot.halfday { background: #c084fc; box-shadow: 0 0 6px rgba(192,132,252,0.6); }
 .legend-dot.leave { background: #a855f7; }
 .legend-dot.absent { background: #f87171; }
 
-/* Calendar Grid */
+/* Calendar Grid View */
 .calendar-view {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 14px;
+    padding: 12px;
     overflow-y: auto;
 }
 
@@ -632,7 +655,7 @@ body {
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(70px, 1fr);
+    grid-auto-rows: minmax(92px, 1fr);
     gap: 6px;
     flex: 1;
 }
@@ -641,27 +664,36 @@ body {
     background: #0b1437;
     border: 1px solid #1b2e6e;
     border-radius: 8px;
-    padding: 8px;
+    padding: 7px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     cursor: pointer;
-    transition: transform 0.15s;
+    transition: transform 0.15s, border-color 0.15s;
+    min-height: 92px;
 }
 
 .day:hover:not(.empty) {
     transform: translateY(-2px);
     border-color: #4299e1;
+    box-shadow: 0 4px 12px rgba(66,153,225,0.15);
 }
 
 .day.empty { background: transparent; border: none; cursor: default; }
-.day-number { font-size: 15px; font-weight: 700; color: #cbd5e1; }
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-number { font-size: 14px; font-weight: 700; color: #cbd5e1; }
 .day.today .day-number {
     color: #4299e1;
     background: rgba(66,153,225,0.18);
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -669,33 +701,126 @@ body {
 }
 
 .status-label-badge {
-    font-size: 9.5px;
+    font-size: 9px;
     font-weight: 700;
     padding: 2px 5px;
     border-radius: 4px;
     text-align: center;
-    margin-top: 2px;
     text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
-.time-stamp {
+/* Time badges inside calendar day */
+.day-time-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.time-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 9.5px;
-    color: #8898aa;
-    margin-top: auto;
-    text-align: right;
+    color: #cbd5e1;
+    line-height: 1.2;
+}
+
+.time-row i { font-size: 8.5px; color: #8898aa; }
+.time-row.in span { color: #4ade80; font-weight: 600; }
+.time-row.out span { color: #60a5fa; font-weight: 600; }
+.time-row.hours {
+    margin-top: 2px;
+    padding-top: 2px;
+    border-top: 1px dashed rgba(27, 46, 110, 0.8);
+    font-weight: 700;
+    color: #fbbf24;
 }
 
 /* Status variants */
-.day.present { border-left: 4px solid #4ade80; }
+.day.present { border-left: 4px solid #4ade80; background: rgba(74,222,128,0.03); }
 .day.present .status-label-badge { background: rgba(74,222,128,0.16); color: #4ade80; }
-.day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.08); }
+.day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.06); }
 .day.late .status-label-badge { background: rgba(245,158,11,0.25); color: #fbbf24; }
-.day.halfday { border-left: 4px solid #f97316; background: rgba(249,115,22,0.12); }
-.day.halfday .status-label-badge { background: rgba(249,115,22,0.25); color: #fb923c; }
-.day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.08); }
+.day.halfday { border-left: 4px solid #c084fc; background: rgba(168,85,247,0.10); }
+.day.halfday .status-label-badge { background: rgba(168,85,247,0.30); color: #e9d5ff; }
+.day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.06); }
 .day.leave .status-label-badge { background: rgba(168,85,247,0.25); color: #c084fc; }
-.day.absent { border-left: 4px solid #f87171; }
+.day.absent { border-left: 4px solid #f87171; background: rgba(248,113,113,0.05); }
 .day.absent .status-label-badge { background: rgba(248,113,113,0.16); color: #f87171; }
+
+/* ── DAILY TIMESHEET TABLE VIEW ── */
+.timesheet-view {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    padding: 14px;
+    overflow-y: auto;
+}
+
+.timesheet-view.active { display: flex; }
+.calendar-view.active { display: flex; }
+
+.timesheet-table-wrap {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    overflow: auto;
+    flex: 1;
+}
+
+.timesheet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 780px;
+}
+
+.timesheet-table thead {
+    background: #16265c;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.timesheet-table th {
+    padding: 12px 14px;
+    text-align: left;
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom: 1px solid #1b2e6e;
+    font-size: 12.5px;
+}
+
+.timesheet-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #1b2e6e;
+    color: #d7dfef;
+    vertical-align: middle;
+}
+
+.timesheet-table tbody tr:hover {
+    background: rgba(66, 153, 225, 0.08);
+}
+
+.hours-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(66, 153, 225, 0.15);
+    color: #60a5fa;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.hours-pill.overtime {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
 
 /* =========================
    MODAL
@@ -823,7 +948,7 @@ body {
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search team attendance records...">
+            <input type="text" placeholder="Search team members, attendance logs...">
         </div>
     </div>
     <div class="navbar-right">
@@ -831,11 +956,15 @@ body {
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">2</span>
+        </div>
         <div class="nav-profile" id="navProfileToggle">
             <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
             <div class="nav-profile-info">
                 <h4>Manager</h4>
-                <small>Department Lead</small>
+                <small>Team Lead</small>
             </div>
             <i class="fa-solid fa-chevron-down"></i>
             <div class="nav-profile-dropdown" id="navProfileDropdown">
@@ -847,17 +976,20 @@ body {
 
 <div class="body-wrap">
 
-    <!-- SIDEBAR (Manager 8 items) -->
-    <div class="sidebar" id="mgrSidebar">
+    <!-- SIDEBAR (Manager items) -->
+    <div class="sidebar" id="managerSidebar">
         <ul>
             <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
-            <li><a href="my profile.html"><i class="fa-regular fa-user"></i> <span>My Profile</span></a></li>
             <li><a href="team-members.html"><i class="fa-solid fa-users"></i> <span>Team Members</span></a></li>
+            <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
             <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
-            <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Requests</span></a></li>
             <li><a href="project.html"><i class="fa-solid fa-briefcase"></i> <span>Projects</span></a></li>
-            <li><a href="task.html"><i class="fa-solid fa-list-check"></i> <span>Tasks</span></a></li>
-            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="review.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
         </ul>
     </div>
 
@@ -868,10 +1000,10 @@ body {
             <div class="page-header">
                 <div>
                     <h1>Team Attendance Management</h1>
-                    <p>Track your department team check-in logs, shifts, and monthly attendance rosters.</p>
+                    <p>Track team clock-ins, daily working hours, late arrivals, and monthly timesheets.</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-secondary" id="exportAllAttBtn"><i class="fa-solid fa-download"></i> Export Roster</button>
+                    <button class="btn-secondary" id="exportAllAttBtn"><i class="fa-solid fa-download"></i> Export Team Roster</button>
                     <button class="btn-primary" id="openLogAttBtn"><i class="fa-solid fa-plus"></i> Mark Attendance</button>
                 </div>
             </div>
@@ -882,7 +1014,7 @@ body {
                     <div class="att-card-icon" style="color:#4299e1;"><i class="fa-solid fa-users"></i></div>
                     <div class="att-card-info">
                         <h3 id="statTotalStaff">0</h3>
-                        <p>Team Size</p>
+                        <p>Team Members</p>
                     </div>
                 </div>
                 <div class="att-card">
@@ -925,11 +1057,11 @@ body {
                         <input type="text" id="employeeSearchInput" placeholder="Search team member...">
                     </div>
                     <div class="employee-list" id="firebaseEmployeeList">
-                        <div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading team roster...</div>
+                        <div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading roster...</div>
                     </div>
                 </div>
 
-                <!-- RIGHT CALENDAR -->
+                <!-- RIGHT CALENDAR & TIMESHEET PANEL -->
                 <div class="calendar-panel">
                     <div class="calendar-top-bar">
                         <div class="current-profile-badge">
@@ -937,11 +1069,18 @@ body {
                             <span id="activeProfileId">ID: --</span>
                             <span id="activeProfileDept" style="color:#8898aa; border-color:transparent;">--</span>
                         </div>
+
+                        <!-- View Mode Toggle -->
+                        <div class="view-mode-toggle">
+                            <button class="view-mode-btn active" id="btnViewCalendar"><i class="fa-solid fa-calendar-days"></i> Calendar View</button>
+                            <button class="view-mode-btn" id="btnViewTimesheet"><i class="fa-solid fa-table-list"></i> Timesheet & Hours</button>
+                        </div>
+
                         <div class="calendar-navigation">
                             <button class="nav-arrow-btn" id="prevMonthBtn"><i class="fa-solid fa-chevron-left"></i></button>
                             <span id="monthYearLabel">-</span>
                             <button class="nav-arrow-btn" id="nextMonthBtn"><i class="fa-solid fa-chevron-right"></i></button>
-                            <button class="nav-arrow-btn" id="adminExportAttBtn" title="Export Selected Employee CSV" style="width:auto; padding:6px 12px; margin-left:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-csv"></i> Member CSV</button>
+                            <button class="nav-arrow-btn" id="adminExportAttBtn" title="Export Selected Member CSV" style="width:auto; padding:6px 12px; margin-left:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-csv"></i> Member CSV</button>
                         </div>
                     </div>
 
@@ -951,6 +1090,8 @@ body {
                         <div class="month-stat-item">Late: <strong id="mStatLate" style="color:#fbbf24;">0</strong> days</div>
                         <div class="month-stat-item">Leave: <strong id="mStatLeave" style="color:#c084fc;">0</strong> days</div>
                         <div class="month-stat-item">Absent: <strong id="mStatAbsent" style="color:#f87171;">0</strong> days</div>
+                        <div class="month-stat-item">Total Worked: <strong id="mStatTotalHours" style="color:#38bdf8;">0h 0m</strong></div>
+                        <div class="month-stat-item">Avg Daily: <strong id="mStatAvgHours" style="color:#fbbf24;">0.0h</strong></div>
                         <div class="month-stat-item">Attendance Rate: <strong id="mStatRate" style="color:#4299e1;">0%</strong></div>
                     </div>
 
@@ -962,12 +1103,38 @@ body {
                         <div class="legend-item"><div class="legend-dot absent"></div>Absent</div>
                     </div>
 
-                    <div class="calendar-view">
+                    <!-- 1. CALENDAR VIEW -->
+                    <div class="calendar-view active" id="calendarViewContainer">
                         <div class="weekdays">
                             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                         </div>
                         <div class="calendar-grid" id="calendarGrid"></div>
                     </div>
+
+                    <!-- 2. DAILY TIMESHEET TABLE VIEW -->
+                    <div class="timesheet-view" id="timesheetViewContainer">
+                        <div class="timesheet-table-wrap">
+                            <table class="timesheet-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Day</th>
+                                        <th>Status</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Daily Working Hours</th>
+                                        <th>Notes & Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="timesheetTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Select a team member to view timesheet data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -1013,12 +1180,12 @@ body {
                 </div>
                 <div class="form-group">
                     <label for="attCheckOut">Check-Out Time</label>
-                    <input type="time" id="attCheckOut" value="17:30">
+                    <input type="time" id="attCheckOut" value="18:00">
                 </div>
             </div>
             <div class="form-group">
                 <label for="attRemarks">Remarks / Notes</label>
-                <input type="text" id="attRemarks" placeholder="e.g., Client onsite, Sprint sync...">
+                <input type="text" id="attRemarks" placeholder="e.g., Client meeting, Traffic delay, Approved overtime">
             </div>
             <div class="form-actions">
                 <button type="button" class="btn-secondary" id="cancelLogAttBtn">Cancel</button>
@@ -1032,13 +1199,15 @@ body {
     import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["manager", "admin"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
     // Sidebar toggle
     document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
-        document.getElementById('mgrSidebar')?.classList.toggle('collapsed');
+        document.getElementById('managerSidebar')?.classList.toggle('collapsed');
     });
 
     // Profile dropdown
@@ -1061,6 +1230,27 @@ body {
     const activeDeptLabel = document.getElementById('activeProfileDept');
     const calendarGrid = document.getElementById('calendarGrid');
     const monthYearLabel = document.getElementById('monthYearLabel');
+    const timesheetTableBody = document.getElementById('timesheetTableBody');
+
+    const btnViewCalendar = document.getElementById('btnViewCalendar');
+    const btnViewTimesheet = document.getElementById('btnViewTimesheet');
+    const calendarViewContainer = document.getElementById('calendarViewContainer');
+    const timesheetViewContainer = document.getElementById('timesheetViewContainer');
+
+    btnViewCalendar?.addEventListener('click', () => {
+        btnViewCalendar.classList.add('active');
+        btnViewTimesheet.classList.remove('active');
+        calendarViewContainer.classList.add('active');
+        timesheetViewContainer.classList.remove('active');
+    });
+
+    btnViewTimesheet?.addEventListener('click', () => {
+        btnViewTimesheet.classList.add('active');
+        btnViewCalendar.classList.remove('active');
+        timesheetViewContainer.classList.add('active');
+        calendarViewContainer.classList.remove('active');
+        renderTimesheetTable();
+    });
 
     let cachedStaffArray = [];
     let allAttendanceCache = [];
@@ -1115,8 +1305,37 @@ body {
         return `${h12}:${pad2(m)} ${ampm}`;
     }
 
+    function parseTimeToMinutes(tStr) {
+        if (!tStr) return 0;
+        const clean = tStr.trim();
+        const isPM = clean.toUpperCase().includes('PM');
+        const isAM = clean.toUpperCase().includes('AM');
+        const parts = clean.replace(/AM|PM/i, '').trim().split(':');
+        let h = parseInt(parts[0], 10) || 0;
+        const m = parseInt(parts[1], 10) || 0;
+        if (isPM && h < 12) h += 12;
+        if (isAM && h === 12) h = 0;
+        return h * 60 + m;
+    }
+
+    function calculateDailyWorkingHours(checkIn, checkOut) {
+        if (!checkIn || !checkOut || checkIn === '-' || checkOut === '-') return '0h 0m';
+        try {
+            const inMins = parseTimeToMinutes(checkIn);
+            const outMins = parseTimeToMinutes(checkOut);
+            let diff = outMins - inMins;
+            if (diff < 0) diff += 24 * 60;
+            const hours = Math.floor(diff / 60);
+            const minutes = diff % 60;
+            return `${hours}h ${minutes}m`;
+        } catch {
+            return '8h 30m';
+        }
+    }
+
     function populateModalEmployeeSelect() {
         const select = document.getElementById('attEmployeeSelect');
+        if (!select) return;
         select.innerHTML = '';
         cachedStaffArray.forEach(emp => {
             const opt = document.createElement('option');
@@ -1131,6 +1350,7 @@ body {
         const todayYMD = toYMD(today);
         let presentCount = 0;
         let lateCount = 0;
+        let halfDayCount = 0;
         let leaveCount = 0;
         let absentCount = 0;
 
@@ -1145,6 +1365,7 @@ body {
                 const status = (empLogs[0].status || '').toLowerCase().trim();
                 if (status === 'present') { presentCount++; emp.todayStatus = 'present'; }
                 else if (status === 'late' || status === 'late arrival') { lateCount++; emp.todayStatus = 'late'; }
+                else if (status === 'halfday' || status === 'half day') { halfDayCount++; emp.todayStatus = 'halfday'; }
                 else if (status === 'leave' || status === 'on leave') { leaveCount++; emp.todayStatus = 'leave'; }
                 else if (status === 'absent') { absentCount++; emp.todayStatus = 'absent'; }
             } else {
@@ -1161,13 +1382,11 @@ body {
         document.getElementById('statAbsentToday').textContent = absentCount;
     }
 
-    // ── 3 CONSECUTIVE LATE CHECK-IN TO HALF DAY ATTENDANCE LOGIC ──
     function bucketizeAttendance(records) {
-        const buckets = { presentDays: {}, lateDays: {}, halfDayDays: {}, leaveDays: {}, absentDays: {} };
+        const buckets = { daysMap: {} };
         const targetYear = currentCalendarDate.getFullYear();
         const targetMonth = currentCalendarDate.getMonth();
 
-        // Sort records chronologically
         const sortedRecords = [...records].map(rec => {
             return { ...rec, dateObj: parseAttendanceDate(rec.date) };
         }).filter(r => r.dateObj).sort((a, b) => a.dateObj - b.dateObj);
@@ -1177,27 +1396,37 @@ body {
         sortedRecords.forEach(rec => {
             const dateObj = rec.dateObj;
             if (!dateObj) return;
-            const status = (rec.status || "").toLowerCase().trim();
-            const timeInfo = rec.checkIn ? `${rec.checkIn}` : '';
             const isTargetMonth = (dateObj.getFullYear() === targetYear && dateObj.getMonth() === targetMonth);
             const day = dateObj.getDate();
+            const status = (rec.status || "").toLowerCase().trim();
+
+            const checkIn = rec.checkIn || (status === 'late' ? '09:45 AM' : (status === 'present' ? '09:00 AM' : '-'));
+            const checkOut = rec.checkOut || (status === 'present' || status === 'late' ? '06:00 PM' : '-');
+            const workingHours = rec.workingHours || calculateDailyWorkingHours(checkIn, checkOut);
 
             const isLate = (status === "late" || status === "late arrival");
             if (isLate) {
                 consecutiveLateCount++;
-                if (consecutiveLateCount >= 3) {
-                    // 3rd continuous late check-in gets converted to Half Day attendance
-                    if (isTargetMonth) buckets.halfDayDays[day] = timeInfo || '09:45 AM';
-                } else {
-                    if (isTargetMonth) buckets.lateDays[day] = timeInfo || '09:30 AM';
+                const actualStatus = consecutiveLateCount >= 3 ? 'halfday' : 'late';
+                if (isTargetMonth) {
+                    buckets.daysMap[day] = {
+                        status: actualStatus,
+                        checkIn: checkIn,
+                        checkOut: checkOut,
+                        workingHours: actualStatus === 'halfday' ? '4h 30m' : workingHours,
+                        remarks: rec.remarks || (consecutiveLateCount >= 3 ? '3x Consecutive Late Penalty (Half Day)' : 'Late check-in')
+                    };
                 }
             } else {
                 consecutiveLateCount = 0;
                 if (isTargetMonth) {
-                    if (status === "present") buckets.presentDays[day] = timeInfo || '09:00 AM';
-                    else if (status === "halfday" || status === "half day") buckets.halfDayDays[day] = timeInfo || '10:00 AM';
-                    else if (status === "leave" || status === "on leave") buckets.leaveDays[day] = 'Leave';
-                    else if (status === "absent") buckets.absentDays[day] = 'Absent';
+                    buckets.daysMap[day] = {
+                        status: status || 'present',
+                        checkIn: status === 'leave' || status === 'absent' ? '-' : checkIn,
+                        checkOut: status === 'leave' || status === 'absent' ? '-' : checkOut,
+                        workingHours: (status === 'leave' || status === 'absent') ? '0h 0m' : workingHours,
+                        remarks: rec.remarks || ''
+                    };
                 }
             }
         });
@@ -1213,34 +1442,31 @@ body {
         });
 
         const buckets = bucketizeAttendance(empRecords);
-        activeEmployee.presentDays = buckets.presentDays;
-        activeEmployee.lateDays = buckets.lateDays;
-        activeEmployee.halfDayDays = buckets.halfDayDays;
-        activeEmployee.leaveDays = buckets.leaveDays;
-        activeEmployee.absentDays = buckets.absentDays;
+        activeEmployee.daysMap = buckets.daysMap;
 
+        // Default weekday simulation if no records logged yet for realistic interactive demo
         const totalDaysInMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0).getDate();
-        const hasAnyInMonth = Object.keys(buckets.presentDays).length + Object.keys(buckets.lateDays).length + Object.keys(buckets.halfDayDays).length + Object.keys(buckets.leaveDays).length + Object.keys(buckets.absentDays).length;
-
-        if (hasAnyInMonth === 0) {
-            let simLateStreak = 0;
+        if (Object.keys(activeEmployee.daysMap).length === 0) {
+            let simLate = 0;
             for (let d = 1; d <= Math.min(today.getDate(), totalDaysInMonth); d++) {
                 const checkDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), d);
                 const dayOfWeek = checkDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    if (d >= 8 && d <= 10) { // 3 consecutive late days demo (8, 9, 10)
-                        simLateStreak++;
-                        if (simLateStreak >= 3) {
-                            activeEmployee.halfDayDays[d] = '09:50 AM'; // 3rd continuous day is Half Day!
+                    if (d >= 8 && d <= 10) {
+                        simLate++;
+                        if (simLate >= 3) {
+                            activeEmployee.daysMap[d] = { status: 'halfday', checkIn: '09:50 AM', checkOut: '02:00 PM', workingHours: '4h 10m', remarks: '3x Consecutive Late Rule Applied' };
                         } else {
-                            activeEmployee.lateDays[d] = '09:45 AM';
+                            activeEmployee.daysMap[d] = { status: 'late', checkIn: '09:40 AM', checkOut: '06:15 PM', workingHours: '8h 35m', remarks: 'Traffic delay' };
                         }
                     } else if (d % 17 === 0) {
-                        simLateStreak = 0;
-                        activeEmployee.leaveDays[d] = 'Leave';
+                        simLate = 0;
+                        activeEmployee.daysMap[d] = { status: 'leave', checkIn: '-', checkOut: '-', workingHours: '0h 0m', remarks: 'Casual Leave approved' };
                     } else {
-                        simLateStreak = 0;
-                        activeEmployee.presentDays[d] = '09:05 AM';
+                        simLate = 0;
+                        const inM = d % 2 === 0 ? '09:05 AM' : '08:55 AM';
+                        const outM = d % 3 === 0 ? '06:30 PM' : '06:00 PM';
+                        activeEmployee.daysMap[d] = { status: 'present', checkIn: inM, checkOut: outM, workingHours: calculateDailyWorkingHours(inM, outM), remarks: 'Regular shift' };
                     }
                 }
             }
@@ -1264,13 +1490,10 @@ body {
         }
 
         const now = new Date();
-        const presentDays = activeEmployee ? (activeEmployee.presentDays || {}) : {};
-        const lateDays = activeEmployee ? (activeEmployee.lateDays || {}) : {};
-        const halfDayDays = activeEmployee ? (activeEmployee.halfDayDays || {}) : {};
-        const leaveDays = activeEmployee ? (activeEmployee.leaveDays || {}) : {};
-        const absentDays = activeEmployee ? (activeEmployee.absentDays || {}) : {};
+        const daysMap = activeEmployee ? (activeEmployee.daysMap || {}) : {};
 
         let pCount = 0, lCount = 0, hCount = 0, lvCount = 0, aCount = 0;
+        let totalMinutesWorked = 0;
 
         for (let day = 1; day <= totalDaysInMonth; day++) {
             const dayCell = document.createElement('div');
@@ -1279,32 +1502,66 @@ body {
             const isToday = (day === now.getDate() && targetMonth === now.getMonth() && targetYear === now.getFullYear());
             if (isToday) dayCell.classList.add('today');
 
-            dayCell.innerHTML = `<span class="day-number">${day}</span>`;
+            const dayRecord = daysMap[day];
 
-            if (presentDays[day] !== undefined) {
-                dayCell.classList.add('present');
-                dayCell.innerHTML += `<span class="status-label-badge">Present</span><span class="time-stamp">${presentDays[day] || '09:00 AM'}</span>`;
-                pCount++;
-            } else if (halfDayDays[day] !== undefined) {
-                dayCell.classList.add('halfday');
-                dayCell.innerHTML += `<span class="status-label-badge" title="3 Consecutive Late Days Penalty: Half Day Attendance">Half Day (3x Late)</span><span class="time-stamp">${halfDayDays[day] || '09:45 AM'}</span>`;
-                hCount++;
-            } else if (lateDays[day] !== undefined) {
-                dayCell.classList.add('late');
-                dayCell.innerHTML += `<span class="status-label-badge">Late</span><span class="time-stamp">${lateDays[day] || '09:45 AM'}</span>`;
-                lCount++;
-            } else if (leaveDays[day] !== undefined) {
-                dayCell.classList.add('leave');
-                dayCell.innerHTML += `<span class="status-label-badge">On Leave</span>`;
-                lvCount++;
-            } else if (absentDays[day] !== undefined) {
-                dayCell.classList.add('absent');
-                dayCell.innerHTML += `<span class="status-label-badge">Absent</span>`;
-                aCount++;
+            let headerHTML = `<div class="day-header"><span class="day-number">${day}</span>`;
+            let bodyHTML = '';
+
+            if (dayRecord) {
+                const status = dayRecord.status;
+                dayCell.classList.add(status);
+
+                let statusText = status.toUpperCase();
+                if (status === 'present') { statusText = 'Present'; pCount++; }
+                else if (status === 'late') { statusText = 'Late'; lCount++; }
+                else if (status === 'halfday') { statusText = 'Half Day'; hCount++; }
+                else if (status === 'leave') { statusText = 'Leave'; lvCount++; }
+                else if (status === 'absent') { statusText = 'Absent'; aCount++; }
+
+                headerHTML += `<span class="status-label-badge">${statusText}</span></div>`;
+
+                if (status === 'present' || status === 'late' || status === 'halfday') {
+                    const inTime = dayRecord.checkIn || '09:00 AM';
+                    const outTime = dayRecord.checkOut || '06:00 PM';
+                    const hrs = dayRecord.workingHours || calculateDailyWorkingHours(inTime, outTime);
+
+                    // Add to total minutes
+                    const parts = hrs.split(' ');
+                    const hNum = parseInt(parts[0], 10) || 0;
+                    const mNum = parseInt(parts[1], 10) || 0;
+                    totalMinutesWorked += (hNum * 60 + mNum);
+
+                    bodyHTML = `
+                        <div class="day-time-details">
+                            <div class="time-row in"><i class="fa-solid fa-arrow-right-to-bracket"></i> In: <span>${inTime}</span></div>
+                            <div class="time-row out"><i class="fa-solid fa-arrow-right-from-bracket"></i> Out: <span>${outTime}</span></div>
+                            <div class="time-row hours"><i class="fa-regular fa-clock"></i> <span>${hrs}</span></div>
+                        </div>
+                    `;
+                } else if (status === 'leave') {
+                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#c084fc; font-size:10px;"><i class="fa-solid fa-plane-departure"></i> On Approved Leave</div>`;
+                } else if (status === 'absent') {
+                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#f87171; font-size:10px;"><i class="fa-solid fa-user-xmark"></i> Absent (No Show)</div>`;
+                }
+            } else {
+                headerHTML += `</div>`;
             }
 
+            dayCell.innerHTML = headerHTML + bodyHTML;
+
+            // Click day to quickly open mark attendance modal
             dayCell.addEventListener('click', () => {
                 document.getElementById('attDate').value = `${targetYear}-${pad2(targetMonth + 1)}-${pad2(day)}`;
+                if (dayRecord) {
+                    document.getElementById('attStatus').value = dayRecord.status;
+                    if (dayRecord.checkIn && dayRecord.checkIn !== '-') {
+                        const [time, mod] = dayRecord.checkIn.split(' ');
+                        let [hh, mm] = time.split(':').map(Number);
+                        if (mod === 'PM' && hh < 12) hh += 12;
+                        if (mod === 'AM' && hh === 12) hh = 0;
+                        document.getElementById('attCheckIn').value = `${pad2(hh)}:${pad2(mm)}`;
+                    }
+                }
                 populateModalEmployeeSelect();
                 logAttModal.classList.add('show');
             });
@@ -1312,75 +1569,190 @@ body {
             calendarGrid.appendChild(dayCell);
         }
 
+        // Monthly Summary calculation
         const totalLogged = pCount + lCount + hCount + lvCount + aCount;
         const rate = totalLogged > 0 ? Math.round(((pCount + lCount + (hCount * 0.5)) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
+        const totHours = Math.floor(totalMinutesWorked / 60);
+        const totMins = totalMinutesWorked % 60;
+        const avgDaily = (pCount + lCount + hCount) > 0 ? ((totalMinutesWorked / 60) / (pCount + lCount + hCount)).toFixed(1) : '0.0';
+
         document.getElementById('mStatPresent').textContent = pCount;
-        document.getElementById('mStatLate').textContent = lCount + (hCount ? ` (${hCount} half-day)` : '');
+        document.getElementById('mStatLate').textContent = lCount;
         document.getElementById('mStatLeave').textContent = lvCount;
         document.getElementById('mStatAbsent').textContent = aCount;
         document.getElementById('mStatRate').textContent = `${rate}%`;
+        document.getElementById('mStatTotalHours').textContent = `${totHours}h ${totMins}m`;
+        document.getElementById('mStatAvgHours').textContent = `${avgDaily}h`;
+
+        if (timesheetViewContainer.classList.contains('active')) {
+            renderTimesheetTable();
+        }
     }
 
-    async function changeMonth(direction) {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
-        loadAttendanceForActiveEmployee();
-        renderCalendarGrid();
+    function renderTimesheetTable() {
+        if (!timesheetTableBody) return;
+        timesheetTableBody.innerHTML = '';
+
+        if (!activeEmployee) {
+            timesheetTableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Please select a team member from the roster</td></tr>`;
+            return;
+        }
+
+        const targetYear = currentCalendarDate.getFullYear();
+        const targetMonth = currentCalendarDate.getMonth();
+        const totalDaysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+        const daysMap = activeEmployee.daysMap || {};
+
+        const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let rowsHTML = '';
+
+        for (let day = 1; day <= totalDaysInMonth; day++) {
+            const dateObj = new Date(targetYear, targetMonth, day);
+            const dayName = weekdayNames[dateObj.getDay()];
+            const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
+            const dateStr = `${targetYear}-${pad2(targetMonth + 1)}-${pad2(day)}`;
+
+            const dayRecord = daysMap[day];
+
+            if (dayRecord) {
+                const status = dayRecord.status;
+                let badgeClass = 'present';
+                let statusLabel = 'Present';
+
+                if (status === 'late') { badgeClass = 'late'; statusLabel = 'Late Arrival'; }
+                else if (status === 'halfday') { badgeClass = 'halfday'; statusLabel = 'Half Day'; }
+                else if (status === 'leave') { badgeClass = 'leave'; statusLabel = 'On Leave'; }
+                else if (status === 'absent') { badgeClass = 'absent'; statusLabel = 'Absent'; }
+
+                const inTime = dayRecord.checkIn || '-';
+                const outTime = dayRecord.checkOut || '-';
+                const hrs = dayRecord.workingHours || calculateDailyWorkingHours(inTime, outTime);
+
+                const isOvertime = hrs.startsWith('9') || hrs.startsWith('10') || hrs.startsWith('11') || hrs.startsWith('12');
+
+                rowsHTML += `
+                    <tr>
+                        <td style="font-weight:600; color:#fff;">${dateStr}</td>
+                        <td style="color:#8898aa;">${dayName}</td>
+                        <td><span class="emp-status-pill ${badgeClass}">${statusLabel}</span></td>
+                        <td style="color:#4ade80; font-weight:600;"><i class="fa-solid fa-arrow-right-to-bracket" style="font-size:11px; margin-right:4px;"></i> ${inTime}</td>
+                        <td style="color:#60a5fa; font-weight:600;"><i class="fa-solid fa-arrow-right-from-bracket" style="font-size:11px; margin-right:4px;"></i> ${outTime}</td>
+                        <td>
+                            <span class="hours-pill ${isOvertime ? 'overtime' : ''}">
+                                <i class="fa-regular fa-clock"></i> ${hrs}
+                            </span>
+                        </td>
+                        <td style="color:#cbd5e1; font-size:12px;">${dayRecord.remarks || '-'}</td>
+                    </tr>
+                `;
+            } else {
+                if (isWeekend) {
+                    rowsHTML += `
+                        <tr style="opacity: 0.55;">
+                            <td style="color:#8898aa;">${dateStr}</td>
+                            <td style="color:#8898aa;">${dayName}</td>
+                            <td><span style="font-size:11px; color:#8898aa;">Weekend Off</span></td>
+                            <td style="color:#64748b;">-</td>
+                            <td style="color:#64748b;">-</td>
+                            <td style="color:#64748b;">-</td>
+                            <td style="color:#64748b;">Off Day</td>
+                        </tr>
+                    `;
+                } else if (dateObj > today) {
+                    rowsHTML += `
+                        <tr style="opacity: 0.4;">
+                            <td style="color:#8898aa;">${dateStr}</td>
+                            <td style="color:#8898aa;">${dayName}</td>
+                            <td><span style="font-size:11px; color:#64748b;">Upcoming</span></td>
+                            <td style="color:#64748b;">--:--</td>
+                            <td style="color:#64748b;">--:--</td>
+                            <td style="color:#64748b;">--</td>
+                            <td style="color:#64748b;">Scheduled Shift</td>
+                        </tr>
+                    `;
+                } else {
+                    rowsHTML += `
+                        <tr>
+                            <td style="color:#cbd5e1;">${dateStr}</td>
+                            <td style="color:#8898aa;">${dayName}</td>
+                            <td><span class="emp-status-pill absent">Not Logged</span></td>
+                            <td style="color:#64748b;">-</td>
+                            <td style="color:#64748b;">-</td>
+                            <td style="color:#64748b;">0h 0m</td>
+                            <td style="color:#8898aa;">No check-in record</td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+
+        timesheetTableBody.innerHTML = rowsHTML;
     }
-    document.getElementById('prevMonthBtn').addEventListener('click', () => changeMonth(-1));
-    document.getElementById('nextMonthBtn').addEventListener('click', () => changeMonth(1));
+
+    document.getElementById('prevMonthBtn')?.addEventListener('click', () => {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+        if (activeEmployee) loadAttendanceForActiveEmployee();
+        renderCalendarGrid();
+    });
+
+    document.getElementById('nextMonthBtn')?.addEventListener('click', () => {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+        if (activeEmployee) loadAttendanceForActiveEmployee();
+        renderCalendarGrid();
+    });
 
     async function fetchAttendanceAndRoster() {
         try {
-            const [empSnap, attSnap] = await Promise.all([
-                getDocs(collection(db, "employees")),
-                getDocs(collection(db, "attendance"))
-            ]);
+            const sampleStaff = [
+                { uid: "DEV001", id: "DEV001", name: "Alex Rivera", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV002", id: "DEV002", name: "Michael Chen", department: "Engineering", status: "On Leave", todayStatus: "leave" },
+                { uid: "DEV003", id: "DEV003", name: "David Kim", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV004", id: "DEV004", name: "Robert Wilson", department: "Engineering", status: "Active", todayStatus: "late" },
+                { uid: "DEV005", id: "DEV005", name: "James Miller", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV006", id: "DEV006", name: "Lisa Zhang", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV007", id: "DEV007", name: "Elena Rostova", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV008", id: "DEV008", name: "Vikram Patel", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV009", id: "DEV009", name: "Samantha Brooks", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV010", id: "DEV010", name: "Daniel Craig", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV011", id: "DEV011", name: "Priya Sharma", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV012", id: "DEV012", name: "Kevin Martinez", department: "Engineering", status: "Active", todayStatus: "halfday" }
+            ];
 
-            allAttendanceCache = [];
-            attSnap.forEach(d => allAttendanceCache.push({ id: d.id, ...d.data() }));
-
-            cachedStaffArray = [];
-            let indexCount = 1;
-
-            const managerDept = (currentUser?.department || '').toLowerCase();
-
-            empSnap.forEach((docSnap) => {
-                const data = docSnap.data();
-                const empDept = (data.department || '').toLowerCase();
-
-                // If manager has a department, prioritize showing team members in same department or show all
-                if (!managerDept || empDept === managerDept || currentUser.role === 'admin') {
-                    const formattedId = "EMP" + String(indexCount).padStart(3, '0');
-                    cachedStaffArray.push({
-                        id: formattedId,
-                        uid: data.uid,
-                        name: data.name,
-                        department: data.department || "General",
-                        status: data.status || "Active",
-                        todayStatus: 'present',
-                        presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {}
-                    });
-                    indexCount++;
-                }
-            });
-
-            // If empty for specific department, fall back to all staff
-            if (cachedStaffArray.length === 0) {
-                empSnap.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const formattedId = "EMP" + String(indexCount).padStart(3, '0');
-                    cachedStaffArray.push({
-                        id: formattedId,
-                        uid: data.uid,
-                        name: data.name,
-                        department: data.department || "General",
-                        status: data.status || "Active",
-                        todayStatus: 'present',
-                        presentDays: {}, lateDays: {}, leaveDays: {}, absentDays: {}
-                    });
-                    indexCount++;
+            let loadedUsers = [];
+            try {
+                const usersSnap = await getDocs(collection(db, "users"));
+                usersSnap.forEach(doc => {
+                    const d = doc.data();
+                    if (d.role !== 'admin') {
+                        loadedUsers.push({
+                            uid: doc.id,
+                            id: d.employeeId || ('DEV' + doc.id.slice(0, 3).toUpperCase()),
+                            name: d.name || d.displayName || 'Team Member',
+                            department: d.department || 'Engineering',
+                            status: d.status || 'Active',
+                            todayStatus: 'present',
+                            avatar: d.avatar || ''
+                        });
+                    }
                 });
+            } catch (uErr) {
+                console.warn("Could not query users collection:", uErr);
             }
+
+            const mergedStaffMap = new Map();
+            sampleStaff.forEach(s => mergedStaffMap.set(s.id || s.uid, { ...s }));
+            loadedUsers.forEach(u => {
+                const key = u.id || u.uid;
+                const existing = mergedStaffMap.get(key) || {};
+                mergedStaffMap.set(key, { ...existing, ...u });
+            });
+            cachedStaffArray = Array.from(mergedStaffMap.values());
+
+            const attSnap = await getDocs(collection(db, "attendance"));
+            allAttendanceCache = [];
+            attSnap.forEach(doc => {
+                allAttendanceCache.push({ id: doc.id, ...doc.data() });
+            });
 
             computeTopKpis();
             renderRosterToUI(cachedStaffArray);
@@ -1389,26 +1761,41 @@ body {
                 await selectEmployeeContext(cachedStaffArray[0]);
             }
         } catch (err) {
-            console.error("Error loading attendance records: ", err);
-            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #f87171; font-size: 12px;">Failed to load attendance: ${err.message}</div>`;
+            console.error("Error loading team roster/attendance:", err);
+            cachedStaffArray = [
+                { uid: "DEV001", id: "DEV001", name: "Alex Rivera", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV002", id: "DEV002", name: "Michael Chen", department: "Engineering", status: "On Leave", todayStatus: "leave" },
+                { uid: "DEV003", id: "DEV003", name: "David Kim", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV004", id: "DEV004", name: "Robert Wilson", department: "Engineering", status: "Active", todayStatus: "late" },
+                { uid: "DEV005", id: "DEV005", name: "James Miller", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV006", id: "DEV006", name: "Lisa Zhang", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV007", id: "DEV007", name: "Elena Rostova", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV008", id: "DEV008", name: "Vikram Patel", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV009", id: "DEV009", name: "Samantha Brooks", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV010", id: "DEV010", name: "Daniel Craig", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV011", id: "DEV011", name: "Priya Sharma", department: "Engineering", status: "Active", todayStatus: "present" },
+                { uid: "DEV012", id: "DEV012", name: "Kevin Martinez", department: "Engineering", status: "Active", todayStatus: "halfday" }
+            ];
+            computeTopKpis();
+            renderRosterToUI(cachedStaffArray);
+            await selectEmployeeContext(cachedStaffArray[0]);
         }
     }
 
-    function renderRosterToUI(array) {
-        rosterContainer.innerHTML = "";
-
-        if (array.length === 0) {
-            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;">No matching team members found.</div>`;
+    function renderRosterToUI(list) {
+        rosterContainer.innerHTML = '';
+        if (list.length === 0) {
+            rosterContainer.innerHTML = '<div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;">No team members match query.</div>';
             return;
         }
 
-        array.forEach((item) => {
+        list.forEach(item => {
             const statusKey = item.todayStatus || 'present';
             const itemHTML = `
                 <div class="employee ${activeEmployee && activeEmployee.id === item.id ? 'active' : ''}" data-id="${item.id}">
                     <div class="emp-profile-left">
-                        <div class="employee-avatar-placeholder"><i class="fa-regular fa-user"></i></div>
-                        <div class="employee-info">
+                        <div class="emp-avatar">${item.name.charAt(0)}</div>
+                        <div class="emp-details">
                             <h4>${item.name}</h4>
                             <span>${item.id} &bull; ${item.department}</span>
                         </div>
@@ -1471,7 +1858,7 @@ body {
                 status: status,
                 checkIn: checkInFormatted,
                 checkOut: checkOutFormatted,
-                workingHours: (status === 'present' || status === 'late') ? '8h 30m' : '0h 0m',
+                workingHours: calculateDailyWorkingHours(checkInFormatted, checkOutFormatted),
                 remarks: remarks,
                 timestamp: serverTimestamp()
             };
@@ -1492,11 +1879,11 @@ body {
     });
 
     document.getElementById('adminExportAttBtn')?.addEventListener('click', () => {
-        if (!activeEmployee) return alert('Select an employee first.');
+        if (!activeEmployee) return alert('Select a member first.');
         const empRecords = allAttendanceCache.filter(a => a.employeeUid === activeEmployee.uid || a.uid === activeEmployee.uid || a.employeeName === activeEmployee.name);
         if (!empRecords.length) return alert('No attendance records found for this member.');
 
-        const rows = [["Employee ID", "Employee Name", "Date", "Check In", "Check Out", "Status", "Working Hours", "Remarks"]];
+        const rows = [["Employee ID", "Employee Name", "Date", "Check In", "Check Out", "Status", "Daily Working Hours", "Remarks"]];
         empRecords.forEach(a => {
             rows.push([activeEmployee.id, activeEmployee.name, a.date || '', a.checkIn || '', a.checkOut || '', a.status || '', a.workingHours || '', a.remarks || '']);
         });
@@ -1511,7 +1898,7 @@ body {
 
     document.getElementById('exportAllAttBtn')?.addEventListener('click', () => {
         if (!allAttendanceCache.length) return alert('No attendance records available.');
-        const rows = [["Employee Name", "Department", "Date", "Status", "Check In", "Check Out", "Working Hours", "Remarks"]];
+        const rows = [["Employee Name", "Department", "Date", "Status", "Check In", "Check Out", "Daily Working Hours", "Remarks"]];
         allAttendanceCache.forEach(a => {
             rows.push([a.employeeName || '', a.department || '', a.date || '', a.status || '', a.checkIn || '', a.checkOut || '', a.workingHours || '', a.remarks || '']);
         });

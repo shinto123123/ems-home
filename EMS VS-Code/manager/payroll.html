@@ -92,6 +92,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
+    <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
@@ -116,6 +117,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
       <li class="active"><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
       <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
       <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
       <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
     </ul>
@@ -151,12 +153,155 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </thead>
             <tbody id="payrollTableBody">
-              <tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">Loading payroll records...</td></tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV001</span></td>
+                <td><strong>Alex Rivera</strong></td>
+                <td>Engineering</td>
+                <td>Senior Developer</td>
+                <td style="font-weight:600;">$8,500.00</td>
+                <td style="color:#4ade80; font-weight:600;">$8,500.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-001" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-001" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV002</span></td>
+                <td><strong>Michael Chen</strong></td>
+                <td>Engineering</td>
+                <td>Full Stack Developer</td>
+                <td style="font-weight:600;">$7,200.00</td>
+                <td style="color:#4ade80; font-weight:600;">$7,200.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-002" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-002" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV003</span></td>
+                <td><strong>David Kim</strong></td>
+                <td>Engineering</td>
+                <td>Backend Engineer</td>
+                <td style="font-weight:600;">$6,800.00</td>
+                <td style="color:#4ade80; font-weight:600;">$6,800.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-003" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-003" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV004</span></td>
+                <td><strong>Robert Wilson</strong></td>
+                <td>Engineering</td>
+                <td>DevOps Engineer</td>
+                <td style="font-weight:600;">$7,000.00</td>
+                <td style="color:#4ade80; font-weight:600;">$7,000.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-004" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-004" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV005</span></td>
+                <td><strong>James Miller</strong></td>
+                <td>Engineering</td>
+                <td>QA Automation Lead</td>
+                <td style="font-weight:600;">$6,500.00</td>
+                <td style="color:#4ade80; font-weight:600;">$6,500.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-005" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-005" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV006</span></td>
+                <td><strong>Lisa Zhang</strong></td>
+                <td>Engineering</td>
+                <td>Frontend Developer</td>
+                <td style="font-weight:600;">$6,200.00</td>
+                <td style="color:#4ade80; font-weight:600;">$6,200.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-006" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-006" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV007</span></td>
+                <td><strong>Elena Rostova</strong></td>
+                <td>Engineering</td>
+                <td>UI/UX Designer</td>
+                <td style="font-weight:600;">$6,400.00</td>
+                <td style="color:#4ade80; font-weight:600;">$6,400.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-007" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-007" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV008</span></td>
+                <td><strong>Vikram Patel</strong></td>
+                <td>Engineering</td>
+                <td>AI & ML Engineer</td>
+                <td style="font-weight:600;">$7,800.00</td>
+                <td style="color:#4ade80; font-weight:600;">$7,800.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-008" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-008" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV009</span></td>
+                <td><strong>Samantha Brooks</strong></td>
+                <td>Engineering</td>
+                <td>Mobile App Developer</td>
+                <td style="font-weight:600;">$6,900.00</td>
+                <td style="color:#4ade80; font-weight:600;">$6,900.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-009" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-009" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV010</span></td>
+                <td><strong>Daniel Craig</strong></td>
+                <td>Engineering</td>
+                <td>Cloud Security Specialist</td>
+                <td style="font-weight:600;">$7,500.00</td>
+                <td style="color:#4ade80; font-weight:600;">$7,500.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-010" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-010" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV011</span></td>
+                <td><strong>Priya Sharma</strong></td>
+                <td>Engineering</td>
+                <td>Database Architect</td>
+                <td style="font-weight:600;">$7,300.00</td>
+                <td style="color:#4ade80; font-weight:600;">$7,300.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-011" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-011" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
+              <tr>
+                <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">DEV012</span></td>
+                <td><strong>Kevin Martinez</strong></td>
+                <td>Engineering</td>
+                <td>Junior Software Engineer</td>
+                <td style="font-weight:600;">$3,500.00</td>
+                <td style="color:#4ade80; font-weight:600;">$3,500.00</td>
+                <td style="color:#fbbf24; font-weight:600;">$0.00</td>
+                <td><span class="status-badge paid">Paid</span></td>
+                <td><button class="btn-link view-receipt-btn" data-id="PR-012" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button></td>
+                <td><button class="btn-link view-invoice-btn" data-id="PR-012" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="footer-text">© 2024 Employee Management System. All rights reserved.</div>
+      <div class="footer-text">© 2026 Employee Management System. All rights reserved.</div>
     </div>
   </div>
 </div>
@@ -166,9 +311,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
     import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["manager"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
     document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -190,63 +337,90 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    const samplePayroll = [
+        { id: 'PR-001', customId: 'DEV001', employeeName: 'Alex Rivera', department: 'Engineering', designation: 'Senior Developer', netPay: 8500, paidAmount: 8500, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-002', customId: 'DEV002', employeeName: 'Michael Chen', department: 'Engineering', designation: 'Full Stack Developer', netPay: 7200, paidAmount: 7200, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-003', customId: 'DEV003', employeeName: 'David Kim', department: 'Engineering', designation: 'Backend Engineer', netPay: 6800, paidAmount: 6800, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-004', customId: 'DEV004', employeeName: 'Robert Wilson', department: 'Engineering', designation: 'DevOps Engineer', netPay: 7000, paidAmount: 7000, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-005', customId: 'DEV005', employeeName: 'James Miller', department: 'Engineering', designation: 'QA Automation Lead', netPay: 6500, paidAmount: 6500, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-006', customId: 'DEV006', employeeName: 'Lisa Zhang', department: 'Engineering', designation: 'Frontend Developer', netPay: 6200, paidAmount: 6200, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-007', customId: 'DEV007', employeeName: 'Elena Rostova', department: 'Engineering', designation: 'UI/UX Designer', netPay: 6400, paidAmount: 6400, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-008', customId: 'DEV008', employeeName: 'Vikram Patel', department: 'Engineering', designation: 'AI & ML Engineer', netPay: 7800, paidAmount: 7800, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-009', customId: 'DEV009', employeeName: 'Samantha Brooks', department: 'Engineering', designation: 'Mobile App Developer', netPay: 6900, paidAmount: 6900, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-010', customId: 'DEV010', employeeName: 'Daniel Craig', department: 'Engineering', designation: 'Cloud Security Specialist', netPay: 7500, paidAmount: 7500, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-011', customId: 'DEV011', employeeName: 'Priya Sharma', department: 'Engineering', designation: 'Database Architect', netPay: 7300, paidAmount: 7300, balanceAmount: 0, status: 'Paid' },
+        { id: 'PR-012', customId: 'DEV012', employeeName: 'Kevin Martinez', department: 'Engineering', designation: 'Junior Software Engineer', netPay: 3500, paidAmount: 3500, balanceAmount: 0, status: 'Paid' }
+    ];
+
+    function renderPayrollTable(records) {
+        tableBody.innerHTML = "";
+        payrollCacheById = {};
+        records.forEach((p) => {
+            const id = p.id || p.customId;
+            payrollCacheById[id] = p;
+            const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
+            const status = p.status || 'Paid';
+            const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
+            const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
+            const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
+            const empCustomId = p.customId || p.employeeId || p.employeeUid || id;
+
+            const receiptCell = `<button class="btn-link view-receipt-btn" data-id="${id}" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button>`;
+            const invoiceCell = `<button class="btn-link view-invoice-btn" data-id="${id}" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button>`;
+
+            tableBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">${empCustomId}</span></td>
+                    <td><strong>${p.employeeName || '-'}</strong></td>
+                    <td>${p.department || '-'}</td>
+                    <td>${p.designation || '-'}</td>
+                    <td style="font-weight:600;">${formatMoney(net)}</td>
+                    <td style="color:#4ade80; font-weight:600;">${formatMoney(paid)}</td>
+                    <td style="color:#fbbf24; font-weight:600;">${formatMoney(bal)}</td>
+                    <td><span class="status-badge ${statusCls}">${status}</span></td>
+                    <td>${receiptCell}</td>
+                    <td>${invoiceCell}</td>
+                </tr>
+            `);
+        });
+
+        document.querySelectorAll('.view-receipt-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const record = payrollCacheById[id];
+                if (record) openReceiptWindow(record, id);
+            });
+        });
+
+        document.querySelectorAll('.view-invoice-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const record = payrollCacheById[id];
+                if (record) openInvoiceWindow(record, id);
+            });
+        });
+    }
+
     async function loadPayroll() {
         try {
             const snap = await getDocs(collection(db, "payroll"));
-            if (snap.empty) {
-                tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#8898aa;">No payroll records found.</td></tr>`;
-                return;
-            }
-            tableBody.innerHTML = "";
-            payrollCacheById = {};
+            let records = [];
             snap.forEach((docSnap) => {
-                const p = docSnap.data();
-                payrollCacheById[docSnap.id] = p;
-                const net = Number(p.netPay) || ((Number(p.basicSalary) || 0) + (Number(p.allowances) || 0) - (Number(p.deductions) || 0));
-                const status = p.status || 'Pending';
-                const statusCls = status.toLowerCase() === 'paid' ? 'paid' : 'pending';
-                const paid = p.paidAmount !== undefined ? Number(p.paidAmount) : (status === 'Paid' ? net : 0);
-                const bal = p.balanceAmount !== undefined ? Number(p.balanceAmount) : Math.max(0, net - paid);
-                const empCustomId = p.customId || p.employeeId || p.employeeUid || docSnap.id.slice(0, 8);
-
-                const receiptCell = `<button class="btn-link view-receipt-btn" data-id="${docSnap.id}" style="color:#4299e1; font-weight:600;"><i class="fa-solid fa-receipt"></i> Receipt</button>`;
-                const invoiceCell = `<button class="btn-link view-invoice-btn" data-id="${docSnap.id}" style="color:#a855f7; font-weight:600;"><i class="fa-solid fa-file-invoice"></i> Invoice</button>`;
-
-                tableBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td><span style="font-weight:700; color:#60a5fa; font-family:monospace; background:rgba(96,165,250,0.1); padding:2px 6px; border-radius:4px;">${empCustomId}</span></td>
-                        <td><strong>${p.employeeName || '-'}</strong></td>
-                        <td>${p.department || '-'}</td>
-                        <td>${p.designation || '-'}</td>
-                        <td style="font-weight:600;">${formatMoney(net)}</td>
-                        <td style="color:#4ade80; font-weight:600;">${formatMoney(paid)}</td>
-                        <td style="color:#fbbf24; font-weight:600;">${formatMoney(bal)}</td>
-                        <td><span class="status-badge ${statusCls}">${status}</span></td>
-                        <td>${receiptCell}</td>
-                        <td>${invoiceCell}</td>
-                    </tr>
-                `);
+                records.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            
+            const mergedMap = new Map();
+            samplePayroll.forEach(p => mergedMap.set(p.customId || p.id, { ...p }));
+            records.forEach(p => {
+                const key = p.customId || p.employeeId || p.id;
+                const existing = mergedMap.get(key) || {};
+                mergedMap.set(key, { ...existing, ...p });
             });
 
-            document.querySelectorAll('.view-receipt-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.getAttribute('data-id');
-                    const record = payrollCacheById[id];
-                    if (record) openReceiptWindow(record, id);
-                });
-            });
-
-            document.querySelectorAll('.view-invoice-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.getAttribute('data-id');
-                    const record = payrollCacheById[id];
-                    if (record) openInvoiceWindow(record, id);
-                });
-            });
-
+            renderPayrollTable(Array.from(mergedMap.values()));
         } catch (error) {
-            console.error("Failed to load payroll: ", error);
-            tableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
+            console.error("Failed to load payroll (using fallback): ", error);
+            renderPayrollTable(samplePayroll);
         }
     }
 

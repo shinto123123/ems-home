@@ -3,837 +3,1245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HR Dashboard - Mentorship Management</title>
+<title>Mentorship Program Management - HR Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    color: #d7dfef;
+    height: 100vh;
+    overflow: hidden;
+}
 
-/* ── NAVBAR ── */
-.navbar{height:62px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;z-index:100;}
-.navbar-left{display:flex;align-items:center;gap:14px;}
-.hamburger{font-size:18px;color:#8898aa;cursor:pointer;}
-.navbar-logo{width:38px;height:38px;background:#1b2e6e;border:2px solid #4299e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4299e1;letter-spacing:-.5px;}
-.navbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:.4px;}
-.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
-.nav-search{width:100%;max-width:440px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
-.nav-search i{color:#4a5568;font-size:13px;}
-.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:13px;}
-.nav-search input::placeholder{color:#4a5568;}
-.navbar-right{display:flex;align-items:center;gap:16px;}
-.nav-icon-btn{position:relative;width:36px;height:36px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:15px;transition:.2s;text-decoration:none;}
-.nav-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
-.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:10px;border:1px solid #1b2e6e;transition:.2s;}
-.nav-profile:hover{border-color:#4299e1;}
-.nav-profile-avatar{width:32px;height:32px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:14px;}
-.nav-profile-info h4{font-size:13px;font-weight:600;color:#fff;}
-.nav-profile-info small{font-size:11px;color:#8898aa;}
-.nav-profile{position:relative;}
-.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
-.nav-profile-dropdown.show{display:block;}
-.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
-.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
-.nav-profile-dropdown a i{width:14px;}
+/* =========================
+   TOP NAVBAR
+========================= */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
 
-/* ── BODY WRAP ── */
-.body-wrap{display:flex;flex:1;overflow:hidden;}
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-/* ── SIDEBAR ── */
-.sidebar{width:220px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;}
-.sidebar ul{list-style:none;padding:8px 0;}
-.sidebar ul li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
-.sidebar ul li a:hover,.sidebar ul li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
-.sidebar ul li a i{width:16px;font-size:14px;}
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
 
-/* ── MAIN WORKSPACE CONSOLE MULTIPANEL ── */
-.main-workspace{flex:1;display:flex;overflow:hidden;}
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
+}
 
-/* ── DIRECTORY PANEL (LEFT) ── */
-.directory-panel{flex:1.4;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #1b2e6e;}
-.page-header{padding:16px 22px 0;display:flex;justify-content:space-between;align-items:flex-start;}
-.page-header h2{font-size:20px;font-weight:700;color:#fff;}
-.breadcrumb{font-size:11px;color:#8898aa;margin-top:2px;display:flex;gap:4px;}
-.breadcrumb span{color:#4299e1;}
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
+}
 
-.directory-content{flex:1;padding:14px 22px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;}
-.directory-content::-webkit-scrollbar{width:6px;}
-.directory-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
 
-/* 5 Column Metric Counter Blocks */
-.mini-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
-.mini-kpi{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
-.mini-icon{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4299e1;flex-shrink:0;}
-.mini-info p{font-size:11px;color:#8898aa;margin-bottom:2px;}
-.mini-info h3{font-size:16px;font-weight:700;color:#fff;}
-.mini-info small{font-size:10px;color:#8898aa;}
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-/* Filters Controls Bar Panel */
-.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#111c44;padding:12px;border-radius:12px;border:1px solid #1b2e6e;}
-.search-box{flex:1;min-width:160px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;}
-.search-box input{border:none;outline:none;background:none;color:#fff;font-size:12.5px;width:100%;}
-.search-box i{color:#4a5568;font-size:12px;}
-.filter-select{background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;font-size:12.5px;padding:7px 12px;border-radius:8px;outline:none;cursor:pointer;}
-.btn-action{background:#1b2e6e;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;}
-.btn-action:hover{background:#2a449c;}
-.btn-primary{background:#4299e1;}
-.btn-primary:hover{background:#2b7fd1;}
+.nav-search i { color: #4a5568; font-size: 14px; }
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.nav-search input::placeholder { color: #4a5568; }
 
-/* Sub Navigation Category Tabs Link row */
-.segment-filter-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #1b2e6e;padding-bottom:2px;}
-.segment-btn{background:none;border:none;color:#8898aa;font-size:13px;padding:6px 12px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
-.segment-btn:hover{color:#fff;}
-.segment-btn.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
-/* Data Roster Mentorship Table View */
-.table-wrap{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;overflow:hidden;}
-.mentorship-table{width:100%;border-collapse:collapse;text-align:left;}
-.mentorship-table th{background:#162256;color:#8898aa;font-size:11px;font-weight:600;padding:12px 14px;border-bottom:1px solid #1b2e6e;text-transform:uppercase;letter-spacing:0.5px;}
-.mentorship-table td{padding:10px 14px;color:#cbd5e1;font-size:13px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
-.mentorship-table tr:last-child td{border-bottom:none;}
-.mentorship-table tr:hover td{background:rgba(66,153,225,0.03);cursor:pointer;}
-.mentorship-table tr.selected td{background:rgba(66,153,225,0.08);border-color:rgba(66,153,225,0.3);}
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    text-decoration: none;
+    transition: .3s;
+}
 
-/* Double Profile User cell layout elements */
-.pairing-profile-cell{display:flex;align-items:center;gap:8px;}
-.pairing-avatar{width:26px;height:26px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:10px;font-weight:600;flex-shrink:0;}
-.pairing-info strong{display:block;color:#fff;font-size:12.5px;font-weight:500;}
-.pairing-info small{display:block;color:#8898aa;font-size:11px;}
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
+}
 
-/* Linear Progress Bar component styles */
-.linear-progress-wrapper{display:flex;align-items:center;gap:8px;min-width:100px;}
-.linear-progress-track{flex:1;height:5px;background:#0b1437;border-radius:3px;position:relative;overflow:hidden;}
-.linear-progress-bar{height:100%;background:#4299e1;border-radius:3px;position:absolute;left:0;top:0;}
-.linear-progress-text{font-size:11.5px;font-weight:600;color:#fff;width:28px;text-align:right;}
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-/* Status Flag Tags */
-.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;}
-.status-badge.active{background:rgba(74,222,128,0.1);color:#4ade80;}
-.status-badge.completed{background:rgba(66,153,225,0.1);color:#4299e1;}
-.status-badge.pending{background:rgba(251,191,36,0.1);color:#fbbf24;}
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    position: relative;
+}
 
-.btn-icon{background:none;border:none;color:#8898aa;cursor:pointer;padding:4px;font-size:14px;}
-.btn-icon:hover{color:#fff;}
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
 
-/* Pagination Panel Footer Layout Row */
-.table-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#111c44;border-top:1px solid #1b2e6e;font-size:12px;color:#8898aa;}
-.pagination{display:flex;gap:4px;}
-.page-link{padding:5px 10px;background:#0b1437;border:1px solid #1b2e6e;color:#cbd5e1;border-radius:6px;text-decoration:none;font-size:11.5px;}
-.page-link.active{background:#4299e1;color:#fff;border-color:#4299e1;}
+.nav-profile-info h4 { font-size: 13px; font-weight: 600; color: #ffffff; }
+.nav-profile-info small { font-size: 11px; color: #8898aa; }
+.nav-profile .fa-chevron-down { font-size: 11px; color: #8898aa; }
 
-/* Lower Segment Overview Analytics Panel Row Section Layout */
-.analytics-section-title{color:#fff;font-size:14px;font-weight:600;margin-top:6px;}
-.analytics-dashboard-row{display:grid;grid-template-columns:1.1fr 1.1fr 1fr 0.8fr;gap:12px;}
-.analytics-card-node{background:#111c44;border:1px solid #1b2e6e;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;}
-.analytics-card-node h4{color:#cbd5e1;font-size:12.5px;font-weight:600;border-bottom:1px solid #162256;padding-bottom:6px;}
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
+}
+.nav-profile-dropdown.show { display: block; }
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
+}
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
+}
 
-/* Donut Chart Block Layout Grid with Side Metrics legends */
-.chart-donut-wrapper{display:flex;align-items:center;gap:12px;height:100%;}
-.chart-donut-graphic{width:80px;height:80px;flex-shrink:0;}
-.chart-donut-legends-list{flex:1;display:flex;flex-direction:column;gap:6px;}
-.legend-row-item{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#cbd5e1;}
-.legend-bullet-text{display:flex;align-items:center;gap:6px;}
-.legend-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.legend-row-item strong{color:#fff;}
+/* =========================
+   BODY WRAP
+========================= */
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
 
-/* List node components upcoming data schedules items */
-.upcoming-schedules-stack{display:flex;flex-direction:column;gap:8px;}
-.schedule-node-item{display:flex;align-items:center;gap:10px;background:#0b1437;border:1px solid #1b2e6e;padding:8px 10px;border-radius:8px;}
-.schedule-icon-wrap{color:#4299e1;font-size:13px;flex-shrink:0;}
-.schedule-details-text strong{display:block;color:#fff;font-size:11.5px;font-weight:500;}
-.schedule-details-text small{display:block;color:#8898aa;font-size:10.5px;margin-top:1px;}
+/* =========================
+   SIDEBAR (HR)
+========================= */
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+}
 
-/* Radial Ring Health Component element view */
-.health-wheel-container{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:4px;text-align:center;}
-.health-wheel-graphic{position:relative;width:68px;height:68px;}
-.health-wheel-graphic svg{width:68px;height:68px;transform:rotate(-90deg);}
-.health-wheel-center-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:700;color:#fff;}
-.health-wheel-container span{font-size:11.5px;color:#4ade80;font-weight:600;}
-.health-wheel-container p{font-size:10.5px;color:#8898aa;margin-top:2px;line-height:1.3;}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
 
-/* ── DETAILS PANEL (RIGHT): TARGET INDIVIDUAL MONITOR INSPECTOR ── */
-.details-panel{flex:1;background:#111c44;display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 24px rgba(0,0,0,0.25);}
-.details-header{padding:18px 22px;border-bottom:1px solid #1b2e6e;display:flex;justify-content:between;align-items:center;}
-.details-header h3{color:#fff;font-size:16px;font-weight:600;}
-.close-panel-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;}
-.close-panel-btn:hover{color:#fff;}
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
+}
 
-.details-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;}
-.details-content::-webkit-scrollbar{width:6px;}
-.details-content::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:20px;}
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
 
-/* Hero Info Overview layout sector components */
-.profile-hero{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #1b2e6e;}
-.hero-avatar{width:52px;height:52px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:16px;color:#7dd3fc;font-weight:600;}
-.hero-meta h2{font-size:16px;color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
-.hero-meta p{font-size:12.5px;color:#8898aa;margin-top:2px;}
-.hero-meta span{font-size:11px;color:#cbd5e1;display:block;margin-top:2px;}
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
+}
 
-/* Navigation sub-tabs components menu row */
-.tab-nav{display:flex;gap:16px;border-bottom:1px solid #1b2e6e;}
-.tab-link{padding:8px 0;color:#8898aa;font-size:13px;text-decoration:none;border-bottom:2px solid transparent;}
-.tab-link.active{color:#4299e1;border-color:#4299e1;font-weight:600;}
-.tab-link:hover{color:#fff;}
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background: #1b2e6e;
+}
 
-/* Segment blocks layout details data section containers */
-.info-section{background:#0b1437;border:1px solid #1b2e6e;border-radius:12px;padding:14px;}
-.section-title{color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;}
-.section-paragraph-desc{font-size:12.5px;color:#cbd5e1;line-height:1.5;}
+.sidebar ul li:hover a,
+.sidebar ul li.active a {
+    color: #ffffff;
+}
 
-.info-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px 16px;}
-.info-label{font-size:12.5px;color:#8898aa;}
-.info-value{font-size:12.5px;color:#e2e8f0;}
+.sidebar.collapsed { width: 70px; }
+.sidebar.collapsed ul li { justify-content: center; }
+.sidebar.collapsed ul li a { justify-content: center; gap: 0; }
+.sidebar.collapsed ul li a span { display: none; }
 
-/* Vertical Progress Audit Node Milestones Timeline Component Track */
-.timeline-track-wrap{display:flex;flex-direction:column;gap:16px;position:relative;padding-left:16px;margin-top:4px;}
-.timeline-track-wrap::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:#1b2e6e;}
-.timeline-node{position:relative;}
-.timeline-dot{width:10px;height:10px;border-radius:50%;position:absolute;left:-16px;top:4px;background:#1b2e6e;border:2px solid #0b1437;box-sizing:content-box;}
-.timeline-node.complete .timeline-dot{background:#4ade80;}
-.timeline-node.active .timeline-dot{background:#4299e1;}
-.timeline-node.pending .timeline-dot{background:#fbbf24;}
-.timeline-node-title{font-size:12.5px;font-weight:600;color:#fff;}
-.timeline-node-time{font-size:11px;color:#8898aa;margin-top:2px;display:block;}
-.timeline-node-desc{font-size:11.5px;color:#cbd5e1;margin-top:4px;display:block;}
+/* =========================
+   MAIN WRAPPER & CONTENT
+========================= */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 
-/* Form Console Drawer Control Bar footer layout actions buttons */
-.details-footer{padding:14px 22px;background:#0b1437;border-top:1px solid #1b2e6e;display:flex;gap:10px;}
-.btn-footer-half{flex:1;background:none;border:1px solid #1b2e6e;color:#cbd5e1;padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;transition:.2s;}
-.btn-footer-half:hover{border-color:#8898aa;color:#fff;}
-.btn-footer-half.primary{background:#4299e1;color:#fff;border-color:#4299e1;}
-.btn-footer-half.primary:hover{background:#2b7fd1;}
+.content {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    background: #0b1437;
+}
 
-.d-none{display:none !important;}
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
 
-/* ── EDIT MENTORSHIP MODAL (additive, matches Admin/internship.html modal house style) ── */
-.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,10,30,0.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;}
-.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:500px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:14px;margin-bottom:20px;}
-.modal-header h3{color:#ffffff;font-size:18px;font-weight:600;}
-.modal-close{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:color 0.2s;}
-.modal-close:hover{color:#f87171;}
-.form-group{margin-bottom:16px;}
-.form-group label{display:block;color:#8898aa;font-size:12px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-.form-group input,.form-group select{width:100%;padding:11px 14px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#ffffff;font-size:14px;outline:none;transition:border-color 0.2s;}
-.form-group input:focus,.form-group select:focus{border-color:#4299e1;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;border-top:1px solid #1b2e6e;padding-top:16px;}
-.btn-cancel{background:#16265c;border:1px solid #1b2e6e;color:#d7dfef;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
-.btn-cancel:hover{background:#1b2e6e;}
-.btn-submit{background:#4299e1;border:none;color:#ffffff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:0.2s;}
-.btn-submit:hover{background:#3182ce;}
+.page-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.page-header p {
+    font-size: 13px;
+    color: #8898aa;
+    margin-top: 2px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.add-btn {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.add-btn:hover { background: #3182ce; }
+
+.export-btn {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.export-btn:hover { background: #1b2e6e; color: #ffffff; }
+
+/* KPI Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.card {
+    background: #111c44;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: 0.2s;
+}
+.card:hover {
+    border-color: #4299e1;
+    transform: translateY(-2px);
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #4299e1;
+    flex-shrink: 0;
+}
+
+.card-info h3 {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.card-info p {
+    color: #8898aa;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* Filter Bar */
+.filter-box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: #111c44;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #1b2e6e;
+    flex-wrap: wrap;
+}
+
+.search-intern {
+    flex: 1;
+    min-width: 220px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-intern i { color: #4a5568; font-size: 13px; }
+.search-intern input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #ffffff;
+    font-size: 13px;
+}
+.search-intern input::placeholder { color: #8898aa; }
+
+.filter-select {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #cbd5e1;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    min-width: 130px;
+}
+
+/* Table Box */
+.table-box {
+    flex: 1;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    overflow: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.table-box::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-box::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1050px;
+    font-size: 13px;
+}
+
+thead { background: #16265c; position: sticky; top: 0; z-index: 2; }
+th {
+    padding: 13px 16px;
+    text-align: left;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #1b2e6e;
+}
+
+td {
+    padding: 12px 16px;
+    color: #d7dfef;
+    border-top: 1px solid #1b2e6e;
+    vertical-align: middle;
+}
+
+tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
+
+/* Person Cell */
+.person-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.person-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #4299e1;
+    background: #0b1437;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.person-info h4 {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+.person-info small {
+    color: #8898aa;
+    font-size: 11px;
+}
+
+/* Domain Track Badge */
+.track-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(66, 153, 225, 0.12);
+    color: #60a5fa;
+    border: 1px solid rgba(66, 153, 225, 0.25);
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* Progress bar */
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 140px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #8898aa;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: #0b1437;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #1b2e6e;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4299e1, #38bdf8);
+    border-radius: 10px;
+}
+
+/* Status Badges */
+.status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    text-align: center;
+}
+
+.status.active { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+.status.review { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.status.completed { background: rgba(96, 165, 250, 0.15); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); }
+.status.paused { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+/* Action Buttons */
+.action-btns { display: flex; gap: 8px; }
+.btn-icon {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #8898aa;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+}
+.btn-icon:hover { color: #4299e1; border-color: #4299e1; }
+.btn-icon.delete:hover { color: #f87171; border-color: #f87171; }
+
+/* =========================
+   MODALS
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.show .modal-box { transform: translateY(0); }
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
+.modal-close:hover { color: #f87171; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label {
+    display: block;
+    color: #8898aa;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 9px 12px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13.5px;
+    outline: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #4299e1; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1200px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .sidebar { width: 70px; }
+    .sidebar ul li a span { display: none; }
+    .cards { grid-template-columns: 1fr; }
+    .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
 </style>
 </head>
 <body>
 
+<!-- TOP NAVBAR -->
 <div class="navbar">
-  <div class="navbar-left">
-    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-    <div class="navbar-logo">HR</div>
-    <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
-  </div>
-  <div class="navbar-center">
-    <div class="nav-search">
-      <i class="fa-solid fa-search"></i>
-      <input type="text" placeholder="Search employees, documents, departments...">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">HR</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
-  </div>
-  <div class="navbar-right">
-    <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">5</span></a>
-    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
-    <div class="nav-profile" id="navProfileToggle">
-      <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
-      <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
-      <div class="nav-profile-dropdown" id="navProfileDropdown">
-        <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-      </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search mentorship pairs, mentors, tracks...">
+        </div>
     </div>
-  </div>
+    <div class="navbar-right">
+        <a class="nav-icon-btn" href="notification.html">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">4</span>
+        </a>
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">2</span>
+        </div>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info">
+                <h4>HR Manager</h4>
+                <small>Human Resources</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="body-wrap">
 
-  <div class="sidebar">
+    <!-- SIDEBAR (HR 15 items) -->
+      <div class="sidebar" id="hrSidebar">
     <ul>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
-      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
-      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
-      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
-      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
-      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
-      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
-      <li class="active"><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
-      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
-      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
-      <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-user-group"></i> <span>Employees</span></a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Department</span></a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-briefcase"></i> <span>Recruitment</span></a></li>
+      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-graduation-cap"></i> <span>Internship</span></a></li>
+      <li class="active"><a href="mentorship.html"><i class="fa-solid fa-chalkboard-user"></i> <span>Mentorship</span></a></li>
+      <li><a href="project-management.html"><i class="fa-solid fa-diagram-project"></i> <span>Projects</span></a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports &amp; Analytics</span></a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+      <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
     </ul>
   </div>
 
-  <div class="main-workspace">
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
 
-    <div class="directory-panel">
-      <div class="page-header">
-        <div>
-          <h2>Mentorship Management</h2>
-          <div class="breadcrumb">Dashboard &gt; <span>Mentorship</span></div>
-        </div>
-        <button class="btn-action btn-primary" style="font-weight:600;" id="createMentorshipBtn"><i class="fa-solid fa-plus"></i> Create Mentorship Program</button>
-      </div>
-      
-      <div class="directory-content">
-        
-        <div class="mini-kpi-grid">
-          <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-            <div class="mini-info"><p>Total Programs</p><h3 id="kpiTotalPrograms">--</h3><small>Total Tracked</small></div>
-          </div>
-          <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
-            <div class="mini-info"><p>Active Mentorships</p><h3 id="kpiActivePrograms">--</h3><small>Ongoing</small></div>
-          </div>
-          <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-regular fa-clock"></i></div>
-            <div class="mini-info"><p>Completed Mentorships</p><h3 id="kpiCompletedPrograms">--</h3><small>Completed</small></div>
-          </div>
-          <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
-            <div class="mini-info"><p>Total Mentors</p><h3 id="kpiTotalMentors">--</h3><small>Active Mentors</small></div>
-          </div>
-          <div class="mini-kpi">
-            <div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div>
-            <div class="mini-info"><p>Total Mentees</p><h3 id="kpiTotalMentees">--</h3><small>Active Mentees</small></div>
-          </div>
-        </div>
-
-        <div class="filter-bar">
-          <div class="search-box">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="mentorSearchInput" placeholder="Search by program, mentor or mentee...">
-          </div>
-          <select class="filter-select" id="mentorDeptFilter"><option value="All">All Departments</option></select>
-          <select class="filter-select" id="mentorStatusFilter">
-            <option value="All">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
-            <option value="Pending">Pending</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-          <button class="btn-action" id="exportMentorshipBtn" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Export CSV</button>
-        </div>
-
-        <div class="segment-filter-row" id="mentorSegmentTabs">
-          <button class="segment-btn active" data-status="All">All Mentorships</button>
-          <button class="segment-btn" data-status="Active">Active</button>
-          <button class="segment-btn" data-status="Pending">Pending</button>
-          <button class="segment-btn" data-status="Completed">Completed</button>
-          <button class="segment-btn" data-status="Cancelled">Cancelled</button>
-        </div>
-
-        <div class="table-wrap">
-          <table class="mentorship-table">
-            <thead>
-              <tr>
-                <th>Program Name</th>
-                <th>Mentor</th>
-                <th>Mentee</th>
-                <th>Department</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Progress</th>
-                <th style="text-align:center;">Action</th>
-              </tr>
-            </thead>
-            <tbody id="mentorshipTableBody">
-              <tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading mentorships...</td></tr>
-            </tbody>
-          </table>
-          
-          <div class="table-footer">
-            <span>Showing 1 to 8 of 8 mentorships</span>
-            <div class="pagination">
-              <a href="#" class="page-link active">1</a>
+            <div class="page-header">
+                <div>
+                    <h1>Mentorship Program Management</h1>
+                    <p>Track mentor assignments, intern pairing curriculum progress, and professional growth milestones.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="export-btn" id="exportMentorshipBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
+                    <button class="add-btn" id="openAddPairBtn"><i class="fa-solid fa-plus"></i> Add Mentorship Pairing</button>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="analytics-section-title">Mentorship Overview</div>
-        
-        <div class="analytics-dashboard-row">
-          
-          <div class="analytics-card-node">
-            <h4>Mentees by Department</h4>
-            <div class="chart-donut-wrapper">
-              <div class="chart-donut-graphic">
-                <svg viewBox="0 0 36 36" style="width:100%; height:100%;">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4" stroke-dasharray="39 61" stroke-dashoffset="25"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#00b5d8" stroke-width="4" stroke-dasharray="17 83" stroke-dashoffset="-14"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-dasharray="22 78" stroke-dashoffset="-31"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a855f7" stroke-width="4" stroke-dasharray="15 85" stroke-dashoffset="-53"/>
-                </svg>
-              </div>
-              <div class="chart-donut-legends-list">
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4299e1;"></div>Engineering</div><strong>18 (39%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#00b5d8;"></div>Design</div><strong>8 (17%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#7dd3fc;"></div>Marketing</div><strong>10 (22%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#a855f7;"></div>Product</div><strong>7 (15%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#8898aa;"></div>Others</div><strong>3 (7%)</strong></div>
-              </div>
+            <!-- KPI METRICS (Exact layout as Internship tab) -->
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon" style="color: #4299e1;"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="card-info">
+                        <h3 id="statTotalPairs">0</h3>
+                        <p>Total Pairings</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color: #4ade80;"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <div class="card-info">
+                        <h3 id="statActivePairs">0</h3>
+                        <p>Active Mentorships</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color: #fbbf24;"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="card-info">
+                        <h3 id="statAvgProgress">0%</h3>
+                        <p>Avg Program Progress</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="color: #60a5fa;"><i class="fa-solid fa-award"></i></div>
+                    <div class="card-info">
+                        <h3 id="statCompletedPairs">0</h3>
+                        <p>Certified Completions</p>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="analytics-card-node">
-            <h4>Mentorship Status</h4>
-            <div class="chart-donut-wrapper">
-              <div class="chart-donut-graphic">
-                <svg viewBox="0 0 36 36" style="width:100%; height:100%;">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0b1437" stroke-width="4"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="57 43" stroke-dashoffset="25"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="4" stroke-dasharray="12 88" stroke-dashoffset="-32"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4299e1" stroke-width="4" stroke-dasharray="22 78" stroke-dashoffset="-44"/>
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f87171" stroke-width="4" stroke-dasharray="7 93" stroke-dashoffset="-66"/>
-                </svg>
-              </div>
-              <div class="chart-donut-legends-list">
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4ade80;"></div>Active</div><strong>46 (57%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#fbbf24;"></div>Pending</div><strong>10 (12%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#4299e1;"></div>Completed</div><strong>18 (22%)</strong></div>
-                <div class="legend-row-item"><div class="legend-bullet-text"><div class="legend-color-dot" style="background:#f87171;"></div>Cancelled</div><strong>6 (7%)</strong></div>
-              </div>
+            <!-- FILTER & SEARCH BAR -->
+            <div class="filter-box">
+                <div class="search-intern">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search mentee name, mentor, or domain track...">
+                </div>
+                <select class="filter-select" id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Paused">Paused</option>
+                </select>
+                <select class="filter-select" id="trackFilter">
+                    <option value="">All Domain Tracks</option>
+                    <option value="Full Stack Development">Full Stack Development</option>
+                    <option value="UI/UX Design">UI/UX Design</option>
+                    <option value="Data Science & ML">Data Science & ML</option>
+                    <option value="Cloud Architecture">Cloud Architecture</option>
+                    <option value="Product Management">Product Management</option>
+                    <option value="Quality Assurance">Quality Assurance</option>
+                </select>
             </div>
-          </div>
 
-          <div class="analytics-card-node">
-            <h4 style="border:none; padding-bottom:0; display:flex; justify-content:space-between; align-items:center;">Upcoming End Dates <button style="background:none; border:none; color:#4299e1; font-size:11px; cursor:pointer;">View All</button></h4>
-            <div class="upcoming-schedules-stack">
-              <div class="schedule-node-item">
-                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
-                <div class="schedule-details-text"><strong>UI/UX Design Mentorship</strong><small>31 Jul 2025</small></div>
-              </div>
-              <div class="schedule-node-item">
-                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
-                <div class="schedule-details-text"><strong>Software Engineering Mentorship</strong><small>10 Jul 2025</small></div>
-              </div>
-              <div class="schedule-node-item">
-                <div class="schedule-icon-wrap"><i class="fa-regular fa-calendar-days"></i></div>
-                <div class="schedule-details-text"><strong>Data Analytics Mentorship</strong><small>15 Jul 2025</small></div>
-              </div>
+            <!-- MENTORSHIP ROSTER TABLE -->
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mentee / Intern</th>
+                            <th>Assigned Senior Mentor</th>
+                            <th>Domain Track</th>
+                            <th>Duration / Cycle</th>
+                            <th>Curriculum Progress</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mentorshipTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: #8898aa;">
+                                <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Loading mentorship program roster...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-          </div>
-
-          <div class="analytics-card-node">
-            <h4>Mentorship Health</h4>
-            <div class="health-wheel-container">
-              <div class="health-wheel-graphic">
-                <svg>
-                  <circle cx="34" cy="34" r="28" fill="none" stroke="#0b1437" stroke-width="4"/>
-                  <circle cx="34" cy="34" r="28" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="136 175"/>
-                </svg>
-                <div class="health-wheel-center-text">78%</div>
-              </div>
-              <span>Good</span>
-              <p>Based on feedback & progress</p>
-            </div>
-          </div>
 
         </div>
-
-      </div>
     </div>
-
-    <div class="details-panel" id="detailsPanel">
-      <div class="details-header">
-        <h3>Mentorship Details</h3>
-        <button class="close-panel-btn" id="closePanelBtn"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      
-      <div class="details-content">
-        <div class="profile-hero">
-          <div class="hero-avatar" id="detailMentorshipAvatar">AS</div>
-          <div class="hero-meta">
-            <h2 id="detailMentorshipName">Amit Sharma <span class="status-badge active" id="detailMentorshipStatusBadge" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">Active</span></h2>
-            <p id="detailMentorshipSub">UI/UX Intern • Design Department</p>
-            <span id="detailMentorshipMeta">INT001 • amit.sharma@email.com</span>
-          </div>
-        </div>
-
-        <div class="tab-nav">
-          <a href="#" class="tab-link active">Overview</a>
-          <a href="#" class="tab-link">Goals</a>
-          <a href="#" class="tab-link">Meetings</a>
-          <a href="#" class="tab-link">Feedback</a>
-          <a href="#" class="tab-link">Documents</a>
-        </div>
-
-        <div class="info-section">
-          <div class="section-title">Mentorship Information</div>
-          <div class="info-grid">
-            <span class="info-label">Program Name</span><span class="info-value" style="font-weight:500;" id="detailProgramName">UI/UX Design Mentorship Program</span>
-            <span class="info-label">Mentor</span><span class="info-value" style="font-weight:500; color:#fff;" id="detailMentorName">Jane Smith</span>
-            <span class="info-label">Mentee</span><span class="info-value" id="detailMenteeName">—</span>
-            <span class="info-label">Department</span><span class="info-value" id="detailMentorshipDept">—</span>
-            <span class="info-label">Start Date</span><span class="info-value" id="detailStartDate">01 May 2025</span>
-            <span class="info-label">End Date</span><span class="info-value" id="detailEndDate">31 Jul 2025</span>
-            <span class="info-label">Status</span><span class="info-value"><span class="status-badge active" style="padding:2px 6px;" id="detailMentorshipStatusVal">Active</span></span>
-            <span class="info-label">Progress</span>
-            <span class="info-value">
-              <div class="linear-progress-wrapper" style="width:100%;">
-                <div class="linear-progress-track"><div class="linear-progress-bar" style="width: 60%;" id="detailProgressBar"></div></div>
-                <span class="linear-progress-text" style="width:auto;" id="detailProgressText">60%</span>
-              </div>
-            </span>
-          </div>
-        </div>
-
-        <div class="info-section">
-          <div class="section-title">Program Description</div>
-          <p class="section-paragraph-desc">This program aims to guide interns in UI/UX design principles, tools, and real-world project execution.</p>
-        </div>
-
-        <div class="info-section">
-          <div class="section-title" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">Recent Activity <button style="background:none; border:none; color:#4299e1; font-size:11px; cursor:pointer;">View All Activity</button></div>
-          <div class="timeline-track-wrap">
-            <div class="timeline-node complete">
-              <div class="timeline-dot"></div>
-              <span class="timeline-node-title">Goal Updated</span>
-              <span class="timeline-node-time">22 May 2025</span>
-              <span class="timeline-node-desc">Design system task completed</span>
-            </div>
-            <div class="timeline-node active">
-              <div class="timeline-dot"></div>
-              <span class="timeline-node-title">Feedback Submitted</span>
-              <span class="timeline-node-time">15 May 2025</span>
-              <span class="timeline-node-desc">Great progress in wireframing!</span>
-            </div>
-            <div class="timeline-node pending">
-              <div class="timeline-dot"></div>
-              <span class="timeline-node-title">Meeting Conducted</span>
-              <span class="timeline-node-time">08 May 2025</span>
-              <span class="timeline-node-desc">Weekly sync-up meeting</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="details-footer">
-        <button class="btn-footer-half" id="editMentorshipBtn">Edit Mentorship</button>
-        <button class="btn-footer-half primary">View Full Profile</button>
-      </div>
-    </div>
-
-  </div>
 </div>
 
-<div class="modal-overlay d-none" id="editMentorshipModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>Edit Mentorship</h3>
-      <button class="modal-close" id="closeEditMentorshipModalBtn"><i class="fa-solid fa-xmark"></i></button>
+<!-- ADD / EDIT MENTORSHIP PAIRING MODAL -->
+<div class="modal-overlay" id="pairModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalTitle">Add Mentorship Pairing</h3>
+            <button class="modal-close" id="closePairModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="pairForm">
+            <input type="hidden" id="pairDocId">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="menteeName">Mentee / Intern Name</label>
+                    <input type="text" id="menteeName" required placeholder="e.g., Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label for="menteeRole">Mentee Level / Title</label>
+                    <input type="text" id="menteeRole" required placeholder="e.g., Software Intern">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mentorName">Assigned Senior Mentor</label>
+                    <input type="text" id="mentorName" required placeholder="e.g., Sarah Jenkins">
+                </div>
+                <div class="form-group">
+                    <label for="mentorRole">Mentor Designation</label>
+                    <input type="text" id="mentorRole" required placeholder="e.g., Staff Tech Lead">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="domainTrack">Domain Track</label>
+                    <select id="domainTrack" required>
+                        <option value="Full Stack Development">Full Stack Development</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Data Science & ML">Data Science & ML</option>
+                        <option value="Cloud Architecture">Cloud Architecture</option>
+                        <option value="Product Management">Product Management</option>
+                        <option value="Quality Assurance">Quality Assurance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="durationText">Program Duration</label>
+                    <input type="text" id="durationText" required placeholder="e.g., 3 Months (Wk 8/12)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="progressVal">Curriculum Progress (%)</label>
+                    <input type="number" id="progressVal" min="0" max="100" value="60" required>
+                </div>
+                <div class="form-group">
+                    <label for="pairStatus">Status</label>
+                    <select id="pairStatus">
+                        <option value="Active">Active</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Paused">Paused</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="weeklyGoals">Current Weekly Milestone / Goals</label>
+                <input type="text" id="weeklyGoals" placeholder="e.g., Implementing REST endpoints & writing Jest unit tests">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="export-btn" id="cancelPairModalBtn">Cancel</button>
+                <button type="submit" class="add-btn" id="savePairBtn">Save Mentorship</button>
+            </div>
+        </form>
     </div>
-    <form id="editMentorshipForm">
-      <input type="hidden" id="editMentorshipId">
-      <div class="form-group">
-        <label for="editProgramName">Program Name</label>
-        <input type="text" id="editProgramName" required>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="editMentorNameInput">Mentor</label>
-          <input type="text" id="editMentorNameInput" required>
-        </div>
-        <div class="form-group">
-          <label for="editMenteeNameInput">Mentee</label>
-          <input type="text" id="editMenteeNameInput" required>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="editMentorshipDeptInput">Department</label>
-          <input type="text" id="editMentorshipDeptInput">
-        </div>
-        <div class="form-group">
-          <label for="editMentorshipStatusInput">Status</label>
-          <select id="editMentorshipStatusInput">
-            <option value="Active">Active</option>
-            <option value="Pending">Pending</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="editMentorshipStartDate">Start Date</label>
-          <input type="text" id="editMentorshipStartDate" placeholder="e.g. 01 May 2025">
-        </div>
-        <div class="form-group">
-          <label for="editMentorshipEndDate">End Date</label>
-          <input type="text" id="editMentorshipEndDate" placeholder="e.g. 31 Jul 2025">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="editMentorshipProgress">Progress (%)</label>
-        <input type="number" id="editMentorshipProgress" min="0" max="100">
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn-cancel" id="cancelEditMentorshipBtn">Cancel</button>
-        <button type="submit" class="btn-submit">Save Changes</button>
-      </div>
-    </form>
-  </div>
 </div>
 
 <script type="module">
-  import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-  import { db } from "../assets/js/firebase-config.js";
-  import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
-  const currentUser = requireRole(["hr"]);
-  paintNavProfile(currentUser);
+    const currentUser = requireRole(["hr", "admin"]);
+    paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
-  document.getElementById('navProfileToggle').addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.getElementById('navProfileDropdown').classList.toggle('show');
-  });
-  document.addEventListener('click', () => {
-      document.getElementById('navProfileDropdown').classList.remove('show');
-  });
-  document.getElementById('logoutLink').addEventListener('click', (e) => {
-      e.preventDefault();
-      logout("../");
-  });
-
-  const closePanelBtn = document.getElementById('closePanelBtn');
-  const detailsPanel = document.getElementById('detailsPanel');
-
-  // Slideout workspace inspector layout container visibility toggle configuration click handler
-  closePanelBtn.addEventListener('click', () => {
-    detailsPanel.classList.add('d-none');
-  });
-
-  const tableBody = document.getElementById('mentorshipTableBody');
-  let mentorshipCache = {};
-  let currentMentorshipId = null;
-
-  let allMentorships = [];
-  let activeSegment = 'All';
-
-  async function loadMentorships() {
-    try {
-      const snap = await getDocs(collection(db, "mentorship"));
-      allMentorships = [];
-      mentorshipCache = {};
-      snap.forEach((docSnap) => {
-        const m = { id: docSnap.id, ...docSnap.data() };
-        mentorshipCache[m.id] = m;
-        allMentorships.push(m);
-      });
-
-      const depts = Array.from(new Set(allMentorships.map(m => m.department).filter(Boolean))).sort();
-      const deptFilterEl = document.getElementById('mentorDeptFilter');
-      if (deptFilterEl) {
-        deptFilterEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
-      }
-
-      applyFilters();
-    } catch (error) {
-      console.error("Failed to load mentorship programs: ", error);
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load: ${error.message}</td></tr>`;
-    }
-  }
-
-  function applyFilters() {
-    const q = (document.getElementById('mentorSearchInput')?.value || '').toLowerCase().trim();
-    const dept = document.getElementById('mentorDeptFilter')?.value || 'All';
-    const statusSel = document.getElementById('mentorStatusFilter')?.value || 'All';
-
-    const filtered = allMentorships.filter(m => {
-      const prog = (m.programName || '').toLowerCase();
-      const mentor = (m.mentorName || '').toLowerCase();
-      const mentee = (m.menteeName || '').toLowerCase();
-      const mDept = m.department || '';
-      const mStatus = m.status || 'Active';
-
-      const matchQ = !q || prog.includes(q) || mentor.includes(q) || mentee.includes(q);
-      const matchDept = dept === 'All' || mDept === dept;
-      const matchStatusSel = statusSel === 'All' || mStatus === statusSel;
-      const matchSegment = activeSegment === 'All' || mStatus === activeSegment;
-
-      return matchQ && matchDept && matchStatusSel && matchSegment;
+    // Sidebar toggle
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('hrSidebar')?.classList.toggle('collapsed');
     });
 
-    renderMentorships(filtered);
-  }
+    // Profile dropdown
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
 
-  function renderMentorships(list = allMentorships) {
-    if (list.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">No mentorship programs match your filters.</td></tr>`;
-    } else {
-      tableBody.innerHTML = "";
-      list.forEach((m) => {
-        const statusClass = (m.status || 'Active').toLowerCase();
-        tableBody.insertAdjacentHTML('beforeend', `
-          <tr class="mentorship-row" data-id="${m.id}">
-            <td>${m.programName || '-'}</td>
-            <td>${m.mentorName || '-'}</td>
-            <td>${m.menteeName || '-'}</td>
-            <td>${m.department || '-'}</td>
-            <td>${m.startDate || '-'}</td>
-            <td>${m.endDate || '-'}</td>
-            <td><span class="status-badge ${statusClass}">${m.status || 'Active'}</span></td>
-            <td>${m.progress || 0}%</td>
-            <td style="text-align:center;"><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-          </tr>
-        `);
-      });
-      bindMentorshipRowClicks();
+    let mentorshipList = [];
+
+    // Fallback Mock Data
+    const fallbackMentorships = [
+        {
+            id: "m1",
+            menteeName: "Rahul Sharma",
+            menteeRole: "Frontend Intern",
+            mentorName: "Priya Nair",
+            mentorRole: "Senior UI Architect",
+            domainTrack: "UI/UX Design",
+            duration: "3 Months (Wk 9/12)",
+            progress: 75,
+            status: "Active",
+            weeklyGoals: "Design system tokens and responsive micro-animations"
+        },
+        {
+            id: "m2",
+            menteeName: "Ananya Patel",
+            menteeRole: "Backend Intern",
+            mentorName: "Vikram Malhotra",
+            mentorRole: "Principal Engineer",
+            domainTrack: "Full Stack Development",
+            duration: "6 Months (Wk 14/24)",
+            progress: 60,
+            status: "Active",
+            weeklyGoals: "GraphQL schema federation and caching layer"
+        },
+        {
+            id: "m3",
+            menteeName: "Karan Verma",
+            menteeRole: "ML Research Intern",
+            mentorName: "Dr. Arvind Swamy",
+            mentorRole: "Lead Data Scientist",
+            domainTrack: "Data Science & ML",
+            duration: "6 Months (Wk 22/24)",
+            progress: 92,
+            status: "Under Review",
+            weeklyGoals: "Fine-tuning transformer models on company telemetry"
+        },
+        {
+            id: "m4",
+            menteeName: "Sneha Reddy",
+            menteeRole: "Cloud DevOps Intern",
+            mentorName: "Rajesh Kumar",
+            mentorRole: "DevOps Tech Lead",
+            domainTrack: "Cloud Architecture",
+            duration: "3 Months (Completed)",
+            progress: 100,
+            status: "Completed",
+            weeklyGoals: "Terraform multi-region IaC deployment automated"
+        },
+        {
+            id: "m5",
+            menteeName: "Rohan Das",
+            menteeRole: "QA Automation Intern",
+            mentorName: "Neha Gupta",
+            mentorRole: "QA Chapter Lead",
+            domainTrack: "Quality Assurance",
+            duration: "3 Months (Wk 4/12)",
+            progress: 35,
+            status: "Active",
+            weeklyGoals: "Playwright end-to-end integration test suites"
+        }
+    ];
+
+    const tableBody = document.getElementById('mentorshipTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const trackFilter = document.getElementById('trackFilter');
+
+    // Modal elements
+    const pairModal = document.getElementById('pairModal');
+    const openAddPairBtn = document.getElementById('openAddPairBtn');
+    const closePairModalBtn = document.getElementById('closePairModalBtn');
+    const cancelPairModalBtn = document.getElementById('cancelPairModalBtn');
+    const pairForm = document.getElementById('pairForm');
+
+    function showModal(isEdit = false, item = null) {
+        document.getElementById('modalTitle').textContent = isEdit ? "Edit Mentorship Pairing" : "Add Mentorship Pairing";
+        document.getElementById('pairDocId').value = isEdit && item ? item.id : "";
+        document.getElementById('menteeName').value = isEdit && item ? item.menteeName : "";
+        document.getElementById('menteeRole').value = isEdit && item ? item.menteeRole : "";
+        document.getElementById('mentorName').value = isEdit && item ? item.mentorName : "";
+        document.getElementById('mentorRole').value = isEdit && item ? item.mentorRole : "";
+        document.getElementById('domainTrack').value = isEdit && item ? item.domainTrack : "Full Stack Development";
+        document.getElementById('durationText').value = isEdit && item ? item.duration : "3 Months (Wk 1/12)";
+        document.getElementById('progressVal').value = isEdit && item ? item.progress : 50;
+        document.getElementById('pairStatus').value = isEdit && item ? item.status : "Active";
+        document.getElementById('weeklyGoals').value = isEdit && item ? (item.weeklyGoals || "") : "";
+        pairModal.classList.add('show');
     }
 
-    const uniqueMentors = new Set(allMentorships.map(m => m.mentorName).filter(Boolean));
-    const uniqueMentees = new Set(allMentorships.map(m => m.menteeName).filter(Boolean));
-
-    document.getElementById('kpiTotalPrograms').textContent = String(allMentorships.length);
-    document.getElementById('kpiActivePrograms').textContent = String(allMentorships.filter(m => (m.status || 'Active') === 'Active').length);
-    document.getElementById('kpiCompletedPrograms').textContent = String(allMentorships.filter(m => m.status === 'Completed').length);
-    document.getElementById('kpiTotalMentors').textContent = String(uniqueMentors.size);
-    document.getElementById('kpiTotalMentees').textContent = String(uniqueMentees.size);
-  }
-
-  // Row click -> populate the details inspector with the real mentorship record
-  function bindMentorshipRowClicks() {
-    document.querySelectorAll('.mentorship-row').forEach(row => {
-      row.addEventListener('click', () => {
-        const m = mentorshipCache[row.getAttribute('data-id')];
-        if (!m) return;
-        currentMentorshipId = m.id;
-
-        const statusText = m.status || 'Active';
-        const statusClass = statusText.toLowerCase();
-        const progress = m.progress || 0;
-        const initials = (m.mentorName || '?').split(' ').map(n => n[0] || '').slice(0, 2).join('').toUpperCase();
-
-        document.getElementById('detailMentorshipAvatar').textContent = initials;
-        document.getElementById('detailMentorshipName').innerHTML = `${m.programName || 'Untitled Program'} <span class="status-badge ${statusClass}" style="font-size:10px; font-weight:normal; display:inline-block; margin-left:6px; padding:2px 6px;">${statusText}</span>`;
-        document.getElementById('detailMentorshipSub').textContent = `Mentor: ${m.mentorName || '-'} • Mentee: ${m.menteeName || '-'}`;
-        document.getElementById('detailMentorshipMeta').textContent = `${m.department || '-'} Department`;
-
-        document.getElementById('detailProgramName').textContent = m.programName || '-';
-        document.getElementById('detailMentorName').textContent = m.mentorName || '-';
-        document.getElementById('detailMenteeName').textContent = m.menteeName || '-';
-        document.getElementById('detailMentorshipDept').textContent = m.department || '-';
-        document.getElementById('detailStartDate').textContent = m.startDate || '-';
-        document.getElementById('detailEndDate').textContent = m.endDate || '-';
-        document.getElementById('detailMentorshipStatusVal').textContent = statusText;
-        document.getElementById('detailMentorshipStatusVal').className = `status-badge ${statusClass}`;
-        document.getElementById('detailProgressBar').style.width = `${progress}%`;
-        document.getElementById('detailProgressText').textContent = `${progress}%`;
-
-        detailsPanel.classList.remove('d-none');
-      });
-    });
-  }
-
-  // Edit Mentorship modal wiring
-  const editMentorshipModal = document.getElementById('editMentorshipModal');
-  const editMentorshipForm = document.getElementById('editMentorshipForm');
-
-  document.getElementById('editMentorshipBtn').addEventListener('click', () => {
-    if (!currentMentorshipId) { alert('Select a mentorship program first.'); return; }
-    const m = mentorshipCache[currentMentorshipId];
-    if (!m) return;
-    document.getElementById('editMentorshipId').value = m.id;
-    document.getElementById('editProgramName').value = m.programName || '';
-    document.getElementById('editMentorNameInput').value = m.mentorName || '';
-    document.getElementById('editMenteeNameInput').value = m.menteeName || '';
-    document.getElementById('editMentorshipDeptInput').value = m.department || '';
-    document.getElementById('editMentorshipStatusInput').value = m.status || 'Active';
-    document.getElementById('editMentorshipStartDate').value = m.startDate || '';
-    document.getElementById('editMentorshipEndDate').value = m.endDate || '';
-    document.getElementById('editMentorshipProgress').value = m.progress || 0;
-    editMentorshipModal.classList.remove('d-none');
-  });
-
-  const closeEditMentorshipModal = () => { editMentorshipModal.classList.add('d-none'); editMentorshipForm.reset(); };
-  document.getElementById('closeEditMentorshipModalBtn').addEventListener('click', closeEditMentorshipModal);
-  document.getElementById('cancelEditMentorshipBtn').addEventListener('click', closeEditMentorshipModal);
-
-  editMentorshipForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const id = document.getElementById('editMentorshipId').value;
-    try {
-      await updateDoc(doc(db, "mentorship", id), {
-        programName: document.getElementById('editProgramName').value,
-        mentorName: document.getElementById('editMentorNameInput').value,
-        menteeName: document.getElementById('editMenteeNameInput').value,
-        department: document.getElementById('editMentorshipDeptInput').value,
-        status: document.getElementById('editMentorshipStatusInput').value,
-        startDate: document.getElementById('editMentorshipStartDate').value,
-        endDate: document.getElementById('editMentorshipEndDate').value,
-        progress: Number(document.getElementById('editMentorshipProgress').value) || 0
-      });
-      closeEditMentorshipModal();
-      detailsPanel.classList.add('d-none');
-      await loadMentorships();
-    } catch (error) {
-      alert("Failed to update mentorship program: " + error.message);
+    function hideModal() {
+        pairModal.classList.remove('show');
+        pairForm.reset();
     }
-  });
 
-  document.getElementById('createMentorshipBtn').addEventListener('click', async () => {
-    const programName = prompt("Program name:");
-    if (!programName) return;
-    const mentorName = prompt("Mentor name:") || "";
-    const menteeName = prompt("Mentee name:") || "";
-    const department = prompt("Department:") || "";
+    openAddPairBtn?.addEventListener('click', () => showModal(false));
+    closePairModalBtn?.addEventListener('click', hideModal);
+    cancelPairModalBtn?.addEventListener('click', hideModal);
 
-    try {
-      await addDoc(collection(db, "mentorship"), {
-        programName, mentorName, menteeName, department,
-        startDate: new Date().toLocaleDateString(), endDate: "-",
-        status: "Active", progress: 0
-      });
-      loadMentorships();
-    } catch (error) {
-      alert("Failed to create mentorship program: " + error.message);
+    async function fetchMentorships() {
+        try {
+            const snap = await getDocs(collection(db, "mentorships"));
+            mentorshipList = [];
+            snap.forEach(doc => {
+                mentorshipList.push({ id: doc.id, ...doc.data() });
+            });
+
+            if (mentorshipList.length === 0) {
+                mentorshipList = [...fallbackMentorships];
+            }
+        } catch (err) {
+            console.error("Error loading mentorships:", err);
+            mentorshipList = [...fallbackMentorships];
+        }
+        computeKPIs();
+        renderTable();
     }
-  });
 
-  document.getElementById('mentorSearchInput')?.addEventListener('input', applyFilters);
-  document.getElementById('mentorDeptFilter')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorStatusFilter')?.addEventListener('change', applyFilters);
+    function computeKPIs() {
+        const total = mentorshipList.length;
+        const active = mentorshipList.filter(m => m.status === 'Active').length;
+        const completed = mentorshipList.filter(m => m.status === 'Completed').length;
+        const avgProgress = total > 0 ? Math.round(mentorshipList.reduce((acc, m) => acc + (Number(m.progress) || 0), 0) / total) : 0;
 
-  document.querySelectorAll('#mentorSegmentTabs .segment-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#mentorSegmentTabs .segment-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeSegment = btn.getAttribute('data-status') || 'All';
-      applyFilters();
+        document.getElementById('statTotalPairs').textContent = total;
+        document.getElementById('statActivePairs').textContent = active;
+        document.getElementById('statAvgProgress').textContent = `${avgProgress}%`;
+        document.getElementById('statCompletedPairs').textContent = completed;
+    }
+
+    function renderTable() {
+        const q = searchInput.value.toLowerCase().trim();
+        const selectedStatus = statusFilter.value;
+        const selectedTrack = trackFilter.value;
+
+        const filtered = mentorshipList.filter(item => {
+            const matchQuery = (item.menteeName || '').toLowerCase().includes(q) ||
+                               (item.mentorName || '').toLowerCase().includes(q) ||
+                               (item.domainTrack || '').toLowerCase().includes(q);
+            const matchStatus = !selectedStatus || item.status === selectedStatus;
+            const matchTrack = !selectedTrack || item.domainTrack === selectedTrack;
+            return matchQuery && matchStatus && matchTrack;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:36px; color:#8898aa;">No mentorship pairings match your criteria.</td></tr>`;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(item => {
+            const statusClass = item.status === 'Active' ? 'active' :
+                                item.status === 'Completed' ? 'completed' :
+                                item.status === 'Under Review' ? 'review' : 'paused';
+
+            html += `
+                <tr>
+                    <td>
+                        <div class="person-cell">
+                            <div class="person-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div class="person-info">
+                                <h4>${item.menteeName}</h4>
+                                <small>${item.menteeRole || 'Intern'}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="person-cell">
+                            <div class="person-avatar" style="border-color:#4ade80; color:#4ade80;"><i class="fa-solid fa-user-tie"></i></div>
+                            <div class="person-info">
+                                <h4 style="color:#ffffff;">${item.mentorName}</h4>
+                                <small>${item.mentorRole || 'Mentor'}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="track-badge">
+                            <i class="fa-solid fa-layer-group"></i> ${item.domainTrack}
+                        </span>
+                    </td>
+                    <td style="color:#cbd5e1; font-weight:500;">${item.duration}</td>
+                    <td>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>Milestone</span>
+                                <strong>${item.progress}%</strong>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-fill" style="width: ${item.progress}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status ${statusClass}">${item.status}</span>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="action-btns" style="justify-content: flex-end;">
+                            <button class="btn-icon edit-btn" data-id="${item.id}" title="Edit Pair"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon delete delete-btn" data-id="${item.id}" title="Delete Pair"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = html;
+
+        // Edit listeners
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const item = mentorshipList.find(m => m.id === id);
+                if (item) showModal(true, item);
+            });
+        });
+
+        // Delete listeners
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.getAttribute('data-id');
+                if (confirm("Are you sure you want to remove this mentorship pairing?")) {
+                    try {
+                        await deleteDoc(doc(db, "mentorships", id));
+                    } catch (e) {
+                        console.warn("Deleted from local cache:", e);
+                    }
+                    mentorshipList = mentorshipList.filter(m => m.id !== id);
+                    computeKPIs();
+                    renderTable();
+                }
+            });
+        });
+    }
+
+    searchInput?.addEventListener('input', renderTable);
+    statusFilter?.addEventListener('change', renderTable);
+    trackFilter?.addEventListener('change', renderTable);
+
+    pairForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const docId = document.getElementById('pairDocId').value;
+        const payload = {
+            menteeName: document.getElementById('menteeName').value.trim(),
+            menteeRole: document.getElementById('menteeRole').value.trim(),
+            mentorName: document.getElementById('mentorName').value.trim(),
+            mentorRole: document.getElementById('mentorRole').value.trim(),
+            domainTrack: document.getElementById('domainTrack').value,
+            duration: document.getElementById('durationText').value.trim(),
+            progress: Number(document.getElementById('progressVal').value) || 0,
+            status: document.getElementById('pairStatus').value,
+            weeklyGoals: document.getElementById('weeklyGoals').value.trim(),
+            updatedAt: serverTimestamp()
+        };
+
+        try {
+            if (docId && !docId.startsWith('m')) {
+                await updateDoc(doc(db, "mentorships", docId), payload);
+                const idx = mentorshipList.findIndex(m => m.id === docId);
+                if (idx !== -1) mentorshipList[idx] = { id: docId, ...payload };
+            } else {
+                const docRef = await addDoc(collection(db, "mentorships"), { ...payload, createdAt: serverTimestamp() });
+                mentorshipList.unshift({ id: docRef.id, ...payload });
+            }
+        } catch (err) {
+            console.warn("Saved to local session:", err);
+            if (docId) {
+                const idx = mentorshipList.findIndex(m => m.id === docId);
+                if (idx !== -1) mentorshipList[idx] = { id: docId, ...payload };
+            } else {
+                mentorshipList.unshift({ id: "mock-" + Date.now(), ...payload });
+            }
+        }
+
+        hideModal();
+        computeKPIs();
+        renderTable();
     });
-  });
 
-  document.getElementById('exportMentorshipBtn')?.addEventListener('click', () => {
-    if (!allMentorships.length) return alert('No mentorship records to export.');
-    const rows = [["Program Name", "Mentor", "Mentee", "Department", "Start Date", "End Date", "Status", "Progress"]];
-    allMentorships.forEach(m => {
-      rows.push([m.programName || '', m.mentorName || '', m.menteeName || '', m.department || '', m.startDate || '', m.endDate || '', m.status || '', `${m.progress || 0}%`]);
+    document.getElementById('exportMentorshipBtn')?.addEventListener('click', () => {
+        if (!mentorshipList.length) return alert('No mentorship records to export.');
+        const rows = [["Mentee Name", "Mentee Role", "Mentor Name", "Mentor Role", "Domain Track", "Duration", "Progress %", "Status", "Weekly Goals"]];
+        mentorshipList.forEach(m => {
+            rows.push([m.menteeName, m.menteeRole, m.mentorName, m.mentorRole, m.domainTrack, m.duration, m.progress, m.status, m.weeklyGoals || '']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Mentorship-Roster-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
     });
-    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `Mentorship-${Date.now()}.csv`;
-    link.click();
-    URL.revokeObjectURL(link.href);
-  });
 
-  loadMentorships();
+    fetchMentorships();
 </script>
-
 </body>
 </html>

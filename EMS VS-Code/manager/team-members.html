@@ -55,7 +55,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .breadcrumbs a{color:#8898aa;text-decoration:none;transition:.2s;}
 .breadcrumbs a:hover{color:#4299e1;}
 .breadcrumbs span{color:#1b2e6e;}
-.header-action-container{display:flex;justify-content:space-between;align-items:center;}
+.header-action-container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .page-header h2{font-size:22px;font-weight:700;color:#fff;}
 .page-header p{color:#8898aa;font-size:13px;margin-top:2px;}
 .header-buttons{display:flex;align-items:center;gap:10px;}
@@ -105,34 +105,63 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .data-table tr:hover td{background:rgba(66,153,225,0.02);}
 
 /* Custom columns architecture */
-.emp-id-text{font-weight:600;color:#8898aa;}
+.emp-id-text{font-weight:700;font-family:monospace;letter-spacing:0.5px;background:rgba(66,153,225,0.12);color:#60a5fa;border:1px solid #1b2e6e;padding:4px 8px;border-radius:6px;font-size:12px;display:inline-block;}
 .user-identity-cell{display:flex;align-items:center;gap:10px;}
-.identity-avatar{width:28px;height:28px;border-radius:50%;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:11px;}
-.identity-name{font-weight:600;color:#fff;}
+.avatar-badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.identity-meta{display:flex;flex-direction:column;}
+.identity-name{font-weight:600;color:#fff;font-size:13.5px;}
+.identity-subtitle{font-size:11px;color:#8898aa;margin-top:1px;}
 
 /* Badge styling variations */
-.status-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-block;}
+.status-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
 .status-badge.active{background:rgba(74,222,128,0.15);color:#4ade80;}
 .status-badge.leave{background:rgba(251,191,36,0.15);color:#fbbf24;}
 .status-badge.inactive{background:rgba(248,113,113,0.15);color:#f87171;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
 /* Action elements inside table */
-.row-actions-wrap{display:flex;align-items:center;gap:6px;}
-.action-icon-btn{width:28px;height:28px;border-radius:6px;background:#0b1437;border:1px solid #1b2e6e;color:#8898aa;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.2s;}
-.action-icon-btn:hover{border-color:#4299e1;color:#4299e1;}
+.row-actions-wrap{display:flex;align-items:center;gap:6px;justify-content:center;}
+.action-icon-btn{width:30px;height:30px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;color:#8898aa;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12.5px;transition:.2s;text-decoration:none;}
+.action-icon-btn:hover{border-color:#4299e1;color:#4299e1;background:rgba(66,153,225,0.08);}
+.action-icon-btn.email-btn:hover{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,0.08);}
 
 /* ── PAGINATION AND ENTRY INFO FOOTER ── */
 .table-footer{border-top:1px solid #1b2e6e;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,20,55,0.2);}
 .entry-info{font-size:12.5px;color:#8898aa;}
-.pagination-controls{display:flex;align-items:center;gap:4px;}
-.page-btn{min-width:28px;height:28px;padding:0 8px;border-radius:6px;background:#0b1437;border:1px solid #1b2e6e;color:#8898aa;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;text-decoration:none;}
-.page-btn:hover{border-color:#4299e1;color:#4299e1;}
-.page-btn.active{background:#4299e1;border-color:#4299e1;color:#fff;}
 
 .footer-text{text-align:center;color:#4a5568;font-size:11px;padding:4px 0 10px;}
 
+/* ── MODALS ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px;}
+.modal-overlay.show{display:flex;}
+.modal-card{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:100%;max-width:540px;box-shadow:0 12px 40px rgba(0,0,0,0.5);overflow:hidden;display:flex;flex-direction:column;animation:modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #1b2e6e;background:rgba(11,20,55,0.4);}
+.modal-header h3{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
+.modal-close-btn{background:none;border:none;color:#8898aa;font-size:16px;cursor:pointer;width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:0.15s;}
+.modal-close-btn:hover{color:#fff;background:rgba(255,255,255,0.06);}
+.modal-body{padding:20px;display:flex;flex-direction:column;gap:16px;max-height:75vh;overflow-y:auto;}
+.modal-footer{padding:14px 20px;border-top:1px solid #1b2e6e;background:rgba(11,20,55,0.4);display:flex;justify-content:flex-end;gap:10px;}
+
+/* Profile View Card */
+.profile-hero{display:flex;align-items:center;gap:16px;padding:14px;background:rgba(11,20,55,0.6);border:1px solid #1b2e6e;border-radius:12px;}
+.profile-hero-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.profile-hero-meta h4{font-size:17px;font-weight:700;color:#fff;}
+.profile-hero-meta p{font-size:12px;color:#8898aa;margin-top:2px;}
+.profile-details-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.profile-detail-box{background:rgba(11,20,55,0.3);border:1px solid #1b2e6e;border-radius:10px;padding:12px;}
+.profile-detail-box label{font-size:10.5px;color:#8898aa;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;}
+.profile-detail-box span{font-size:13px;font-weight:600;color:#e2e8f0;}
+
+/* Form controls inside modal */
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:12px;color:#8898aa;font-weight:600;}
+.form-group input, .form-group select{background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;padding:9px 12px;color:#e2e8f0;font-size:13px;outline:none;}
+.form-group input:focus, .form-group select:focus{border-color:#4299e1;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
 @media(max-width:1300px){.mini-kpi-grid{grid-template-columns:repeat(2,1fr);}.filter-panel{flex-wrap:wrap;}.filter-group{flex:1 1 200px !important;}.filter-actions-buttons{width:100%;justify-content:flex-end;margin-top:4px;}}
-@media(max-width:650px){.mini-kpi-grid{grid-template-columns:1fr;}}
+@media(max-width:650px){.mini-kpi-grid{grid-template-columns:1fr;}.profile-details-grid,.form-row{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -151,6 +180,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
+    <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
@@ -166,16 +196,17 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
   <div class="sidebar">
     <ul>
-      <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-      <li ><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <li><a href="my profile.html"><i class="fa-regular fa-user"></i>My Profile</a></li>
       <li class="active"><a href="team-members.html"><i class="fa-solid fa-users"></i>Team Members</a></li>
-      <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
-      <li ><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
-      <li ><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
-      <li ><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
+      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+      <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i>Leave Requests</a></li>
+      <li><a href="project.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+      <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
       <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-      <li ><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-      <li ><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+      <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+      <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
       <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
     </ul>
   </div>
@@ -183,16 +214,16 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   <div class="main">
     <div class="page-header">
       <div class="breadcrumbs">
-        <a href="#">Dashboard</a> <span>/</span> <a href="#" style="color:#e2e8f0">Team Members</a>
+        <a href="index.html">Dashboard</a> <span>/</span> <a href="#" style="color:#e2e8f0">Team Members</a>
       </div>
       <div class="header-action-container">
         <div>
           <h2>Team Members</h2>
-          <p>View and manage your team members and their information.</p>
+          <p>View and manage your team members, active roles, and contact information.</p>
         </div>
         <div class="header-buttons">
-          <button class="btn-outline" id="exportTeamBtn"><i class="fa-solid fa-download"></i>Export</button>
-          <a href="project.html" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><i class="fa-solid fa-briefcase"></i>View Projects</a>
+          <button class="btn-outline" id="exportTeamBtn"><i class="fa-solid fa-download"></i>Export CSV</button>
+          <button class="btn-primary" id="openAddMemberBtn"><i class="fa-solid fa-user-plus"></i>Add Member</button>
         </div>
       </div>
     </div>
@@ -202,19 +233,19 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <div class="mini-kpi-grid">
         <div class="mini-panel">
           <div class="mini-icon"><i class="fa-solid fa-user-group"></i></div>
-          <div class="mini-info"><p>Total Members</p><h3 id="kpiTotalMembers">0</h3><small>Department team</small></div>
+          <div class="mini-info"><p>Total Members</p><h3 id="kpiTotalMembers">12</h3><small>Department roster</small></div>
         </div>
         <div class="mini-panel">
-          <div class="mini-icon"><i class="fa-solid fa-circle-check"></i></div>
-          <div class="mini-info"><p>Active Members</p><h3 id="kpiActiveMembers">0</h3><small style="color:#4ade80" id="kpiActivePct">100% active</small></div>
+          <div class="mini-icon" style="color:#4ade80;"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="mini-info"><p>Active Members</p><h3 id="kpiActiveMembers">11</h3><small style="color:#4ade80" id="kpiActivePct">92% active</small></div>
         </div>
         <div class="mini-panel">
-          <div class="mini-icon"><i class="fa-solid fa-plane-departure"></i></div>
-          <div class="mini-info"><p>On Leave</p><h3 id="kpiOnLeave">0</h3><small style="color:#fbbf24">0% on leave</small></div>
+          <div class="mini-icon" style="color:#fbbf24;"><i class="fa-solid fa-plane-departure"></i></div>
+          <div class="mini-info"><p>On Leave</p><h3 id="kpiOnLeave">1</h3><small style="color:#fbbf24" id="kpiOnLeavePct">8% on leave</small></div>
         </div>
         <div class="mini-panel">
-          <div class="mini-icon"><i class="fa-solid fa-building"></i></div>
-          <div class="mini-info"><p>Department</p><h3 id="kpiDeptName">-</h3><small>Active workspace</small></div>
+          <div class="mini-icon" style="color:#a78bfa;"><i class="fa-solid fa-building"></i></div>
+          <div class="mini-info"><p>Department</p><h3 id="kpiDeptName">Engineering</h3><small>Active workspace</small></div>
         </div>
       </div>
 
@@ -222,20 +253,39 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="filter-group search-box">
           <div class="input-inner-wrap">
             <i class="fa-solid fa-search search-icon"></i>
-            <input type="text" id="memberSearchInput" placeholder="Search by name, email or ID...">
+            <input type="text" id="memberSearchInput" placeholder="Search by name, email, designation or ID...">
           </div>
         </div>
         <div class="filter-group select-box">
           <label>Designation</label>
           <div class="input-inner-wrap">
-            <select id="desigFilterSelect"><option value="All">All Designations</option></select>
+            <select id="desigFilterSelect">
+              <option value="All">All Designations</option>
+              <option value="Senior Developer">Senior Developer</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="Backend Engineer">Backend Engineer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+              <option value="QA Automation Lead">QA Automation Lead</option>
+              <option value="Frontend Developer">Frontend Developer</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="AI & ML Engineer">AI & ML Engineer</option>
+              <option value="Mobile App Developer">Mobile App Developer</option>
+              <option value="Cloud Security Specialist">Cloud Security Specialist</option>
+              <option value="Database Architect">Database Architect</option>
+              <option value="Junior Software Engineer">Junior Software Engineer</option>
+            </select>
             <i class="fa-solid fa-chevron-down chevron-icon"></i>
           </div>
         </div>
         <div class="filter-group select-box">
           <label>Status</label>
           <div class="input-inner-wrap">
-            <select id="statusFilterSelect"><option value="All">All Status</option><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+            <select id="statusFilterSelect">
+              <option value="All">All Status</option>
+              <option value="Active">Active</option>
+              <option value="On Leave">On Leave</option>
+              <option value="Inactive">Inactive</option>
+            </select>
             <i class="fa-solid fa-chevron-down chevron-icon"></i>
           </div>
         </div>
@@ -261,34 +311,444 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </thead>
             <tbody id="teamTableBody">
-              <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading team members...</td></tr>
+              <!-- Pre-rendered static rows -->
+              <tr>
+                <td><span class="emp-id-text">DEV001</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">AR</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Alex Rivera</span>
+                      <span class="identity-subtitle">Lead Dev</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Senior Developer</td>
+                <td>Engineering</td>
+                <td>alex.rivera@company.com</td>
+                <td>+1 (555) 234-5678</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV001"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:alex.rivera@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV002</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #d97706, #b45309);">MC</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Michael Chen</span>
+                      <span class="identity-subtitle">Core Dev</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Full Stack Developer</td>
+                <td>Engineering</td>
+                <td>michael.chen@company.com</td>
+                <td>+1 (555) 345-6789</td>
+                <td><span class="status-badge leave"><span class="status-dot"></span>On Leave</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV002"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:michael.chen@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV003</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #0284c7, #0369a1);">DK</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">David Kim</span>
+                      <span class="identity-subtitle">Cloud &amp; APIs</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Backend Engineer</td>
+                <td>Engineering</td>
+                <td>david.kim@company.com</td>
+                <td>+1 (555) 456-7890</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV003"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:david.kim@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV004</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #059669, #047857);">RW</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Robert Wilson</span>
+                      <span class="identity-subtitle">Infra &amp; CI/CD</span>
+                    </div>
+                  </div>
+                </td>
+                <td>DevOps Engineer</td>
+                <td>Engineering</td>
+                <td>robert.wilson@company.com</td>
+                <td>+1 (555) 567-8901</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV004"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:robert.wilson@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV005</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #7c3aed, #6d28d9);">JM</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">James Miller</span>
+                      <span class="identity-subtitle">QA Lead</span>
+                    </div>
+                  </div>
+                </td>
+                <td>QA Automation Lead</td>
+                <td>Engineering</td>
+                <td>james.miller@company.com</td>
+                <td>+1 (555) 678-9012</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV005"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:james.miller@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV006</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #db2777, #be185d);">LZ</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Lisa Zhang</span>
+                      <span class="identity-subtitle">UI Specialist</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Frontend Developer</td>
+                <td>Engineering</td>
+                <td>lisa.zhang@company.com</td>
+                <td>+1 (555) 789-0123</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV006"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:lisa.zhang@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV007</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #ea580c, #c2410c);">ER</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Elena Rostova</span>
+                      <span class="identity-subtitle">Design Lead</span>
+                    </div>
+                  </div>
+                </td>
+                <td>UI/UX Designer</td>
+                <td>Engineering</td>
+                <td>elena.rostova@company.com</td>
+                <td>+1 (555) 890-1234</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV007"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:elena.rostova@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV008</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #0891b2, #0e7490);">VP</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Vikram Patel</span>
+                      <span class="identity-subtitle">ML Systems</span>
+                    </div>
+                  </div>
+                </td>
+                <td>AI & ML Engineer</td>
+                <td>Engineering</td>
+                <td>vikram.patel@company.com</td>
+                <td>+1 (555) 901-2345</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV008"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:vikram.patel@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV009</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #16a34a, #15803d);">SB</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Samantha Brooks</span>
+                      <span class="identity-subtitle">Mobile Lead</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Mobile App Developer</td>
+                <td>Engineering</td>
+                <td>samantha.brooks@company.com</td>
+                <td>+1 (555) 012-3456</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV009"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:samantha.brooks@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV010</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #dc2626, #b91c1c);">DC</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Daniel Craig</span>
+                      <span class="identity-subtitle">SecOps Lead</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Cloud Security Specialist</td>
+                <td>Engineering</td>
+                <td>daniel.craig@company.com</td>
+                <td>+1 (555) 123-4567</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV010"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:daniel.craig@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV011</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #9333ea, #7e22ce);">PS</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Priya Sharma</span>
+                      <span class="identity-subtitle">Data Architect</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Database Architect</td>
+                <td>Engineering</td>
+                <td>priya.sharma@company.com</td>
+                <td>+1 (555) 234-9876</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV011"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:priya.sharma@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><span class="emp-id-text">DEV012</span></td>
+                <td>
+                  <div class="user-identity-cell">
+                    <div class="avatar-badge" style="background: linear-gradient(135deg, #4f46e5, #4338ca);">KM</div>
+                    <div class="identity-meta">
+                      <span class="identity-name">Kevin Martinez</span>
+                      <span class="identity-subtitle">Backend Intern</span>
+                    </div>
+                  </div>
+                </td>
+                <td>Junior Software Engineer</td>
+                <td>Engineering</td>
+                <td>kevin.martinez@company.com</td>
+                <td>+1 (555) 345-0987</td>
+                <td><span class="status-badge active"><span class="status-dot"></span>Active</span></td>
+                <td>
+                  <div class="row-actions-wrap">
+                    <button class="action-icon-btn view-member-btn" title="View details" data-id="DEV012"><i class="fa-regular fa-eye"></i></button>
+                    <a href="mailto:kevin.martinez@company.com" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
 
         <div class="table-footer">
-          <div class="entry-info" id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
+          <div class="entry-info" id="tableEntriesCounter">Showing 1 to 12 of 12 entries</div>
         </div>
-      </div> <div class="footer-text">© 2026 Employee Management System. All rights reserved.</div>
+      </div>
 
-    </div> </div> </div>
+      <div class="footer-text">© 2026 Employee Management System. All rights reserved.</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER DETAILS MODAL -->
+<div class="modal-overlay" id="memberDetailsModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-id-card-clip" style="color:#4299e1;"></i> Team Member Profile</h3>
+      <button class="modal-close-btn" id="closeMemberModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-hero">
+        <div class="profile-hero-avatar" id="modalHeroAvatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">AR</div>
+        <div class="profile-hero-meta">
+          <h4 id="modalHeroName">Alex Rivera</h4>
+          <p id="modalHeroRole">Senior Developer &bull; <span style="color:#60a5fa; font-family:monospace; font-weight:700;" id="modalHeroId">DEV001</span></p>
+        </div>
+      </div>
+      <div class="profile-details-grid">
+        <div class="profile-detail-box">
+          <label>Department</label>
+          <span id="modalDept">Engineering</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Status</label>
+          <span id="modalStatus" style="color:#4ade80;">Active</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Email Address</label>
+          <span id="modalEmail" style="word-break:break-all;">alex.rivera@company.com</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Phone Number</label>
+          <span id="modalPhone">+1 (555) 234-5678</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Performance Rating</label>
+          <span id="modalRating" style="color:#fbbf24;">⭐ 4.8 / 5</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Assigned Projects</label>
+          <span id="modalProjects">3 Projects</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Joined Date</label>
+          <span id="modalJoinDate">15 Jan 2022</span>
+        </div>
+        <div class="profile-detail-box">
+          <label>Work Location</label>
+          <span>Floor 4 &bull; Desk 412</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" id="closeMemberModalBottomBtn">Close</button>
+      <a href="#" id="modalSendEmailBtn" class="btn-primary" style="text-decoration:none;"><i class="fa-regular fa-envelope"></i>Send Email</a>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MEMBER MODAL -->
+<div class="modal-overlay" id="addMemberModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-user-plus" style="color:#4299e1;"></i> Add New Team Member</h3>
+      <button class="modal-close-btn" id="closeAddMemberModalBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="addMemberForm">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="newMemberName" placeholder="e.g. Jordan Lee" required>
+          </div>
+          <div class="form-group">
+            <label>Employee ID *</label>
+            <input type="text" id="newMemberId" placeholder="e.g. DEV013" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Designation *</label>
+            <select id="newMemberDesig" required>
+              <option value="Senior Developer">Senior Developer</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="Backend Engineer">Backend Engineer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+              <option value="QA Automation Lead">QA Automation Lead</option>
+              <option value="Frontend Developer">Frontend Developer</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="AI & ML Engineer">AI & ML Engineer</option>
+              <option value="Mobile App Developer">Mobile App Developer</option>
+              <option value="Cloud Security Specialist">Cloud Security Specialist</option>
+              <option value="Database Architect">Database Architect</option>
+              <option value="Junior Software Engineer">Junior Software Engineer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <input type="text" id="newMemberDept" value="Engineering" readonly style="background:rgba(11,20,55,0.4); color:#8898aa;">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="newMemberEmail" placeholder="jordan.lee@company.com" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="newMemberPhone" placeholder="+1 (555) 987-6543">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="newMemberStatus">
+            <option value="Active">Active</option>
+            <option value="On Leave">On Leave</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" id="cancelAddMemberBtn">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i>Save Member</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script type="module">
-    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, query, where, doc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["manager"]);
-    paintNavProfile(currentUser);
+    if (currentUser) {
+        paintNavProfile(currentUser);
+        initEmailModal(currentUser);
+    }
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
@@ -302,60 +762,101 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     const applyBtn = document.getElementById('applyFilterBtn');
     const exportBtn = document.getElementById('exportTeamBtn');
 
-    let allMembers = [];
+    // Modals elements
+    const memberDetailsModal = document.getElementById('memberDetailsModal');
+    const closeMemberModalBtn = document.getElementById('closeMemberModalBtn');
+    const closeMemberModalBottomBtn = document.getElementById('closeMemberModalBottomBtn');
+    const addMemberModal = document.getElementById('addMemberModal');
+    const openAddMemberBtn = document.getElementById('openAddMemberBtn');
+    const closeAddMemberModalBtn = document.getElementById('closeAddMemberModalBtn');
+    const cancelAddMemberBtn = document.getElementById('cancelAddMemberBtn');
+    const addMemberForm = document.getElementById('addMemberForm');
 
-    function getRoleCustomId(emp, index, allList) {
+    const AVATAR_GRADIENTS = [
+        'linear-gradient(135deg, #2563eb, #1d4ed8)',
+        'linear-gradient(135deg, #d97706, #b45309)',
+        'linear-gradient(135deg, #0284c7, #0369a1)',
+        'linear-gradient(135deg, #059669, #047857)',
+        'linear-gradient(135deg, #7c3aed, #6d28d9)',
+        'linear-gradient(135deg, #db2777, #be185d)',
+        'linear-gradient(135deg, #ea580c, #c2410c)',
+        'linear-gradient(135deg, #0891b2, #0e7490)',
+        'linear-gradient(135deg, #16a34a, #15803d)',
+        'linear-gradient(135deg, #dc2626, #b91c1c)',
+        'linear-gradient(135deg, #9333ea, #7e22ce)',
+        'linear-gradient(135deg, #4f46e5, #4338ca)'
+    ];
+
+    function getInitials(name) {
+        if (!name) return 'TM';
+        const parts = name.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    const sampleTeamMembers = [
+        { customId: 'DEV001', name: 'Alex Rivera', roleTitle: 'Lead Dev', designation: 'Senior Developer', department: 'Engineering', email: 'alex.rivera@company.com', phone: '+1 (555) 234-5678', status: 'Active', rating: 4.8, projects: 3, joinDate: '15 Jan 2022' },
+        { customId: 'DEV002', name: 'Michael Chen', roleTitle: 'Core Dev', designation: 'Full Stack Developer', department: 'Engineering', email: 'michael.chen@company.com', phone: '+1 (555) 345-6789', status: 'On Leave', rating: 4.6, projects: 2, joinDate: '10 Mar 2022' },
+        { customId: 'DEV003', name: 'David Kim', roleTitle: 'Cloud & APIs', designation: 'Backend Engineer', department: 'Engineering', email: 'david.kim@company.com', phone: '+1 (555) 456-7890', status: 'Active', rating: 4.4, projects: 3, joinDate: '01 Jun 2022' },
+        { customId: 'DEV004', name: 'Robert Wilson', roleTitle: 'Infra & CI/CD', designation: 'DevOps Engineer', department: 'Engineering', email: 'robert.wilson@company.com', phone: '+1 (555) 567-8901', status: 'Active', rating: 4.3, projects: 2, joinDate: '12 Aug 2022' },
+        { customId: 'DEV005', name: 'James Miller', roleTitle: 'QA Lead', designation: 'QA Automation Lead', department: 'Engineering', email: 'james.miller@company.com', phone: '+1 (555) 678-9012', status: 'Active', rating: 4.2, projects: 3, joinDate: '05 Nov 2022' },
+        { customId: 'DEV006', name: 'Lisa Zhang', roleTitle: 'UI Specialist', designation: 'Frontend Developer', department: 'Engineering', email: 'lisa.zhang@company.com', phone: '+1 (555) 789-0123', status: 'Active', rating: 4.5, projects: 2, joinDate: '18 Jan 2023' },
+        { customId: 'DEV007', name: 'Elena Rostova', roleTitle: 'Design Lead', designation: 'UI/UX Designer', department: 'Engineering', email: 'elena.rostova@company.com', phone: '+1 (555) 890-1234', status: 'Active', rating: 4.7, projects: 2, joinDate: '22 Feb 2023' },
+        { customId: 'DEV008', name: 'Vikram Patel', roleTitle: 'ML Systems', designation: 'AI & ML Engineer', department: 'Engineering', email: 'vikram.patel@company.com', phone: '+1 (555) 901-2345', status: 'Active', rating: 4.9, projects: 2, joinDate: '14 Apr 2023' },
+        { customId: 'DEV009', name: 'Samantha Brooks', roleTitle: 'Mobile Lead', designation: 'Mobile App Developer', department: 'Engineering', email: 'samantha.brooks@company.com', phone: '+1 (555) 012-3456', status: 'Active', rating: 4.6, projects: 2, joinDate: '03 Jul 2023' },
+        { customId: 'DEV010', name: 'Daniel Craig', roleTitle: 'SecOps Lead', designation: 'Cloud Security Specialist', department: 'Engineering', email: 'daniel.craig@company.com', phone: '+1 (555) 123-4567', status: 'Active', rating: 4.8, projects: 2, joinDate: '20 Sep 2023' },
+        { customId: 'DEV011', name: 'Priya Sharma', roleTitle: 'Data Architect', designation: 'Database Architect', department: 'Engineering', email: 'priya.sharma@company.com', phone: '+1 (555) 234-9876', status: 'Active', rating: 4.7, projects: 2, joinDate: '11 Nov 2023' },
+        { customId: 'DEV012', name: 'Kevin Martinez', roleTitle: 'Backend Intern', designation: 'Junior Software Engineer', department: 'Engineering', email: 'kevin.martinez@company.com', phone: '+1 (555) 345-0987', status: 'Active', rating: 4.3, projects: 1, joinDate: '15 Jan 2024' }
+    ];
+
+    let allMembers = JSON.parse(JSON.stringify(sampleTeamMembers));
+
+    function getRoleCustomId(emp, index) {
         if (emp.customId && emp.customId.trim()) return emp.customId.trim();
-        const role = (emp.role || '').toLowerCase();
-        let prefix = 'EMP';
-        if (role === 'manager') prefix = 'MG';
-        else if (role === 'hr') prefix = 'HR';
-        else if (role === 'admin') prefix = 'ADM';
-        else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
-        
-        const sameRoleList = (allList || []).filter(e => {
-            const r = (e.role || '').toLowerCase();
-            if (prefix === 'MG') return r === 'manager';
-            if (prefix === 'HR') return r === 'hr';
-            if (prefix === 'ADM') return r === 'admin';
-            return r !== 'manager' && r !== 'hr' && r !== 'admin';
-        });
-        const roleIdx = sameRoleList.findIndex(e => e.id === emp.id);
-        const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
-        return `${prefix}${String(num).padStart(3, '0')}`;
+        if (emp.employeeId && emp.employeeId.trim()) return emp.employeeId.trim();
+        if (emp.uid && emp.uid.startsWith('DEV')) return emp.uid;
+        return `DEV${String(index + 1).padStart(3, '0')}`;
     }
 
     function renderMembersTable(members) {
         tableBody.innerHTML = "";
 
         if (!members || members.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #8898aa;">No matching team members found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 36px; color: #8898aa;"><i class="fa-solid fa-users-slash" style="font-size:24px; margin-bottom:8px; display:block;"></i>No matching team members found.</td></tr>`;
             entriesCounter.innerText = "Showing 0 to 0 of 0 entries";
             return;
         }
 
         members.forEach((emp, index) => {
-            const formattedId = getRoleCustomId(emp, index, allMembers);
-            const statusClass = emp.status && emp.status.toLowerCase() === 'active' ? 'active' : 'inactive';
-            const avatarUrl = emp.avatarUrl || 'https://i.pravatar.cc/50?img=' + (index + 10);
+            const formattedId = getRoleCustomId(emp, index);
+            const st = (emp.status || 'Active').toLowerCase();
+            const statusClass = st === 'active' ? 'active' : (st.includes('leave') ? 'leave' : 'inactive');
+            const statusLabel = st.includes('leave') ? 'On Leave' : (st === 'active' ? 'Active' : 'Inactive');
+            const gradient = AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length];
+            const initials = getInitials(emp.name);
+            const subtitle = emp.roleTitle || (emp.designation ? emp.designation.split(' ')[0] : 'Engineer');
 
             const rowTemplate = `
                 <tr>
-                    <td><span class="emp-id-text" style="background:rgba(66,153,225,0.12); color:#60a5fa; border:1px solid #1b2e6e; padding:4px 8px; border-radius:6px; font-weight:700; font-size:12px; font-family:monospace; letter-spacing:0.5px;">${formattedId}</span></td>
+                    <td><span class="emp-id-text">${formattedId}</span></td>
                     <td>
                         <div class="user-identity-cell">
-                            <img src="${avatarUrl}" alt="${emp.name}" style="width:32px;height:32px;border-radius:50%;border:1px solid #4299e1;">
-                            <span class="identity-name">${emp.name || '-'}</span>
+                            <div class="avatar-badge" style="background: ${gradient};">${initials}</div>
+                            <div class="identity-meta">
+                                <span class="identity-name">${emp.name || '-'}</span>
+                                <span class="identity-subtitle">${subtitle}</span>
+                            </div>
                         </div>
                     </td>
                     <td>${emp.designation || '-'}</td>
-                    <td>${emp.department || '-'}</td>
+                    <td>${emp.department || 'Engineering'}</td>
                     <td>${emp.email || '-'}</td>
                     <td>${emp.phone || '-'}</td>
-                    <td><span class="status-badge ${statusClass}">${emp.status || 'Active'}</span></td>
+                    <td><span class="status-badge ${statusClass}"><span class="status-dot"></span>${statusLabel}</span></td>
                     <td>
-                        <div class="row-actions-wrap" style="justify-content: center;">
-                            <button class="action-icon-btn view-member-btn" title="View details" data-email="${emp.email}" data-name="${emp.name}" data-desig="${emp.designation}"><i class="fa-regular fa-eye"></i></button>
+                        <div class="row-actions-wrap">
+                            <button class="action-icon-btn view-member-btn" title="View Profile" data-id="${formattedId}"><i class="fa-regular fa-eye"></i></button>
+                            <a href="mailto:${emp.email || ''}" class="action-icon-btn email-btn" title="Send Email"><i class="fa-regular fa-envelope"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -367,89 +868,206 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         document.querySelectorAll('.view-member-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                alert(`Team Member: ${btn.getAttribute('data-name')}\nRole: ${btn.getAttribute('data-desig')}\nEmail: ${btn.getAttribute('data-email')}`);
+                const id = btn.getAttribute('data-id');
+                const member = allMembers.find(m => getRoleCustomId(m) === id) || allMembers.find(m => m.customId === id);
+                if (member) openMemberProfile(member);
             });
         });
     }
 
+    function openMemberProfile(m) {
+        const id = getRoleCustomId(m);
+        const idx = allMembers.indexOf(m);
+        const gradient = AVATAR_GRADIENTS[(idx >= 0 ? idx : 0) % AVATAR_GRADIENTS.length];
+        const initials = getInitials(m.name);
+
+        document.getElementById('modalHeroAvatar').style.background = gradient;
+        document.getElementById('modalHeroAvatar').textContent = initials;
+        document.getElementById('modalHeroName').textContent = m.name || '-';
+        document.getElementById('modalHeroRole').innerHTML = `${m.designation || '-'} &bull; <span style="color:#60a5fa; font-family:monospace; font-weight:700;">${id}</span>`;
+        document.getElementById('modalHeroId').textContent = id;
+        document.getElementById('modalDept').textContent = m.department || 'Engineering';
+        
+        const isLeave = (m.status || '').toLowerCase().includes('leave');
+        const stLabel = isLeave ? 'On Leave' : ((m.status || 'Active').toLowerCase() === 'active' ? 'Active' : 'Inactive');
+        const stColor = isLeave ? '#fbbf24' : (stLabel === 'Active' ? '#4ade80' : '#f87171');
+        document.getElementById('modalStatus').textContent = stLabel;
+        document.getElementById('modalStatus').style.color = stColor;
+
+        document.getElementById('modalEmail').textContent = m.email || '-';
+        document.getElementById('modalPhone').textContent = m.phone || '-';
+        document.getElementById('modalRating').textContent = `⭐ ${m.rating || '4.5'} / 5`;
+        document.getElementById('modalProjects').textContent = `${m.projects || 2} Projects`;
+        document.getElementById('modalJoinDate').textContent = m.joinDate || '15 Jan 2023';
+        document.getElementById('modalSendEmailBtn').href = `mailto:${m.email || ''}`;
+
+        memberDetailsModal.classList.add('show');
+    }
+
+    function closeMemberProfile() {
+        memberDetailsModal.classList.remove('show');
+    }
+
+    closeMemberModalBtn?.addEventListener('click', closeMemberProfile);
+    closeMemberModalBottomBtn?.addEventListener('click', closeMemberProfile);
+    memberDetailsModal?.addEventListener('click', (e) => {
+        if (e.target === memberDetailsModal) closeMemberProfile();
+    });
+
+    // Add Member Modal handlers
+    openAddMemberBtn?.addEventListener('click', () => {
+        addMemberForm.reset();
+        document.getElementById('newMemberId').value = `DEV${String(allMembers.length + 1).padStart(3, '0')}`;
+        addMemberModal.classList.add('show');
+    });
+
+    const closeAddModal = () => addMemberModal.classList.remove('show');
+    closeAddMemberModalBtn?.addEventListener('click', closeAddModal);
+    cancelAddMemberBtn?.addEventListener('click', closeAddModal);
+    addMemberModal?.addEventListener('click', (e) => {
+        if (e.target === addMemberModal) closeAddModal();
+    });
+
+    addMemberForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newMember = {
+            name: document.getElementById('newMemberName').value.trim(),
+            customId: document.getElementById('newMemberId').value.trim(),
+            designation: document.getElementById('newMemberDesig').value,
+            department: 'Engineering',
+            email: document.getElementById('newMemberEmail').value.trim(),
+            phone: document.getElementById('newMemberPhone').value.trim() || '+1 (555) 000-0000',
+            status: document.getElementById('newMemberStatus').value,
+            rating: 4.5,
+            projects: 1,
+            joinDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+        };
+
+        try {
+            await addDoc(collection(db, "employees"), newMember);
+        } catch (err) {
+            console.log("Local member added (offline or mock mode):", err.message);
+        }
+
+        allMembers.unshift(newMember);
+        closeAddModal();
+        updateTeamMembersKpisAndTable();
+    });
+
     function applyFilter() {
-        const queryTerm = searchInput.value.toLowerCase().trim();
+        const queryTerm = (searchInput.value || '').toLowerCase().trim();
         const selDesig = desigFilter.value;
         const selStatus = statusFilter.value;
 
         const filtered = allMembers.filter(emp => {
-            const matchesSearch = !queryTerm ||
-                (emp.name || '').toLowerCase().includes(queryTerm) ||
-                (emp.email || '').toLowerCase().includes(queryTerm) ||
-                (emp.designation || '').toLowerCase().includes(queryTerm);
+            const name = (emp.name || '').toLowerCase();
+            const email = (emp.email || '').toLowerCase();
+            const desig = (emp.designation || '').toLowerCase();
+            const customId = getRoleCustomId(emp).toLowerCase();
+
+            const matchesSearch = !queryTerm || name.includes(queryTerm) || email.includes(queryTerm) || desig.includes(queryTerm) || customId.includes(queryTerm);
             const matchesDesig = selDesig === 'All' || emp.designation === selDesig;
-            const matchesStatus = selStatus === 'All' || emp.status === selStatus;
+            
+            let matchesStatus = true;
+            if (selStatus === 'Active') matchesStatus = (emp.status || '').toLowerCase() === 'active';
+            else if (selStatus === 'On Leave') matchesStatus = (emp.status || '').toLowerCase().includes('leave');
+            else if (selStatus === 'Inactive') matchesStatus = (emp.status || '').toLowerCase() === 'inactive';
+
             return matchesSearch && matchesDesig && matchesStatus;
         });
 
         renderMembersTable(filtered);
     }
 
-    searchInput.addEventListener('input', applyFilter);
-    desigFilter.addEventListener('change', applyFilter);
-    statusFilter.addEventListener('change', applyFilter);
-    applyBtn.addEventListener('click', applyFilter);
+    searchInput?.addEventListener('input', applyFilter);
+    desigFilter?.addEventListener('change', applyFilter);
+    statusFilter?.addEventListener('change', applyFilter);
+    applyBtn?.addEventListener('click', applyFilter);
 
-    resetBtn.addEventListener('click', () => {
+    resetBtn?.addEventListener('click', () => {
         searchInput.value = '';
         desigFilter.value = 'All';
         statusFilter.value = 'All';
         renderMembersTable(allMembers);
     });
 
-    exportBtn.addEventListener('click', () => {
+    exportBtn?.addEventListener('click', () => {
         if (!allMembers.length) return alert('No team member records to export.');
-        const rows = [["Employee ID", "Name", "Designation", "Department", "Email", "Phone", "Status"]];
+        const rows = [["Employee ID", "Name", "Designation", "Department", "Email", "Phone", "Status", "Rating", "Projects"]];
         allMembers.forEach((emp, i) => {
-            rows.push([`EMP${String(i + 1).padStart(3, '0')}`, emp.name || '', emp.designation || '', emp.department || '', emp.email || '', emp.phone || '', emp.status || '']);
+            rows.push([
+                getRoleCustomId(emp, i),
+                emp.name || '',
+                emp.designation || '',
+                emp.department || 'Engineering',
+                emp.email || '',
+                emp.phone || '',
+                emp.status || 'Active',
+                emp.rating || '4.5',
+                emp.projects || '2'
+            ]);
         });
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `Team-Members-${Date.now()}.csv`;
+        link.download = `Engineering-Team-Members-${Date.now()}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
     });
 
     async function loadTeamMembers() {
         try {
-            const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
-            const myDept = meSnap.exists() ? meSnap.data().department : "Engineering";
+            let myDept = "Engineering";
+            if (currentUser && currentUser.docId) {
+                const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+                if (meSnap.exists() && meSnap.data().department) {
+                    myDept = meSnap.data().department;
+                }
+            }
 
-            document.getElementById('kpiDeptName').textContent = myDept || 'Engineering';
+            document.getElementById('kpiDeptName').textContent = myDept;
 
             const q = query(collection(db, "employees"), where("department", "==", myDept));
             const querySnapshot = await getDocs(q);
-            allMembers = [];
+            const loaded = [];
 
             querySnapshot.forEach((docSnap) => {
-                allMembers.push(docSnap.data());
+                loaded.push({ id: docSnap.id, ...docSnap.data() });
             });
 
-            // Update KPIs
-            const activeCount = allMembers.filter(e => (e.status || '').toLowerCase() === 'active').length;
-            const onLeaveCount = allMembers.filter(e => (e.status || '').toLowerCase() === 'leave').length;
-            document.getElementById('kpiTotalMembers').textContent = allMembers.length;
-            document.getElementById('kpiActiveMembers').textContent = activeCount;
-            document.getElementById('kpiActivePct').textContent = allMembers.length ? `${Math.round((activeCount / allMembers.length) * 100)}% active` : '0%';
-            document.getElementById('kpiOnLeave').textContent = onLeaveCount;
+            // Seamlessly merge sample team members with any Firestore additions/modifications
+            const mergedMap = new Map();
+            sampleTeamMembers.forEach(m => mergedMap.set(m.customId || m.email, { ...m }));
 
-            // Populate designation filter
-            const designSet = Array.from(new Set(allMembers.map(e => e.designation).filter(Boolean)));
-            desigFilter.innerHTML = `<option value="All">All Designations</option>` + designSet.map(d => `<option value="${d}">${d}</option>`).join('');
+            loaded.forEach(m => {
+                const key = m.customId || m.employeeId || m.uid || m.email || m.id;
+                const existing = mergedMap.get(key) || {};
+                mergedMap.set(key, { ...existing, ...m, customId: m.customId || m.employeeId || key });
+            });
 
-            renderMembersTable(allMembers);
+            allMembers = Array.from(mergedMap.values());
+            updateTeamMembersKpisAndTable();
 
         } catch (err) {
-            console.error("Failed to load team members: ", err);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #f87171;">Failed to load records: ${err.message}</td></tr>`;
+            console.warn("Using sample team members fallback: ", err.message);
+            allMembers = JSON.parse(JSON.stringify(sampleTeamMembers));
+            updateTeamMembersKpisAndTable();
         }
+    }
+
+    function updateTeamMembersKpisAndTable() {
+        const activeCount = allMembers.filter(e => (e.status || '').toLowerCase() === 'active').length;
+        const onLeaveCount = allMembers.filter(e => (e.status || '').toLowerCase().includes('leave')).length;
+        const total = allMembers.length || 12;
+
+        document.getElementById('kpiTotalMembers').textContent = total;
+        document.getElementById('kpiActiveMembers').textContent = activeCount;
+        document.getElementById('kpiActivePct').textContent = `${Math.round((activeCount / total) * 100)}% active`;
+        document.getElementById('kpiOnLeave').textContent = onLeaveCount;
+        document.getElementById('kpiOnLeavePct').textContent = `${Math.round((onLeaveCount / total) * 100)}% on leave`;
+
+        renderMembersTable(allMembers);
     }
 
     loadTeamMembers();

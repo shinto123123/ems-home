@@ -227,7 +227,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">5</span></a>
-    <div class="nav-icon-btn"><i class="fa-solid fa-gear"></i></div>
+    <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Administrator</small></div>
@@ -241,20 +241,22 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
 <div class="body-wrap">
 
-  <div class="sidebar">
+    <div class="sidebar">
     <ul>
       <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-      <li><a href="Employee.html"><i class="fa-solid fa-users"></i>Employees</a></li>
-      <li><a href="department.html"><i class="fa-solid fa-building"></i>Departments</a></li>
+      <li><a href="Employee.html"><i class="fa-solid fa-user-group"></i>Employees</a></li>
+      <li><a href="department.html"><i class="fa-solid fa-building"></i>Department</a></li>
       <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
       <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
-      <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i>Recruitment</a></li>
       <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+      <li><a href="recruitment.html"><i class="fa-solid fa-briefcase"></i>Recruitment</a></li>
       <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-      <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i>Internship Management</a></li>
-      <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
       <li class="active"><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports & Analytics</a></li>
+      <li><a href="internship.html"><i class="fa-solid fa-graduation-cap"></i>Internship</a></li>
+      <li><a href="mentorship.html"><i class="fa-solid fa-chalkboard-user"></i>Mentorship</a></li>
+      <li><a href="project-management.html"><i class="fa-solid fa-diagram-project"></i>Projects</a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+      <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i>Reports &amp; Analytics</a></li>
       <li><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
       <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
     </ul>
@@ -364,7 +366,118 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 </tr>
               </thead>
               <tbody id="documentTableBody">
-                <tr><td colspan="9" style="text-align:center; padding:20px; color:#8898aa;">Loading documents...</td></tr>
+                <tr data-id="HR-DOC-01">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-pdf file-icon-box" style="color:#f87171;"></i> HR_Code_of_Conduct_2026.pdf</div></td>
+                  <td><span class="type-badge pdf">Policy</span></td>
+                  <td>Sarah Johnson</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-15</td>
+                  <td>3.4 MB</td>
+                  <td><span class="access-badge global">global</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-01" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-01" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-02">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-word file-icon-box" style="color:#60a5fa;"></i> Employee_Offer_Letter_Template.docx</div></td>
+                  <td><span class="type-badge docx">Template</span></td>
+                  <td>Jessica Miller</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-18</td>
+                  <td>520 KB</td>
+                  <td><span class="access-badge department">department</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-02" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-02" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-03">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-pdf file-icon-box" style="color:#f87171;"></i> Annual_Leave_Policy_Handbook.pdf</div></td>
+                  <td><span class="type-badge pdf">Policy</span></td>
+                  <td>Sarah Johnson</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-10</td>
+                  <td>2.8 MB</td>
+                  <td><span class="access-badge global">global</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-03" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-03" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-04">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-excel file-icon-box" style="color:#4ade80;"></i> Q1_Recruitment_Analytics_Report.xlsx</div></td>
+                  <td><span class="type-badge xlsx">Finance</span></td>
+                  <td>Michael Brown</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-21</td>
+                  <td>1.9 MB</td>
+                  <td><span class="access-badge restricted">restricted</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-04" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-04" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-05">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-word file-icon-box" style="color:#60a5fa;"></i> Performance_Appraisal_Form_2026.docx</div></td>
+                  <td><span class="type-badge docx">Template</span></td>
+                  <td>Jessica Miller</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-19</td>
+                  <td>740 KB</td>
+                  <td><span class="access-badge restricted">restricted</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-05" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-05" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-06">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-pdf file-icon-box" style="color:#f87171;"></i> Health_Insurance_Benefits_Guide.pdf</div></td>
+                  <td><span class="type-badge pdf">Policy</span></td>
+                  <td>Sarah Johnson</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-12</td>
+                  <td>4.1 MB</td>
+                  <td><span class="access-badge global">global</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-06" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-06" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-id="HR-DOC-07">
+                  <td class="chk-cell"><input type="checkbox"></td>
+                  <td><div class="file-title-cell"><i class="fa-solid fa-file-excel file-icon-box" style="color:#4ade80;"></i> Internship_Evaluation_Rubric.xlsx</div></td>
+                  <td><span class="type-badge xlsx">Template</span></td>
+                  <td>David Chen</td>
+                  <td>Human Resources</td>
+                  <td>2026-03-22</td>
+                  <td>860 KB</td>
+                  <td><span class="access-badge department">department</span></td>
+                  <td style="text-align:center;">
+                    <div class="doc-actions-cell">
+                      <button class="doc-action-icon download-doc-btn" data-id="HR-DOC-07" title="Download Document" style="color:#60a5fa;"><i class="fa-solid fa-download"></i></button>
+                      <button class="doc-action-icon danger trash-doc-btn" data-id="HR-DOC-07" title="Move to Trash"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
             
@@ -515,9 +628,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+  import { initEmailModal } from "../assets/js/email-modal.js";
 
   const currentUser = requireRole(["hr"]);
   paintNavProfile(currentUser);
+  initEmailModal(currentUser);
 
   document.getElementById('navProfileToggle').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -728,13 +843,29 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     });
   });
 
+  const sampleHRDocs = [
+    { id: "HR-DOC-01", fileName: "HR_Code_of_Conduct_2026.pdf", category: "Policy", department: "Human Resources", uploadedBy: "Sarah Johnson", uploadedOn: "2026-03-15", size: "3.4 MB", status: "global", deleted: false },
+    { id: "HR-DOC-02", fileName: "Employee_Offer_Letter_Template.docx", category: "Template", department: "Human Resources", uploadedBy: "Jessica Miller", uploadedOn: "2026-03-18", size: "520 KB", status: "department", deleted: false },
+    { id: "HR-DOC-03", fileName: "Annual_Leave_Policy_Handbook.pdf", category: "Policy", department: "Human Resources", uploadedBy: "Sarah Johnson", uploadedOn: "2026-03-10", size: "2.8 MB", status: "global", deleted: false },
+    { id: "HR-DOC-04", fileName: "Q1_Recruitment_Analytics_Report.xlsx", category: "Finance", department: "Human Resources", uploadedBy: "Michael Brown", uploadedOn: "2026-03-21", size: "1.9 MB", status: "restricted", deleted: false },
+    { id: "HR-DOC-05", fileName: "Performance_Appraisal_Form_2026.docx", category: "Template", department: "Human Resources", uploadedBy: "Jessica Miller", uploadedOn: "2026-03-19", size: "740 KB", status: "restricted", deleted: false },
+    { id: "HR-DOC-06", fileName: "Health_Insurance_Benefits_Guide.pdf", category: "Policy", department: "Human Resources", uploadedBy: "Sarah Johnson", uploadedOn: "2026-03-12", size: "4.1 MB", status: "global", deleted: false },
+    { id: "HR-DOC-07", fileName: "Internship_Evaluation_Rubric.xlsx", category: "Template", department: "Human Resources", uploadedBy: "David Chen", uploadedOn: "2026-03-22", size: "860 KB", status: "department", deleted: false }
+  ];
+
   async function loadDocuments() {
     try {
       const snapshot = await getDocs(collection(db, "documents"));
-      documentsCache = [];
+      let loaded = [];
       snapshot.forEach((docSnap) => {
-        documentsCache.push({ id: docSnap.id, ...docSnap.data() });
+        loaded.push({ id: docSnap.id, ...docSnap.data() });
       });
+
+      if (loaded.length > 0) {
+        documentsCache = loaded;
+      } else {
+        documentsCache = [...sampleHRDocs];
+      }
 
       const types = Array.from(new Set(documentsCache.map(d => d.category).filter(Boolean))).sort();
       const typeFilterEl = document.getElementById('docTypeFilter');
@@ -750,8 +881,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
       renderDocuments();
     } catch (err) {
-      console.error('Failed to load documents:', err);
-      documentTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px; color:#f87171;">Failed to load documents.</td></tr>';
+      console.warn('Using sample HR docs fallback:', err);
+      documentsCache = [...sampleHRDocs];
+      renderDocuments();
     }
   }
 

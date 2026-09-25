@@ -727,7 +727,7 @@ body{
             <span class="badge">3</span>
         </a>
 
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Email Notification">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
@@ -774,6 +774,7 @@ body{
  <li ><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
  <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
  <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
+ <li><a href="communication.html"><i class="fa-solid fa-comments"></i> Communication</a></li>
  <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
  <li class="active"><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
  <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
@@ -906,9 +907,11 @@ Read (0)
     import { collection, addDoc, getDocs, doc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
     document.getElementById('navProfileToggle').addEventListener('click', (e) => {
         e.stopPropagation();

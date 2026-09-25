@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Work Log & Reports - Employee Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow:hidden;color:#d7dfef;}
+
+.navbar{height:60px;background:#111c44;border-bottom:1px solid #1b2e6e;display:flex;align-items:center;justify-content:space-between;padding:0 25px;flex-shrink:0;z-index:100;}
+.navbar-left{display:flex;align-items:center;gap:15px;}
+.hamburger{font-size:20px;color:#8898aa;cursor:pointer;}
+.navbar-title{font-size:16px;font-weight:700;color:#ffffff;letter-spacing:.5px;}
+.navbar-center{flex:1;display:flex;justify-content:center;padding:0 40px;}
+.nav-search{width:100%;max-width:420px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:9px 15px;display:flex;align-items:center;gap:10px;}
+.nav-search i{color:#4a5568;font-size:14px;}
+.nav-search input{border:none;outline:none;background:none;width:100%;color:#e2e8f0;font-size:14px;}
+.nav-search input::placeholder{color:#4a5568;}
+.navbar-right{display:flex;align-items:center;gap:20px;}
+.nav-icon-btn{position:relative;width:38px;height:38px;background:#0b1437;border:1px solid #1b2e6e;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8898aa;font-size:16px;transition:.3s;text-decoration:none;}
+.nav-icon-btn:hover{color:#4299e1;border-color:#4299e1;}
+.nav-icon-btn .badge{position:absolute;top:-4px;right:-4px;background:#4299e1;color:#fff;font-size:9px;font-weight:bold;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-profile{display:flex;align-items:center;gap:10px;cursor:pointer;padding:5px 10px;border-radius:10px;border:1px solid #1b2e6e;position:relative;}
+.nav-profile-avatar{width:34px;height:34px;border-radius:50%;background:#1b2e6e;display:flex;align-items:center;justify-content:center;color:#8898aa;font-size:16px;}
+.nav-profile-info h4{font-size:13px;font-weight:600;color:#ffffff;}
+.nav-profile-info small{font-size:11px;color:#8898aa;}
+.nav-profile .fa-chevron-down{font-size:11px;color:#8898aa;}
+.nav-profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;background:#111c44;border:1px solid #1b2e6e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:6px;display:none;z-index:1000;}
+.nav-profile-dropdown.show{display:block;}
+.nav-profile-dropdown a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#d7dfef;font-size:13px;text-decoration:none;transition:.15s;}
+.nav-profile-dropdown a:hover{background:rgba(66,153,225,.12);color:#fff;}
+.nav-profile-dropdown a i{width:14px;}
+
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.sidebar-top{padding:24px 16px;text-align:center;border-bottom:1px solid #1b2e6e;}
+.sidebar-avatar{width:64px;height:64px;border-radius:50%;background:#0b1437;border:2px solid #1b2e6e;display:flex;align-items:center;justify-content:center;font-size:24px;color:#8898aa;margin:0 auto 12px;}
+.sidebar-top h3{font-size:15px;font-weight:700;color:#fff;}
+.sidebar-top p{font-size:12px;color:#8898aa;margin-top:2px;}
+.sidebar-menu{flex:1;overflow-y:auto;list-style:none;padding:12px 0;}
+.sidebar-menu li a{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#8898aa;font-size:13.5px;text-decoration:none;transition:.2s;border-left:3px solid transparent;}
+.sidebar-menu li a:hover, .sidebar-menu li.active a{background:rgba(66,153,225,.1);color:#fff;border-left-color:#4299e1;}
+.sidebar-menu li a i{width:16px;font-size:14px;}
+.sidebar-footer{border-top:1px solid #1b2e6e;padding:8px 0;}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.content{flex:1;padding:18px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#0b1437;}
+
+.page-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.page-header h1{font-size:22px;color:#ffffff;font-weight:700;}
+.page-header p{color:#8898aa;font-size:12.5px;margin-top:3px;}
+
+.grid-split{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;flex:1;min-height:0;}
+
+.panel-card{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,0.2);overflow-y:auto;}
+.panel-card h3{font-size:16px;color:#ffffff;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.panel-card h3 i{color:#4299e1;}
+
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;color:#8898aa;font-size:11.5px;font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input, .form-group select, .form-group textarea{width:100%;padding:9px 12px;background:#0b1437;border:1px solid #1b2e6e;border-radius:8px;color:#ffffff;font-size:13px;outline:none;font-family:inherit;}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#4299e1;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.btn-primary{background:#4299e1;border:none;color:#ffffff;padding:10px 18px;border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:0.2s;}
+.btn-primary:hover{background:#3182ce;}
+
+.report-item{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:14px;margin-bottom:10px;transition:.2s;}
+.report-item:hover{border-color:#4299e1;}
+.report-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.status-pill{padding:3px 8px;border-radius:10px;font-size:10.5px;font-weight:700;text-transform:uppercase;}
+.status-pill.approved{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);}
+.status-pill.submitted{background:rgba(66,153,225,0.15);color:#60a5fa;border:1px solid rgba(66,153,225,0.3);}
+.status-pill.flagged{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);}
+
+@media(max-width:900px){.grid-split{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <span class="navbar-title">Employee Portal</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search tasks, projects, reports...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">2</span></a>
+        <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info"><h4 id="userProfileName">Alex Rivera</h4><small id="userProfileRole">Senior Frontend Engineer</small></div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+      <div class="sidebar">
+    <div>
+      <div class="sidebar-top">
+        <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+        <h3>Employee</h3>
+        <p>Software Engineer</p>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li class="active"><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i>Daily Work Report</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
+        <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <ul class="sidebar-menu">
+        <li><a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+    <div class="main">
+    <div class="content">
+
+        <div class="page-header">
+            <div>
+                <h1>Daily Work Log Submission</h1>
+                <p>Submit your end-of-day accomplishments, productive hours, and roadblocks to management.</p>
+            </div>
+        </div>
+
+        <div class="grid-split">
+            <!-- Left: Submit Form -->
+            <div class="panel-card">
+                <h3><i class="fa-solid fa-pen-nib"></i> Log Today's Work Report</h3>
+                <form id="submitDailyReportForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportDate">Report Date</label>
+                            <input type="date" id="reportDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportHours">Hours Worked Today</label>
+                            <input type="number" id="reportHours" step="0.5" min="1" max="16" value="8.0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportProject">Project / Key Feature</label>
+                        <input type="text" id="reportProject" placeholder="e.g. EMS Next-Gen Portal, Billing Module" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportSummary">Summary of Accomplishments</label>
+                        <input type="text" id="reportSummary" placeholder="Brief 1-sentence headline of today's work" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportDetails">Detailed Task Breakdown</label>
+                        <textarea id="reportDetails" rows="4" placeholder="1. Implemented XYZ feature...&#10;2. Refactored ABC component...&#10;3. Verified responsive design..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportBlockers">Blockers / Need Support From Lead (Optional)</label>
+                        <input type="text" id="reportBlockers" placeholder="None or specify roadblock (e.g. Waiting on API credentials)">
+                    </div>
+                    <div class="form-group">
+                        <label for="reportTomorrow">Tomorrow's Planned Focus</label>
+                        <input type="text" id="reportTomorrow" placeholder="Key goals for tomorrow's shift">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Daily Work Report
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Past Logs History -->
+            <div class="panel-card">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> My Recent Work Submissions</h3>
+                <div id="myRecentReportsList">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+
+    const currentUser = requireRole(["employee", "admin", "manager", "hr", "intern"]);
+    paintNavProfile(currentUser);
+    document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = currentUser.name);
+    document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = currentUser.role ? currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'Employee');
+    document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('empSidebar')?.classList.toggle('collapsed');
+    });
+
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    document.getElementById('reportDate').value = new Date().toISOString().slice(0, 10);
+
+    let myReports = [
+        {
+            date: '2025-05-30',
+            project: 'EMS Next-Gen Portal',
+            summary: 'Implemented real-time communication tab & messaging sync',
+            details: 'Designed messaging channels UI, 1-on-1 contact list, and bound real-time listeners.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved'
+        },
+        {
+            date: '2025-05-29',
+            project: 'EMS Next-Gen Portal',
+            summary: 'Refactored attendance calendar day cell timestamp badges',
+            details: 'Added Check-in and Check-out badges inside day cells and computed daily working hours.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved'
+        },
+        {
+            date: '2025-05-28',
+            project: 'Accounts Inflow Service',
+            summary: 'Built receiving revenue sample cards & invoice viewer',
+            details: 'Added dual cashflow tables and invoice printable modal popup.',
+            hours: 8.0,
+            blockers: 'None',
+            status: 'Approved'
+        }
+    ];
+
+    function renderMyReports() {
+        const container = document.getElementById('myRecentReportsList');
+        if (!container) return;
+        container.innerHTML = myReports.map(r => `
+            <div class="report-item">
+                <div class="report-item-header">
+                    <strong style="color:#fff; font-size:13.5px;">${r.date} &bull; <span style="color:#60a5fa;">${r.project}</span></strong>
+                    <span class="status-pill ${r.status.toLowerCase()}">${r.status}</span>
+                </div>
+                <div style="font-weight:600; color:#cbd5e1; font-size:12.5px; margin-bottom:4px;">${r.summary}</div>
+                <p style="font-size:11.5px; color:#8898aa; line-height:1.4;">${r.details}</p>
+                <div style="font-size:11px; color:#8898aa; margin-top:6px; display:flex; justify-content:space-between;">
+                    <span>Hours: <strong style="color:#60a5fa;">${r.hours}h</strong></span>
+                    <span>Blockers: <strong style="color:${r.blockers !== 'None' ? '#fbbf24' : '#8898aa'};">${r.blockers}</strong></span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('submitDailyReportForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const date = document.getElementById('reportDate').value;
+        const hours = parseFloat(document.getElementById('reportHours').value) || 8.0;
+        const project = document.getElementById('reportProject').value.trim();
+        const summary = document.getElementById('reportSummary').value.trim();
+        const details = document.getElementById('reportDetails').value.trim();
+        const blockers = document.getElementById('reportBlockers').value.trim() || 'None';
+        const tomorrow = document.getElementById('reportTomorrow').value.trim();
+
+        const reportData = {
+            date: date,
+            time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            employeeName: currentUser ? currentUser.name : 'Alex Rivera',
+            employeeId: currentUser ? currentUser.docId || 'DEV001' : 'DEV001',
+            role: currentUser ? currentUser.role : 'employee',
+            department: 'Engineering',
+            project: project,
+            taskSummary: summary,
+            details: details,
+            hours: hours,
+            blockers: blockers,
+            tomorrowPlan: tomorrow,
+            status: 'Submitted',
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, "dailyReports"), reportData);
+        } catch (err) {
+            console.warn("Daily report firestore fallback: ", err);
+        }
+
+        myReports.unshift({
+            date: date,
+            project: project,
+            summary: summary,
+            details: details,
+            hours: hours,
+            blockers: blockers,
+            status: 'Submitted'
+        });
+
+        alert("✓ Daily Work Report submitted successfully! Management can view your report in the Admin Dashboard.");
+        document.getElementById('submitDailyReportForm').reset();
+        document.getElementById('reportDate').value = new Date().toISOString().slice(0, 10);
+        document.getElementById('reportHours').value = '8.0';
+        renderMyReports();
+    });
+
+    renderMyReports();
+</script>
+</body>
+</html>

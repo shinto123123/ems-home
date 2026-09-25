@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Communication Hub</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+body { background:#0b1437; display:flex; flex-direction:column; height:100vh; overflow:hidden; color:#d7dfef; }
+
+.navbar { height:60px; background:#111c44; border-bottom:1px solid #1b2e6e; display:flex; align-items:center; justify-content:space-between; padding:0 25px; flex-shrink:0; z-index:100; }
+.navbar-left { display:flex; align-items:center; gap:15px; }
+.hamburger { font-size:20px; color:#8898aa; cursor:pointer; }
+.navbar-logo { width:40px; height:40px; background:#1b2e6e; border:2px solid #4299e1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; color:#4299e1; }
+.navbar-title { font-size:16px; font-weight:700; color:#ffffff; letter-spacing:.5px; }
+.navbar-center { flex:1; display:flex; justify-content:center; padding:0 40px; }
+.nav-search { width:100%; max-width:420px; background:#0b1437; border:1px solid #1b2e6e; border-radius:10px; padding:9px 15px; display:flex; align-items:center; gap:10px; }
+.nav-search i { color:#4a5568; font-size:14px; }
+.nav-search input { border:none; outline:none; background:none; width:100%; color:#e2e8f0; font-size:14px; }
+.nav-search input::placeholder { color:#4a5568; }
+.navbar-right { display:flex; align-items:center; gap:20px; }
+.nav-icon-btn { position:relative; width:38px; height:38px; background:#0b1437; border:1px solid #1b2e6e; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#8898aa; font-size:16px; transition:.3s; text-decoration:none; }
+.nav-icon-btn:hover { color:#4299e1; border-color:#4299e1; }
+.nav-icon-btn .badge { position:absolute; top:-4px; right:-4px; background:#4299e1; color:#fff; font-size:9px; font-weight:bold; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.nav-profile { display:flex; align-items:center; gap:10px; cursor:pointer; padding:5px 10px; border-radius:10px; border:1px solid #1b2e6e; position:relative; }
+.nav-profile-avatar { width:34px; height:34px; border-radius:50%; background:#1b2e6e; display:flex; align-items:center; justify-content:center; color:#8898aa; font-size:16px; }
+.nav-profile-info h4 { font-size:13px; font-weight:600; color:#ffffff; }
+.nav-profile-info small { font-size:11px; color:#8898aa; }
+.nav-profile .fa-chevron-down { font-size:11px; color:#8898aa; }
+.nav-profile-dropdown { position:absolute; top:calc(100% + 8px); right:0; min-width:160px; background:#111c44; border:1px solid #1b2e6e; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.4); padding:6px; display:none; z-index:1000; }
+.nav-profile-dropdown.show { display:block; }
+.nav-profile-dropdown a { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; color:#d7dfef; font-size:13px; text-decoration:none; transition:.15s; }
+.nav-profile-dropdown a:hover { background:rgba(66,153,225,.12); color:#fff; }
+.nav-profile-dropdown a i { width:14px; }
+
+.body-wrap { display:flex; flex:1; overflow:hidden; }
+
+.sidebar { width:240px; height:100%; background:#111c44; border-right:1px solid #1b2e6e; overflow-y:auto; flex-shrink:0; transition:width 0.3s ease; }
+.sidebar::-webkit-scrollbar { width:6px; }
+.sidebar::-webkit-scrollbar-thumb { background:#1b2e6e; border-radius:10px; }
+.sidebar ul { list-style:none; padding:10px 0; }
+.sidebar ul li { padding:12px 20px; display:flex; align-items:center; cursor:pointer; transition:.3s; }
+.sidebar ul li a { text-decoration:none; color:#8898aa; display:flex; gap:12px; align-items:center; width:100%; font-size:14px; white-space:nowrap; }
+.sidebar ul li:hover, .sidebar ul li.active { background:#1b2e6e; }
+.sidebar ul li:hover a, .sidebar ul li.active a { color:#ffffff; }
+.sidebar.collapsed { width:70px; }
+.sidebar.collapsed ul li a span { display:none; }
+.sidebar.collapsed ul li a { justify-content:center; }
+
+.main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+
+/* ── COMMUNICATION HUB WORKSPACE ── */
+.comm-workspace { flex: 1; display: flex; overflow: hidden; background: #0b1437; }
+
+.comm-sidebar { width: 330px; background: #111c44; border-right: 1px solid #1b2e6e; display: flex; flex-direction: column; flex-shrink: 0; }
+.comm-sidebar-header { padding: 16px 18px; border-bottom: 1px solid #1b2e6e; display: flex; justify-content: space-between; align-items: center; }
+.comm-sidebar-header h2 { font-size: 17px; color: #fff; font-weight: 700; }
+
+.comm-search-box { padding: 10px 14px; border-bottom: 1px solid #1b2e6e; display: flex; align-items: center; gap: 8px; background: #0b1437; }
+.comm-search-box i { color: #8898aa; font-size: 13px; }
+.comm-search-box input { border: none; outline: none; background: none; color: #fff; font-size: 13px; width: 100%; }
+
+.comm-section-title { padding: 10px 18px 4px; font-size: 11px; font-weight: 700; color: #8898aa; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.comm-list { flex: 1; overflow-y: auto; list-style: none; padding: 4px 0; }
+.comm-list::-webkit-scrollbar { width: 5px; }
+.comm-list::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+.comm-item { display: flex; align-items: center; gap: 12px; padding: 11px 18px; cursor: pointer; transition: background 0.15s; border-left: 3px solid transparent; }
+.comm-item:hover { background: rgba(27, 46, 110, 0.4); }
+.comm-item.active { background: #1b2e6e; border-left-color: #4299e1; }
+
+.comm-avatar { position: relative; width: 38px; height: 38px; border-radius: 50%; background: #0b1437; border: 1.5px solid #1b2e6e; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #8898aa; flex-shrink: 0; }
+.comm-avatar.channel { border-radius: 8px; color: #4299e1; }
+.online-dot { position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; background: #4ade80; border: 2px solid #111c44; }
+
+.comm-meta { flex: 1; min-width: 0; }
+.comm-meta h4 { font-size: 13.5px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.comm-meta p { font-size: 11.5px; color: #8898aa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+.comm-unread { background: #4299e1; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 10px; }
+
+/* Chat Main Area */
+.chat-area { flex: 1; display: flex; flex-direction: column; background: #0b1437; }
+
+.chat-header { height: 64px; padding: 0 24px; border-bottom: 1px solid #1b2e6e; background: #111c44; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.chat-header-info { display: flex; align-items: center; gap: 12px; }
+.chat-header-info h3 { font-size: 16px; color: #ffffff; font-weight: 700; }
+.chat-header-info span { font-size: 12px; color: #4ade80; }
+
+.chat-messages { flex: 1; padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+.message-row { display: flex; gap: 12px; max-width: 75%; }
+.message-row.outgoing { align-self: flex-end; flex-direction: row-reverse; }
+
+.msg-bubble { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 12px 16px; font-size: 13.5px; line-height: 1.45; color: #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.message-row.outgoing .msg-bubble { background: #1b4b8a; border-color: #4299e1; color: #ffffff; }
+
+.msg-info { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; font-size: 11px; color: #8898aa; }
+.message-row.outgoing .msg-info { color: #cbd5e1; }
+.msg-time { font-size: 10.5px; opacity: 0.8; }
+
+.chat-input-bar { padding: 14px 20px; border-top: 1px solid #1b2e6e; background: #111c44; display: flex; align-items: center; gap: 12px; }
+.chat-input-field { flex: 1; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 10px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+.chat-input-field input { border: none; outline: none; background: none; width: 100%; color: #ffffff; font-size: 13.5px; }
+
+.chat-action-btn { background: none; border: none; color: #8898aa; font-size: 16px; cursor: pointer; transition: .2s; }
+.chat-action-btn:hover { color: #4299e1; }
+
+.btn-send-msg { background: #4299e1; border: none; color: #ffffff; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; transition: .2s; flex-shrink: 0; }
+.btn-send-msg:hover { background: #3182ce; }
+
+@media(max-width: 768px) {
+    .comm-sidebar { width: 80px; }
+    .comm-meta, .comm-section-title, .comm-search-box { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">Manager</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search team discussions...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></div>
+        <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info"><h4>Sarah Jenkins</h4><small>Engineering Manager</small></div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+    <div class="sidebar" id="mgrSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="my profile.html"><i class="fa-regular fa-user"></i> <span>My Profile</span></a></li>
+            <li><a href="team-members.html"><i class="fa-solid fa-users"></i> <span>Team Members</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Requests</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-briefcase"></i> <span>Projects</span></a></li>
+            <li><a href="review.html"><i class="fa-solid fa-chart-line"></i> <span>Performance Reviews</span></a></li>
+            <li class="active"><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <div class="comm-workspace">
+
+            <div class="comm-sidebar">
+                <div class="comm-sidebar-header">
+                    <h2><i class="fa-solid fa-comments" style="color:#4299e1; margin-right:6px;"></i> Team Messages</h2>
+                    <button class="chat-action-btn" title="New Message"><i class="fa-solid fa-pen-to-square"></i></button>
+                </div>
+                <div class="comm-search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search team members & channels...">
+                </div>
+
+                <div class="comm-list">
+                    <div class="comm-section-title">Channels</div>
+                    <div class="comm-item active" data-id="channel-engineering" data-name="#engineering" data-type="channel">
+                        <div class="comm-avatar channel"><i class="fa-solid fa-code"></i></div>
+                        <div class="comm-meta">
+                            <h4># engineering</h4>
+                            <p>Architecture, PRs & sprints</p>
+                        </div>
+                    </div>
+                    <div class="comm-item" data-id="channel-announcements" data-name="#announcements" data-type="channel">
+                        <div class="comm-avatar channel"><i class="fa-solid fa-bullhorn"></i></div>
+                        <div class="comm-meta">
+                            <h4># announcements</h4>
+                            <p>Company-wide broadcast feed</p>
+                        </div>
+                    </div>
+                    <div class="comm-item" data-id="channel-general" data-name="#general-discussion" data-type="channel">
+                        <div class="comm-avatar channel"><i class="fa-solid fa-hashtag"></i></div>
+                        <div class="comm-meta">
+                            <h4># general-discussion</h4>
+                            <p>Team chat & discussions</p>
+                        </div>
+                    </div>
+
+                    <div class="comm-section-title" style="margin-top:10px;">Direct Messages</div>
+                    <div class="comm-item" data-id="dm-alex" data-name="Alex Rivera (Developer)" data-type="dm">
+                        <div class="comm-avatar">
+                            <i class="fa-regular fa-user"></i>
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="comm-meta">
+                            <h4>Alex Rivera</h4>
+                            <p>Senior Frontend Engineer</p>
+                        </div>
+                    </div>
+                    <div class="comm-item" data-id="dm-michael" data-name="Michael Chen (Developer)" data-type="dm">
+                        <div class="comm-avatar">
+                            <i class="fa-regular fa-user"></i>
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="comm-meta">
+                            <h4>Michael Chen</h4>
+                            <p>Full Stack Engineer</p>
+                        </div>
+                    </div>
+                    <div class="comm-item" data-id="dm-admin" data-name="John Doe (Admin)" data-type="dm">
+                        <div class="comm-avatar"><i class="fa-regular fa-user"></i></div>
+                        <div class="comm-meta">
+                            <h4>John Doe</h4>
+                            <p>System Administrator</p>
+                        </div>
+                    </div>
+                    <div class="comm-item" data-id="dm-emily" data-name="Emily Davis (HR)" data-type="dm">
+                        <div class="comm-avatar"><i class="fa-regular fa-user"></i></div>
+                        <div class="comm-meta">
+                            <h4>Emily Davis</h4>
+                            <p>HR Specialist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="chat-header-info">
+                        <div class="comm-avatar" id="activeChatAvatar"><i class="fa-solid fa-code" style="color:#4299e1;"></i></div>
+                        <div>
+                            <h3 id="activeChatTitle"># engineering</h3>
+                            <span id="activeChatStatus"><i class="fa-solid fa-circle" style="font-size:8px; color:#4ade80;"></i> Active Channel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessagesContainer"></div>
+
+                <div class="chat-input-bar">
+                    <button class="chat-action-btn" title="Attach file"><i class="fa-solid fa-paperclip"></i></button>
+                    <div class="chat-input-field">
+                        <input type="text" id="chatMessageInput" placeholder="Type your message... Press Enter to send">
+                        <button class="chat-action-btn" id="btnEmoji" title="Emoji"><i class="fa-regular fa-face-smile"></i></button>
+                    </div>
+                    <button class="btn-send-msg" id="btnSendMessage"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
+
+    const currentUser = requireRole(["manager", "admin"]);
+    paintNavProfile(currentUser);
+    initEmailModal(currentUser);
+
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('mgrSidebar')?.classList.toggle('collapsed');
+    });
+
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    let currentChatId = 'channel-engineering';
+    let currentChatName = '# engineering';
+
+    const mockMessages = {
+        'channel-engineering': [
+            { sender: 'Sarah Jenkins', role: 'Engineering Manager', text: 'Good morning engineering team! Sprint review is scheduled at 4 PM today.', time: '09:00 AM', isOutgoing: true },
+            { sender: 'Alex Rivera', role: 'Frontend Engineer', text: 'Working report and PRs are ready for review Sarah.', time: '09:15 AM', isOutgoing: false },
+            { sender: 'Michael Chen', role: 'Full Stack Developer', text: 'All accounts receiving endpoints tested and ready.', time: '09:30 AM', isOutgoing: false }
+        ],
+        'channel-announcements': [
+            { sender: 'Executive Admin', role: 'Broadcast', text: 'All staff meeting on Friday at 3 PM.', time: '10:00 AM', isOutgoing: false }
+        ],
+        'channel-general': [
+            { sender: 'Alex Rivera', role: 'Developer', text: 'Happy Friday everyone!', time: '09:05 AM', isOutgoing: false }
+        ],
+        'dm-alex': [
+            { sender: 'Alex Rivera', role: 'Developer', text: 'Hi Sarah, the new communication hub design is completed.', time: '10:00 AM', isOutgoing: false }
+        ],
+        'dm-michael': [
+            { sender: 'Michael Chen', role: 'Developer', text: 'Hi Sarah, the database indices have been configured.', time: 'Yesterday', isOutgoing: false }
+        ],
+        'dm-admin': [
+            { sender: 'John Doe', role: 'Admin', text: 'Sarah, great job leading the sprint this week.', time: 'Yesterday', isOutgoing: false }
+        ],
+        'dm-emily': [
+            { sender: 'Emily Davis', role: 'HR', text: 'Team attendance reports look good for the month.', time: '09:10 AM', isOutgoing: false }
+        ]
+    };
+
+    const container = document.getElementById('chatMessagesContainer');
+    const input = document.getElementById('chatMessageInput');
+    const sendBtn = document.getElementById('btnSendMessage');
+    const titleEl = document.getElementById('activeChatTitle');
+
+    function renderMsgs() {
+        const msgs = mockMessages[currentChatId] || [];
+        if (msgs.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:#8898aa;">No messages yet. Send a message!</div>`;
+            return;
+        }
+        container.innerHTML = msgs.map(m => `
+            <div class="message-row ${m.isOutgoing ? 'outgoing' : ''}">
+                <div class="comm-avatar" style="width:32px; height:32px; font-size:12px;"><i class="fa-solid fa-user"></i></div>
+                <div class="msg-bubble">
+                    <div class="msg-info">
+                        <strong>${m.sender} ${m.role ? `<span style="font-size:10px; opacity:0.8;">(${m.role})</span>` : ''}</strong>
+                        <span class="msg-time">${m.time}</span>
+                    </div>
+                    <div>${m.text}</div>
+                </div>
+            </div>
+        `).join('');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    document.querySelectorAll('.comm-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.comm-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            currentChatId = item.getAttribute('data-id');
+            currentChatName = item.getAttribute('data-name');
+            titleEl.textContent = currentChatName;
+            renderMsgs();
+        });
+    });
+
+    async function sendMsg() {
+        const text = input.value.trim();
+        if (!text) return;
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const newM = {
+            sender: currentUser ? currentUser.name : 'Sarah Jenkins (Manager)',
+            role: 'Engineering Manager',
+            text: text,
+            time: time,
+            isOutgoing: true
+        };
+        if (!mockMessages[currentChatId]) mockMessages[currentChatId] = [];
+        mockMessages[currentChatId].push(newM);
+
+        try {
+            await addDoc(collection(db, "messages"), {
+                chatId: currentChatId,
+                chatName: currentChatName,
+                sender: newM.sender,
+                text: text,
+                timestamp: serverTimestamp()
+            });
+        } catch (e) {
+            console.warn("Message sync fallback: ", e);
+        }
+
+        input.value = '';
+        renderMsgs();
+    }
+
+    sendBtn.addEventListener('click', sendMsg);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
+    document.getElementById('btnEmoji')?.addEventListener('click', () => { input.value += ' 🚀'; input.focus(); });
+
+    renderMsgs();
+</script>
+</body>
+</html>

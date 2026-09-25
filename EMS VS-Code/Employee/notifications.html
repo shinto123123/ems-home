@@ -184,7 +184,7 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
@@ -203,15 +203,17 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
         <p>Software Engineer</p>
       </div>
        <ul class="sidebar-menu">
-        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-        <li ><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
-        <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
-        <li ><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i>Daily Work Report</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
         <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
         <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
         <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
         <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-        <li ><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
         <li class="active"><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
@@ -396,7 +398,6 @@ input:checked + .switch-slider:before{transform:translateX(14px);background-colo
         return '-';
     }
 
-    function renderNotifications(records) {
     let allEmpNotifs = [];
     let currentEmpNotifTab = 'all';
 

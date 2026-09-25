@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects - Employee Portal</title>
+<title>My Projects - Employee Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
@@ -65,7 +65,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .btn-primary:hover{background:#2b7fd1;}
 .btn-outline{background:transparent;border:1px solid #1b2e6e;color:#e2e8f0;padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;width:100%;}
 .btn-outline:hover{border-color:#4299e1;color:#4299e1;}
-.link-btn{color:#4299e1;font-size:12px;text-decoration:none;font-weight:600;}
+.link-btn{color:#4299e1;font-size:12px;text-decoration:none;font-weight:600;cursor:pointer;}
 .link-btn:hover{text-decoration:underline;}
 
 /* ── 4-COLUMN SUMMARY CARDS ── */
@@ -78,44 +78,49 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .metric-info span{font-size:11px;color:#8898aa;}
 
 /* ── MAIN WORKSPACE CONTAINER LAYOUT ── */
-.project-layout-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start;}
+.project-layout-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px;align-items:start;}
 .card-panel{background:#111c44;border:1px solid #1b2e6e;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.2);transition:.25s;}
 .card-panel:hover{border-color:#4299e1;}
 .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .panel-header h3{font-size:14.5px;font-weight:600;color:#fff;}
 
 /* LEFT AREA: MAIN TABS AND DATA ENTRIES */
-.tabs-nav-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;margin-bottom:14px;padding:0 4px;}
+.tabs-nav-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;margin-bottom:14px;padding:0 4px;gap:10px;flex-wrap:wrap;}
 .tabs-nav{display:flex;}
 .tab-btn{background:none;border:none;outline:none;color:#8898aa;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;border-bottom:2px solid transparent;margin-bottom:-1px;}
 .tab-btn:hover{color:#fff;}
 .tab-btn.active{color:#4299e1;border-bottom-color:#4299e1;}
-.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;padding:5px 10px;border-radius:8px;font-size:12.5px;outline:none;cursor:pointer;margin-bottom:6px;}
+.tab-filter-group{display:flex;align-items:center;gap:8px;}
+.select-sm{background:#0b1437;border:1px solid #1b2e6e;color:#e2e8f0;padding:6px 12px;border-radius:8px;font-size:12.5px;outline:none;cursor:pointer;}
 
 /* DATA GRID TABLE */
 .data-table-container{width:100%;overflow-x:auto;}
 .data-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.5px;}
-.data-table th{color:#8898aa;font-weight:600;padding:10px 8px;border-bottom:1px solid #1b2e6e;}
-.data-table td{color:#e2e8f0;padding:14px 8px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
-.data-table tbody tr:hover{background:rgba(27,46,110,0.2);}
+.data-table th{color:#8898aa;font-weight:600;padding:12px 10px;border-bottom:1px solid #1b2e6e;white-space:nowrap;}
+.data-table td{color:#e2e8f0;padding:14px 10px;border-bottom:1px solid #1b2e6e;vertical-align:middle;}
+.data-table tbody tr{transition:background .2s;cursor:pointer;}
+.data-table tbody tr:hover{background:rgba(27,46,110,0.3);}
 
 /* Custom Layout Cell styling */
 .project-title-cell{display:flex;align-items:center;gap:12px;}
-.project-img-box{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:16px;flex-shrink:0;}
+.project-img-box{width:36px;height:36px;border-radius:8px;background:#0b1437;border:1px solid #1b2e6e;display:flex;align-items:center;justify-content:center;color:#4299e1;font-size:15px;flex-shrink:0;}
 .project-text-meta strong{color:#fff;font-size:13px;display:block;}
 .project-text-meta span{font-size:11px;color:#8898aa;display:block;margin-top:2px;}
 
-.badge-status{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(66,153,225,.15);color:#4299e1;display:inline-block;}
-.badge-status.review{background:rgba(251,191,36,.15);color:#fbbf24;}
+.badge-status{padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(66,153,225,.15);color:#4299e1;display:inline-block;text-transform:capitalize;}
+.badge-status.completed{background:rgba(52,211,153,.15);color:#34d399;}
+.badge-status.planning{background:rgba(251,191,36,.15);color:#fbbf24;}
+.badge-status.review{background:rgba(192,132,252,.15);color:#c084fc;}
 
 /* Horizontal Tracking Bars */
 .progress-container-inline{width:100px;}
-.progress-text-val{font-size:11.5px;color:#e2e8f0;font-weight:500;margin-bottom:4px;display:block;}
-.progress-bar-track{width:100%;height:5px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:#4299e1;border-radius:10px;}
+.progress-text-val{font-size:11.5px;color:#e2e8f0;font-weight:600;margin-bottom:4px;display:block;}
+.progress-bar-track{width:100%;height:6px;background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:#4299e1;border-radius:10px;transition:width .4s ease;}
+.progress-bar-fill.done{background:#34d399;}
 
-.btn-action-more{background:transparent;border:none;color:#8898aa;cursor:pointer;font-size:14px;padding:4px;}
-.btn-action-more:hover{color:#4299e1;}
+.btn-action-more{background:transparent;border:none;color:#8898aa;cursor:pointer;font-size:14px;padding:6px;border-radius:6px;transition:.2s;}
+.btn-action-more:hover{color:#4299e1;background:rgba(66,153,225,0.15);}
 
 /* PAGINATION MODULE */
 .pagination-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;font-size:12.5px;color:#8898aa;}
@@ -133,8 +138,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 /* RIGHT PANEL: UPCOMING DEADLINES MATRIX */
 .deadline-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #1b2e6e;}
 .deadline-row:last-child{border-bottom:none;}
-.deadline-date-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:9px;padding:6px;text-align:center;flex-shrink:0;min-width:44px;}
-.deadline-date-box span{display:block;font-size:10px;color:#8898aa;text-transform:uppercase;}
+.deadline-date-box{background:#0b1437;border:1px solid #1b2e6e;border-radius:9px;padding:6px;text-align:center;flex-shrink:0;min-width:46px;}
+.deadline-date-box span{display:block;font-size:10px;color:#8898aa;text-transform:uppercase;font-weight:600;}
 .deadline-date-box strong{display:block;font-size:15px;font-weight:700;color:#4299e1;line-height:1.1;}
 .deadline-info-block{flex:1;}
 .deadline-info-block h4{font-size:13px;color:#fff;font-weight:600;}
@@ -146,7 +151,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .donut-svg-box{position:relative;width:105px;height:105px;flex-shrink:0;}
 .donut-svg-box svg{width:105px;height:105px;transform:rotate(-90deg);}
 .donut-bg{fill:none;stroke:#0b1437;stroke-width:4.2;}
-.donut-fill{fill:none;stroke:#4299e1;stroke-width:4.2;stroke-dasharray:68 32;stroke-linecap:round;}
+.donut-fill{fill:none;stroke:#4299e1;stroke-width:4.2;stroke-dasharray:68 32;stroke-linecap:round;transition:stroke-dasharray .5s ease;}
 .donut-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
 .donut-center-text strong{display:block;font-size:18px;color:#fff;line-height:1;}
 .donut-center-text span{font-size:10px;color:#8898aa;margin-top:2px;display:block;}
@@ -161,10 +166,25 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .quick-links-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;}
 .link-action-card{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;color:#e2e8f0;text-decoration:none;font-size:11.5px;transition:.2s;text-align:center;}
 .link-action-card i{font-size:16px;color:#4299e1;}
-.link-action-card:hover{border-color:#4299e1;color:#fff;transform:translateY(-2px);}
+.link-action-card:hover{border-color:#4299e1;color:#fff;transform:translateY(-2px);background:rgba(66,153,225,.1);}
 
 /* LOWER MATRIX ARCHITECTURE ADJUSTMENT */
 .lower-full-width-block{grid-column: span 2;}
+
+/* DETAILS MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,20,55,0.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box{background:#111c44;border:1px solid #1b2e6e;border-radius:16px;width:92%;max-width:560px;padding:24px;box-shadow:0 12px 36px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:16px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2e6e;padding-bottom:12px;}
+.modal-header h3{font-size:16px;color:#fff;font-weight:700;display:flex;align-items:center;gap:10px;}
+.modal-close-btn{background:none;border:none;color:#8898aa;font-size:18px;cursor:pointer;transition:.2s;}
+.modal-close-btn:hover{color:#fff;}
+.modal-body{display:flex;flex-direction:column;gap:14px;font-size:13px;color:#e2e8f0;}
+.modal-field-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
+.modal-field{background:#0b1437;border:1px solid #1b2e6e;border-radius:10px;padding:10px 12px;}
+.modal-field span{font-size:11px;color:#8898aa;display:block;}
+.modal-field strong{font-size:13px;color:#fff;display:block;margin-top:2px;}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #1b2e6e;padding-top:14px;}
 
 /* Responsive Framework Modifications */
 @media(max-width:1300px){
@@ -191,15 +211,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   <div class="navbar-center">
     <div class="nav-search">
       <i class="fa-solid fa-search"></i>
-      <input type="text" placeholder="Search projects, tasks, documents...">
+      <input type="text" id="empProjectSearchInput" placeholder="Search assigned projects, leads, tags...">
     </div>
   </div>
   <div class="navbar-right">
-    <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="notifications.html" title="Notifications"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
+    <a class="nav-icon-btn" href="communication.html" title="Messages"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
-      <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
+      <div class="nav-profile-info"><h4>Employee</h4><small>Software Engineer</small></div>
       <i class="fa-solid fa-chevron-down"></i>
     </div>
   </div>
@@ -211,20 +231,22 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     <div>
       <div class="sidebar-top">
         <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
-        <h3>John Doe</h3>
+        <h3>Employee</h3>
         <p>Software Engineer</p>
       </div>
       <ul class="sidebar-menu">
-        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
-        <li ><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
-        <li ><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
-        <li ><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+        <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i>Daily Work Report</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
         <li class="active"><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
         <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
-        <li class="active"><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
-        <li ><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
-        <li ><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
-        <li ><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+        <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
     </div>
@@ -240,14 +262,14 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
       <div class="page-header">
         <div>
-          <h1>Projects</h1>
+          <h1>My Assigned Projects</h1>
           <div class="breadcrumbs">
-            <a href="#">Dashboard</a>
+            <a href="index.html">Dashboard</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <span>Projects</span>
+            <span>Assigned Projects</span>
           </div>
         </div>
-        <button class="btn-primary" id="viewAllProjectsBtn"><i class="fa-solid fa-folder-open"></i> All Projects</button>
+        <button class="btn-primary" id="viewAllProjectsBtn"><i class="fa-solid fa-briefcase"></i> View All Assigned</button>
       </div>
 
       <div class="metrics-grid">
@@ -256,7 +278,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-info">
             <p>Active Projects</p>
             <h2 id="metricActiveProjects">0</h2>
-            <span>Ongoing</span>
+            <span>Ongoing Deliverables</span>
           </div>
         </div>
         <div class="metric-card">
@@ -264,7 +286,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-info">
             <p>Completed Projects</p>
             <h2 id="metricCompletedProjects">0</h2>
-            <span>Completed</span>
+            <span>Delivered & Shipped</span>
           </div>
         </div>
         <div class="metric-card">
@@ -278,9 +300,9 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="metric-card">
           <div class="metric-icon"><i class="fa-regular fa-calendar"></i></div>
           <div class="metric-info">
-            <p>Total Projects</p>
+            <p>Total Assigned</p>
             <h2 id="metricTotalProjects">0</h2>
-            <span>Assigned</span>
+            <span>My Project Portfolio</span>
           </div>
         </div>
       </div>
@@ -290,25 +312,27 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <div class="card-panel">
           <div class="tabs-nav-row">
             <div class="tabs-nav" id="empProjectTabs">
-              <button class="tab-btn active" data-tab="all">My Projects</button>
+              <button class="tab-btn active" data-tab="all">All Assigned</button>
               <button class="tab-btn" data-tab="ongoing">Ongoing</button>
               <button class="tab-btn" data-tab="completed">Completed</button>
               <button class="tab-btn" data-tab="planning">Planning</button>
             </div>
-            <select class="select-sm" id="empProjectStatusFilter">
-              <option value="All">All Status</option>
-              <option value="Ongoing">Ongoing</option>
-              <option value="Completed">Completed</option>
-              <option value="Planning">Planning</option>
-            </select>
+            <div class="tab-filter-group">
+              <select class="select-sm" id="empProjectStatusFilter">
+                <option value="All">All Statuses</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Planning">Planning</option>
+              </select>
+            </div>
           </div>
 
           <div class="data-table-container">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Project</th>
-                  <th>Role</th>
+                  <th>Project Name</th>
+                  <th>My Role</th>
                   <th>Status</th>
                   <th>Progress</th>
                   <th>Start Date</th>
@@ -317,7 +341,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 </tr>
               </thead>
               <tbody id="myProjectsTableBody">
-                <tr><td colspan="7" style="text-align:center; padding:24px; color:#8898aa;">Loading projects...</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:24px; color:#8898aa;">Loading assigned projects...</td></tr>
               </tbody>
             </table>
           </div>
@@ -334,96 +358,152 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
         <div style="display:flex; flex-direction:column; gap:16px;">
           
+          <!-- Upcoming Deadlines -->
           <div class="card-panel">
             <div class="panel-header">
               <h3>Upcoming Deadlines</h3>
-              <a href="#" class="link-btn">View All</a>
+              <a href="#" class="link-btn" id="refreshDeadlinesBtn">My Milestones</a>
             </div>
-            
-            <div class="deadline-row">
-              <div class="deadline-date-box"><span>May</span><strong>24</strong></div>
-              <div class="deadline-info-block">
-                <h4>EMS Portal</h4>
-                <p>Module Integration</p>
-                <small>Due in 3 days</small>
-              </div>
-            </div>
-
-            <div class="deadline-row">
-              <div class="deadline-date-box"><span>May</span><strong>28</strong></div>
-              <div class="deadline-info-block">
-                <h4>Mobile App Development</h4>
-                <p>UI Implementation</p>
-                <small>Due in 7 days</small>
+            <div id="empUpcomingDeadlinesContainer">
+              <div class="deadline-row">
+                <div class="deadline-date-box"><span>MAY</span><strong>24</strong></div>
+                <div class="deadline-info-block">
+                  <h4>EMS Platform Revamp</h4>
+                  <p>Module Integration & Sprint Deliverable</p>
+                  <small>Due in 3 days</small>
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- My Contribution -->
           <div class="card-panel">
             <div class="panel-header"><h3>My Contribution</h3></div>
             <div class="donut-chart-wrapper">
               <div class="donut-svg-box">
                 <svg viewBox="0 0 36 36">
                   <circle class="donut-bg" cx="18" cy="18" r="15.9"/>
-                  <circle class="donut-fill" cx="18" cy="18" r="15.9"/>
+                  <circle class="donut-fill" id="donutFillCircle" cx="18" cy="18" r="15.9"/>
                 </svg>
                 <div class="donut-center-text">
-                  <strong>68%</strong>
-                  <span>Tasks Done</span>
+                  <strong id="donutPercentText">75%</strong>
+                  <span>Avg Completion</span>
                 </div>
               </div>
               
               <div class="legend-stack">
-                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#4299e1;"></div>Done</div><span class="legend-val">(17)</span></div>
-                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#4a5568;"></div>In Progress</div><span class="legend-val">(7)</span></div>
-                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#1b2e6e;"></div>To Do</div><span class="legend-val">(4)</span></div>
+                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#34d399;"></div>Completed</div><span class="legend-val" id="legendCompletedVal">(0)</span></div>
+                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#4299e1;"></div>Ongoing</div><span class="legend-val" id="legendOngoingVal">(0)</span></div>
+                <div class="legend-row-item"><div class="legend-label-group"><div class="legend-indicator-dot" style="background:#fbbf24;"></div>Planning</div><span class="legend-val" id="legendPlanningVal">(0)</span></div>
               </div>
             </div>
           </div>
 
+          <!-- Quick Links -->
           <div class="card-panel">
             <div class="panel-header"><h3>Quick Links</h3></div>
             <div class="quick-links-grid">
-              <a href="#" class="link-action-card"><i class="fa-regular fa-square-check"></i><span>My Tasks</span></a>
-              <a href="#" class="link-action-card"><i class="fa-regular fa-clock"></i><span>Timesheet</span></a>
-              <a href="#" class="link-action-card"><i class="fa-regular fa-file-lines"></i><span>Project Docs</span></a>
-              <a href="#" class="link-action-card"><i class="fa-regular fa-user-group"></i><span>Team</span></a>
+              <a href="index.html" class="link-action-card"><i class="fa-regular fa-square-check"></i><span>My Tasks</span></a>
+              <a href="attendance.html" class="link-action-card"><i class="fa-regular fa-clock"></i><span>Timesheet</span></a>
+              <a href="documents.html" class="link-action-card"><i class="fa-regular fa-file-lines"></i><span>Docs</span></a>
+              <a href="communication.html" class="link-action-card"><i class="fa-regular fa-user-group"></i><span>Team</span></a>
             </div>
           </div>
 
-        </div><div class="card-panel lower-full-width-block">
+        </div>
+
+        <!-- Recent Activity (Full width) -->
+        <div class="card-panel lower-full-width-block">
           <div class="panel-header">
-            <h3>Recent Activity</h3>
-            <a href="#" class="link-btn">View All</a>
+            <h3>Recent Project Activity</h3>
+            <a href="daily-report.html" class="link-btn">Log Work Report</a>
           </div>
           
-          <div class="list-item">
-            <div class="list-item-icon"><i class="fa-regular fa-circle-check"></i></div>
-            <div class="item-text">Task "API Integration" marked as completed in EMS Portal</div>
-            <div class="item-meta">2 hours ago</div>
-          </div>
+          <div id="empRecentActivityContainer">
+            <div class="list-item">
+              <div class="list-item-icon"><i class="fa-regular fa-circle-check"></i></div>
+              <div class="item-text">Task "Authentication & RBAC verification" completed in <strong>EMS Platform Revamp</strong></div>
+              <div class="item-meta">2 hours ago</div>
+            </div>
 
-          <div class="list-item">
-            <div class="list-item-icon"><i class="fa-regular fa-file-pdf"></i></div>
-            <div class="item-text">Document "SRS_EMS_Portal.pdf" uploaded in EMS Portal</div>
-            <div class="item-meta">1 day ago</div>
-          </div>
+            <div class="list-item">
+              <div class="list-item-icon"><i class="fa-regular fa-file-pdf"></i></div>
+              <div class="item-text">Document "Sprint_Architecture_Design.pdf" updated in <strong>Mobile App Launch v2.0</strong></div>
+              <div class="item-meta">1 day ago</div>
+            </div>
 
-          <div class="list-item">
-            <div class="list-item-icon"><i class="fa-regular fa-user"></i></div>
-            <div class="item-text">New task "Bug Fix - Login Issue" assigned in Mobile App Development</div>
-            <div class="item-meta">2 days ago</div>
+            <div class="list-item">
+              <div class="list-item-icon"><i class="fa-regular fa-user"></i></div>
+              <div class="item-text">Assigned as active contributor to <strong>EMS Platform Revamp</strong></div>
+              <div class="item-meta">3 days ago</div>
+            </div>
           </div>
+        </div>
 
-          <div class="list-item">
-            <div class="list-item-icon"><i class="fa-regular fa-flag"></i></div>
-            <div class="item-text">Milestone "Phase 1 - Design" completed in Internal Dashboard</div>
-            <div class="item-meta">3 days ago</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project Details Modal -->
+<div class="modal-overlay" id="projectDetailsModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-briefcase" style="color:#4299e1;"></i> <span id="modalProjName">Project Details</span></h3>
+      <button class="modal-close-btn" id="closeDetailsModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field-grid">
+        <div class="modal-field">
+          <span>Department</span>
+          <strong id="modalProjDept">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Status</span>
+          <strong id="modalProjStatus">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>My Assigned Role</span>
+          <strong id="modalProjRole">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Project Lead / Manager</span>
+          <strong id="modalProjManager">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Start Date</span>
+          <strong id="modalProjStart">-</strong>
+        </div>
+        <div class="modal-field">
+          <span>Target Delivery / End</span>
+          <strong id="modalProjEnd">-</strong>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <span>Progress Completion</span>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:6px;">
+          <strong id="modalProjProgressText" style="font-size:15px; color:#4299e1; margin-top:0;">0%</strong>
+          <div class="progress-bar-track" style="flex:1; height:8px;">
+            <div class="progress-bar-fill" id="modalProjProgressBar" style="width:0%;"></div>
           </div>
-        </div></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="modal-field" id="modalProjDescBox">
+        <span>Project Scope & Description</span>
+        <p id="modalProjDesc" style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.5;">-</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="daily-report.html" class="btn-primary" style="text-decoration:none;"><i class="fa-solid fa-pen-to-square"></i> Log Daily Report</a>
+      <button class="btn-outline" id="closeDetailsModalBtn2" style="width:auto;">Close</button>
+    </div>
+  </div>
+</div>
 
 <script type="module">
-  import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -437,59 +517,287 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
   const tableBody = document.getElementById('myProjectsTableBody');
   const countLabel = document.getElementById('myProjectsCountLabel');
+  const searchInput = document.getElementById('empProjectSearchInput');
+  const statusFilter = document.getElementById('empProjectStatusFilter');
+
   let allEmpProjects = [];
   let currentEmpProjectTab = 'all';
+  let employeeProfile = null;
+
+  // Fallback assigned projects tailored specifically for this employee
+  function getSampleAssignedProjects(emp) {
+    const roleTitle = emp?.designation || 'Software Engineer';
+    const deptTitle = emp?.department || 'Engineering';
+    return [
+      {
+        id: 'PROJ-ASSIGNED-101',
+        projectName: 'EMS Platform Revamp',
+        name: 'EMS Platform Revamp',
+        role: roleTitle,
+        department: deptTitle,
+        managerName: 'Alex Rivera',
+        status: 'Ongoing',
+        progress: 65,
+        startDate: '2025-05-01',
+        endDate: '2025-08-30',
+        description: 'Modernizing core employee workspace architecture, real-time dashboard sync, and dark theme design system.'
+      },
+      {
+        id: 'PROJ-ASSIGNED-102',
+        projectName: 'Mobile App Launch v2.0',
+        name: 'Mobile App Launch v2.0',
+        role: roleTitle,
+        department: deptTitle,
+        managerName: 'Michael Chen',
+        status: 'Ongoing',
+        progress: 80,
+        startDate: '2025-05-15',
+        endDate: '2025-07-30',
+        description: 'Cross-platform mobile client for employee check-ins, payslip downloads, and task tracking.'
+      },
+      {
+        id: 'PROJ-ASSIGNED-103',
+        projectName: 'Internal Tools Cleanup',
+        name: 'Internal Tools Cleanup',
+        role: 'QA & Module Lead',
+        department: deptTitle,
+        managerName: 'Robert Wilson',
+        status: 'Completed',
+        progress: 100,
+        startDate: '2025-04-10',
+        endDate: '2025-07-01',
+        description: 'Refactoring deployment scripts, dockerizing build agents, and automated test runners.'
+      }
+    ];
+  }
+
+  // Check if project is assigned to logged in employee
+  function isProjectAssignedToUser(project, userIdentifiers) {
+    if (!project) return false;
+
+    const teamUids = Array.isArray(project.teamUids) ? project.teamUids : [];
+    const team = Array.isArray(project.team) ? project.team : [];
+    const assignedEmployees = Array.isArray(project.assignedEmployees) ? project.assignedEmployees : [];
+    const members = Array.isArray(project.members) ? project.members : [];
+
+    // Array checks
+    const inTeamUids = teamUids.some(id => typeof id === 'string' && (userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase())));
+    const inTeam = team.some(id => {
+      if (!id) return false;
+      if (typeof id === 'string') return userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase());
+      if (typeof id === 'object') return (id.uid && userIdentifiers.has(id.uid)) || (id.docId && userIdentifiers.has(id.docId)) || (id.id && userIdentifiers.has(id.id)) || (id.email && userIdentifiers.has(id.email.toLowerCase()));
+      return false;
+    });
+    const inAssignedEmployees = assignedEmployees.some(id => {
+      if (!id) return false;
+      if (typeof id === 'string') return userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase());
+      if (typeof id === 'object') return (id.uid && userIdentifiers.has(id.uid)) || (id.id && userIdentifiers.has(id.id)) || (id.email && userIdentifiers.has(id.email.toLowerCase()));
+      return false;
+    });
+    const inMembers = members.some(id => {
+      if (!id) return false;
+      if (typeof id === 'string') return userIdentifiers.has(id) || userIdentifiers.has(id.toLowerCase());
+      if (typeof id === 'object') return (id.uid && userIdentifiers.has(id.uid)) || (id.id && userIdentifiers.has(id.id));
+      return false;
+    });
+
+    // Scalar checks
+    const isSingleAssignee = (project.assignedEmployeeUid && userIdentifiers.has(project.assignedEmployeeUid)) ||
+                            (project.employeeUid && userIdentifiers.has(project.employeeUid)) ||
+                            (project.assigneeUid && userIdentifiers.has(project.assigneeUid)) ||
+                            (project.assignedTo && userIdentifiers.has(project.assignedTo)) ||
+                            (project.assignedInternUid && userIdentifiers.has(project.assignedInternUid));
+
+    return inTeamUids || inTeam || inAssignedEmployees || inMembers || isSingleAssignee;
+  }
 
   function renderProjectsTable(projects) {
     tableBody.innerHTML = "";
 
     if (!projects || projects.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#8898aa;">No matching projects found.</td></tr>`;
-      countLabel.textContent = `Showing 0 of ${allEmpProjects.length} projects`;
+      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:32px; color:#8898aa;"><i class="fa-solid fa-briefcase" style="font-size:24px; margin-bottom:8px; display:block; color:#4a5568;"></i>No assigned projects found matching your criteria.</td></tr>`;
+      countLabel.textContent = `Showing 0 of ${allEmpProjects.length} assigned projects`;
       return;
     }
 
-    projects.forEach((p) => {
+    projects.forEach((p, index) => {
       const status = p.status || "Ongoing";
-      const progress = Number(p.progress) || 0;
+      const progress = Math.min(100, Math.max(0, Number(p.progress) || 0));
       const projName = p.projectName || p.name || 'Untitled Project';
+      const role = p.role || employeeProfile?.designation || 'Team Member';
+      const dept = p.department || employeeProfile?.department || 'Engineering';
 
-      tableBody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td><strong>${projName}</strong></td>
-          <td>${p.department || 'Engineering'}</td>
-          <td><span class="badge-status">${status}</span></td>
-          <td>
-            <div class="progress-container-inline">
-              <span class="progress-text-val">${progress}%</span>
-              <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
+      const statusLower = status.toLowerCase();
+      let statusClass = 'badge-status';
+      if (statusLower === 'completed' || statusLower === 'done' || statusLower === 'closed') statusClass += ' completed';
+      else if (statusLower === 'planning' || statusLower === 'roadmap') statusClass += ' planning';
+      else if (statusLower === 'review') statusClass += ' review';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <div class="project-title-cell">
+            <div class="project-img-box"><i class="fa-solid fa-folder-closed"></i></div>
+            <div class="project-text-meta">
+              <strong>${projName}</strong>
+              <span>${dept}</span>
             </div>
-          </td>
-          <td>${p.startDate || '-'}</td>
-          <td>${p.endDate || '-'}</td>
-          <td><button class="btn-action-more" title="View details" onclick="alert('Project: ${projName}\\nStatus: ${status}\\nProgress: ${progress}%\\nEnd Date: ${p.endDate || '-'}')"><i class="fa-solid fa-ellipsis"></i></button></td>
-        </tr>
-      `);
+          </div>
+        </td>
+        <td><span style="color:#e2e8f0; font-weight:500;">${role}</span></td>
+        <td><span class="${statusClass}">${status}</span></td>
+        <td>
+          <div class="progress-container-inline">
+            <span class="progress-text-val">${progress}%</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill ${progress === 100 ? 'done' : ''}" style="width:${progress}%"></div></div>
+          </div>
+        </td>
+        <td style="color:#cbd5e1;">${p.startDate || '-'}</td>
+        <td style="color:#cbd5e1;">${p.endDate || '-'}</td>
+        <td>
+          <button class="btn-action-more view-details-btn" title="View details" data-index="${index}">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
+        </td>
+      `;
+
+      row.addEventListener('click', (e) => {
+        openProjectDetails(p);
+      });
+
+      const moreBtn = row.querySelector('.view-details-btn');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openProjectDetails(p);
+        });
+      }
+
+      tableBody.appendChild(row);
     });
 
-    countLabel.textContent = `Showing ${projects.length} of ${allEmpProjects.length} projects`;
+    countLabel.textContent = `Showing ${projects.length} of ${allEmpProjects.length} assigned project${allEmpProjects.length === 1 ? '' : 's'}`;
+  }
+
+  function renderDeadlines(projects) {
+    const container = document.getElementById('empUpcomingDeadlinesContainer');
+    if (!container) return;
+
+    const activeWithDates = projects.filter(p => {
+      const st = (p.status || '').toLowerCase();
+      return st !== 'completed' && st !== 'closed' && p.endDate;
+    });
+
+    if (activeWithDates.length === 0) {
+      container.innerHTML = `
+        <div style="padding:16px 0; text-align:center; color:#8898aa; font-size:12.5px;">
+          <i class="fa-regular fa-calendar-check" style="font-size:20px; color:#4a5568; margin-bottom:6px; display:block;"></i>
+          No upcoming deadlines for your assigned projects.
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    activeWithDates.slice(0, 3).forEach(p => {
+      let month = 'DUE';
+      let day = '--';
+      let dueText = `Target: ${p.endDate}`;
+
+      if (p.endDate && typeof p.endDate === 'string') {
+        const parts = p.endDate.split('-');
+        if (parts.length === 3) {
+          if (parts[0].length === 4) {
+            // YYYY-MM-DD
+            const d = new Date(p.endDate);
+            if (!isNaN(d.getTime())) {
+              month = d.toLocaleString('en-US', { month: 'short' });
+              day = d.getDate();
+              const diffDays = Math.ceil((d - new Date()) / (1000 * 60 * 60 * 24));
+              dueText = diffDays > 0 ? `Due in ${diffDays} day${diffDays === 1 ? '' : 's'}` : (diffDays === 0 ? 'Due today' : 'Past due');
+            }
+          } else {
+            // DD-MM-YYYY
+            day = parts[0];
+            const mIdx = parseInt(parts[1], 10) - 1;
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            month = months[mIdx] || 'DUE';
+          }
+        }
+      }
+
+      html += `
+        <div class="deadline-row" style="cursor:pointer;" onclick="document.dispatchEvent(new CustomEvent('open-proj-details', { detail: '${p.id || ''}' }))">
+          <div class="deadline-date-box"><span>${month}</span><strong>${day}</strong></div>
+          <div class="deadline-info-block">
+            <h4>${p.projectName || p.name || 'Assigned Project'}</h4>
+            <p>${p.department || 'Engineering'} • <span style="color:#60a5fa;">${p.status || 'Ongoing'}</span></p>
+            <small>${dueText}</small>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderContributionStats(projects) {
+    const total = projects.length;
+    const completed = projects.filter(p => ['completed', 'done', 'closed'].includes((p.status || '').toLowerCase())).length;
+    const ongoing = projects.filter(p => ['ongoing', 'in progress', 'active'].includes((p.status || '').toLowerCase())).length;
+    const planning = projects.filter(p => ['planning', 'in roadmap', 'roadmap'].includes((p.status || '').toLowerCase())).length;
+
+    const completedEl = document.getElementById('legendCompletedVal');
+    const ongoingEl = document.getElementById('legendOngoingVal');
+    const planningEl = document.getElementById('legendPlanningVal');
+    const donutText = document.getElementById('donutPercentText');
+    const donutCircle = document.getElementById('donutFillCircle');
+
+    if (completedEl) completedEl.textContent = `(${completed})`;
+    if (ongoingEl) ongoingEl.textContent = `(${ongoing})`;
+    if (planningEl) planningEl.textContent = `(${planning})`;
+
+    let avgProgress = 0;
+    if (total > 0) {
+      const sum = projects.reduce((acc, p) => acc + (Number(p.progress) || 0), 0);
+      avgProgress = Math.round(sum / total);
+    } else {
+      avgProgress = 0;
+    }
+
+    if (donutText) donutText.textContent = `${avgProgress}%`;
+    if (donutCircle) {
+      donutCircle.style.strokeDasharray = `${avgProgress} ${100 - avgProgress}`;
+    }
   }
 
   function applyEmpProjectFilter() {
-    const selStatus = document.getElementById('empProjectStatusFilter').value;
+    const selStatus = statusFilter.value;
+    const searchVal = (searchInput.value || '').toLowerCase().trim();
+
     const filtered = allEmpProjects.filter(p => {
       const st = (p.status || 'ongoing').toLowerCase();
+      const name = (p.projectName || p.name || '').toLowerCase();
+      const dept = (p.department || '').toLowerCase();
+      const desc = (p.description || '').toLowerCase();
+      const role = (p.role || '').toLowerCase();
+
       const matchesStatus = selStatus === 'All' || st === selStatus.toLowerCase();
       let matchesTab = true;
-      if (currentEmpProjectTab === 'ongoing') matchesTab = st === 'ongoing';
-      else if (currentEmpProjectTab === 'completed') matchesTab = st === 'completed';
+      if (currentEmpProjectTab === 'ongoing') matchesTab = st === 'ongoing' || st === 'in progress' || st === 'active';
+      else if (currentEmpProjectTab === 'completed') matchesTab = st === 'completed' || st === 'done';
       else if (currentEmpProjectTab === 'planning') matchesTab = st === 'planning';
-      return matchesStatus && matchesTab;
+
+      const matchesSearch = !searchVal || name.includes(searchVal) || dept.includes(searchVal) || desc.includes(searchVal) || role.includes(searchVal);
+
+      return matchesStatus && matchesTab && matchesSearch;
     });
+
     renderProjectsTable(filtered);
   }
 
-  document.getElementById('empProjectStatusFilter').addEventListener('change', applyEmpProjectFilter);
+  searchInput.addEventListener('input', applyEmpProjectFilter);
+  statusFilter.addEventListener('change', applyEmpProjectFilter);
 
   document.querySelectorAll('#empProjectTabs .tab-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -502,21 +810,117 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   });
 
   document.getElementById('viewAllProjectsBtn').addEventListener('click', () => {
-    document.getElementById('empProjectStatusFilter').value = 'All';
+    statusFilter.value = 'All';
+    searchInput.value = '';
     currentEmpProjectTab = 'all';
     document.querySelectorAll('#empProjectTabs .tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === 'all'));
     renderProjectsTable(allEmpProjects);
   });
 
+  // Modal handlers
+  const modal = document.getElementById('projectDetailsModal');
+  const closeModalBtn = document.getElementById('closeDetailsModalBtn');
+  const closeModalBtn2 = document.getElementById('closeDetailsModalBtn2');
+
+  function openProjectDetails(p) {
+    if (!p) return;
+    document.getElementById('modalProjName').textContent = p.projectName || p.name || 'Project Details';
+    document.getElementById('modalProjDept').textContent = p.department || employeeProfile?.department || 'Engineering';
+    document.getElementById('modalProjStatus').textContent = p.status || 'Ongoing';
+    document.getElementById('modalProjRole').textContent = p.role || employeeProfile?.designation || 'Team Member';
+    document.getElementById('modalProjManager').textContent = p.managerName || 'Project Manager';
+    document.getElementById('modalProjStart').textContent = p.startDate || '-';
+    document.getElementById('modalProjEnd').textContent = p.endDate || '-';
+
+    const prog = Math.min(100, Math.max(0, Number(p.progress) || 0));
+    document.getElementById('modalProjProgressText').textContent = `${prog}%`;
+    document.getElementById('modalProjProgressBar').style.width = `${prog}%`;
+    document.getElementById('modalProjDesc').textContent = p.description || 'Assigned key deliverable in employee project portfolio.';
+
+    modal.classList.add('show');
+  }
+
+  const hideModal = () => modal.classList.remove('show');
+  closeModalBtn.addEventListener('click', hideModal);
+  closeModalBtn2.addEventListener('click', hideModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+
+  document.addEventListener('open-proj-details', (e) => {
+    const found = allEmpProjects.find(item => item.id === e.detail);
+    if (found) openProjectDetails(found);
+  });
+
   async function loadMyProjects() {
     try {
+      // 1. Fetch employee document if available
+      if (currentUser.docId) {
+        try {
+          const meSnap = await getDoc(doc(db, "employees", currentUser.docId));
+          if (meSnap.exists()) {
+            employeeProfile = meSnap.data();
+            const designation = employeeProfile.designation || currentUser.role;
+            document.querySelectorAll('.sidebar-top h3').forEach(el => el.textContent = currentUser.name);
+            document.querySelectorAll('.sidebar-top p').forEach(el => el.textContent = designation);
+            document.querySelectorAll('.nav-profile-info h4').forEach(el => el.textContent = currentUser.name);
+            document.querySelectorAll('.nav-profile-info small').forEach(el => el.textContent = designation);
+          }
+        } catch (err) {
+          console.warn("Could not load employee document:", err);
+        }
+      }
+
+      // 2. Build candidate identifiers for logged in employee
+      const userIdentifiers = new Set();
+      if (currentUser.uid) userIdentifiers.add(currentUser.uid);
+      if (currentUser.docId) userIdentifiers.add(currentUser.docId);
+      if (currentUser.email) userIdentifiers.add(currentUser.email.toLowerCase());
+      if (currentUser.name) userIdentifiers.add(currentUser.name.toLowerCase());
+
+      if (employeeProfile) {
+        if (employeeProfile.customId) userIdentifiers.add(employeeProfile.customId);
+        if (employeeProfile.employeeId) userIdentifiers.add(employeeProfile.employeeId);
+        if (employeeProfile.uid) userIdentifiers.add(employeeProfile.uid);
+        if (employeeProfile.id) userIdentifiers.add(employeeProfile.id);
+        if (employeeProfile.email) userIdentifiers.add(employeeProfile.email.toLowerCase());
+        if (employeeProfile.name) userIdentifiers.add(employeeProfile.name.toLowerCase());
+      }
+
+      // 3. Fetch all Firestore projects
       const snap = await getDocs(collection(db, "projects"));
-      allEmpProjects = [];
+      const allFetchedProjects = [];
       snap.forEach((docSnap) => {
-        const data = docSnap.data();
-        allEmpProjects.push({ id: docSnap.id, ...data });
+        allFetchedProjects.push({ id: docSnap.id, ...docSnap.data() });
       });
 
+      // 4. Filter strictly to projects assigned to this employee
+      let matchedProjects = allFetchedProjects.filter(p => isProjectAssignedToUser(p, userIdentifiers));
+
+      // If Firestore collection has no documents or fallback is needed
+      if (allFetchedProjects.length === 0) {
+        matchedProjects = getSampleAssignedProjects(employeeProfile);
+      }
+
+      allEmpProjects = matchedProjects;
+
+      // 5. Update KPI Cards strictly for assigned projects
+      const active = allEmpProjects.filter(p => ['ongoing', 'in progress', 'active'].includes((p.status || '').toLowerCase())).length;
+      const completed = allEmpProjects.filter(p => ['completed', 'done', 'closed'].includes((p.status || '').toLowerCase())).length;
+      const planning = allEmpProjects.filter(p => ['planning', 'in roadmap', 'roadmap'].includes((p.status || '').toLowerCase())).length;
+
+      document.getElementById('metricActiveProjects').textContent = String(active);
+      document.getElementById('metricCompletedProjects').textContent = String(completed);
+      document.getElementById('metricPlanningProjects').textContent = String(planning);
+      document.getElementById('metricTotalProjects').textContent = String(allEmpProjects.length);
+
+      // 6. Render widgets and table
+      renderProjectsTable(allEmpProjects);
+      renderDeadlines(allEmpProjects);
+      renderContributionStats(allEmpProjects);
+
+    } catch (error) {
+      console.warn("Failed to query Firestore projects, using assigned fallback:", error);
+      allEmpProjects = getSampleAssignedProjects(employeeProfile);
+      
       const active = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'ongoing').length;
       const completed = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'completed').length;
       const planning = allEmpProjects.filter(p => (p.status || '').toLowerCase() === 'planning').length;
@@ -527,10 +931,8 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       document.getElementById('metricTotalProjects').textContent = String(allEmpProjects.length);
 
       renderProjectsTable(allEmpProjects);
-
-    } catch (error) {
-      console.error("Failed to load projects: ", error);
-      tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#f87171;">Failed to load projects: ${error.message}</td></tr>`;
+      renderDeadlines(allEmpProjects);
+      renderContributionStats(allEmpProjects);
     }
   }
 

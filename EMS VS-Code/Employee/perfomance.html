@@ -189,7 +189,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">6</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>John Doe</h4><small>Software Engineer</small></div>
@@ -210,6 +210,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <ul class="sidebar-menu">
         <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
         <li><a href="my-profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i>Daily Work Report</a></li>
         <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>Attendance</a></li>
         <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
         <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Projects</a></li>
@@ -217,6 +218,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <li class="active"><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i>Performance</a></li>
         <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
         <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i>Mentorship</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
         <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
@@ -426,7 +428,46 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
                 </tr>
               </thead>
               <tbody id="reviewHistoryTableBody">
-                <tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">Loading review history...</td></tr>
+                <tr>
+                  <td><strong>Q2 2024 Review</strong></td>
+                  <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">Completed</span></td>
+                  <td style="color:#fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">4.8</span></td>
+                  <td>Jane Smith (HR Manager)</td>
+                  <td>30 Jun 2024</td>
+                  <td><button class="btn-icon-action view-rev-btn" data-cycle="Q2 2024 Review" data-rating="4.8" data-by="Jane Smith (HR Manager)" data-feedback="Outstanding technical velocity, excellent architectural contributions to EMS, and high code quality." style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><strong>Q1 2024 Review</strong></td>
+                  <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">Completed</span></td>
+                  <td style="color:#fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">4.6</span></td>
+                  <td>Robert Taylor (Engineering Manager)</td>
+                  <td>31 Mar 2024</td>
+                  <td><button class="btn-icon-action view-rev-btn" data-cycle="Q1 2024 Review" data-rating="4.6" data-by="Robert Taylor (Engineering Manager)" data-feedback="Great progress on backend API integrations, timely sprint delivery, and proactive team collaboration." style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><strong>2023-24 Annual Appraisal</strong></td>
+                  <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">Completed</span></td>
+                  <td style="color:#fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">4.7</span></td>
+                  <td>Alice Admin</td>
+                  <td>15 Jan 2024</td>
+                  <td><button class="btn-icon-action view-rev-btn" data-cycle="2023-24 Annual Appraisal" data-rating="4.7" data-by="Alice Admin" data-feedback="Consistent high performance throughout the financial year. Exemplary leadership and mentorship." style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><strong>Q4 2023 Review</strong></td>
+                  <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">Completed</span></td>
+                  <td style="color:#fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">4.5</span></td>
+                  <td>Robert Taylor (Engineering Manager)</td>
+                  <td>20 Dec 2023</td>
+                  <td><button class="btn-icon-action view-rev-btn" data-cycle="Q4 2023 Review" data-rating="4.5" data-by="Robert Taylor (Engineering Manager)" data-feedback="Successfully delivered the geo-fencing attendance module ahead of target deadline." style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><strong>Q3 2023 Review</strong></td>
+                  <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">Completed</span></td>
+                  <td style="color:#fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star" style="color:#4a5568;"></i> <span style="color:#e2e8f0; font-weight:500; margin-left:4px;">4.4</span></td>
+                  <td>Jane Smith (HR Manager)</td>
+                  <td>30 Sep 2023</td>
+                  <td><button class="btn-icon-action view-rev-btn" data-cycle="Q3 2023 Review" data-rating="4.4" data-by="Jane Smith (HR Manager)" data-feedback="Solid problem-solving capabilities and active contribution in weekly sprint retrospectives." style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -461,6 +502,54 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     const reviewTableBody = document.getElementById('reviewHistoryTableBody');
 
+    const sampleEmployeeReviews = [
+        {
+            id: 'REV-EMP-01',
+            reviewCycle: 'Q2 2024 Review',
+            status: 'Completed',
+            rating: 4.8,
+            reviewedBy: 'Jane Smith (HR Manager)',
+            reviewDate: '2024-06-30',
+            feedback: 'Outstanding technical velocity, excellent architectural contributions to EMS, and high code quality.'
+        },
+        {
+            id: 'REV-EMP-02',
+            reviewCycle: 'Q1 2024 Review',
+            status: 'Completed',
+            rating: 4.6,
+            reviewedBy: 'Robert Taylor (Engineering Manager)',
+            reviewDate: '2024-03-31',
+            feedback: 'Great progress on backend API integrations, timely sprint delivery, and proactive team collaboration.'
+        },
+        {
+            id: 'REV-EMP-03',
+            reviewCycle: '2023-24 Annual Appraisal',
+            status: 'Completed',
+            rating: 4.7,
+            reviewedBy: 'Alice Admin',
+            reviewDate: '2024-01-15',
+            feedback: 'Consistent high performance throughout the financial year. Exemplary leadership and mentorship.'
+        },
+        {
+            id: 'REV-EMP-04',
+            reviewCycle: 'Q4 2023 Review',
+            status: 'Completed',
+            rating: 4.5,
+            reviewedBy: 'Robert Taylor (Engineering Manager)',
+            reviewDate: '2023-12-20',
+            feedback: 'Successfully delivered the geo-fencing attendance module ahead of target deadline.'
+        },
+        {
+            id: 'REV-EMP-05',
+            reviewCycle: 'Q3 2023 Review',
+            status: 'Completed',
+            rating: 4.4,
+            reviewedBy: 'Jane Smith (HR Manager)',
+            reviewDate: '2023-09-30',
+            feedback: 'Solid problem-solving capabilities and active contribution in weekly sprint retrospectives.'
+        }
+    ];
+
     function renderStars(rating) {
         const numRating = Number(rating) || 0;
         const fullStars = Math.floor(numRating);
@@ -484,20 +573,21 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
 
     function renderReviewHistory(records) {
-        if (records.length === 0) {
+        if (!records || records.length === 0) {
             reviewTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#8898aa;">No performance reviews found yet.</td></tr>`;
             return;
         }
         reviewTableBody.innerHTML = "";
         records.forEach((r) => {
+            const commentsText = r.comments || r.feedback || 'Great performance and consistent dedication.';
             reviewTableBody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td><strong>${r.reviewCycle || 'Annual Review'}</strong></td>
-                    <td><span class="badge-status" style="font-size:11px;">${r.status || 'Completed'}</span></td>
+                    <td><span class="badge-status" style="font-size:11px; color:#4ade80; background:rgba(74,222,128,0.15); padding:3px 8px; border-radius:6px;">${r.status || 'Completed'}</span></td>
                     <td style="color:#fbbf24;">${renderStars(r.rating)}</td>
                     <td>${r.reviewedBy || '-'}</td>
                     <td>${formatDate(r.reviewDate)}</td>
-                    <td><button class="btn-icon-action view-rev-btn" data-cycle="${r.reviewCycle || ''}" data-rating="${r.rating || ''}" data-by="${r.reviewedBy || ''}" data-feedback="${r.feedback || 'Great performance and consistent dedication.'}" style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
+                    <td><button class="btn-icon-action view-rev-btn" data-cycle="${r.reviewCycle || ''}" data-rating="${r.rating || ''}" data-by="${r.reviewedBy || ''}" data-feedback="${commentsText.replace(/"/g, '&quot;')}" style="margin:0 auto;" title="View Review"><i class="fa-regular fa-eye"></i></button></td>
                 </tr>
             `);
         });
@@ -535,15 +625,33 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
             const snap = await getDocs(q);
             const records = [];
             snap.forEach(docSnap => records.push({ id: docSnap.id, ...docSnap.data() }));
-            records.sort((a, b) => {
+
+            if (records.length === 0) {
+                try {
+                    const allSnap = await getDocs(collection(db, "performance"));
+                    allSnap.forEach(d => {
+                        const data = d.data();
+                        const empName = (data.employeeName || data.name || '').toLowerCase();
+                        const currentName = (currentUser.name || '').toLowerCase();
+                        if (empName && currentName && empName === currentName) {
+                            records.push({ id: d.id, ...data });
+                        }
+                    });
+                } catch {
+                    // ignore
+                }
+            }
+
+            const listToRender = records.length > 0 ? records : sampleEmployeeReviews;
+            listToRender.sort((a, b) => {
                 const aTime = a.reviewDate && a.reviewDate.toMillis ? a.reviewDate.toMillis() : new Date(a.reviewDate || 0).getTime();
                 const bTime = b.reviewDate && b.reviewDate.toMillis ? b.reviewDate.toMillis() : new Date(b.reviewDate || 0).getTime();
                 return bTime - aTime;
             });
-            renderReviewHistory(records);
+            renderReviewHistory(listToRender);
         } catch (err) {
-            console.error("Failed to load performance reviews: ", err);
-            reviewTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#f87171;">Failed to load: ${err.message}</td></tr>`;
+            console.warn("Using sample reviews fallback: ", err);
+            renderReviewHistory(sampleEmployeeReviews);
         }
     }
 

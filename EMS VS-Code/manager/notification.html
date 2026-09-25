@@ -253,6 +253,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notification.html"><i class="fa-regular fa-bell"></i><span class="badge">5</span></a>
+    <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></div>
     <div class="nav-profile" id="navProfileToggle">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Manager Name</h4><small>Manager</small></div>
@@ -277,6 +278,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       <li><a href="review.html"><i class="fa-solid fa-chart-line"></i>Performance Reviews</a></li>
       <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll</a></li>
       <li><a href="document.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+      <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
       <li class="active"><a href="notification.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
       <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
     </ul>
@@ -515,9 +517,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     import { collection, getDocs, addDoc, query, where, doc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["manager"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
     document.getElementById('navProfileToggle').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -555,13 +559,6 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         }
         return value;
     }
-
-    async function loadNotifications() {
-        try {
-            const q = query(collection(db, "notifications"), where("audience", "in", ["All", "Managers"]));
-            const querySnapshot = await getDocs(q);
-            tableBody.innerHTML = "";
-            let counter = 0;
 
     let allNotificationsList = [];
     let currentNotifTab = 'all';

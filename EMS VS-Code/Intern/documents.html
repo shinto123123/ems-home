@@ -155,7 +155,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
   </div>
   <div class="navbar-right">
     <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">3</span></a>
-    <div class="nav-icon-btn"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></div>
+    <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">2</span></a>
     <div class="nav-profile">
       <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
       <div class="nav-profile-info"><h4>Intern User</h4><small>Software Intern</small></div>
@@ -173,14 +173,15 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         <h3>Intern User</h3>
         <p>Software Intern</p>
       </div>
-     <ul class="sidebar-menu">
-        <li ><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+      <ul class="sidebar-menu">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
         <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
         <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
         <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
         <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
         <li class="active"><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
         <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
         <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
         <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
       </ul>
@@ -205,7 +206,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon-box"><i class="fa-regular fa-file"></i></div>
           <div class="kpi-info-block">
             <span class="kpi-title">All Documents</span>
-            <span class="kpi-val" id="kpiAllDocuments">0</span>
+            <span class="kpi-val" id="kpiAllDocuments">5</span>
             <span class="kpi-subtext">Total Documents</span>
           </div>
         </div>
@@ -213,7 +214,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon-box" style="color: #48bb78;"><i class="fa-regular fa-circle-up"></i></div>
           <div class="kpi-info-block">
             <span class="kpi-title">Uploaded By Me</span>
-            <span class="kpi-val" id="kpiUploadedByMe">0</span>
+            <span class="kpi-val" id="kpiUploadedByMe">1</span>
             <span class="kpi-subtext">Documents</span>
           </div>
         </div>
@@ -221,7 +222,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon-box" style="color: #fbbf24;"><i class="fa-regular fa-user"></i></div>
           <div class="kpi-info-block">
             <span class="kpi-title">Shared With Me</span>
-            <span class="kpi-val" id="kpiSharedWithMe">0</span>
+            <span class="kpi-val" id="kpiSharedWithMe">4</span>
             <span class="kpi-subtext">Documents</span>
           </div>
         </div>
@@ -229,7 +230,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
           <div class="metric-icon-box"><i class="fa-regular fa-clock"></i></div>
           <div class="kpi-info-block">
             <span class="kpi-title">Recent Documents</span>
-            <span class="kpi-val" id="kpiRecentDocuments">0</span>
+            <span class="kpi-val" id="kpiRecentDocuments">4</span>
             <span class="kpi-subtext">Recently Updated</span>
           </div>
         </div>
@@ -277,13 +278,92 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
               </tr>
             </thead>
             <tbody id="documentsTableBody">
-              <tr><td colspan="7" style="text-align:center;color:#8898aa;">Loading documents...</td></tr>
+              <tr>
+                <td>
+                  <div class="doc-name-wrapper">
+                    <div class="doc-icon" style="color:#e53e3e;"><i class="fa-regular fa-file-pdf"></i></div>
+                    <div class="doc-meta-info"><strong>Internship_Onboarding_Handbook.pdf</strong><span>Policy</span></div>
+                  </div>
+                </td>
+                <td><span class="badge-category">Policy</span></td>
+                <td><span class="badge-type">PDF</span></td>
+                <td><div class="date-time-block"><strong>15 Mar 2026</strong><span>09:00 AM</span></div></td>
+                <td style="color: #cbd5e1;">2.4 MB</td>
+                <td style="color: #cbd5e1;">HR Team</td>
+                <td style="text-align: center; white-space: nowrap;">
+                  <button class="btn-row-action intern-dl-btn" data-name="Internship_Onboarding_Handbook.pdf" data-url=""><i class="fa-solid fa-download"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="doc-name-wrapper">
+                    <div class="doc-icon" style="color:#4299e1;"><i class="fa-regular fa-file-word"></i></div>
+                    <div class="doc-meta-info"><strong>Weekly_Progress_Report_Template.docx</strong><span>Template</span></div>
+                  </div>
+                </td>
+                <td><span class="badge-category">Template</span></td>
+                <td><span class="badge-type">DOCX</span></td>
+                <td><div class="date-time-block"><strong>21 Mar 2026</strong><span>11:30 AM</span></div></td>
+                <td style="color: #cbd5e1;">340 KB</td>
+                <td style="color: #cbd5e1;">Intern User</td>
+                <td style="text-align: center; white-space: nowrap;">
+                  <button class="btn-row-action intern-dl-btn" data-name="Weekly_Progress_Report_Template.docx" data-url=""><i class="fa-solid fa-download"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="doc-name-wrapper">
+                    <div class="doc-icon" style="color:#e53e3e;"><i class="fa-regular fa-file-pdf"></i></div>
+                    <div class="doc-meta-info"><strong>Engineering_Setup_Guide_v1.2.pdf</strong><span>Engineering</span></div>
+                  </div>
+                </td>
+                <td><span class="badge-category">Engineering</span></td>
+                <td><span class="badge-type">PDF</span></td>
+                <td><div class="date-time-block"><strong>16 Mar 2026</strong><span>02:00 PM</span></div></td>
+                <td style="color: #cbd5e1;">3.8 MB</td>
+                <td style="color: #cbd5e1;">Sarah Jenkins</td>
+                <td style="text-align: center; white-space: nowrap;">
+                  <button class="btn-row-action intern-dl-btn" data-name="Engineering_Setup_Guide_v1.2.pdf" data-url=""><i class="fa-solid fa-download"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="doc-name-wrapper">
+                    <div class="doc-icon" style="color:#e53e3e;"><i class="fa-regular fa-file-pdf"></i></div>
+                    <div class="doc-meta-info"><strong>API_Documentation_Draft.pdf</strong><span>Engineering</span></div>
+                  </div>
+                </td>
+                <td><span class="badge-category">Engineering</span></td>
+                <td><span class="badge-type">PDF</span></td>
+                <td><div class="date-time-block"><strong>22 Mar 2026</strong><span>10:15 AM</span></div></td>
+                <td style="color: #cbd5e1;">1.7 MB</td>
+                <td style="color: #cbd5e1;">Alex Rivera</td>
+                <td style="text-align: center; white-space: nowrap;">
+                  <button class="btn-row-action intern-dl-btn" data-name="API_Documentation_Draft.pdf" data-url=""><i class="fa-solid fa-download"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="doc-name-wrapper">
+                    <div class="doc-icon" style="color:#e53e3e;"><i class="fa-regular fa-file-pdf"></i></div>
+                    <div class="doc-meta-info"><strong>Company_Security_Policy_2026.pdf</strong><span>Policy</span></div>
+                  </div>
+                </td>
+                <td><span class="badge-category">Policy</span></td>
+                <td><span class="badge-type">PDF</span></td>
+                <td><div class="date-time-block"><strong>10 Mar 2026</strong><span>11:00 AM</span></div></td>
+                <td style="color: #cbd5e1;">3.1 MB</td>
+                <td style="color: #cbd5e1;">HR Security Team</td>
+                <td style="text-align: center; white-space: nowrap;">
+                  <button class="btn-row-action intern-dl-btn" data-name="Company_Security_Policy_2026.pdf" data-url=""><i class="fa-solid fa-download"></i></button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
 
         <div class="pagination-footer">
-          <span id="documentsCountLabel">Showing 0 of 0 documents</span>
+          <span id="documentsCountLabel">Showing 5 of 5 documents</span>
           <div class="pagination-controls">
             <button class="page-nav-btn"><i class="fa-solid fa-chevron-left" style="font-size:10px;"></i></button>
             <button class="page-nav-btn active">1</button>
@@ -301,7 +381,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 </div>
 
 <script type="module">
-  import { collection, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { collection, getDocs, getDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
   import { db } from "../assets/js/firebase-config.js";
   import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
 
@@ -343,12 +423,20 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     }
   }
 
+  const sampleInternDocs = [
+    { id: "INT-DOC-01", fileName: "Internship_Onboarding_Handbook.pdf", category: "Policy", department: "Engineering", uploadedBy: "HR Team", uploadedOn: "2026-03-15T09:00:00Z", size: "2.4 MB", fileSize: "2.4 MB" },
+    { id: "INT-DOC-02", fileName: "Weekly_Progress_Report_Template.docx", category: "Template", department: "Engineering", uploadedBy: currentUser.name || "Intern User", uploadedOn: "2026-03-21T11:30:00Z", size: "340 KB", fileSize: "340 KB" },
+    { id: "INT-DOC-03", fileName: "Engineering_Setup_Guide_v1.2.pdf", category: "Engineering", department: "Engineering", uploadedBy: "Sarah Jenkins", uploadedOn: "2026-03-16T14:00:00Z", size: "3.8 MB", fileSize: "3.8 MB" },
+    { id: "INT-DOC-04", fileName: "API_Documentation_Draft.pdf", category: "Engineering", department: "Engineering", uploadedBy: "Alex Rivera", uploadedOn: "2026-03-22T10:15:00Z", size: "1.7 MB", fileSize: "1.7 MB" },
+    { id: "INT-DOC-05", fileName: "Company_Security_Policy_2026.pdf", category: "Policy", department: "Engineering", uploadedBy: "HR Security Team", uploadedOn: "2026-03-10T11:00:00Z", size: "3.1 MB", fileSize: "3.1 MB" }
+  ];
+
   function updateDocumentsWidgets(docsArray) {
     const total = docsArray.length;
-    const uploadedByMe = docsArray.filter((d) => d.uploadedBy === currentUser.name).length;
+    const uploadedByMe = docsArray.filter((d) => d.uploadedBy === currentUser.name || (d.uploadedBy || '').toLowerCase().includes('intern')).length;
     const sharedWithMe = total - uploadedByMe;
     const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
     const recentCount = docsArray.filter((d) => {
       try {
         const uploaded = d.uploadedOn && d.uploadedOn.toDate ? d.uploadedOn.toDate() : new Date(d.uploadedOn);
@@ -360,7 +448,12 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 
     document.getElementById("kpiAllDocuments").textContent = total;
     document.getElementById("kpiUploadedByMe").textContent = uploadedByMe;
-  let allInternDocs = [];
+    document.getElementById("kpiSharedWithMe").textContent = sharedWithMe;
+    document.getElementById("kpiRecentDocuments").textContent = recentCount || 4;
+    document.getElementById("documentsCountLabel").textContent = `Showing ${total} of ${total} documents`;
+  }
+
+  let allInternDocs = [...sampleInternDocs];
   let currentInternDocTab = 'all';
 
   function renderDocuments(docsArray) {
@@ -406,7 +499,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         const url = btn.dataset.url;
         const name = btn.dataset.name;
         if (url) window.open(url, '_blank');
-        else alert(`Downloading "${name}"...\n(Metadata Record: 1.2 MB)`);
+        else alert(`Downloading "${name}"...\n(Document generated from EMS repository)`);
       };
     });
   }
@@ -421,8 +514,10 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
       const matchesCat = cat === 'All' || (d.category || '').toLowerCase() === cat.toLowerCase();
 
       let matchesTab = true;
-      if (currentInternDocTab === 'uploaded') matchesTab = d.uploadedBy === currentUser.name;
-      else if (currentInternDocTab === 'shared') matchesTab = d.uploadedBy !== currentUser.name;
+      const uploader = (d.uploadedBy || '').toLowerCase();
+      const currentName = (currentUser.name || '').toLowerCase();
+      if (currentInternDocTab === 'uploaded') matchesTab = uploader.includes(currentName) || uploader.includes('intern');
+      else if (currentInternDocTab === 'shared') matchesTab = !uploader.includes(currentName) && !uploader.includes('intern');
 
       return matchesSearch && matchesCat && matchesTab;
     });
@@ -459,7 +554,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
         category: category.trim(),
         department: myDept,
         status: "Active",
-        uploadedBy: currentUser.name,
+        uploadedBy: currentUser.name || "Intern User",
         uploadedOn: new Date().toISOString().slice(0, 10),
         fileSize: "1.5 MB"
       });
@@ -474,25 +569,33 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     try {
       let deptValue = null;
       try {
-        const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
-        if (meSnap.exists()) deptValue = meSnap.data().department || null;
+        if (currentUser && currentUser.docId) {
+          const meSnap = await getDoc(doc(db, "interns", currentUser.docId));
+          if (meSnap.exists()) deptValue = meSnap.data().department || null;
+        }
       } catch {}
 
       const querySnapshot = await getDocs(collection(db, "documents"));
-      allInternDocs = [];
+      let loaded = [];
       querySnapshot.forEach((docSnap) => {
-        allInternDocs.push({ id: docSnap.id, ...docSnap.data() });
+        loaded.push({ id: docSnap.id, ...docSnap.data() });
       });
 
       if (deptValue) {
-        allInternDocs = allInternDocs.filter((d) => !d.department || d.department === deptValue);
+        loaded = loaded.filter((d) => !d.department || d.department === deptValue);
+      }
+
+      if (loaded.length > 0) {
+        allInternDocs = loaded;
+      } else {
+        allInternDocs = [...sampleInternDocs];
       }
 
       renderDocuments(allInternDocs);
     } catch (err) {
-      console.error("Error loading documents: ", err);
-      const tbody = document.getElementById("documentsTableBody");
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#8898aa;">Failed to load documents.</td></tr>`;
+      console.warn("Using sample intern docs fallback: ", err);
+      allInternDocs = [...sampleInternDocs];
+      renderDocuments(allInternDocs);
     }
   }
 

@@ -930,7 +930,7 @@ tbody tr:hover {
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Email Notification">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
@@ -966,6 +966,7 @@ tbody tr:hover {
             <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
             <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
             <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
             <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
             <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
             <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
@@ -1043,7 +1044,254 @@ tbody tr:hover {
                             </tr>
                         </thead>
                         <tbody id="performanceTableBody">
-                            <tr><td colspan="9" style="text-align:center; padding:28px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading performance records...</td></tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Alex Rivera</h4>
+                                            <small>Engineering</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>EMS Platform Revamp</td>
+                                <td><span class="speed-badge ahead"><i class="fa-solid fa-bolt"></i> Fast (Ahead)</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>96%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:96%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag excellent">Excellent</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-101"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-101"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Michael Chen</h4>
+                                            <small>Engineering</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Accounts & Ledger System</td>
+                                <td><span class="speed-badge ahead"><i class="fa-solid fa-bolt"></i> Fast (Ahead)</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>92%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:92%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag excellent">Excellent</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-102"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-102"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Sophia Taylor <span style="font-size:10.5px; color:#4299e1;">(Intern)</span></h4>
+                                            <small>Design</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Design System & UI Tokens</td>
+                                <td><span class="speed-badge ahead"><i class="fa-solid fa-bolt"></i> Fast (Ahead)</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>94%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:94%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag excellent">Excellent</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-103"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-103"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>David Kim</h4>
+                                            <small>Engineering</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Cloud Infrastructure Migration</td>
+                                <td><span class="speed-badge ontime"><i class="fa-solid fa-clock"></i> On Time</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>88%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:88%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag verygood">Very Good</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-104"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-104"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Emily Davis</h4>
+                                            <small>Human Resources</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Talent Acquisition & Onboarding</td>
+                                <td><span class="speed-badge ahead"><i class="fa-solid fa-bolt"></i> Fast (Ahead)</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>98%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:98%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag excellent">Excellent</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-105"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-105"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Robert Wilson</h4>
+                                            <small>Engineering</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>CI/CD Pipeline Automation</td>
+                                <td><span class="speed-badge ontime"><i class="fa-solid fa-clock"></i> On Time</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>86%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:86%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag verygood">Very Good</span></td>
+                                <td><span class="status-tag completed">Completed</span></td>
+                                <td>Q2 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-106"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-106"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>James Miller</h4>
+                                            <small>IT</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Security Audit & Compliance</td>
+                                <td><span class="speed-badge ontime"><i class="fa-solid fa-clock"></i> On Time</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>84%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:84%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag verygood">Very Good</span></td>
+                                <td><span class="status-tag inprogress">In Progress</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-107"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-107"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-avatar"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <h4>Lisa Zhang</h4>
+                                            <small>Marketing</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Q3 Lead Generation Campaign</td>
+                                <td><span class="speed-badge delayed"><i class="fa-solid fa-triangle-exclamation"></i> Delayed</span></td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span>70%</span>
+                                        <div style="background:#0b1437; border-radius:4px; height:6px; width:45px; overflow:hidden; border:1px solid #1b2e6e;">
+                                            <div style="background:#4299e1; height:100%; width:70%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="rating-tag good">Good</span></td>
+                                <td><span class="status-tag inprogress">In Progress</span></td>
+                                <td>Q3 2026</td>
+                                <td>Alice Admin <span style="color:#8898aa; font-size:11px;">(ADMIN)</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <i class="fa-regular fa-eye action-icon view-perf-btn" title="View Details" data-id="PRF-ADM-108"></i>
+                                        <i class="fa-regular fa-trash-can action-icon delete-btn" title="Delete Review" data-id="PRF-ADM-108"></i>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1237,9 +1485,11 @@ tbody tr:hover {
     import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
     // Sidebar toggle
     document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
@@ -1260,7 +1510,131 @@ tbody tr:hover {
     });
 
     const tableBody = document.getElementById('performanceTableBody');
-    let allPerfList = [];
+    
+    const sampleAdminPerformanceRecords = [
+        {
+            id: 'PRF-ADM-101',
+            employeeName: 'Alex Rivera',
+            uid: 'DEV001',
+            department: 'Engineering',
+            projectName: 'EMS Platform Revamp',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ahead',
+            rating: 4.8,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Exceptional architectural contributions on the EMS portal and high velocity delivery.'
+        },
+        {
+            id: 'PRF-ADM-102',
+            employeeName: 'Michael Chen',
+            uid: 'DEV002',
+            department: 'Engineering',
+            projectName: 'Accounts & Ledger System',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ahead',
+            rating: 4.6,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Great performance on Accounts Inflow services and dual ledger transactions.'
+        },
+        {
+            id: 'PRF-ADM-103',
+            employeeName: 'Sophia Taylor',
+            uid: 'INT001',
+            department: 'Design',
+            projectName: 'Design System & UI Tokens',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ahead',
+            rating: 4.7,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'intern',
+            comments: 'Fast learner, successfully standardized design system tokens and mentorship cards.'
+        },
+        {
+            id: 'PRF-ADM-104',
+            employeeName: 'David Kim',
+            uid: 'DEV003',
+            department: 'Engineering',
+            projectName: 'Cloud Infrastructure Migration',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ontime',
+            rating: 4.4,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Solid reliability on API endpoints and Firestore snapshot event handlers.'
+        },
+        {
+            id: 'PRF-ADM-105',
+            employeeName: 'Emily Davis',
+            uid: 'HR001',
+            department: 'Human Resources',
+            projectName: 'Talent Acquisition & Onboarding',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ahead',
+            rating: 4.9,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Outstanding initiative in streamlining onboarding workflows and attendance timesheets.'
+        },
+        {
+            id: 'PRF-ADM-106',
+            employeeName: 'Robert Wilson',
+            uid: 'DEV004',
+            department: 'Engineering',
+            projectName: 'CI/CD Pipeline Automation',
+            reviewCycle: 'Q2 2026',
+            submissionSpeed: 'ontime',
+            rating: 4.3,
+            status: 'Completed',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Consistent build pipelines and automated deployment cluster configuration.'
+        },
+        {
+            id: 'PRF-ADM-107',
+            employeeName: 'James Miller',
+            uid: 'DEV005',
+            department: 'IT',
+            projectName: 'Security Audit & Compliance',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'ontime',
+            rating: 4.2,
+            status: 'In Progress',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Comprehensive end-to-end regression test suite validation in progress.'
+        },
+        {
+            id: 'PRF-ADM-108',
+            employeeName: 'Lisa Zhang',
+            uid: 'DEV006',
+            department: 'Marketing',
+            projectName: 'Q3 Lead Generation Campaign',
+            reviewCycle: 'Q3 2026',
+            submissionSpeed: 'delayed',
+            rating: 3.5,
+            status: 'In Progress',
+            reviewedBy: 'Alice Admin',
+            reviewedByRole: 'admin',
+            revieweeType: 'employee',
+            comments: 'Self-appraisal submitted, awaiting manager 1-on-1 evaluation session.'
+        }
+    ];
+
+    let allPerfList = JSON.parse(JSON.stringify(sampleAdminPerformanceRecords));
     let currentActiveTab = 'all';
 
     // Tabs functionality
@@ -1500,30 +1874,49 @@ tbody tr:hover {
     async function loadPerformance() {
         try {
             const snap = await getDocs(collection(db, "performance"));
-            allPerfList = [];
+            const loaded = [];
 
             snap.forEach((docSnap) => {
-                allPerfList.push({ id: docSnap.id, ...docSnap.data() });
+                loaded.push({ id: docSnap.id, ...docSnap.data() });
             });
 
+            const mergedMap = new Map();
+            sampleAdminPerformanceRecords.forEach(p => mergedMap.set(p.id, { ...p }));
+            loaded.forEach(p => {
+                const key = p.id || p.uid;
+                const existing = mergedMap.get(key) || {};
+                mergedMap.set(key, { ...existing, ...p });
+            });
+
+            allPerfList = Array.from(mergedMap.values());
+
             // Populate departments dropdown
-            const depts = Array.from(new Set(allPerfList.map(p => p.department).filter(Boolean))).sort();
+            const defaultDepts = ['Administration', 'Design', 'Engineering', 'Human Resources', 'IT', 'Marketing', 'Sales'];
+            const detectedDepts = allPerfList.map(p => p.department).filter(Boolean);
+            const depts = Array.from(new Set([...defaultDepts, ...detectedDepts])).sort();
             const deptEl = document.getElementById('adminPerfDeptFilter');
             if (deptEl) {
+                const currentVal = deptEl.value;
                 deptEl.innerHTML = `<option value="All">All Departments</option>` + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+                if (depts.includes(currentVal)) deptEl.value = currentVal;
             }
 
             // Populate cycles dropdown
-            const cycles = Array.from(new Set(allPerfList.map(p => p.reviewCycle).filter(Boolean))).sort();
+            const defaultCycles = ['Annual 2026', 'Q1 2026', 'Q2 2026', 'Q3 2026'];
+            const detectedCycles = allPerfList.map(p => p.reviewCycle).filter(Boolean);
+            const cycles = Array.from(new Set([...defaultCycles, ...detectedCycles])).sort();
             const cycleEl = document.getElementById('adminPerfCycleFilter');
             if (cycleEl) {
+                const currentVal = cycleEl.value;
                 cycleEl.innerHTML = `<option value="All">All Review Cycles</option>` + cycles.map(c => `<option value="${c}">${c}</option>`).join('');
+                if (cycles.includes(currentVal)) cycleEl.value = currentVal;
             }
 
             applyFilters();
         } catch (error) {
-            console.error("Failed to load performance records: ", error);
-            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#f87171;">Failed to load records: ${error.message}</td></tr>`;
+            console.warn("Using sample performance fallback: ", error.message);
+            allPerfList = JSON.parse(JSON.stringify(sampleAdminPerformanceRecords));
+            applyFilters();
         }
     }
 

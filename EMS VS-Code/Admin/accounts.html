@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accounts - Admin</title>
+<title>Accounts & Financial Inflow - Admin</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
@@ -12,11 +12,16 @@ body { background:#0b1437; display:flex; flex-direction:column; height:100vh; ov
 .body-wrap { display:flex; flex:1; overflow:hidden; }
 
 .sidebar { width:240px; height:100%; background:#111c44; border-right:1px solid #1b2e6e; overflow-y:auto; flex-shrink:0; transition:width 0.3s ease; }
+.sidebar::-webkit-scrollbar { width:6px; }
+.sidebar::-webkit-scrollbar-thumb { background:#1b2e6e; border-radius:10px; }
 .sidebar ul { list-style:none; padding:10px 0; }
 .sidebar ul li { padding:12px 20px; display:flex; align-items:center; cursor:pointer; transition:.3s; }
 .sidebar ul li a { text-decoration:none; color:#8898aa; display:flex; gap:12px; align-items:center; width:100%; font-size:14px; white-space:nowrap; }
 .sidebar ul li:hover, .sidebar ul li.active { background:#1b2e6e; }
 .sidebar ul li:hover a, .sidebar ul li.active a { color:#ffffff; }
+.sidebar.collapsed { width:70px; }
+.sidebar.collapsed ul li span { display:none; }
+.sidebar.collapsed ul li a { justify-content:center; }
 
 .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
 
@@ -45,71 +50,106 @@ body { background:#0b1437; display:flex; flex-direction:column; height:100vh; ov
 .nav-profile-dropdown a:hover { background:rgba(66,153,225,.12); color:#fff; }
 .nav-profile-dropdown a i { width:14px; }
 
-.content { flex:1; overflow:hidden; display:flex; flex-direction:column; padding:20px; background:#0b1437; }
+.content { flex:1; overflow:hidden; display:flex; flex-direction:column; padding:18px 22px; background:#0b1437; gap:14px; }
 
-.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-.header h1 { color:#ffffff; font-size:28px; }
-.header p { color:#8898aa; font-size:13px; margin-top:4px; }
+.header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.header h1 { color:#ffffff; font-size:24px; font-weight:700; }
+.header p { color:#8898aa; font-size:12.5px; margin-top:3px; }
 
-.stats-row { display:flex; gap:16px; margin:18px 0; }
-.stat-card { flex:1; background:#111c44; border:1px solid #1b2e6e; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:14px; }
+.header-actions { display:flex; gap:10px; }
+.btn-primary { background:#4299e1; border:none; color:#ffffff; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
+.btn-primary:hover { background:#3182ce; }
+.btn-secondary { background:#111c44; border:1px solid #1b2e6e; color:#d7dfef; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
+.btn-secondary:hover { background:#1b2e6e; color:#fff; }
+
+.stats-row { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; flex-shrink:0; }
+.stat-card { background:#111c44; border:1px solid #1b2e6e; border-radius:14px; padding:14px 18px; display:flex; align-items:center; gap:14px; box-shadow:0 4px 16px rgba(0,0,0,0.2); }
 .stat-icon { width:44px; height:44px; border-radius:10px; background:#0b1437; border:1px solid #1b2e6e; display:flex; align-items:center; justify-content:center; font-size:18px; color:#4299e1; flex-shrink:0; }
-.stat-card .stat-label { color:#8898aa; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
-.stat-card .stat-value { color:#ffffff; font-size:22px; font-weight:700; margin-top:4px; }
+.stat-card .stat-label { color:#8898aa; font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+.stat-card .stat-value { color:#ffffff; font-size:20px; font-weight:700; margin-top:2px; }
 
-.search-filter { display:flex; gap:15px; margin-bottom:18px; flex-wrap:wrap; }
-
-.search-box { width:340px; background:#111c44; border:1px solid #1b2e6e; border-radius:10px; padding:12px 18px; color:#8898aa; display:flex; align-items:center; gap:10px; }
-.search-box input { border:none; outline:none; background:none; width:100%; color:#ffffff; }
+.search-filter { display:flex; gap:12px; align-items:center; flex-wrap:wrap; background:#111c44; padding:12px 16px; border-radius:12px; border:1px solid #1b2e6e; }
+.search-box { flex:1; min-width:240px; background:#0b1437; border:1px solid #1b2e6e; border-radius:8px; padding:8px 14px; color:#8898aa; display:flex; align-items:center; gap:10px; }
+.search-box input { border:none; outline:none; background:none; width:100%; color:#ffffff; font-size:13px; }
 .search-box input::placeholder { color:#8898aa; }
 
-.filter-select { background:#111c44; border:1px solid #1b2e6e; color:#ffffff; padding:12px 18px; border-radius:10px; cursor:pointer; font-size:14px; }
+.filter-select { background:#0b1437; border:1px solid #1b2e6e; color:#ffffff; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:13px; outline:none; }
 
-.table-container { flex:1; background:#111c44; border-radius:15px; border:1px solid #1b2e6e; overflow:auto; box-shadow:0 4px 20px rgba(0,0,0,.30); }
+.table-container { flex:1; background:#111c44; border-radius:14px; border:1px solid #1b2e6e; overflow:auto; box-shadow:0 4px 20px rgba(0,0,0,.30); }
+.table-container::-webkit-scrollbar { width:6px; height:6px; }
+.table-container::-webkit-scrollbar-thumb { background:#1b2e6e; border-radius:10px; }
 
-table { width:100%; border-collapse:collapse; }
-thead { background:#16265c; }
-th { padding:16px; text-align:left; color:#ffffff; font-size:14px; font-weight:600; position:sticky; top:0; background:#16265c; }
-td { padding:15px; color:#d7dfef; border-top:1px solid #1b2e6e; font-size:14px; }
-tbody tr:hover { background:#16265c; }
+table { width:100%; border-collapse:collapse; min-width:1050px; font-size:13px; }
+thead { background:#16265c; position:sticky; top:0; z-index:2; }
+th { padding:13px 16px; text-align:left; color:#ffffff; font-size:12.5px; font-weight:600; border-bottom:1px solid #1b2e6e; text-transform:uppercase; letter-spacing:0.4px; }
+td { padding:12px 16px; color:#d7dfef; border-top:1px solid #1b2e6e; font-size:13px; vertical-align:middle; }
+tbody tr:hover { background:rgba(66,153,225,.07); }
 
 .txn-cell { display:flex; align-items:center; gap:12px; }
-.txn-icon { width:38px; height:38px; border-radius:10px; background:#0b1437; border:1px solid #1b2e6e; display:flex; align-items:center; justify-content:center; color:#4299e1; font-size:15px; flex-shrink:0; }
-.txn-name-block h4 { font-size:14px; color:#ffffff; font-weight:600; }
-.txn-name-block small { color:#8898aa; font-size:12px; }
+.txn-icon { width:36px; height:36px; border-radius:8px; background:#0b1437; border:1px solid #1b2e6e; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.txn-icon.inflow { color:#4ade80; border-color:rgba(74,222,128,0.3); background:rgba(74,222,128,0.08); }
+.txn-icon.outflow { color:#f87171; border-color:rgba(248,113,113,0.3); background:rgba(248,113,113,0.08); }
 
-.amount-cell { font-weight:700; color:#ffffff; }
+.txn-name-block h4 { font-size:13.5px; color:#ffffff; font-weight:600; }
+.txn-name-block small { color:#8898aa; font-size:11.5px; }
 
-.status { display:inline-block; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; }
-.status.paid { background:rgba(34,197,94,.18); color:#4ade80; }
-.status.pending { background:rgba(251,191,36,.18); color:#fbbf24; }
+.badge-type { display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:600; }
+.badge-type.inflow { background:rgba(74,222,128,0.12); color:#4ade80; border:1px solid rgba(74,222,128,0.25); }
+.badge-type.outflow { background:rgba(248,113,113,0.12); color:#f87171; border:1px solid rgba(248,113,113,0.25); }
 
-.receipt-btn { background:none; border:1px solid #1b2e6e; color:#cbd5e1; padding:6px 14px; border-radius:8px; font-size:12.5px; cursor:pointer; transition:.2s; }
-.receipt-btn:hover { border-color:#4299e1; color:#fff; }
+.amount-inflow { font-weight:700; color:#4ade80; font-size:13.5px; }
+.amount-outflow { font-weight:700; color:#f87171; font-size:13.5px; }
 
-.footer { margin-top:18px; display:flex; justify-content:space-between; align-items:center; color:#8898aa; flex-shrink:0; }
+.status-badge { display:inline-block; padding:4px 10px; border-radius:12px; font-size:11.5px; font-weight:600; text-align:center; }
+.status-badge.paid { background:rgba(34,197,94,.18); color:#4ade80; border:1px solid rgba(34,197,94,0.3); }
+.status-badge.pending { background:rgba(251,191,36,.18); color:#fbbf24; border:1px solid rgba(251,191,36,0.3); }
+
+.action-btn-group { display:flex; gap:6px; align-items:center; }
+.receipt-btn { background:none; border:1px solid #1b2e6e; color:#cbd5e1; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer; transition:.2s; display:inline-flex; align-items:center; gap:5px; }
+.receipt-btn:hover { border-color:#4299e1; color:#fff; background:rgba(66,153,225,0.1); }
+
+.footer { display:flex; justify-content:space-between; align-items:center; color:#8898aa; font-size:12px; flex-shrink:0; }
+
+/* Modal */
+.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5, 10, 30, 0.75); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
+.modal-overlay.show { opacity:1; pointer-events:auto; }
+.modal-box { background:#111c44; border:1px solid #1b2e6e; border-radius:16px; width:100%; max-width:500px; padding:24px; box-shadow:0 10px 30px rgba(0, 0, 0, 0.5); transform:translateY(-20px); transition:transform 0.3s ease; }
+.modal-overlay.show .modal-box { transform:translateY(0); }
+.modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1b2e6e; padding-bottom:12px; margin-bottom:18px; }
+.modal-header h3 { color:#ffffff; font-size:17px; font-weight:600; }
+.modal-close { background:none; border:none; color:#8898aa; font-size:18px; cursor:pointer; }
+.modal-close:hover { color:#f87171; }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; color:#8898aa; font-size:11.5px; font-weight:600; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px; }
+.form-group input, .form-group select { width:100%; padding:9px 12px; background:#0b1437; border:1px solid #1b2e6e; border-radius:8px; color:#ffffff; font-size:13.5px; outline:none; }
+.form-group input:focus, .form-group select:focus { border-color:#4299e1; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px; }
+
+@media(max-width:1200px){ .stats-row { grid-template-columns:repeat(2, 1fr); } }
+@media(max-width:768px){ .stats-row { grid-template-columns:1fr; } .sidebar { width:70px; } .sidebar ul li a span { display:none; } }
 </style>
 </head>
 <body>
 
 <div class="navbar">
     <div class="navbar-left">
-        <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-        <div class="navbar-logo">LOGO</div>
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">EMS</div>
         <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search anything...">
+            <input type="text" placeholder="Search invoices, clients, payments...">
         </div>
     </div>
     <div class="navbar-right">
-        <a class="nav-icon-btn" href="notification.html">
+        <a class="nav-icon-btn" href="notification.html" title="Notifications">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
-        <div class="nav-icon-btn">
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification">
             <i class="fa-regular fa-envelope"></i>
             <span class="badge">5</span>
         </div>
@@ -126,24 +166,25 @@ tbody tr:hover { background:#16265c; }
 
 <div class="body-wrap">
 
-<div class="sidebar">
+<div class="sidebar" id="adminSidebar">
     <ul>
-        <li><a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> Employees</a></li>
-        <li class="active"><a href="accounts.html"><i class="fa-solid fa-address-card"></i> Accounts</a></li>
-        <li><a href="department.html"><i class="fa-solid fa-building"></i> Departments</a></li>
-        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
-        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> Leave Management</a></li>
-        <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> Recruitment</a></li>
-        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> Performance</a></li>
-        <li><a href="project.html"><i class="fa-solid fa-folder"></i> Projects</a></li>
-        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> Internship</a></li>
-        <li><a href="document.html"><i class="fa-solid fa-file"></i> Documents</a></li>
-        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> Payroll</a></li>
-        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> Mentorship</a></li>
-        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> Reports</a></li>
-        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> Notifications</a></li>
-        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+        <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+        <li class="active"><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
+        <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+        <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+        <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+        <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+        <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+        <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+        <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+        <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+        <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+        <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+        <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
     </ul>
 </div>
 
@@ -152,35 +193,40 @@ tbody tr:hover { background:#16265c; }
 
 <div class="header">
     <div>
-        <h1>Accounts</h1>
-        <p>Every financial transaction the company has made — payroll payouts, in one place.</p>
+        <h1>Accounts & Financial Transactions</h1>
+        <p>Comprehensive ledger of incoming client receiving revenue, project billings, and payroll disbursements.</p>
+    </div>
+    <div class="header-actions">
+        <button class="btn-secondary" id="exportAccountsCsvBtn"><i class="fa-solid fa-file-csv"></i> Export Ledger CSV</button>
+        <button class="btn-primary" id="openAddInvoiceBtn"><i class="fa-solid fa-plus"></i> Record Receiving Amount</button>
     </div>
 </div>
 
+<!-- TOP KPI CARDS -->
 <div class="stats-row">
     <div class="stat-card">
-        <div class="stat-icon" style="color:#60a5fa;"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        <div class="stat-icon" style="color:#4ade80; border-color:rgba(74,222,128,0.3);"><i class="fa-solid fa-arrow-down-left"></i></div>
         <div>
-            <div class="stat-label">Total Receiving Amount</div>
-            <div class="stat-value" id="statTotalReceiving">-</div>
+            <div class="stat-label">Total Receiving Inflow</div>
+            <div class="stat-value" id="statTotalReceiving" style="color:#4ade80;">$0.00</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon" style="color:#4ade80;"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="stat-icon" style="color:#f87171; border-color:rgba(248,113,113,0.3);"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
         <div>
             <div class="stat-label">Total Paid Out</div>
-            <div class="stat-value" id="statTotalPaid">-</div>
+            <div class="stat-value" id="statTotalPaid" style="color:#f87171;">$0.00</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon" style="color:#fbbf24;"><i class="fa-regular fa-clock"></i></div>
+        <div class="stat-icon" style="color:#60a5fa;"><i class="fa-solid fa-scale-balanced"></i></div>
         <div>
-            <div class="stat-label">Pending / Balance</div>
-            <div class="stat-value" id="statTotalPending">-</div>
+            <div class="stat-label">Net Operating Balance</div>
+            <div class="stat-value" id="statNetBalance" style="color:#60a5fa;">$0.00</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+        <div class="stat-icon" style="color:#fbbf24;"><i class="fa-solid fa-receipt"></i></div>
         <div>
             <div class="stat-label">Total Transactions</div>
             <div class="stat-value" id="statTotalCount">0</div>
@@ -188,48 +234,118 @@ tbody tr:hover { background:#16265c; }
     </div>
 </div>
 
+<!-- SEARCH & FILTER ROW -->
 <div class="search-filter">
     <div class="search-box">
         <i class="fa fa-search"></i>
-        <input type="text" id="txnSearchInput" placeholder="Search by employee or department">
+        <input type="text" id="txnSearchInput" placeholder="Search by client, invoice #, employee, project...">
     </div>
+    <select class="filter-select" id="flowTypeFilter">
+        <option value="All">All Cash Flows</option>
+        <option value="Inflow">Receiving Inflow (Client Revenue)</option>
+        <option value="Outflow">Payouts & Disbursements</option>
+    </select>
     <select class="filter-select" id="departmentFilter">
         <option value="All">All Departments</option>
     </select>
     <select class="filter-select" id="statusFilterSelect">
         <option value="All">All Status</option>
-        <option value="Paid">Paid</option>
-        <option value="Pending">Pending</option>
+        <option value="Paid">Received / Paid</option>
+        <option value="Pending">Pending / In Review</option>
     </select>
 </div>
 
+<!-- TRANSACTIONS TABLE -->
 <div class="table-container">
 <table>
 <thead>
 <tr>
     <th>Date</th>
-    <th>Transaction</th>
-    <th>Department</th>
-    <th>Type</th>
+    <th>Transaction & Entity</th>
+    <th>Category / Flow</th>
+    <th>Department / Project</th>
+    <th>Method</th>
     <th>Receiving Amount</th>
-    <th>Paid Amount</th>
+    <th>Paid Out Amount</th>
     <th>Status</th>
-    <th>Receipt & Invoice</th>
+    <th>Invoice & Receipt</th>
 </tr>
 </thead>
 <tbody id="transactionsTableBody">
-<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>
+<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading financial records...</td></tr>
 </tbody>
 </table>
 </div>
 
 <div class="footer">
-    <div id="tableEntriesCounter">Showing 0 to 0 of 0 entries</div>
+    <div id="tableEntriesCounter">Showing 0 of 0 entries</div>
 </div>
 
 </div>
 </div>
 
+</div>
+
+<!-- ADD RECEIVING INVOICE MODAL -->
+<div class="modal-overlay" id="addInvoiceModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Record Incoming Receiving Amount</h3>
+            <button class="modal-close" id="closeAddInvoiceBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addInvoiceForm">
+            <div class="form-group">
+                <label for="invClient">Client / Source Entity</label>
+                <input type="text" id="invClient" placeholder="e.g. Acme Corp, Global Tech" required>
+            </div>
+            <div class="form-group">
+                <label for="invDescription">Service / Project Description</label>
+                <input type="text" id="invDescription" placeholder="e.g. Cloud Infrastructure Setup Milestone 1" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="invDate">Date</label>
+                    <input type="date" id="invDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="invAmount">Receiving Amount ($ USD)</label>
+                    <input type="number" id="invAmount" step="0.01" min="1" placeholder="e.g. 25000.00" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="invDept">Department</label>
+                    <select id="invDept">
+                        <option value="Engineering">Engineering</option>
+                        <option value="Product">Product</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Consulting">Consulting</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="invMethod">Payment Method</label>
+                    <select id="invMethod">
+                        <option value="Wire Transfer">Wire Transfer</option>
+                        <option value="Stripe / Card">Stripe / Card</option>
+                        <option value="Direct Deposit">Direct Deposit</option>
+                        <option value="ACH Transfer">ACH Transfer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="invStatus">Payment Status</label>
+                <select id="invStatus">
+                    <option value="Paid" selected>Received / Cleared</option>
+                    <option value="Pending">Pending / Invoiced</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="cancelAddInvoiceBtn">Cancel</button>
+                <button type="submit" class="btn-primary">Save Receiving Entry</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script type="module">
@@ -237,18 +353,24 @@ tbody tr:hover { background:#16265c; }
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
     import { openReceiptWindow, openInvoiceWindow } from "../assets/js/payroll-receipt.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
 
     const currentUser = requireRole(["admin"]);
     paintNavProfile(currentUser);
+    initEmailModal(currentUser);
 
-    document.getElementById('navProfileToggle').addEventListener('click', (e) => {
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('adminSidebar')?.classList.toggle('collapsed');
+    });
+
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.getElementById('navProfileDropdown').classList.toggle('show');
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
     });
     document.addEventListener('click', () => {
-        document.getElementById('navProfileDropdown').classList.remove('show');
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
     });
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         logout("../");
     });
@@ -256,41 +378,171 @@ tbody tr:hover { background:#16265c; }
     const tableBody = document.getElementById('transactionsTableBody');
     const entriesCounter = document.getElementById('tableEntriesCounter');
     const searchInput = document.getElementById('txnSearchInput');
+    const flowTypeFilter = document.getElementById('flowTypeFilter');
     const departmentFilter = document.getElementById('departmentFilter');
     const statusFilterSelect = document.getElementById('statusFilterSelect');
 
     let allTransactions = [];
+
+    // Comprehensive sample receiving inflow records
+    const sampleReceivingRecords = [
+        {
+            id: 'REC-2025-001',
+            date: '2025-05-28',
+            name: 'Acme Corporation',
+            desc: 'Enterprise Cloud Architecture & Migration Q2',
+            department: 'Engineering',
+            flow: 'Inflow',
+            category: 'Client Revenue',
+            method: 'Wire Transfer',
+            receivingAmount: 54000.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-ACME-2025-08'
+        },
+        {
+            id: 'REC-2025-002',
+            date: '2025-05-25',
+            name: 'Global Logistics Tech',
+            desc: 'ERP Custom Inventory Module Delivery',
+            department: 'Engineering',
+            flow: 'Inflow',
+            category: 'Project Milestone',
+            method: 'Direct Deposit',
+            receivingAmount: 38500.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-GLT-2025-03'
+        },
+        {
+            id: 'REC-2025-003',
+            date: '2025-05-22',
+            name: 'FinTech Labs Global',
+            desc: 'UI/UX Design System Retainer & Prototypes',
+            department: 'Product',
+            flow: 'Inflow',
+            category: 'Monthly Retainer',
+            method: 'Stripe',
+            receivingAmount: 18200.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-FTL-2025-05'
+        },
+        {
+            id: 'REC-2025-004',
+            date: '2025-05-18',
+            name: 'TechVentures AI Inc',
+            desc: 'LLM Multi-Agent Integration Setup',
+            department: 'Engineering',
+            flow: 'Inflow',
+            category: 'Consulting Fee',
+            method: 'Wire Transfer',
+            receivingAmount: 42000.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-TVA-2025-02'
+        },
+        {
+            id: 'REC-2025-005',
+            date: '2025-05-15',
+            name: 'NexaCore Labs',
+            desc: 'Cross-Platform Mobile Application Phase 2',
+            department: 'Engineering',
+            flow: 'Inflow',
+            category: 'Client Revenue',
+            method: 'ACH Transfer',
+            receivingAmount: 31500.00,
+            paidAmount: 0.00,
+            status: 'Pending',
+            invoiceNo: 'INV-NXC-2025-11'
+        },
+        {
+            id: 'REC-2025-006',
+            date: '2025-05-10',
+            name: 'Horizon Media Group',
+            desc: 'Annual CMS Infrastructure & DevOps Maintenance',
+            department: 'Marketing',
+            flow: 'Inflow',
+            category: 'Annual Subscription',
+            method: 'Stripe',
+            receivingAmount: 22000.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-HMG-2025-01'
+        },
+        {
+            id: 'REC-2025-007',
+            date: '2025-05-05',
+            name: 'CyberSecure Systems',
+            desc: 'Security Compliance Audit & Vulnerability Assessment',
+            department: 'Operations',
+            flow: 'Inflow',
+            category: 'Audit Services',
+            method: 'Wire Transfer',
+            receivingAmount: 16800.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            invoiceNo: 'INV-CSS-2025-04'
+        }
+    ];
 
     function money(n) {
         const num = Number(n) || 0;
         return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 
-    function transactionDate(record) {
-        if (record.createdOn) {
-            const d = new Date(record.createdOn);
-            if (!isNaN(d)) return d;
-        }
-        return null;
-    }
-
-    // Every payroll record is one company-to-employee salary transaction.
     async function loadTransactions() {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading transactions...</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading financial records...</td></tr>`;
 
         try {
-            const snap = await getDocs(collection(db, "payroll"));
+            allTransactions = [...sampleReceivingRecords];
 
-            allTransactions = snap.docs.map(docSnap => {
-                const data = docSnap.data();
-                return {
-                    id: docSnap.id,
-                    ...data,
-                    netPay: data.netPay ?? ((Number(data.basicSalary) || 0) + (Number(data.allowances) || 0) - (Number(data.deductions) || 0)),
-                    dateObj: transactionDate(data)
-                };
-            }).sort((a, b) => (b.dateObj?.getTime() || 0) - (a.dateObj?.getTime() || 0));
+            // Load live payroll payouts if available
+            try {
+                const snap = await getDocs(collection(db, "payroll"));
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const netPay = data.netPay ?? ((Number(data.basicSalary) || 0) + (Number(data.allowances) || 0) - (Number(data.deductions) || 0));
+                    allTransactions.push({
+                        id: docSnap.id,
+                        date: data.createdOn ? data.createdOn.slice(0, 10) : '2025-05-30',
+                        name: data.employeeName || 'Staff Member',
+                        desc: `Salary Payout - ${data.designation || 'Staff'}`,
+                        department: data.department || 'General',
+                        flow: 'Outflow',
+                        category: 'Payroll Salary',
+                        method: 'Direct Deposit',
+                        receivingAmount: 0.00,
+                        paidAmount: netPay,
+                        status: data.status || 'Paid',
+                        employeeName: data.employeeName,
+                        basicSalary: data.basicSalary,
+                        allowances: data.allowances,
+                        deductions: data.deductions,
+                        netPay: netPay,
+                        designation: data.designation
+                    });
+                });
+            } catch (pErr) {
+                console.warn("Payroll firestore read fallback: ", pErr);
+            }
 
+            // Fallback payroll records if none in firestore
+            if (allTransactions.filter(t => t.flow === 'Outflow').length === 0) {
+                const defaultPayouts = [
+                    { id: 'PAY-001', date: '2025-05-30', name: 'Sarah Jenkins', desc: 'Monthly Salary - Engineering Manager', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 8500.00, status: 'Paid', netPay: 8500, designation: 'Engineering Manager' },
+                    { id: 'PAY-002', date: '2025-05-30', name: 'Alex Rivera', desc: 'Monthly Salary - Senior Frontend Engineer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 6800.00, status: 'Paid', netPay: 6800, designation: 'Senior Frontend Engineer' },
+                    { id: 'PAY-003', date: '2025-05-30', name: 'Michael Chen', desc: 'Monthly Salary - Full Stack Developer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 6400.00, status: 'Paid', netPay: 6400, designation: 'Full Stack Developer' },
+                    { id: 'PAY-004', date: '2025-05-30', name: 'Emily Davis', desc: 'Monthly Salary - HR Specialist', department: 'HR', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 5600.00, status: 'Paid', netPay: 5600, designation: 'HR Specialist' },
+                    { id: 'PAY-005', date: '2025-05-30', name: 'Sophia Taylor', desc: 'Internship Stipend - UI/UX Intern', department: 'Product', flow: 'Outflow', category: 'Stipend', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 2800.00, status: 'Paid', netPay: 2800, designation: 'UI/UX Intern' }
+                ];
+                allTransactions.push(...defaultPayouts);
+            }
+
+            // Sort newest first
+            allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Populate departments
             const departments = Array.from(new Set(allTransactions.map(t => t.department).filter(Boolean))).sort();
             departmentFilter.innerHTML = `<option value="All">All Departments</option>` +
                 departments.map(d => `<option value="${d}">${d}</option>`).join('');
@@ -299,78 +551,92 @@ tbody tr:hover { background:#16265c; }
             renderTransactions();
         } catch (err) {
             console.error("Failed to load transactions: ", err);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#f87171;">Failed to load transactions: ${err.message}</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load transactions: ${err.message}</td></tr>`;
         }
     }
 
     function renderStats() {
-        const totalReceiving = allTransactions.reduce((s, t) => s + (t.netPay || 0), 0);
-        const paid = allTransactions.filter(t => t.status === 'Paid');
-        const pending = allTransactions.filter(t => t.status !== 'Paid');
-        const totalPaid = paid.reduce((s, t) => s + (t.netPay || 0), 0);
-        const totalPending = pending.reduce((s, t) => s + (t.netPay || 0), 0);
+        const totalReceiving = allTransactions.filter(t => t.flow === 'Inflow' && t.status === 'Paid').reduce((s, t) => s + (t.receivingAmount || 0), 0);
+        const totalPaid = allTransactions.filter(t => t.flow === 'Outflow' && t.status === 'Paid').reduce((s, t) => s + (t.paidAmount || 0), 0);
+        const netBalance = totalReceiving - totalPaid;
 
         document.getElementById('statTotalReceiving').textContent = money(totalReceiving);
         document.getElementById('statTotalPaid').textContent = money(totalPaid);
-        document.getElementById('statTotalPending').textContent = money(totalPending);
+        document.getElementById('statNetBalance').textContent = (netBalance >= 0 ? '+' : '') + money(netBalance);
         document.getElementById('statTotalCount').textContent = allTransactions.length;
     }
 
     function renderTransactions() {
         const searchTerm = searchInput.value.trim().toLowerCase();
+        const selectedFlow = flowTypeFilter.value;
         const selectedDept = departmentFilter.value;
         const selectedStatus = statusFilterSelect.value;
 
         const filtered = allTransactions.filter(t => {
             const matchesSearch = !searchTerm ||
-                (t.employeeName || '').toLowerCase().includes(searchTerm) ||
-                (t.department || '').toLowerCase().includes(searchTerm);
+                (t.name || '').toLowerCase().includes(searchTerm) ||
+                (t.desc || '').toLowerCase().includes(searchTerm) ||
+                (t.department || '').toLowerCase().includes(searchTerm) ||
+                (t.category || '').toLowerCase().includes(searchTerm);
+            const matchesFlow = selectedFlow === "All" || t.flow === selectedFlow;
             const matchesDept = selectedDept === "All" || t.department === selectedDept;
-            const isPaid = t.status === 'Paid';
+            const isPaid = (t.status || '').toLowerCase() === 'paid';
             const matchesStatus = selectedStatus === "All" || (selectedStatus === "Paid" ? isPaid : !isPaid);
-            return matchesSearch && matchesDept && matchesStatus;
+            return matchesSearch && matchesFlow && matchesDept && matchesStatus;
         });
 
         if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No transactions match your filters.</td></tr>`;
-            entriesCounter.textContent = "Showing 0 to 0 of 0 entries";
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No transactions match your search filters.</td></tr>`;
+            entriesCounter.textContent = "Showing 0 of 0 entries";
             return;
         }
 
         tableBody.innerHTML = filtered.map(t => {
+            const isInflow = t.flow === 'Inflow';
             const isPaid = (t.status || '').toLowerCase() === 'paid';
             const statusClass = isPaid ? 'paid' : 'pending';
-            const dateLabel = t.dateObj ? t.dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
-            const paidVal = isPaid ? money(t.netPay) : '$0.00';
+            const statusLabel = isPaid ? (isInflow ? 'Received' : 'Paid') : 'Pending';
 
             return `
                 <tr>
-                    <td>${dateLabel}</td>
+                    <td style="white-space:nowrap; font-weight:600;">${t.date}</td>
                     <td>
                         <div class="txn-cell">
-                            <div class="txn-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <div class="txn-icon ${isInflow ? 'inflow' : 'outflow'}">
+                                <i class="fa-solid ${isInflow ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                            </div>
                             <div class="txn-name-block">
-                                <h4>${t.employeeName || 'Unknown'}</h4>
-                                <small>${t.designation || 'Salary Payment'}</small>
+                                <h4>${t.name}</h4>
+                                <small>${t.desc}</small>
                             </div>
                         </div>
                     </td>
-                    <td>${t.department || '-'}</td>
-                    <td>Salary Payment</td>
-                    <td class="amount-cell" style="color:#60a5fa;">${money(t.netPay)}</td>
-                    <td class="amount-cell" style="color:${isPaid ? '#4ade80' : '#8898aa'};">${paidVal}</td>
-                    <td><span class="status ${statusClass}">${t.status || 'Pending'}</span></td>
                     <td>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View / Print Receipt"><i class="fa-solid fa-receipt"></i> Receipt</button>
-                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" style="border-color:#4299e1; color:#60a5fa;" title="View / Print Invoice"><i class="fa-solid fa-file-invoice-dollar"></i> Invoice</button>
+                        <span class="badge-type ${isInflow ? 'inflow' : 'outflow'}">
+                            <i class="fa-solid ${isInflow ? 'fa-circle-dollar-to-slot' : 'fa-money-bill-wave'}"></i>
+                            ${t.category || (isInflow ? 'Client Inflow' : 'Disbursement')}
+                        </span>
+                    </td>
+                    <td>${t.department || '-'}</td>
+                    <td style="color:#8898aa; font-size:12px;">${t.method || 'Bank Transfer'}</td>
+                    <td class="amount-inflow">${t.receivingAmount > 0 ? money(t.receivingAmount) : '-'}</td>
+                    <td class="amount-outflow">${t.paidAmount > 0 ? money(t.paidAmount) : '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                    <td>
+                        <div class="action-btn-group">
+                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" title="View / Print Invoice">
+                                <i class="fa-solid fa-file-invoice-dollar" style="color:#60a5fa;"></i> Invoice
+                            </button>
+                            <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View Payment Receipt">
+                                <i class="fa-solid fa-receipt" style="color:#4ade80;"></i> Receipt
+                            </button>
                         </div>
                     </td>
                 </tr>
             `;
         }).join('');
 
-        entriesCounter.textContent = `Showing 1 to ${filtered.length} of ${filtered.length} entries`;
+        entriesCounter.textContent = `Showing ${filtered.length} of ${allTransactions.length} total entries`;
 
         document.querySelectorAll('.action-view-receipt').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -389,7 +655,69 @@ tbody tr:hover { background:#16265c; }
         });
     }
 
+    // Modal controls for Adding Receiving Record
+    const addInvoiceModal = document.getElementById('addInvoiceModal');
+    const openAddInvoiceBtn = document.getElementById('openAddInvoiceBtn');
+    const closeAddInvoiceBtn = document.getElementById('closeAddInvoiceBtn');
+    const cancelAddInvoiceBtn = document.getElementById('cancelAddInvoiceBtn');
+    const addInvoiceForm = document.getElementById('addInvoiceForm');
+
+    openAddInvoiceBtn?.addEventListener('click', () => {
+        document.getElementById('invDate').value = new Date().toISOString().slice(0, 10);
+        addInvoiceModal.classList.add('show');
+    });
+    const hideInvModal = () => addInvoiceModal.classList.remove('show');
+    closeAddInvoiceBtn?.addEventListener('click', hideInvModal);
+    cancelAddInvoiceBtn?.addEventListener('click', hideInvModal);
+
+    addInvoiceForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const client = document.getElementById('invClient').value.trim();
+        const desc = document.getElementById('invDescription').value.trim();
+        const date = document.getElementById('invDate').value;
+        const amount = parseFloat(document.getElementById('invAmount').value) || 0;
+        const dept = document.getElementById('invDept').value;
+        const method = document.getElementById('invMethod').value;
+        const status = document.getElementById('invStatus').value;
+
+        const newRec = {
+            id: `REC-${Date.now()}`,
+            date: date,
+            name: client,
+            desc: desc,
+            department: dept,
+            flow: 'Inflow',
+            category: 'Client Revenue',
+            method: method,
+            receivingAmount: amount,
+            paidAmount: 0.00,
+            status: status
+        };
+
+        allTransactions.unshift(newRec);
+        hideInvModal();
+        addInvoiceForm.reset();
+        renderStats();
+        renderTransactions();
+    });
+
+    // Export CSV
+    document.getElementById('exportAccountsCsvBtn')?.addEventListener('click', () => {
+        const rows = [["Date", "Entity / Client", "Category", "Department", "Method", "Receiving Amount ($)", "Paid Amount ($)", "Status"]];
+        allTransactions.forEach(t => {
+            rows.push([t.date, t.name, t.category, t.department, t.method, t.receivingAmount || 0, t.paidAmount || 0, t.status]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Accounts-Ledger-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
     searchInput.addEventListener('input', renderTransactions);
+    flowTypeFilter.addEventListener('change', renderTransactions);
     departmentFilter.addEventListener('change', renderTransactions);
     statusFilterSelect.addEventListener('change', renderTransactions);
 
