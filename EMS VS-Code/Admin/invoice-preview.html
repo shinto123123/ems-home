@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Preview - Paoyaila Technologies</title>
+</head>
+<body style="margin:0; background:#0b1437;">
+<script type="module">
+    import { buildInvoiceHtml } from "../assets/js/payroll-receipt.js";
+
+    const sampleInvoiceRecord = {
+        id: 'REC-2026-001',
+        invoiceNo: 'INV-2026-001',
+        date: '2026-07-13',
+        invoiceDate: '13 July 2026',
+        dueDate: '28 July 2026',
+        poNo: 'PO-2026-045',
+        paymentTerms: '15 Days',
+        placeOfSupply: 'Kerala (32)',
+        name: 'TechNova Solutions Pvt. Ltd.',
+        desc: 'UI/UX Design, Website Development & Monthly Maintenance',
+        billTo: {
+            name: 'TechNova Solutions Pvt. Ltd.',
+            addressLine1: '4th Floor, Global Tech Park,',
+            addressLine2: 'Kakkanad, Kochi, Kerala – 682037',
+            gstin: '32ABCDE1234F1Z5',
+            email: 'accounts@technova.com',
+            phone: '+91 987 654 3210'
+        },
+        shipTo: {
+            name: 'TechNova Solutions Pvt. Ltd.',
+            addressLine1: '4th Floor, Global Tech Park,',
+            addressLine2: 'Kakkanad, Kochi, Kerala – 682037'
+        },
+        items: [
+            {
+                sl: 1,
+                title: 'UI/UX Design Services',
+                description: 'Design of 10+ screens for Web Application',
+                hsn: '998313',
+                qty: 1,
+                unit: 'Nos',
+                rate: 25000.00,
+                amount: 25000.00
+            },
+            {
+                sl: 2,
+                title: 'Website Development',
+                description: 'Development of Corporate Website (Up to 10 Pages)',
+                hsn: '998314',
+                qty: 1,
+                unit: 'Nos',
+                rate: 45000.00,
+                amount: 45000.00
+            },
+            {
+                sl: 3,
+                title: 'Monthly Maintenance',
+                description: 'Website Maintenance – July 2026',
+                hsn: '998317',
+                qty: 1,
+                unit: 'Month',
+                rate: 5000.00,
+                amount: 5000.00
+            }
+        ],
+        subTotal: 75000.00,
+        discount: 2500.00,
+        taxableAmount: 72500.00,
+        cgstRate: 9,
+        cgstAmount: 6525.00,
+        sgstRate: 9,
+        sgstAmount: 6525.00,
+        igstRate: 18,
+        igstAmount: 0.00,
+        grandTotal: 85550.00
+    };
+
+    document.open();
+    document.write(buildInvoiceHtml(sampleInvoiceRecord, sampleInvoiceRecord.id));
+    document.close();
+</script>
+</body>
+</html>

@@ -208,21 +208,21 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
         <div class="stat-icon" style="color:#4ade80; border-color:rgba(74,222,128,0.3);"><i class="fa-solid fa-arrow-down-left"></i></div>
         <div>
             <div class="stat-label">Total Receiving Inflow</div>
-            <div class="stat-value" id="statTotalReceiving" style="color:#4ade80;">$0.00</div>
+            <div class="stat-value" id="statTotalReceiving" style="color:#4ade80;">₹0.00</div>
         </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon" style="color:#f87171; border-color:rgba(248,113,113,0.3);"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
         <div>
             <div class="stat-label">Total Paid Out</div>
-            <div class="stat-value" id="statTotalPaid" style="color:#f87171;">$0.00</div>
+            <div class="stat-value" id="statTotalPaid" style="color:#f87171;">₹0.00</div>
         </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon" style="color:#60a5fa;"><i class="fa-solid fa-scale-balanced"></i></div>
         <div>
             <div class="stat-label">Net Operating Balance</div>
-            <div class="stat-value" id="statNetBalance" style="color:#60a5fa;">$0.00</div>
+            <div class="stat-value" id="statNetBalance" style="color:#60a5fa;">₹0.00</div>
         </div>
     </div>
     <div class="stat-card">
@@ -290,17 +290,17 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 <div class="modal-overlay" id="addInvoiceModal">
     <div class="modal-box">
         <div class="modal-header">
-            <h3>Record Incoming Receiving Amount</h3>
+            <h3>Record Incoming Receiving Amount / Invoice</h3>
             <button class="modal-close" id="closeAddInvoiceBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <form id="addInvoiceForm">
             <div class="form-group">
                 <label for="invClient">Client / Source Entity</label>
-                <input type="text" id="invClient" placeholder="e.g. Acme Corp, Global Tech" required>
+                <input type="text" id="invClient" placeholder="e.g. TechNova Solutions Pvt. Ltd." required>
             </div>
             <div class="form-group">
                 <label for="invDescription">Service / Project Description</label>
-                <input type="text" id="invDescription" placeholder="e.g. Cloud Infrastructure Setup Milestone 1" required>
+                <input type="text" id="invDescription" placeholder="e.g. UI/UX Design & Web Development Services" required>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -308,8 +308,8 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                     <input type="date" id="invDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="invAmount">Receiving Amount ($ USD)</label>
-                    <input type="number" id="invAmount" step="0.01" min="1" placeholder="e.g. 25000.00" required>
+                    <label for="invAmount">Receiving Amount (₹ INR)</label>
+                    <input type="number" id="invAmount" step="0.01" min="1" placeholder="e.g. 85550.00" required>
                 </div>
             </div>
             <div class="form-row">
@@ -326,9 +326,10 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                 <div class="form-group">
                     <label for="invMethod">Payment Method</label>
                     <select id="invMethod">
-                        <option value="Wire Transfer">Wire Transfer</option>
-                        <option value="Stripe / Card">Stripe / Card</option>
                         <option value="Direct Deposit">Direct Deposit</option>
+                        <option value="Wire Transfer">Wire Transfer</option>
+                        <option value="UPI / QR">UPI / QR</option>
+                        <option value="Stripe / Card">Stripe / Card</option>
                         <option value="ACH Transfer">ACH Transfer</option>
                     </select>
                 </div>
@@ -384,11 +385,91 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 
     let allTransactions = [];
 
-    // Comprehensive sample receiving inflow records
+    // Comprehensive sample receiving inflow records with complete official invoice structure
     const sampleReceivingRecords = [
         {
-            id: 'REC-2025-001',
-            date: '2025-05-28',
+            id: 'REC-2026-001',
+            invoiceNo: 'INV-2026-001',
+            date: '2026-07-13',
+            invoiceDate: '13 July 2026',
+            dueDate: '2026-07-28',
+            poNo: 'PO-2026-045',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
+            name: 'TechNova Solutions Pvt. Ltd.',
+            desc: 'UI/UX Design, Website Development & Monthly Maintenance',
+            department: 'Engineering',
+            flow: 'Inflow',
+            category: 'Client Revenue',
+            method: 'Direct Deposit',
+            receivingAmount: 85550.00,
+            paidAmount: 0.00,
+            status: 'Paid',
+            billTo: {
+                name: 'TechNova Solutions Pvt. Ltd.',
+                addressLine1: '4th Floor, Global Tech Park,',
+                addressLine2: 'Kakkanad, Kochi, Kerala – 682037',
+                gstin: '32ABCDE1234F1Z5',
+                email: 'accounts@technova.com',
+                phone: '+91 987 654 3210'
+            },
+            shipTo: {
+                name: 'TechNova Solutions Pvt. Ltd.',
+                addressLine1: '4th Floor, Global Tech Park,',
+                addressLine2: 'Kakkanad, Kochi, Kerala – 682037'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'UI/UX Design Services',
+                    description: 'Design of 10+ screens for Web Application',
+                    hsn: '998313',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 25000.00,
+                    amount: 25000.00
+                },
+                {
+                    sl: 2,
+                    title: 'Website Development',
+                    description: 'Development of Corporate Website (Up to 10 Pages)',
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 45000.00,
+                    amount: 45000.00
+                },
+                {
+                    sl: 3,
+                    title: 'Monthly Maintenance',
+                    description: 'Website Maintenance – July 2026',
+                    hsn: '998317',
+                    qty: 1,
+                    unit: 'Month',
+                    rate: 5000.00,
+                    amount: 5000.00
+                }
+            ],
+            subTotal: 75000.00,
+            discount: 2500.00,
+            taxableAmount: 72500.00,
+            cgstRate: 9,
+            cgstAmount: 6525.00,
+            sgstRate: 9,
+            sgstAmount: 6525.00,
+            igstRate: 18,
+            igstAmount: 0.00,
+            grandTotal: 85550.00
+        },
+        {
+            id: 'REC-2026-002',
+            invoiceNo: 'INV-ACME-2026-08',
+            date: '2026-07-08',
+            invoiceDate: '08 July 2026',
+            dueDate: '2026-07-23',
+            poNo: 'PO-2026-039',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
             name: 'Acme Corporation',
             desc: 'Enterprise Cloud Architecture & Migration Q2',
             department: 'Engineering',
@@ -398,11 +479,51 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             receivingAmount: 54000.00,
             paidAmount: 0.00,
             status: 'Paid',
-            invoiceNo: 'INV-ACME-2025-08'
+            billTo: {
+                name: 'Acme Corporation Pvt. Ltd.',
+                addressLine1: 'Tower B, Cyber Gateway, SEZ',
+                addressLine2: 'Infopark Phase 2, Kochi – 682042',
+                gstin: '32AABCA4567M1Z2',
+                email: 'billing@acmecorp.com',
+                phone: '+91 944 712 3456'
+            },
+            shipTo: {
+                name: 'Acme Corporation Pvt. Ltd.',
+                addressLine1: 'Tower B, Cyber Gateway, SEZ',
+                addressLine2: 'Infopark Phase 2, Kochi – 682042'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'Enterprise Cloud Migration & Infrastructure',
+                    description: 'Architecture setup, Kubernetes orchestration & disaster recovery',
+                    hsn: '998315',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 45762.71,
+                    amount: 45762.71
+                }
+            ],
+            subTotal: 45762.71,
+            discount: 0,
+            taxableAmount: 45762.71,
+            cgstRate: 9,
+            cgstAmount: 4118.64,
+            sgstRate: 9,
+            sgstAmount: 4118.64,
+            igstRate: 18,
+            igstAmount: 0.00,
+            grandTotal: 54000.00
         },
         {
-            id: 'REC-2025-002',
-            date: '2025-05-25',
+            id: 'REC-2026-003',
+            invoiceNo: 'INV-GLT-2026-03',
+            date: '2026-07-02',
+            invoiceDate: '02 July 2026',
+            dueDate: '2026-07-17',
+            poNo: 'PO-2026-027',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
             name: 'Global Logistics Tech',
             desc: 'ERP Custom Inventory Module Delivery',
             department: 'Engineering',
@@ -412,11 +533,51 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             receivingAmount: 38500.00,
             paidAmount: 0.00,
             status: 'Paid',
-            invoiceNo: 'INV-GLT-2025-03'
+            billTo: {
+                name: 'Global Logistics Tech Ltd.',
+                addressLine1: '7th Avenue, Logistics Hub',
+                addressLine2: 'Willingdon Island, Kochi – 682003',
+                gstin: '32GLTPA9876Q1Z8',
+                email: 'finance@gltech.in',
+                phone: '+91 989 512 8899'
+            },
+            shipTo: {
+                name: 'Global Logistics Tech Ltd.',
+                addressLine1: '7th Avenue, Logistics Hub',
+                addressLine2: 'Willingdon Island, Kochi – 682003'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'Custom ERP Inventory Module Development',
+                    description: 'Milestone 2 - Automated tracking & warehouse sync',
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 32627.12,
+                    amount: 32627.12
+                }
+            ],
+            subTotal: 32627.12,
+            discount: 0,
+            taxableAmount: 32627.12,
+            cgstRate: 9,
+            cgstAmount: 2936.44,
+            sgstRate: 9,
+            sgstAmount: 2936.44,
+            igstRate: 18,
+            igstAmount: 0.00,
+            grandTotal: 38500.00
         },
         {
-            id: 'REC-2025-003',
-            date: '2025-05-22',
+            id: 'REC-2026-004',
+            invoiceNo: 'INV-FTL-2026-05',
+            date: '2026-06-25',
+            invoiceDate: '25 June 2026',
+            dueDate: '2026-07-10',
+            poNo: 'PO-2026-018',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
             name: 'FinTech Labs Global',
             desc: 'UI/UX Design System Retainer & Prototypes',
             department: 'Product',
@@ -426,11 +587,44 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             receivingAmount: 18200.00,
             paidAmount: 0.00,
             status: 'Paid',
-            invoiceNo: 'INV-FTL-2025-05'
+            billTo: {
+                name: 'FinTech Labs Global Inc.',
+                addressLine1: '3rd Floor, SmartCity Kochi',
+                addressLine2: 'Kakkanad, Kochi – 682042',
+                gstin: '32FTLGB5544K1Z3',
+                email: 'invoices@fintechlabs.io',
+                phone: '+91 974 500 1122'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'Design System Retainer',
+                    description: 'Figma component library and interaction specs',
+                    hsn: '998313',
+                    qty: 1,
+                    unit: 'Month',
+                    rate: 15423.73,
+                    amount: 15423.73
+                }
+            ],
+            subTotal: 15423.73,
+            discount: 0,
+            taxableAmount: 15423.73,
+            cgstRate: 9,
+            cgstAmount: 1388.13,
+            sgstRate: 9,
+            sgstAmount: 1388.13,
+            grandTotal: 18200.00
         },
         {
-            id: 'REC-2025-004',
-            date: '2025-05-18',
+            id: 'REC-2026-005',
+            invoiceNo: 'INV-TVA-2026-02',
+            date: '2026-06-18',
+            invoiceDate: '18 June 2026',
+            dueDate: '2026-07-03',
+            poNo: 'PO-2026-012',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
             name: 'TechVentures AI Inc',
             desc: 'LLM Multi-Agent Integration Setup',
             department: 'Engineering',
@@ -440,11 +634,51 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             receivingAmount: 42000.00,
             paidAmount: 0.00,
             status: 'Paid',
-            invoiceNo: 'INV-TVA-2025-02'
+            billTo: {
+                name: 'TechVentures AI Inc',
+                addressLine1: 'Block 4, Vismaya Infopark',
+                addressLine2: 'Kochi, Kerala – 682030',
+                gstin: '32TVAIP3322R1Z7',
+                email: 'accounts@techventures.ai',
+                phone: '+91 999 501 2345'
+            },
+            shipTo: {
+                name: 'TechVentures AI Inc',
+                addressLine1: 'Block 4, Vismaya Infopark',
+                addressLine2: 'Kochi, Kerala – 682030'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'LLM Multi-Agent Integration Setup',
+                    description: 'Setup, testing, and deployment of LLM autonomous workflow engine',
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 35593.22,
+                    amount: 35593.22
+                }
+            ],
+            subTotal: 35593.22,
+            discount: 0,
+            taxableAmount: 35593.22,
+            cgstRate: 9,
+            cgstAmount: 3203.39,
+            sgstRate: 9,
+            sgstAmount: 3203.39,
+            igstRate: 18,
+            igstAmount: 0.00,
+            grandTotal: 42000.00
         },
         {
-            id: 'REC-2025-005',
-            date: '2025-05-15',
+            id: 'REC-2026-006',
+            invoiceNo: 'INV-NXC-2026-11',
+            date: '2026-06-12',
+            invoiceDate: '12 June 2026',
+            dueDate: '2026-06-27',
+            poNo: 'PO-2026-009',
+            paymentTerms: '15 Days',
+            placeOfSupply: 'Kerala (32)',
             name: 'NexaCore Labs',
             desc: 'Cross-Platform Mobile Application Phase 2',
             department: 'Engineering',
@@ -454,41 +688,47 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             receivingAmount: 31500.00,
             paidAmount: 0.00,
             status: 'Pending',
-            invoiceNo: 'INV-NXC-2025-11'
-        },
-        {
-            id: 'REC-2025-006',
-            date: '2025-05-10',
-            name: 'Horizon Media Group',
-            desc: 'Annual CMS Infrastructure & DevOps Maintenance',
-            department: 'Marketing',
-            flow: 'Inflow',
-            category: 'Annual Subscription',
-            method: 'Stripe',
-            receivingAmount: 22000.00,
-            paidAmount: 0.00,
-            status: 'Paid',
-            invoiceNo: 'INV-HMG-2025-01'
-        },
-        {
-            id: 'REC-2025-007',
-            date: '2025-05-05',
-            name: 'CyberSecure Systems',
-            desc: 'Security Compliance Audit & Vulnerability Assessment',
-            department: 'Operations',
-            flow: 'Inflow',
-            category: 'Audit Services',
-            method: 'Wire Transfer',
-            receivingAmount: 16800.00,
-            paidAmount: 0.00,
-            status: 'Paid',
-            invoiceNo: 'INV-CSS-2025-04'
+            billTo: {
+                name: 'NexaCore Labs Pvt. Ltd.',
+                addressLine1: '6th Floor, Carnival Infopark',
+                addressLine2: 'Kakkanad, Kochi – 682030',
+                gstin: '32NXCIN1100P1Z1',
+                email: 'billing@nexacore.tech',
+                phone: '+91 984 600 7788'
+            },
+            shipTo: {
+                name: 'NexaCore Labs Pvt. Ltd.',
+                addressLine1: '6th Floor, Carnival Infopark',
+                addressLine2: 'Kakkanad, Kochi – 682030'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: 'Cross-Platform Mobile Application Phase 2',
+                    description: 'React Native modules, offline sync and Firebase real-time integration',
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 26694.92,
+                    amount: 26694.92
+                }
+            ],
+            subTotal: 26694.92,
+            discount: 0,
+            taxableAmount: 26694.92,
+            cgstRate: 9,
+            cgstAmount: 2402.54,
+            sgstRate: 9,
+            sgstAmount: 2402.54,
+            igstRate: 18,
+            igstAmount: 0.00,
+            grandTotal: 31500.00
         }
     ];
 
     function money(n) {
         const num = Number(n) || 0;
-        return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        return `₹${num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 
     async function loadTransactions() {
@@ -505,7 +745,7 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                     const netPay = data.netPay ?? ((Number(data.basicSalary) || 0) + (Number(data.allowances) || 0) - (Number(data.deductions) || 0));
                     allTransactions.push({
                         id: docSnap.id,
-                        date: data.createdOn ? data.createdOn.slice(0, 10) : '2025-05-30',
+                        date: data.createdOn ? data.createdOn.slice(0, 10) : '2026-06-30',
                         name: data.employeeName || 'Staff Member',
                         desc: `Salary Payout - ${data.designation || 'Staff'}`,
                         department: data.department || 'General',
@@ -530,11 +770,11 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             // Fallback payroll records if none in firestore
             if (allTransactions.filter(t => t.flow === 'Outflow').length === 0) {
                 const defaultPayouts = [
-                    { id: 'PAY-001', date: '2025-05-30', name: 'Sarah Jenkins', desc: 'Monthly Salary - Engineering Manager', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 8500.00, status: 'Paid', netPay: 8500, designation: 'Engineering Manager' },
-                    { id: 'PAY-002', date: '2025-05-30', name: 'Alex Rivera', desc: 'Monthly Salary - Senior Frontend Engineer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 6800.00, status: 'Paid', netPay: 6800, designation: 'Senior Frontend Engineer' },
-                    { id: 'PAY-003', date: '2025-05-30', name: 'Michael Chen', desc: 'Monthly Salary - Full Stack Developer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 6400.00, status: 'Paid', netPay: 6400, designation: 'Full Stack Developer' },
-                    { id: 'PAY-004', date: '2025-05-30', name: 'Emily Davis', desc: 'Monthly Salary - HR Specialist', department: 'HR', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 5600.00, status: 'Paid', netPay: 5600, designation: 'HR Specialist' },
-                    { id: 'PAY-005', date: '2025-05-30', name: 'Sophia Taylor', desc: 'Internship Stipend - UI/UX Intern', department: 'Product', flow: 'Outflow', category: 'Stipend', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 2800.00, status: 'Paid', netPay: 2800, designation: 'UI/UX Intern' }
+                    { id: 'PAY-001', date: '2026-06-30', name: 'Sarah Jenkins', desc: 'Monthly Salary - Engineering Manager', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 85000.00, status: 'Paid', netPay: 85000, designation: 'Engineering Manager' },
+                    { id: 'PAY-002', date: '2026-06-30', name: 'Alex Rivera', desc: 'Monthly Salary - Senior Frontend Engineer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 68000.00, status: 'Paid', netPay: 68000, designation: 'Senior Frontend Engineer' },
+                    { id: 'PAY-003', date: '2026-06-30', name: 'Michael Chen', desc: 'Monthly Salary - Full Stack Developer', department: 'Engineering', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 64000.00, status: 'Paid', netPay: 64000, designation: 'Full Stack Developer' },
+                    { id: 'PAY-004', date: '2026-06-30', name: 'Emily Davis', desc: 'Monthly Salary - HR Specialist', department: 'HR', flow: 'Outflow', category: 'Payroll Salary', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 56000.00, status: 'Paid', netPay: 56000, designation: 'HR Specialist' },
+                    { id: 'PAY-005', date: '2026-06-30', name: 'Sophia Taylor', desc: 'Internship Stipend - UI/UX Intern', department: 'Product', flow: 'Outflow', category: 'Stipend', method: 'Direct Deposit', receivingAmount: 0, paidAmount: 28000.00, status: 'Paid', netPay: 28000, designation: 'UI/UX Intern' }
                 ];
                 allTransactions.push(...defaultPayouts);
             }
@@ -577,7 +817,8 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                 (t.name || '').toLowerCase().includes(searchTerm) ||
                 (t.desc || '').toLowerCase().includes(searchTerm) ||
                 (t.department || '').toLowerCase().includes(searchTerm) ||
-                (t.category || '').toLowerCase().includes(searchTerm);
+                (t.category || '').toLowerCase().includes(searchTerm) ||
+                (t.invoiceNo || '').toLowerCase().includes(searchTerm);
             const matchesFlow = selectedFlow === "All" || t.flow === selectedFlow;
             const matchesDept = selectedDept === "All" || t.department === selectedDept;
             const isPaid = (t.status || '').toLowerCase() === 'paid';
@@ -624,7 +865,7 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                     <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
                     <td>
                         <div class="action-btn-group">
-                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" title="View / Print Invoice">
+                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" title="View / Print Official Invoice">
                                 <i class="fa-solid fa-file-invoice-dollar" style="color:#60a5fa;"></i> Invoice
                             </button>
                             <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View Payment Receipt">
@@ -680,8 +921,16 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
         const method = document.getElementById('invMethod').value;
         const status = document.getElementById('invStatus').value;
 
+        const baseSub = Number((amount / 1.18).toFixed(2));
+        const cgst = Number((baseSub * 0.09).toFixed(2));
+        const sgst = Number((baseSub * 0.09).toFixed(2));
+        const diff = Number((amount - (baseSub + cgst + sgst)).toFixed(2));
+        const taxable = Number((baseSub + diff).toFixed(2));
+
+        const genId = `REC-${Date.now()}`;
         const newRec = {
-            id: `REC-${Date.now()}`,
+            id: genId,
+            invoiceNo: `INV-${Date.now().toString().slice(-6)}`,
             date: date,
             name: client,
             desc: desc,
@@ -691,7 +940,42 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             method: method,
             receivingAmount: amount,
             paidAmount: 0.00,
-            status: status
+            status: status,
+            billTo: {
+                name: client,
+                addressLine1: 'Corporate Client Address',
+                addressLine2: 'Kochi, Kerala – India',
+                gstin: '32XXXXX0000X1Z0',
+                email: 'accounts@' + client.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com',
+                phone: '+91 900 000 0000'
+            },
+            shipTo: {
+                name: client,
+                addressLine1: 'Corporate Client Address',
+                addressLine2: 'Kochi, Kerala – India'
+            },
+            items: [
+                {
+                    sl: 1,
+                    title: desc,
+                    description: `Client deliverable for ${client}`,
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: taxable,
+                    amount: taxable
+                }
+            ],
+            subTotal: taxable,
+            discount: 0,
+            taxableAmount: taxable,
+            cgstRate: 9,
+            cgstAmount: cgst,
+            sgstRate: 9,
+            sgstAmount: sgst,
+            igstRate: 18,
+            igstAmount: 0,
+            grandTotal: amount
         };
 
         allTransactions.unshift(newRec);
@@ -703,7 +987,7 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 
     // Export CSV
     document.getElementById('exportAccountsCsvBtn')?.addEventListener('click', () => {
-        const rows = [["Date", "Entity / Client", "Category", "Department", "Method", "Receiving Amount ($)", "Paid Amount ($)", "Status"]];
+        const rows = [["Date", "Entity / Client", "Category", "Department", "Method", "Receiving Amount (₹)", "Paid Amount (₹)", "Status"]];
         allTransactions.forEach(t => {
             rows.push([t.date, t.name, t.category, t.department, t.method, t.receivingAmount || 0, t.paidAmount || 0, t.status]);
         });
