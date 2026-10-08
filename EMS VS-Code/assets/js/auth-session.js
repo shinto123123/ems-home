@@ -1,5 +1,8 @@
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { auth } from "./firebase-config.js";
+import { initTheme, getTheme, setTheme, toggleTheme } from "./theme.js";
+
+export { initTheme, getTheme, setTheme, toggleTheme };
 
 const SESSION_KEY = "emsUser";
 

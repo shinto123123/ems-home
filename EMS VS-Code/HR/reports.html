@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HR Dashboard - Reports & Analytics</title>
+<title>HR Reports & Submissions - HR Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
@@ -37,7 +37,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 /* ── BODY WRAP ── */
 .body-wrap{display:flex;flex:1;overflow:hidden;}
 
-/* ── SIDEBAR ── */
+/* ── SIDEBAR (HR) ── */
 .sidebar{width:240px;height:100%;background:#111c44;border-right:1px solid #1b2e6e;overflow-y:auto;flex-shrink:0;transition:width 0.3s ease;}
 .sidebar::-webkit-scrollbar{width:6px;}
 .sidebar::-webkit-scrollbar-thumb{background:#1b2e6e;border-radius:10px;}
@@ -94,11 +94,34 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 .sec-tab-btn:hover { color: #fff; }
 .sec-tab-btn.active { background: #4299e1; color: #fff; }
 
+/* Grid layout for Submission Tab */
+.grid-split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; flex: 1; min-height: 0; }
+
+.panel-card { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; box-shadow: 0 4px 18px rgba(0,0,0,0.2); overflow-y: auto; }
+.panel-card h3 { font-size: 15px; color: #ffffff; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.panel-card h3 span i { color: #4299e1; margin-right: 6px; }
+
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; color: #8898aa; font-size: 11.5px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 8px; color: #ffffff; font-size: 13px; outline: none; font-family: inherit; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #4299e1; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.report-item { background: #0b1437; border: 1px solid #1b2e6e; border-radius: 10px; padding: 13px 15px; margin-bottom: 10px; transition: .2s; }
+.report-item:hover { border-color: #4299e1; }
+.report-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+.status-pill { padding: 3px 8px; border-radius: 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; }
+.status-pill.approved { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+.status-pill.submitted { background: rgba(66,153,225,0.15); color: #60a5fa; border: 1px solid rgba(66,153,225,0.3); }
+.status-pill.flagged { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+
 /* KPI Cards */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
+    flex-shrink: 0;
 }
 .card-kpi {
     background: #111c44;
@@ -134,10 +157,11 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     gap: 12px;
     align-items: center;
     background: #111c44;
-    padding: 12px 16px;
+    padding: 10px 16px;
     border-radius: 12px;
     border: 1px solid #1b2e6e;
     flex-wrap: wrap;
+    flex-shrink: 0;
 }
 .search-input-wrap {
     flex: 1;
@@ -179,6 +203,7 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
     border-radius: 14px;
     overflow: auto;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    min-height: 0;
 }
 .table-panel::-webkit-scrollbar { width: 6px; height: 6px; }
 .table-panel::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
@@ -186,154 +211,53 @@ body{background:#0b1437;display:flex;flex-direction:column;height:100vh;overflow
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 1000px;
+    min-width: 950px;
     font-size: 13px;
 }
 thead { background: #16265c; position: sticky; top: 0; z-index: 2; }
 th {
-    padding: 13px 16px;
+    padding: 12px 16px;
     text-align: left;
     color: #ffffff;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.4px;
     border-bottom: 1px solid #1b2e6e;
 }
 td {
-    padding: 12px 16px;
+    padding: 11px 16px;
     color: #d7dfef;
-    border-top: 1px solid #1b2e6e;
+    border-bottom: 1px solid #1b2e6e;
     vertical-align: middle;
 }
 tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 
-/* Person Cell */
-.person-cell {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.person-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1.5px solid #4299e1;
-    background: #0b1437;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4299e1;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-.person-info h4 { color: #ffffff; font-size: 13px; font-weight: 600; }
-.person-info small { color: #8898aa; font-size: 11px; }
+/* Analytics Charts */
+.analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.chart-card { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.chart-header h3 { color: #fff; font-size: 15px; font-weight: 600; }
+.circle-chart { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#4299e1 0% 35%, #22c55e 35% 65%, #fbbf24 65% 85%, #f87171 85% 100%); position: relative; flex-shrink: 0; }
+.circle-chart::after { content: ""; position: absolute; width: 60px; height: 60px; background: #111c44; border-radius: 50%; top: 30px; left: 30px; }
 
-/* Status Badges */
-.status-pill {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 12px;
-    display: inline-block;
-}
-.status-pill.submitted { background: rgba(66, 153, 225, 0.15); color: #60a5fa; border: 1px solid rgba(66, 153, 225, 0.3); }
-.status-pill.approved { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
-.status-pill.review { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.quick-report { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 18px; }
+.quick-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: .2s; }
+.quick-item:hover { border-color: #4299e1; transform: translateX(3px); }
 
-/* Task View Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(5, 10, 30, 0.75);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 30, 0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
 .modal-overlay.show { opacity: 1; pointer-events: auto; }
-.modal-box {
-    background: #111c44;
-    border: 1px solid #1b2e6e;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 580px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-}
+.modal-box { background: #111c44; border: 1px solid #1b2e6e; border-radius: 16px; width: 100%; max-width: 580px; padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: translateY(-20px); transition: transform 0.3s ease; }
 .modal-overlay.show .modal-box { transform: translateY(0); }
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #1b2e6e;
-    padding-bottom: 12px;
-    margin-bottom: 16px;
-}
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1b2e6e; padding-bottom: 12px; margin-bottom: 16px; }
 .modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
 .modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
 .modal-close:hover { color: #f87171; }
 
-.task-list-box {
-    background: #0b1437;
-    border: 1px solid #1b2e6e;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 12px;
-}
-.task-list-box h5 { color: #4299e1; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
-.task-item-bullet {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 12.5px;
-    color: #e2e8f0;
-    margin-bottom: 6px;
-    line-height: 1.4;
-}
-.task-item-bullet:last-child { margin-bottom: 0; }
-.task-item-bullet i { color: #4ade80; font-size: 12px; margin-top: 3px; }
-
-/* Tab sections */
-.tab-content-pane { display: none; flex-direction: column; gap: 14px; flex: 1; }
-.tab-content-pane.active { display: flex; }
-
-/* ── CHARTS CONTAINER ── */
-.charts-grid-row {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 14px;
-}
-.chart-box {
-    background: #111c44;
-    border: 1px solid #1b2e6e;
-    border-radius: 14px;
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.chart-box h4 { font-size: 14px; font-weight: 600; color: #ffffff; }
-
-@media(max-width: 1200px) {
+@media(max-width:960px) {
+    .grid-split, .analytics-grid { grid-template-columns: 1fr; }
     .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .charts-grid-row { grid-template-columns: 1fr; }
-}
-@media(max-width: 768px) {
-    .sidebar { width: 70px; }
-    .sidebar ul li a span { display: none; }
-    .cards-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -349,11 +273,11 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search daily work logs, analytics, performance...">
+            <input type="text" placeholder="Search HR reports, employee logs...">
         </div>
     </div>
     <div class="navbar-right">
-        <a class="nav-icon-btn" href="notification.html">
+        <a class="nav-icon-btn" href="notification.html" title="Notifications">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">4</span>
         </a>
@@ -377,27 +301,27 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 
 <div class="body-wrap">
 
-    <!-- SIDEBAR (HR 15 items) -->
-      <div class="sidebar" id="hrSidebar">
-    <ul>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
-      <li><a href="Employee.html"><i class="fa-solid fa-user-group"></i> <span>Employees</span></a></li>
-      <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Department</span></a></li>
-      <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
-      <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
-      <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
-      <li><a href="recruitment.html"><i class="fa-solid fa-briefcase"></i> <span>Recruitment</span></a></li>
-      <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
-      <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
-      <li><a href="internship.html"><i class="fa-solid fa-graduation-cap"></i> <span>Internship</span></a></li>
-      <li><a href="mentorship.html"><i class="fa-solid fa-chalkboard-user"></i> <span>Mentorship</span></a></li>
-      <li><a href="project-management.html"><i class="fa-solid fa-diagram-project"></i> <span>Projects</span></a></li>
-      <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
-      <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports &amp; Analytics</span></a></li>
-      <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
-      <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
-    </ul>
-  </div>
+    <!-- SIDEBAR (HR) -->
+    <div class="sidebar" id="hrSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-user-group"></i> <span>Employees</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Department</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-briefcase"></i> <span>Recruitment</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-graduation-cap"></i> <span>Internship</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-chalkboard-user"></i> <span>Mentorship</span></a></li>
+            <li><a href="project-management.html"><i class="fa-solid fa-diagram-project"></i> <span>Projects</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li class="active"><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports &amp; Analytics</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
 
     <!-- MAIN CONTENT -->
     <div class="main">
@@ -405,201 +329,172 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 
             <div class="page-header">
                 <div>
-                    <h1>Reports & Workforce Analytics</h1>
-                    <p>Track employee daily work logs, organization headcount trends, department productivity, and attendance metrics.</p>
+                    <h1>Reports & Submissions</h1>
+                    <p>Submit HR Departmental updates to Admin and review company-wide employee work submissions.</p>
                 </div>
-                <div class="header-actions">
-                    <button class="btn-secondary" id="exportReportBtn"><i class="fa-solid fa-download"></i> Export CSV</button>
+                <div class="section-tabs-bar">
+                    <button class="sec-tab-btn active" id="tabSubmitHrReport"><i class="fa-solid fa-paper-plane"></i> Submit HR Report to Admin</button>
+                    <button class="sec-tab-btn" id="tabCompanyWorkReports"><i class="fa-solid fa-users-viewfinder"></i> Employee Work Submissions</button>
+                    <button class="sec-tab-btn" id="tabHrAnalytics"><i class="fa-solid fa-chart-pie"></i> HR Analytics</button>
                 </div>
             </div>
 
-            <!-- TAB SELECTOR -->
-            <div class="section-tabs-bar">
-                <button class="sec-tab-btn active" id="tabBtnDaily"><i class="fa-solid fa-clipboard-list"></i> Employee Daily Work Reports</button>
-                <button class="sec-tab-btn" id="tabBtnAnalytics"><i class="fa-solid fa-chart-pie"></i> Organization Analytics & KPIs</button>
+            <!-- TAB 1: SUBMIT HR REPORT TO ADMIN -->
+            <div id="sectionSubmitHrReport" class="grid-split">
+                <!-- Left: HR Submit Form -->
+                <div class="panel-card">
+                    <h3><span><i class="fa-solid fa-pen-nib"></i> Submit Daily HR Report to Admin</span> <span style="font-size:11px; color:#4299e1; background:rgba(66,153,225,0.15); padding:2px 8px; border-radius:6px; font-weight:600;">To: Executive Admin</span></h3>
+                    <form id="submitHrReportForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hrReportDate">Report Date</label>
+                                <input type="date" id="hrReportDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hrReportCategory">HR Core Focus</label>
+                                <select id="hrReportCategory" required>
+                                    <option value="Recruitment & Hiring">Recruitment & Hiring Pipeline</option>
+                                    <option value="Employee Relations & Attendance" selected>Employee Relations & Attendance</option>
+                                    <option value="Payroll & Compliance">Payroll & Statutory Compliance</option>
+                                    <option value="Training & Onboarding">Training, Mentorship & Onboarding</option>
+                                    <option value="Performance & Reviews">Performance Appraisals</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="hrReportSummary">Executive Summary Headline</label>
+                            <input type="text" id="hrReportSummary" placeholder="e.g. Completed Q4 performance calibration and 3 new engineering hires onboarding" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hrReportDetails">Detailed HR Operations Breakdown</label>
+                            <textarea id="hrReportDetails" rows="4" placeholder="1. Coordinated 5 interview rounds for Senior Full Stack role...&#10;2. Verified monthly attendance timesheets and overtime logs...&#10;3. Prepared onboarding documentation for next Monday's cohort..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="hrReportBlockers">Escalations / Decisions Needed from Admin (Optional)</label>
+                            <input type="text" id="hrReportBlockers" placeholder="None or specify item (e.g. Executive approval for compensation band adjustment)">
+                        </div>
+                        <div class="form-group">
+                            <label for="hrReportTomorrow">Upcoming Planned Initiatives</label>
+                            <input type="text" id="hrReportTomorrow" placeholder="Key goals for tomorrow's HR operations">
+                        </div>
+                        <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                            <i class="fa-solid fa-paper-plane"></i> Submit HR Report to Admin
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Past HR Submissions to Admin -->
+                <div class="panel-card">
+                    <h3><span><i class="fa-solid fa-clock-rotate-left"></i> HR Reports Sent to Admin</span> <span id="myHrReportsCountBadge" style="font-size:11.5px; color:#8898aa;">0 submissions</span></h3>
+                    <div id="myHrReportsList" style="overflow-y:auto; flex:1;">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
             </div>
 
-            <!-- 1. DAILY WORK REPORTS TAB PANE -->
-            <div class="tab-content-pane active" id="paneDaily">
-
-                <!-- 4 KPI CARDS -->
+            <!-- TAB 2: COMPANY WORK SUBMISSIONS -->
+            <div id="sectionCompanyReports" style="display:none; flex-direction:column; gap:14px; flex:1; min-height:0;">
+                
+                <!-- KPI Deck -->
                 <div class="cards-grid">
                     <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#4299e1;"><i class="fa-solid fa-clipboard-check"></i></div>
+                        <div class="card-kpi-icon"><i class="fa-solid fa-clipboard-list"></i></div>
                         <div class="card-kpi-info">
-                            <h3 id="statTotalReports">18</h3>
-                            <p>Daily Reports Today</p>
+                            <h3 id="statTotalCompanyLogs">0</h3>
+                            <p>Total Staff Submissions</p>
                         </div>
                     </div>
                     <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#4ade80;"><i class="fa-solid fa-users-viewfinder"></i></div>
+                        <div class="card-kpi-icon" style="color:#4ade80;"><i class="fa-solid fa-circle-check"></i></div>
                         <div class="card-kpi-info">
-                            <h3 id="statReportingStaff">18 / 24</h3>
-                            <p>Staff Reported</p>
+                            <h3 id="statApprovedCompanyLogs">0</h3>
+                            <p>Approved Reports</p>
                         </div>
                     </div>
                     <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#fbbf24;"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="card-kpi-icon" style="color:#60a5fa;"><i class="fa-solid fa-paper-plane"></i></div>
                         <div class="card-kpi-info">
-                            <h3 id="statAvgTasks">4.8</h3>
-                            <p>Avg Tasks / Employee</p>
+                            <h3 id="statSubmittedCompanyLogs">0</h3>
+                            <p>Awaiting Review</p>
                         </div>
                     </div>
                     <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#38bdf8;"><i class="fa-solid fa-clock"></i></div>
+                        <div class="card-kpi-icon" style="color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <div class="card-kpi-info">
-                            <h3 id="statTotalHoursLogged">152h</h3>
-                            <p>Logged Hours Today</p>
+                            <h3 id="statFlaggedCompanyLogs">0</h3>
+                            <p>Blockers Reported</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- FILTER CONTROLS -->
+                <!-- Filter Bar -->
                 <div class="filter-box">
                     <div class="search-input-wrap">
                         <i class="fa-solid fa-search"></i>
-                        <input type="text" id="searchDailyInput" placeholder="Search employee, project, or task...">
+                        <input type="text" id="companyReportSearch" placeholder="Search staff name, project, department or summary...">
                     </div>
-                    <select class="filter-select" id="deptDailyFilter">
-                        <option value="">All Departments</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Design">Design</option>
-                        <option value="Product">Product</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Sales">Sales</option>
+                    <select class="filter-select" id="companyReportRoleFilter">
+                        <option value="all">All Roles</option>
+                        <option value="manager">Managers</option>
+                        <option value="employee">Employees</option>
+                        <option value="intern">Interns</option>
                     </select>
-                    <select class="filter-select" id="statusDailyFilter">
-                        <option value="">All Statuses</option>
-                        <option value="Submitted">Submitted</option>
-                        <option value="Reviewed">Reviewed</option>
+                    <select class="filter-select" id="companyReportStatusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="Submitted">Submitted (Pending)</option>
                         <option value="Approved">Approved</option>
+                        <option value="Flagged">Flagged Blockers</option>
                     </select>
-                    <input type="date" id="dateDailyFilter" class="filter-select" style="color:#fff;">
+                    <button class="btn-secondary" id="exportCompanyReportsCsv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
                 </div>
 
-                <!-- DAILY WORK REPORTS TABLE -->
+                <!-- Table View -->
                 <div class="table-panel">
                     <table>
                         <thead>
                             <tr>
-                                <th>Employee / Team Member</th>
-                                <th>Department</th>
-                                <th>Report Date</th>
-                                <th>Shift Hours</th>
-                                <th>Tasks Summary</th>
-                                <th>Blockers / Notes</th>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Project / Feature</th>
+                                <th>Work Summary</th>
+                                <th>Hours</th>
+                                <th>Blockers</th>
                                 <th>Status</th>
-                                <th style="text-align: right;">Action</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="dailyReportsTableBody">
-                            <tr>
-                                <td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">
-                                    <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading daily reports...
-                                </td>
-                            </tr>
+                        <tbody id="companyReportsTableBody">
+                            <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading work submissions...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
             </div>
 
-            <!-- 2. ORGANIZATION ANALYTICS TAB PANE -->
-            <div class="tab-content-pane" id="paneAnalytics">
-                <div class="cards-grid">
-                    <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#4299e1;"><i class="fa-solid fa-users"></i></div>
-                        <div class="card-kpi-info">
-                            <h3>142</h3>
-                            <p>Total Headcount</p>
+            <!-- TAB 3: HR ANALYTICS & QUICK EXPORT -->
+            <div id="sectionHrAnalytics" style="display:none; flex-direction:column; gap:16px; flex:1; min-height:0;">
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Workforce by Department</h3>
+                            <span style="font-size:12px; color:#8898aa;">Current Distribution</span>
                         </div>
-                    </div>
-                    <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#4ade80;"><i class="fa-solid fa-chart-line"></i></div>
-                        <div class="card-kpi-info">
-                            <h3>94.6%</h3>
-                            <p>Monthly Attendance Rate</p>
-                        </div>
-                    </div>
-                    <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#fbbf24;"><i class="fa-solid fa-arrow-trend-up"></i></div>
-                        <div class="card-kpi-info">
-                            <h3>88.2%</h3>
-                            <p>Task Delivery Rate</p>
-                        </div>
-                    </div>
-                    <div class="card-kpi">
-                        <div class="card-kpi-icon" style="color:#38bdf8;"><i class="fa-solid fa-award"></i></div>
-                        <div class="card-kpi-info">
-                            <h3>4.7 / 5</h3>
-                            <p>Performance Index</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="charts-grid-row">
-                    <div class="chart-box">
-                        <h4>Department Workforce Productivity</h4>
-                        <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#cbd5e1; margin-bottom:4px;">
-                                    <span>Engineering (48 Members)</span>
-                                    <strong>92% Output</strong>
-                                </div>
-                                <div style="background:#0b1437; border:1px solid #1b2e6e; height:8px; border-radius:10px; overflow:hidden;">
-                                    <div style="background:#4299e1; width:92%; height:100%; border-radius:10px;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#cbd5e1; margin-bottom:4px;">
-                                    <span>Product & Design (24 Members)</span>
-                                    <strong>96% Output</strong>
-                                </div>
-                                <div style="background:#0b1437; border:1px solid #1b2e6e; height:8px; border-radius:10px; overflow:hidden;">
-                                    <div style="background:#4ade80; width:96%; height:100%; border-radius:10px;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#cbd5e1; margin-bottom:4px;">
-                                    <span>Marketing & Sales (32 Members)</span>
-                                    <strong>85% Output</strong>
-                                </div>
-                                <div style="background:#0b1437; border:1px solid #1b2e6e; height:8px; border-radius:10px; overflow:hidden;">
-                                    <div style="background:#fbbf24; width:85%; height:100%; border-radius:10px;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:12px; color:#cbd5e1; margin-bottom:4px;">
-                                    <span>Operations & HR (38 Members)</span>
-                                    <strong>90% Output</strong>
-                                </div>
-                                <div style="background:#0b1437; border:1px solid #1b2e6e; height:8px; border-radius:10px; overflow:hidden;">
-                                    <div style="background:#38bdf8; width:90%; height:100%; border-radius:10px;"></div>
-                                </div>
+                        <div style="display:flex; align-items:center; justify-content:space-around; gap:20px;">
+                            <div class="circle-chart"></div>
+                            <div style="font-size:12.5px; color:#cbd5e1; line-height:1.8;">
+                                <div><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#4299e1; margin-right:8px;"></span> Engineering &bull; 45%</div>
+                                <div><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#22c55e; margin-right:8px;"></span> Operations &bull; 25%</div>
+                                <div><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#fbbf24; margin-right:8px;"></span> HR & Admin &bull; 15%</div>
+                                <div><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#f87171; margin-right:8px;"></span> Marketing & Design &bull; 15%</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="chart-box">
-                        <h4>Monthly Attendance & Punctuality Breakdown</h4>
-                        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0b1437; padding:10px 14px; border-radius:8px; border:1px solid #1b2e6e;">
-                                <span style="font-size:12.5px; color:#4ade80;"><i class="fa-solid fa-circle" style="font-size:8px; margin-right:6px;"></i> On-Time Arrivals</span>
-                                <strong style="color:#ffffff;">87.4%</strong>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0b1437; padding:10px 14px; border-radius:8px; border:1px solid #1b2e6e;">
-                                <span style="font-size:12.5px; color:#fbbf24;"><i class="fa-solid fa-circle" style="font-size:8px; margin-right:6px;"></i> Late Check-Ins</span>
-                                <strong style="color:#ffffff;">7.2%</strong>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0b1437; padding:10px 14px; border-radius:8px; border:1px solid #1b2e6e;">
-                                <span style="font-size:12.5px; color:#c084fc;"><i class="fa-solid fa-circle" style="font-size:8px; margin-right:6px;"></i> Approved Leaves</span>
-                                <strong style="color:#ffffff;">4.1%</strong>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0b1437; padding:10px 14px; border-radius:8px; border:1px solid #1b2e6e;">
-                                <span style="font-size:12.5px; color:#f87171;"><i class="fa-solid fa-circle" style="font-size:8px; margin-right:6px;"></i> Unplanned Absences</span>
-                                <strong style="color:#ffffff;">1.3%</strong>
-                            </div>
-                        </div>
+                    <div class="quick-report">
+                        <h3 style="color:#fff; font-size:15px; font-weight:600; margin-bottom:12px;">Quick HR Data Exports</h3>
+                        <div class="quick-item" id="exportQuickStaffDirectory"><span><i class="fa-solid fa-users" style="color:#4299e1; margin-right:8px;"></i> Staff Directory Master</span> <i class="fa-solid fa-download"></i></div>
+                        <div class="quick-item" id="exportQuickAttSummary"><span><i class="fa-solid fa-calendar-check" style="color:#4ade80; margin-right:8px;"></i> Monthly Attendance Roll</span> <i class="fa-solid fa-download"></i></div>
+                        <div class="quick-item" id="exportQuickPayrollSummary"><span><i class="fa-solid fa-money-bill" style="color:#fbbf24; margin-right:8px;"></i> Payroll Disbursement Summary</span> <i class="fa-solid fa-download"></i></div>
                     </div>
                 </div>
             </div>
@@ -608,21 +503,23 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     </div>
 </div>
 
-<!-- TASK DETAILS MODAL -->
-<div class="modal-overlay" id="taskDetailModal">
+<!-- VIEW REPORT MODAL -->
+<div class="modal-overlay" id="viewReportModal">
     <div class="modal-box">
         <div class="modal-header">
-            <h3 id="modalEmpTitle">Daily Work Report Breakdown</h3>
-            <button class="modal-close" id="closeDetailModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="modalReportTitle">Work Submission Details</h3>
+            <button class="modal-close" id="closeViewReportBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div id="modalReportDetails">
-            <!-- Dynamically injected -->
+        <div id="viewReportModalContent" style="color:#d7dfef; font-size:13px; line-height:1.6;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px;">
+            <button type="button" class="btn-secondary" id="btnApproveLog"><i class="fa-solid fa-check" style="color:#4ade80;"></i> Approve Work Log</button>
+            <button type="button" class="btn-primary" id="btnCloseViewReportModal">Close</button>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import { collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
     import { initEmailModal } from "../assets/js/email-modal.js";
@@ -649,282 +546,386 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
         logout("../");
     });
 
-    // Tab switcher
-    const tabBtnDaily = document.getElementById('tabBtnDaily');
-    const tabBtnAnalytics = document.getElementById('tabBtnAnalytics');
-    const paneDaily = document.getElementById('paneDaily');
-    const paneAnalytics = document.getElementById('paneAnalytics');
+    document.getElementById('hrReportDate').value = new Date().toISOString().slice(0, 10);
 
-    tabBtnDaily?.addEventListener('click', () => {
-        tabBtnDaily.classList.add('active');
-        tabBtnAnalytics.classList.remove('active');
-        paneDaily.classList.add('active');
-        paneAnalytics.classList.remove('active');
+    // Tab Switcher
+    const tabSubmit = document.getElementById('tabSubmitHrReport');
+    const tabCompany = document.getElementById('tabCompanyWorkReports');
+    const tabAnalytics = document.getElementById('tabHrAnalytics');
+    const secSubmit = document.getElementById('sectionSubmitHrReport');
+    const secCompany = document.getElementById('sectionCompanyReports');
+    const secAnalytics = document.getElementById('sectionHrAnalytics');
+
+    tabSubmit?.addEventListener('click', () => {
+        tabSubmit.classList.add('active');
+        tabCompany.classList.remove('active');
+        tabAnalytics.classList.remove('active');
+        secSubmit.style.display = 'grid';
+        secCompany.style.display = 'none';
+        secAnalytics.style.display = 'none';
     });
 
-    tabBtnAnalytics?.addEventListener('click', () => {
-        tabBtnAnalytics.classList.add('active');
-        tabBtnDaily.classList.remove('active');
-        paneAnalytics.classList.add('active');
-        paneDaily.classList.remove('active');
+    tabCompany?.addEventListener('click', () => {
+        tabCompany.classList.add('active');
+        tabSubmit.classList.remove('active');
+        tabAnalytics.classList.remove('active');
+        secSubmit.style.display = 'none';
+        secCompany.style.display = 'flex';
+        secAnalytics.style.display = 'none';
+        renderCompanyReportsTable();
     });
 
-    const dailyTableBody = document.getElementById('dailyReportsTableBody');
-    const searchDailyInput = document.getElementById('searchDailyInput');
-    const deptDailyFilter = document.getElementById('deptDailyFilter');
-    const statusDailyFilter = document.getElementById('statusDailyFilter');
-    const dateDailyFilter = document.getElementById('dateDailyFilter');
+    tabAnalytics?.addEventListener('click', () => {
+        tabAnalytics.classList.add('active');
+        tabSubmit.classList.remove('active');
+        tabCompany.classList.remove('active');
+        secSubmit.style.display = 'none';
+        secCompany.style.display = 'none';
+        secAnalytics.style.display = 'flex';
+    });
 
-    // Default to today
-    const todayStr = new Date().toISOString().slice(0, 10);
-    dateDailyFilter.value = todayStr;
+    let allReportsCache = [];
+    let myHrReportsCache = [];
 
-    let dailyReportsCache = [];
-
-    const mockReports = [
+    const defaultFallbackReports = [
         {
-            id: "dr1",
-            employeeName: "Sarah Jenkins",
-            department: "Engineering",
-            role: "Senior Full Stack Engineer",
-            date: todayStr,
-            shiftHours: "8h 30m",
-            completedTasks: [
-                "Refactored authentication middleware with JWT rotation",
-                "Merged Pull Request #142 for real-time WebSocket notifications",
-                "Fixed timezone bug in attendance calendar module"
-            ],
-            inProgressTasks: [
-                "Writing unit tests for payroll calculation service"
-            ],
-            blockers: "Waiting on AWS staging VPC credentials",
-            nextDayPlan: "Deploy release v2.4 to staging environment and conduct smoke tests",
-            status: "Approved"
+            id: 'REP-HR-101',
+            employeeUid: currentUser?.uid || 'hr-1',
+            employeeName: currentUser?.name || 'Emily Davis',
+            role: 'hr',
+            department: 'Human Resources',
+            date: '2026-10-07',
+            hours: 8.0,
+            project: 'Recruitment & Attendance Calibration',
+            summary: 'Completed final technical interviews for Senior React Lead and synchronized payroll records',
+            details: '1. Conducted 4 culture fit interviews with executive feedback.\n2. Resolved 2 leave balance adjustments in attendance portal.\n3. Prepared Q4 employee recognition nominations.',
+            blockers: 'None',
+            tomorrow: 'Distribute offer letters and complete onboarding checklists',
+            status: 'Approved',
+            submittedTo: 'Admin'
         },
         {
-            id: "dr2",
-            employeeName: "David Chen",
-            department: "Design",
-            role: "Lead Product Designer",
-            date: todayStr,
-            shiftHours: "8h 00m",
-            completedTasks: [
-                "Finalized Figma interactive component library for dark theme",
-                "Conducted usability audit with 4 client managers",
-                "Created responsive email templates in HTML/CSS"
-            ],
-            inProgressTasks: [
-                "Designing mobile bottom navigation bar prototype"
-            ],
-            blockers: "None",
-            nextDayPlan: "Present updated UX guidelines to executive stakeholders",
-            status: "Approved"
+            id: 'REP-101',
+            employeeUid: 'mgr-1',
+            employeeName: 'Sarah Jenkins',
+            role: 'manager',
+            department: 'Engineering',
+            date: '2026-10-08',
+            hours: 8.5,
+            project: 'Q4 Product Milestones',
+            summary: 'Sprint planning and architecture review for billing engine',
+            details: 'Reviewed engineering delivery timelines and unblocked dependencies.',
+            blockers: 'None',
+            tomorrow: 'Staging deployment review',
+            status: 'Approved',
+            submittedTo: 'Admin'
         },
         {
-            id: "dr3",
-            employeeName: "Alex Rivera",
-            department: "Product",
-            role: "Technical Product Lead",
-            date: todayStr,
-            shiftHours: "8h 45m",
-            completedTasks: [
-                "Prepared Sprint 14 backlog and user story estimation",
-                "Validated customer telemetry data on daily reporting usage",
-                "Hosted bi-weekly client feedback sync"
-            ],
-            inProgressTasks: [
-                "Drafting Q4 Product Roadmap specifications"
-            ],
-            blockers: "Pending marketing sign-off on feature launch date",
-            nextDayPlan: "Sprint 14 grooming session with engineering Chapter leads",
-            status: "Reviewed"
+            id: 'REP-102',
+            employeeUid: 'dev-1',
+            employeeName: 'Alex Rivera',
+            role: 'employee',
+            department: 'Engineering',
+            date: '2026-10-08',
+            hours: 8.0,
+            project: 'EMS Next-Gen Portal',
+            summary: 'Built unified attendance and timesheets page for Admin, HR and Manager',
+            details: 'Integrated live clock, clock in/out, and staff profile inspect list.',
+            blockers: 'None',
+            tomorrow: 'Complete daily work report integrations',
+            status: 'Submitted',
+            submittedTo: 'Manager'
         },
         {
-            id: "dr4",
-            employeeName: "Emily Watson",
-            department: "Marketing",
-            role: "Growth Marketing Specialist",
-            date: todayStr,
-            shiftHours: "7h 30m",
-            completedTasks: [
-                "Launched LinkedIn recruitment campaign for Senior Devs",
-                "Drafted weekly product newsletter reaching 15k subscribers"
-            ],
-            inProgressTasks: [
-                "A/B testing landing page conversion copy"
-            ],
-            blockers: "None",
-            nextDayPlan: "Analyze Google Analytics campaign attribution funnel",
-            status: "Submitted"
-        },
-        {
-            id: "dr5",
-            employeeName: "Michael Chang",
-            department: "Sales",
-            role: "Account Executive",
-            date: todayStr,
-            shiftHours: "8h 15m",
-            completedTasks: [
-                "Completed 6 discovery calls with enterprise prospects",
-                "Sent 3 proposals for HR module upgrade ($45,000 ARR total)"
-            ],
-            inProgressTasks: [
-                "Contract redlining with Legal for FinTech customer"
-            ],
-            blockers: "Awaiting client procurement approval",
-            nextDayPlan: "Follow up with shortlisted candidates and close Q3 renewals",
-            status: "Approved"
+            id: 'REP-103',
+            employeeUid: 'dev-2',
+            employeeName: 'Michael Chen',
+            role: 'employee',
+            department: 'Engineering',
+            date: '2026-10-08',
+            hours: 7.5,
+            project: 'API Gateway & Auth',
+            summary: 'Optimized Firestore real-time listeners and role handlers',
+            details: 'Enhanced query indices and offline caching.',
+            blockers: 'Awaiting staging cluster credentials',
+            tomorrow: 'Authentication test suite',
+            status: 'Flagged',
+            submittedTo: 'Manager'
         }
     ];
 
-    async function loadDailyReports() {
+    async function loadAllReports() {
         try {
-            const snap = await getDocs(collection(db, "daily_reports"));
-            dailyReportsCache = [];
-            snap.forEach(doc => {
-                dailyReportsCache.push({ id: doc.id, ...doc.data() });
-            });
+            const snap = await getDocs(collection(db, "dailyReports"));
+            allReportsCache = [];
+            snap.forEach(d => allReportsCache.push({ id: d.id, ...d.data() }));
 
-            if (dailyReportsCache.length === 0) {
-                dailyReportsCache = [...mockReports];
+            if (allReportsCache.length === 0) {
+                allReportsCache = [...defaultFallbackReports];
             }
-        } catch (e) {
-            console.warn("Using offline mock daily reports:", e);
-            dailyReportsCache = [...mockReports];
+        } catch (err) {
+            console.warn("Using local HR report data: ", err);
+            allReportsCache = [...defaultFallbackReports];
         }
 
-        renderDailyReportsTable();
+        const myUid = currentUser?.uid || 'hr-1';
+        const myName = currentUser?.name || 'HR Specialist';
+        myHrReportsCache = allReportsCache.filter(r => r.employeeUid === myUid || r.employeeName === myName || r.role === 'hr');
+
+        renderMyHrReportsList();
+        computeCompanyKpis();
+        renderCompanyReportsTable();
     }
 
-    function renderDailyReportsTable() {
-        const q = (searchDailyInput.value || '').toLowerCase().trim();
-        const selectedDept = deptDailyFilter.value;
-        const selectedStatus = statusDailyFilter.value;
-        const selectedDate = dateDailyFilter.value;
+    function renderMyHrReportsList() {
+        const container = document.getElementById('myHrReportsList');
+        const badge = document.getElementById('myHrReportsCountBadge');
+        if (!container) return;
 
-        const filtered = dailyReportsCache.filter(item => {
-            const matchQ = (item.employeeName || '').toLowerCase().includes(q) ||
-                           (item.department || '').toLowerCase().includes(q) ||
-                           (item.completedTasks || []).some(t => t.toLowerCase().includes(q));
-            const matchDept = !selectedDept || item.department === selectedDept;
-            const matchStatus = !selectedStatus || item.status === selectedStatus;
-            const matchDate = !selectedDate || item.date === selectedDate;
-            return matchQ && matchDept && matchStatus && matchDate;
-        });
+        if (badge) badge.textContent = `${myHrReportsCache.length} submissions`;
 
-        if (filtered.length === 0) {
-            dailyTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:36px; color:#8898aa;">No daily work reports match your filter criteria.</td></tr>`;
+        if (myHrReportsCache.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:30px; color:#8898aa; font-size:13px;">No HR reports submitted yet. Fill the form to submit to Admin.</div>`;
             return;
         }
 
-        let html = '';
-        filtered.forEach(r => {
-            const statusClass = r.status === 'Approved' ? 'approved' : (r.status === 'Reviewed' ? 'review' : 'submitted');
-            const summarySnippet = (r.completedTasks && r.completedTasks.length > 0) ? `${r.completedTasks[0]} (+${r.completedTasks.length - 1} more)` : '1 task logged';
+        container.innerHTML = myHrReportsCache.map(r => {
+            const statusKey = (r.status || 'Submitted').toLowerCase();
+            return `
+                <div class="report-item">
+                    <div class="report-item-header">
+                        <strong style="color:#ffffff; font-size:13.5px;"><i class="fa-regular fa-calendar" style="color:#4299e1; margin-right:6px;"></i> ${r.date}</strong>
+                        <span class="status-pill ${statusKey}">${r.status || 'Submitted'}</span>
+                    </div>
+                    <div style="font-size:12.5px; color:#60a5fa; font-weight:600; margin-bottom:4px;">${r.project || 'HR Operations'}</div>
+                    <div style="font-size:12px; color:#cbd5e1; margin-bottom:6px; line-height:1.4;">${r.summary || ''}</div>
+                    ${r.blockers && r.blockers !== 'None' ? `<div style="font-size:11.5px; color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i> Escalated to Admin: ${r.blockers}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+    }
 
-            html += `
+    function computeCompanyKpis() {
+        const nonHrReports = allReportsCache.filter(r => r.role !== 'admin');
+        const approved = nonHrReports.filter(r => (r.status || '').toLowerCase() === 'approved').length;
+        const submitted = nonHrReports.filter(r => (r.status || '').toLowerCase() === 'submitted').length;
+        const flagged = nonHrReports.filter(r => r.blockers && r.blockers !== 'None' && r.blockers !== 'none').length;
+
+        document.getElementById('statTotalCompanyLogs').textContent = nonHrReports.length;
+        document.getElementById('statApprovedCompanyLogs').textContent = approved;
+        document.getElementById('statSubmittedCompanyLogs').textContent = submitted;
+        document.getElementById('statFlaggedCompanyLogs').textContent = flagged;
+    }
+
+    function renderCompanyReportsTable() {
+        const tbody = document.getElementById('companyReportsTableBody');
+        if (!tbody) return;
+
+        const q = (document.getElementById('companyReportSearch')?.value || '').toLowerCase().trim();
+        const roleFilter = document.getElementById('companyReportRoleFilter')?.value || 'all';
+        const statusFilter = document.getElementById('companyReportStatusFilter')?.value || 'all';
+
+        let list = allReportsCache.filter(r => r.role !== 'admin');
+
+        if (roleFilter !== 'all') {
+            list = list.filter(r => (r.role || 'employee').toLowerCase() === roleFilter.toLowerCase());
+        }
+
+        if (statusFilter !== 'all') {
+            list = list.filter(r => (r.status || 'Submitted').toLowerCase() === statusFilter.toLowerCase());
+        }
+
+        if (q) {
+            list = list.filter(r => 
+                (r.employeeName || '').toLowerCase().includes(q) ||
+                (r.project || '').toLowerCase().includes(q) ||
+                (r.department || '').toLowerCase().includes(q) ||
+                (r.summary || '').toLowerCase().includes(q)
+            );
+        }
+
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No work reports match the current filters.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = list.map(r => {
+            const statusKey = (r.status || 'Submitted').toLowerCase();
+            const hasBlockers = r.blockers && r.blockers !== 'None' && r.blockers !== 'none';
+            return `
                 <tr>
                     <td>
-                        <div class="person-cell">
-                            <div class="person-avatar">${r.employeeName.charAt(0)}</div>
-                            <div class="person-info">
-                                <h4>${r.employeeName}</h4>
-                                <small>${r.role || 'Staff Member'}</small>
-                            </div>
-                        </div>
+                        <div style="font-weight:600; color:#fff;">${r.employeeName}</div>
+                        <small style="color:#8898aa; text-transform:capitalize;">${r.role || 'Staff'} &bull; ${r.department || 'General'}</small>
                     </td>
-                    <td><span style="font-weight:600; color:#cbd5e1;">${r.department}</span></td>
-                    <td style="color:#ffffff; font-weight:600;">${r.date}</td>
-                    <td style="color:#4ade80; font-weight:700;"><i class="fa-regular fa-clock" style="font-size:11px; margin-right:4px;"></i> ${r.shiftHours || '8h 0m'}</td>
-                    <td style="color:#cbd5e1; max-width:280px; font-size:12px;">${summarySnippet}</td>
-                    <td style="color:#8898aa; max-width:200px; font-size:12px;">${r.blockers && r.blockers !== 'None' ? `<span style="color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers}</span>` : '<span style="color:#4ade80;">None</span>'}</td>
-                    <td><span class="status-pill ${statusClass}">${r.status || 'Submitted'}</span></td>
-                    <td style="text-align: right;">
-                        <button class="btn-secondary view-report-btn" data-id="${r.id}" style="padding:5px 12px; font-size:11.5px; display:inline-flex; align-items:center; gap:5px;">
-                            <i class="fa-regular fa-eye"></i> View Log
+                    <td><strong>${r.date}</strong></td>
+                    <td style="color:#60a5fa; font-weight:600;">${r.project || '-'}</td>
+                    <td style="max-width:280px; font-size:12.5px;">
+                        <strong style="color:#fff; display:block;">${r.summary || ''}</strong>
+                    </td>
+                    <td><span style="background:rgba(66,153,225,0.15); color:#60a5fa; padding:2px 8px; border-radius:10px; font-weight:700; font-size:11.5px;">${r.hours || 8}h</span></td>
+                    <td>
+                        ${hasBlockers ? `<span style="color:#fbbf24; font-size:11.5px; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers}</span>` : `<span style="color:#8898aa; font-size:11.5px;">None</span>`}
+                    </td>
+                    <td><span class="status-pill ${statusKey}">${r.status || 'Submitted'}</span></td>
+                    <td>
+                        <button class="btn-secondary" style="padding:4px 10px; font-size:11.5px;" onclick="viewReportDetails('${r.id}')">
+                            <i class="fa-solid fa-eye"></i> Review
                         </button>
                     </td>
                 </tr>
             `;
-        });
-
-        dailyTableBody.innerHTML = html;
-
-        document.querySelectorAll('.view-report-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-id');
-                const report = dailyReportsCache.find(item => item.id === id);
-                if (report) openReportDetailsModal(report);
-            });
-        });
+        }).join('');
     }
 
-    // Modal
-    const taskDetailModal = document.getElementById('taskDetailModal');
-    const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
-    const modalReportDetails = document.getElementById('modalReportDetails');
-    const modalEmpTitle = document.getElementById('modalEmpTitle');
+    let activeModalReport = null;
+    window.viewReportDetails = function(reportId) {
+        activeModalReport = allReportsCache.find(r => r.id === reportId);
+        if (!activeModalReport) return;
 
-    function openReportDetailsModal(r) {
-        modalEmpTitle.textContent = `${r.employeeName}'s Daily Work Log (${r.date})`;
-
-        const completedList = (r.completedTasks || []).map(t => `<div class="task-item-bullet"><i class="fa-solid fa-circle-check"></i> <span>${t}</span></div>`).join('') || '<div class="task-item-bullet"><i class="fa-solid fa-circle-check"></i> <span>Regular tasks executed</span></div>';
-        const inProgList = (r.inProgressTasks || []).map(t => `<div class="task-item-bullet"><i class="fa-solid fa-spinner fa-spin" style="color:#60a5fa;"></i> <span>${t}</span></div>`).join('') || '<div class="task-item-bullet"><i class="fa-solid fa-minus" style="color:#8898aa;"></i> <span>None</span></div>';
-
-        modalReportDetails.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:14px; background:#0b1437; padding:12px 16px; border-radius:10px; border:1px solid #1b2e6e;">
-                <div><span style="font-size:11px; color:#8898aa;">Department:</span> <strong style="color:#fff; display:block; font-size:13px;">${r.department}</strong></div>
-                <div><span style="font-size:11px; color:#8898aa;">Shift Logged:</span> <strong style="color:#4ade80; display:block; font-size:13px;">${r.shiftHours || '8h 0m'}</strong></div>
-                <div><span style="font-size:11px; color:#8898aa;">Review Status:</span> <strong style="color:#4299e1; display:block; font-size:13px;">${r.status || 'Submitted'}</strong></div>
+        const content = document.getElementById('viewReportModalContent');
+        content.innerHTML = `
+            <div style="background:#0b1437; padding:14px; border-radius:10px; border:1px solid #1b2e6e; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <strong style="font-size:14px; color:#fff;">${activeModalReport.employeeName} (${activeModalReport.role || 'Staff'})</strong>
+                    <span class="status-pill ${(activeModalReport.status || 'Submitted').toLowerCase()}">${activeModalReport.status || 'Submitted'}</span>
+                </div>
+                <div style="font-size:12px; color:#8898aa;">Date: <span style="color:#cbd5e1;">${activeModalReport.date}</span> &bull; Department: <span style="color:#60a5fa;">${activeModalReport.department}</span></div>
+                <div style="font-size:12px; color:#8898aa; margin-top:2px;">Project/Initiative: <span style="color:#60a5fa; font-weight:600;">${activeModalReport.project}</span></div>
             </div>
-
-            <div class="task-list-box">
-                <h5><i class="fa-solid fa-check-double"></i> Completed Tasks & Deliverables</h5>
-                ${completedList}
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Summary Headline</label>
+                <div style="color:#fff; font-size:13.5px; font-weight:600; margin-top:2px;">${activeModalReport.summary}</div>
             </div>
-
-            <div class="task-list-box">
-                <h5 style="color:#60a5fa;"><i class="fa-solid fa-hourglass-half"></i> In-Progress & Work-In-Flight</h5>
-                ${inProgList}
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Detailed Breakdown</label>
+                <div style="background:#0b1437; padding:10px 12px; border-radius:8px; border:1px solid #1b2e6e; color:#cbd5e1; font-size:12.5px; white-space:pre-wrap; margin-top:4px;">${activeModalReport.details || 'No details specified.'}</div>
             </div>
-
-            <div class="task-list-box">
-                <h5 style="color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i> Roadblocks & Dependencies</h5>
-                <p style="font-size:12.5px; color:#cbd5e1; line-height:1.4;">${r.blockers || 'No blockers reported today.'}</p>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Blockers / Support Needed</label>
+                <div style="color:${activeModalReport.blockers && activeModalReport.blockers !== 'None' ? '#fbbf24' : '#8898aa'}; font-size:12.5px; margin-top:2px;">${activeModalReport.blockers || 'None'}</div>
             </div>
-
-            <div class="task-list-box">
-                <h5 style="color:#a855f7;"><i class="fa-solid fa-calendar-day"></i> Next Working Day Objectives</h5>
-                <p style="font-size:12.5px; color:#cbd5e1; line-height:1.4;">${r.nextDayPlan || 'Continue scheduled roadmap items.'}</p>
+            <div>
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Planned Action Items</label>
+                <div style="color:#cbd5e1; font-size:12.5px; margin-top:2px;">${activeModalReport.tomorrow || 'Continue scheduled roadmap items.'}</div>
             </div>
         `;
 
-        taskDetailModal.classList.add('show');
-    }
+        document.getElementById('viewReportModal').classList.add('show');
+    };
 
-    closeDetailModalBtn?.addEventListener('click', () => taskDetailModal.classList.remove('show'));
+    document.getElementById('closeViewReportBtn')?.addEventListener('click', () => document.getElementById('viewReportModal').classList.remove('show'));
+    document.getElementById('btnCloseViewReportModal')?.addEventListener('click', () => document.getElementById('viewReportModal').classList.remove('show'));
 
-    searchDailyInput?.addEventListener('input', renderDailyReportsTable);
-    deptDailyFilter?.addEventListener('change', renderDailyReportsTable);
-    statusDailyFilter?.addEventListener('change', renderDailyReportsTable);
-    dateDailyFilter?.addEventListener('change', renderDailyReportsTable);
+    document.getElementById('btnApproveLog')?.addEventListener('click', () => {
+        if (!activeModalReport) return;
+        activeModalReport.status = 'Approved';
+        document.getElementById('viewReportModal').classList.remove('show');
+        computeCompanyKpis();
+        renderCompanyReportsTable();
+        alert(`Work log for ${activeModalReport.employeeName} marked as Approved!`);
+    });
 
-    document.getElementById('exportReportBtn')?.addEventListener('click', () => {
-        if (!dailyReportsCache.length) return alert('No report data to export.');
-        const rows = [["Employee Name", "Department", "Date", "Shift Hours", "Completed Tasks Count", "Blockers", "Status"]];
-        dailyReportsCache.forEach(r => {
-            rows.push([r.employeeName, r.department, r.date, r.shiftHours || '8h 0m', (r.completedTasks || []).length, r.blockers || 'None', r.status || 'Submitted']);
-        });
-        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    document.getElementById('companyReportSearch')?.addEventListener('input', renderCompanyReportsTable);
+    document.getElementById('companyReportRoleFilter')?.addEventListener('change', renderCompanyReportsTable);
+    document.getElementById('companyReportStatusFilter')?.addEventListener('change', renderCompanyReportsTable);
+
+    // HR Submit Form
+    document.getElementById('submitHrReportForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const date = document.getElementById('hrReportDate').value;
+        const category = document.getElementById('hrReportCategory').value;
+        const summary = document.getElementById('hrReportSummary').value.trim();
+        const details = document.getElementById('hrReportDetails').value.trim();
+        const blockers = document.getElementById('hrReportBlockers').value.trim() || 'None';
+        const tomorrow = document.getElementById('hrReportTomorrow').value.trim() || 'Continue scheduled HR workflows';
+
+        const myUid = currentUser?.uid || 'hr-1';
+        const myName = currentUser?.name || 'Emily Davis';
+        const myDept = currentUser?.department || 'Human Resources';
+
+        const newReport = {
+            id: `REP-HR-${Date.now()}`,
+            employeeUid: myUid,
+            employeeName: myName,
+            role: 'hr',
+            department: myDept,
+            date: date,
+            hours: 8.0,
+            project: category,
+            summary: summary,
+            details: details,
+            blockers: blockers,
+            tomorrow: tomorrow,
+            status: 'Submitted',
+            submittedTo: 'Admin',
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, "dailyReports"), newReport);
+        } catch (dbErr) {
+            console.warn("Saved to local HR reports list: ", dbErr);
+        }
+
+        allReportsCache.unshift(newReport);
+        myHrReportsCache.unshift(newReport);
+
+        renderMyHrReportsList();
+        document.getElementById('submitHrReportForm').reset();
+        document.getElementById('hrReportDate').value = new Date().toISOString().slice(0, 10);
+
+        alert("HR Daily Report successfully submitted to Admin!");
+    });
+
+    function downloadCsv(filename, rows) {
+        const csv = rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `Employee-Daily-Work-Reports-${Date.now()}.csv`;
+        link.download = filename;
         link.click();
         URL.revokeObjectURL(link.href);
+    }
+
+    document.getElementById('exportCompanyReportsCsv')?.addEventListener('click', () => {
+        const list = allReportsCache.filter(r => r.role !== 'admin');
+        const rows = [["Employee Name", "Role", "Department", "Date", "Project", "Summary", "Hours", "Blockers", "Status"]];
+        list.forEach(r => {
+            rows.push([r.employeeName, r.role, r.department, r.date, r.project, r.summary, r.hours, r.blockers, r.status]);
+        });
+        downloadCsv(`Company-Work-Reports-${Date.now()}.csv`, rows);
     });
 
-    loadDailyReports();
+    document.getElementById('exportQuickStaffDirectory')?.addEventListener('click', () => {
+        const rows = [["Name", "Department", "Designation", "Role", "Status"]];
+        rows.push(["John Doe", "Management", "System Administrator", "Admin", "Active"]);
+        rows.push(["Sarah Jenkins", "Engineering", "Engineering Manager", "Manager", "Active"]);
+        rows.push(["Emily Davis", "Human Resources", "HR Specialist", "HR", "Active"]);
+        rows.push(["Alex Rivera", "Engineering", "Senior Frontend Engineer", "Employee", "Active"]);
+        rows.push(["Michael Chen", "Engineering", "Full Stack Engineer", "Employee", "Active"]);
+        rows.push(["Sophia Taylor", "Product & Design", "UI/UX Design Intern", "Intern", "Active"]);
+        downloadCsv(`Staff-Directory-Master-${Date.now()}.csv`, rows);
+    });
+
+    document.getElementById('exportQuickAttSummary')?.addEventListener('click', () => {
+        const rows = [["Date", "Employee", "Department", "Status", "Working Hours"]];
+        rows.push(["2026-10-08", "John Doe", "Management", "Present", "8h 30m"]);
+        rows.push(["2026-10-08", "Sarah Jenkins", "Engineering", "Present", "8h 30m"]);
+        rows.push(["2026-10-08", "Emily Davis", "Human Resources", "Present", "8h 00m"]);
+        rows.push(["2026-10-08", "Alex Rivera", "Engineering", "Present", "8h 00m"]);
+        downloadCsv(`Attendance-Roll-${Date.now()}.csv`, rows);
+    });
+
+    document.getElementById('exportQuickPayrollSummary')?.addEventListener('click', () => {
+        const rows = [["Employee", "Role", "Basic Salary", "Allowances", "Net Pay", "Status"]];
+        rows.push(["Sarah Jenkins", "Manager", "7500", "800", "8300", "Processed"]);
+        rows.push(["Emily Davis", "HR", "6000", "500", "6500", "Processed"]);
+        rows.push(["Alex Rivera", "Employee", "5800", "400", "6200", "Processed"]);
+        downloadCsv(`Payroll-Disbursement-${Date.now()}.csv`, rows);
+    });
+
+    loadAllReports();
 </script>
 </body>
 </html>

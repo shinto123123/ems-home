@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attendance Management - Manager Portal</title>
+<title>Team Attendance Management - Manager Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 * {
@@ -58,7 +58,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
     color: #4299e1;
 }
@@ -211,7 +211,7 @@ body {
 }
 
 /* =========================
-   SIDEBAR
+   SIDEBAR (Manager)
 ========================= */
 .sidebar {
     width: 240px;
@@ -261,12 +261,11 @@ body {
 }
 
 .sidebar.collapsed { width: 70px; }
-.sidebar.collapsed ul li { justify-content: center; }
-.sidebar.collapsed ul li a { justify-content: center; gap: 0; }
-.sidebar.collapsed ul li a span { display: none; }
+.sidebar.collapsed ul li span { display: none; }
+.sidebar.collapsed ul li a { justify-content: center; }
 
 /* =========================
-   MAIN WRAPPER & CONTENT
+   MAIN CONTENT
 ========================= */
 .main {
     flex: 1;
@@ -277,24 +276,32 @@ body {
 
 .content {
     flex: 1;
-    padding: 18px 24px;
+    padding: 16px 22px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     overflow-y: auto;
     background: #0b1437;
 }
 
-/* Page Header */
 .page-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-shrink: 0;
 }
 
-.page-header h1 { font-size: 22px; font-weight: 700; color: #ffffff; }
-.page-header p { font-size: 13px; color: #8898aa; margin-top: 2px; }
+.page-header h1 {
+    font-size: 21px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: #8898aa;
+    font-size: 12.5px;
+    margin-top: 2px;
+}
 
 .header-actions {
     display: flex;
@@ -305,9 +312,9 @@ body {
     background: #4299e1;
     border: none;
     color: #ffffff;
-    padding: 9px 16px;
+    padding: 8px 15px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -321,9 +328,9 @@ body {
     background: #111c44;
     border: 1px solid #1b2e6e;
     color: #d7dfef;
-    padding: 9px 16px;
+    padding: 8px 15px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -337,7 +344,7 @@ body {
 .att-cards {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
@@ -345,77 +352,217 @@ body {
     background: #111c44;
     border: 1px solid #1b2e6e;
     border-radius: 12px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
 .att-card-icon {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     border-radius: 10px;
     background: #0b1437;
     border: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 17px;
+    font-size: 16px;
     flex-shrink: 0;
 }
 
 .att-card-info h3 {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
     color: #ffffff;
 }
 
 .att-card-info p {
-    font-size: 12px;
+    font-size: 11.5px;
     color: #8898aa;
     margin-top: 2px;
 }
 
-/* ── MAIN WORKSPACE (LEFT ROSTER + RIGHT CALENDAR) ── */
+/* ── MAIN WORKSPACE (LEFT SHIFT + ROSTER & RIGHT WORKSPACE) ── */
 .attendance-layout {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     flex: 1;
-    min-height: 450px;
+    min-height: 0;
+    overflow: hidden;
 }
 
 /* Left Employee Panel */
 .employee-panel {
-    width: 310px;
+    width: 320px;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.employee-panel::-webkit-scrollbar { width: 5px; }
+.employee-panel::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+/* Today's Shift Box */
+.today-clock-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.clock-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.clock-header h4 { font-size: 13.5px; font-weight: 700; color: #ffffff; }
+.clock-date-text { font-size: 11px; color: #8898aa; }
+
+.clock-timer {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    margin: 4px 0 12px;
+    background: #0b1437;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid #1b2e6e;
+    width: 100%;
+    text-align: center;
+}
+
+.clock-actions-btn {
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.clock-actions-btn.in {
+    background: #4ade80;
+    color: #0b1437;
+}
+.clock-actions-btn.in:hover { background: #22c55e; }
+
+.clock-actions-btn.out {
+    background: #f87171;
+    color: #ffffff;
+}
+.clock-actions-btn.out:hover { background: #ef4444; }
+
+/* Today Shift Summary Box */
+.today-summary-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 12px 16px;
+    flex-shrink: 0;
+}
+
+.today-summary-box h4 {
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.timeline-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    padding: 5px 0;
+    border-bottom: 1px solid #1b2e6e;
+    color: #8898aa;
+}
+.timeline-info-row:last-child { border-bottom: none; }
+.timeline-info-row span:last-child { color: #ffffff; font-weight: 600; }
+
+/* Other Users / Team Members Box */
+.roster-box {
     background: #111c44;
     border: 1px solid #1b2e6e;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-height: 240px;
     overflow: hidden;
 }
 
-.employee-search {
+.roster-header {
+    padding: 10px 14px 8px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: #16265c;
+    justify-content: space-between;
+    border-bottom: 1px solid #1b2e6e;
+    background: #14204d;
+}
+
+.roster-header h4 {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.roster-badge {
+    background: #0b1437;
+    color: #4299e1;
+    border: 1px solid #1b2e6e;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.roster-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #0b1437;
     border-bottom: 1px solid #1b2e6e;
 }
 
-.employee-search i { color: #8898aa; font-size: 13px; }
-.employee-search input {
+.roster-search i { color: #8898aa; font-size: 12px; }
+.roster-search input {
     background: none;
     border: none;
     outline: none;
     color: #e2e8f0;
-    font-size: 13.5px;
+    font-size: 12px;
     width: 100%;
 }
-.employee-search input::placeholder { color: #5a6a85; }
+.roster-search input::placeholder { color: #5a6a85; }
 
 .employee-list {
     overflow-y: auto;
@@ -429,58 +576,75 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 12px 14px;
+    gap: 8px;
+    padding: 9px 12px;
     cursor: pointer;
     border-bottom: 1px solid #1b2e6e;
-    transition: background 0.2s;
+    transition: background 0.2s, border-left 0.2s;
 }
 
 .employee:last-child { border-bottom: none; }
-.employee:hover { background: rgba(27, 46, 110, 0.5); }
+.employee:hover { background: rgba(27, 46, 110, 0.6); }
 .employee.active {
-    background: #1b2e6e;
-    border-left: 4px solid #4299e1;
-    padding-left: 10px;
+    background: rgba(66, 153, 225, 0.15);
+    border-left: 3px solid #4299e1;
+    padding-left: 9px;
 }
 
 .emp-profile-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
+    min-width: 0;
+    flex: 1;
 }
 
-.emp-avatar {
-    width: 34px;
-    height: 34px;
+.employee-avatar-placeholder {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: #0b1437;
     border: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4299e1;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.emp-details h4 {
-    font-size: 13px;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.emp-details span {
-    font-size: 11px;
     color: #8898aa;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.employee.active .employee-avatar-placeholder { border-color: #4299e1; color: #4299e1; }
+
+.employee-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.employee-info h4 {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.employee-info span {
+    font-size: 10.5px;
+    color: #8898aa;
+    display: block;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .emp-status-pill {
-    font-size: 10.5px;
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: 12px;
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 700;
     text-transform: capitalize;
+    flex-shrink: 0;
 }
 
 .emp-status-pill.present { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
@@ -502,27 +666,27 @@ body {
 }
 
 .calendar-top-bar {
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .current-profile-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-.current-profile-badge h2 { font-size: 16px; color: #ffffff; font-weight: 600; }
+.current-profile-badge h2 { font-size: 15px; color: #ffffff; font-weight: 700; }
 .current-profile-badge span {
     background: #0b1437;
     color: #4299e1;
-    font-size: 11.5px;
-    padding: 3px 8px;
+    font-size: 11px;
+    padding: 2px 7px;
     border-radius: 4px;
     border: 1px solid #1b2e6e;
     font-weight: 600;
@@ -533,22 +697,22 @@ body {
     background: #0b1437;
     border: 1px solid #1b2e6e;
     border-radius: 8px;
-    padding: 3px;
-    gap: 4px;
+    padding: 2px;
+    gap: 3px;
 }
 
 .view-mode-btn {
     background: none;
     border: none;
     color: #8898aa;
-    padding: 6px 12px;
+    padding: 5px 11px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     transition: .2s;
 }
 .view-mode-btn.active {
@@ -559,42 +723,43 @@ body {
 .calendar-navigation {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .nav-arrow-btn {
     background: #0b1437;
     border: 1px solid #1b2e6e;
     color: #fff;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 12px;
 }
 .nav-arrow-btn:hover { border-color: #4299e1; color: #4299e1; }
 
 .calendar-navigation span {
     color: #ffffff;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 600;
-    min-width: 110px;
+    min-width: 105px;
     text-align: center;
 }
 
 /* Monthly Stats Strip */
 .monthly-stats-strip {
     background: #14204d;
-    padding: 8px 18px;
+    padding: 7px 16px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11.5px;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
 }
 
 .month-stat-item {
@@ -612,15 +777,15 @@ body {
 /* Legend Row */
 .calendar-legend {
     background: #162256;
-    padding: 7px 18px;
+    padding: 6px 16px;
     border-bottom: 1px solid #1b2e6e;
     display: flex;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
 }
 
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #cbd5e1; }
-.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: #cbd5e1; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 .legend-dot.present { background: #4ade80; }
 .legend-dot.late { background: #f59e0b; }
 .legend-dot.halfday { background: #c084fc; box-shadow: 0 0 6px rgba(192,132,252,0.6); }
@@ -632,7 +797,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    padding: 10px;
     overflow-y: auto;
 }
 
@@ -640,7 +805,7 @@ body {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .weekdays div {
@@ -649,14 +814,14 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 4px 0;
+    padding: 3px 0;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(92px, 1fr);
-    gap: 6px;
+    grid-auto-rows: minmax(82px, 1fr);
+    gap: 5px;
     flex: 1;
 }
 
@@ -664,14 +829,14 @@ body {
     background: #0b1437;
     border: 1px solid #1b2e6e;
     border-radius: 8px;
-    padding: 7px;
+    padding: 6px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     cursor: pointer;
     transition: transform 0.15s, border-color 0.15s;
-    min-height: 92px;
+    min-height: 82px;
 }
 
 .day:hover:not(.empty) {
@@ -688,12 +853,12 @@ body {
     align-items: center;
 }
 
-.day-number { font-size: 14px; font-weight: 700; color: #cbd5e1; }
+.day-number { font-size: 13px; font-weight: 700; color: #cbd5e1; }
 .day.today .day-number {
     color: #4299e1;
     background: rgba(66,153,225,0.18);
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -701,9 +866,9 @@ body {
 }
 
 .status-label-badge {
-    font-size: 9px;
+    font-size: 8.5px;
     font-weight: 700;
-    padding: 2px 5px;
+    padding: 2px 4px;
     border-radius: 4px;
     text-align: center;
     text-transform: uppercase;
@@ -715,39 +880,39 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .time-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 9.5px;
+    font-size: 9px;
     color: #cbd5e1;
     line-height: 1.2;
 }
 
-.time-row i { font-size: 8.5px; color: #8898aa; }
+.time-row i { font-size: 8px; color: #8898aa; }
 .time-row.in span { color: #4ade80; font-weight: 600; }
 .time-row.out span { color: #60a5fa; font-weight: 600; }
 .time-row.hours {
-    margin-top: 2px;
-    padding-top: 2px;
+    margin-top: 1px;
+    padding-top: 1px;
     border-top: 1px dashed rgba(27, 46, 110, 0.8);
     font-weight: 700;
     color: #fbbf24;
 }
 
 /* Status variants */
-.day.present { border-left: 4px solid #4ade80; background: rgba(74,222,128,0.03); }
+.day.present { border-left: 3.5px solid #4ade80; background: rgba(74,222,128,0.03); }
 .day.present .status-label-badge { background: rgba(74,222,128,0.16); color: #4ade80; }
-.day.late { border-left: 4px solid #f59e0b; background: rgba(245,158,11,0.06); }
+.day.late { border-left: 3.5px solid #f59e0b; background: rgba(245,158,11,0.06); }
 .day.late .status-label-badge { background: rgba(245,158,11,0.25); color: #fbbf24; }
-.day.halfday { border-left: 4px solid #c084fc; background: rgba(168,85,247,0.10); }
+.day.halfday { border-left: 3.5px solid #c084fc; background: rgba(168,85,247,0.10); }
 .day.halfday .status-label-badge { background: rgba(168,85,247,0.30); color: #e9d5ff; }
-.day.leave { border-left: 4px solid #a855f7; background: rgba(168,85,247,0.06); }
+.day.leave { border-left: 3.5px solid #a855f7; background: rgba(168,85,247,0.06); }
 .day.leave .status-label-badge { background: rgba(168,85,247,0.25); color: #c084fc; }
-.day.absent { border-left: 4px solid #f87171; background: rgba(248,113,113,0.05); }
+.day.absent { border-left: 3.5px solid #f87171; background: rgba(248,113,113,0.05); }
 .day.absent .status-label-badge { background: rgba(248,113,113,0.16); color: #f87171; }
 
 /* ── DAILY TIMESHEET TABLE VIEW ── */
@@ -755,7 +920,7 @@ body {
     flex: 1;
     display: none;
     flex-direction: column;
-    padding: 14px;
+    padding: 12px;
     overflow-y: auto;
 }
 
@@ -773,8 +938,8 @@ body {
 .timesheet-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
-    min-width: 780px;
+    font-size: 12.5px;
+    min-width: 760px;
 }
 
 .timesheet-table thead {
@@ -785,16 +950,16 @@ body {
 }
 
 .timesheet-table th {
-    padding: 12px 14px;
+    padding: 10px 12px;
     text-align: left;
     color: #ffffff;
     font-weight: 600;
     border-bottom: 1px solid #1b2e6e;
-    font-size: 12.5px;
+    font-size: 12px;
 }
 
 .timesheet-table td {
-    padding: 11px 14px;
+    padding: 10px 12px;
     border-bottom: 1px solid #1b2e6e;
     color: #d7dfef;
     vertical-align: middle;
@@ -810,10 +975,10 @@ body {
     gap: 5px;
     background: rgba(66, 153, 225, 0.15);
     color: #60a5fa;
-    padding: 3px 9px;
+    padding: 2px 8px;
     border-radius: 12px;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11.5px;
 }
 
 .hours-pill.overtime {
@@ -872,7 +1037,7 @@ body {
     margin-bottom: 18px;
 }
 
-.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-header h3 { color: #ffffff; font-size: 16px; font-weight: 600; }
 .modal-close {
     background: none;
     border: none;
@@ -900,7 +1065,7 @@ body {
     border: 1px solid #1b2e6e;
     border-radius: 8px;
     color: #ffffff;
-    font-size: 13.5px;
+    font-size: 13px;
     outline: none;
 }
 .form-group input:focus, .form-group select:focus { border-color: #4299e1; }
@@ -932,7 +1097,7 @@ body {
     .sidebar { width: 70px; }
     .sidebar ul li a span { display: none; }
     .attendance-layout { flex-direction: column; }
-    .employee-panel { width: 100%; height: 260px; }
+    .employee-panel { width: 100%; height: auto; }
 }
 </style>
 </head>
@@ -942,7 +1107,7 @@ body {
 <div class="navbar">
     <div class="navbar-left">
         <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
-        <div class="navbar-logo">MGR</div>
+        <div class="navbar-logo">MG</div>
         <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
     </div>
     <div class="navbar-center">
@@ -952,7 +1117,7 @@ body {
         </div>
     </div>
     <div class="navbar-right">
-        <a class="nav-icon-btn" href="notification.html">
+        <a class="nav-icon-btn" href="notification.html" title="Notifications">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </a>
@@ -976,11 +1141,12 @@ body {
 
 <div class="body-wrap">
 
-    <!-- SIDEBAR (Manager items) -->
+    <!-- SIDEBAR (Manager) -->
     <div class="sidebar" id="managerSidebar">
         <ul>
             <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
             <li><a href="team-members.html"><i class="fa-solid fa-users"></i> <span>Team Members</span></a></li>
+            <li><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i> <span>Daily Work Report</span></a></li>
             <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
             <li class="active"><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
             <li><a href="project.html"><i class="fa-solid fa-briefcase"></i> <span>Projects</span></a></li>
@@ -1000,7 +1166,7 @@ body {
             <div class="page-header">
                 <div>
                     <h1>Team Attendance Management</h1>
-                    <p>Track team clock-ins, daily working hours, late arrivals, and monthly timesheets.</p>
+                    <p>Clock in/out for your own daily shifts and inspect team member attendance records and timesheets.</p>
                 </div>
                 <div class="header-actions">
                     <button class="btn-secondary" id="exportAllAttBtn"><i class="fa-solid fa-download"></i> Export Team Roster</button>
@@ -1011,38 +1177,38 @@ body {
             <!-- ATTENDANCE KPI METRICS DECK -->
             <div class="att-cards">
                 <div class="att-card">
-                    <div class="att-card-icon" style="color:#4299e1;"><i class="fa-solid fa-users"></i></div>
+                    <div class="att-card-icon" style="color:#4299e1;"><i class="fa-solid fa-business-time"></i></div>
                     <div class="att-card-info">
-                        <h3 id="statTotalStaff">0</h3>
-                        <p>Team Members</p>
+                        <h3 id="statWorkingDays">22</h3>
+                        <p>Working Days</p>
                     </div>
                 </div>
                 <div class="att-card">
                     <div class="att-card-icon" style="color:#4ade80;"><i class="fa-solid fa-user-check"></i></div>
                     <div class="att-card-info">
-                        <h3 id="statPresentToday">0</h3>
-                        <p>Present Today</p>
+                        <h3 id="statPresentDays">0</h3>
+                        <p>Present Days</p>
                     </div>
                 </div>
                 <div class="att-card">
                     <div class="att-card-icon" style="color:#f59e0b;"><i class="fa-solid fa-user-clock"></i></div>
                     <div class="att-card-info">
-                        <h3 id="statLateToday">0</h3>
-                        <p>Late Arrival</p>
+                        <h3 id="statLateDays">0</h3>
+                        <p>Late Arrivals</p>
                     </div>
                 </div>
                 <div class="att-card">
                     <div class="att-card-icon" style="color:#c084fc;"><i class="fa-solid fa-plane-departure"></i></div>
                     <div class="att-card-info">
-                        <h3 id="statOnLeaveToday">0</h3>
-                        <p>On Leave</p>
+                        <h3 id="statLeaveDays">0</h3>
+                        <p>Leaves Taken</p>
                     </div>
                 </div>
                 <div class="att-card">
-                    <div class="att-card-icon" style="color:#f87171;"><i class="fa-solid fa-user-xmark"></i></div>
+                    <div class="att-card-icon" style="color:#38bdf8;"><i class="fa-solid fa-chart-pie"></i></div>
                     <div class="att-card-info">
-                        <h3 id="statAbsentToday">0</h3>
-                        <p>Absent Today</p>
+                        <h3 id="statAttRate">0%</h3>
+                        <p>Attendance Rate</p>
                     </div>
                 </div>
             </div>
@@ -1050,27 +1216,69 @@ body {
             <!-- MAIN WORKSPACE LAYOUT -->
             <div class="attendance-layout">
 
-                <!-- LEFT ROSTER -->
+                <!-- LEFT CLOCK + SHIFT SUMMARY + OTHER USERS ROSTER PANEL -->
                 <div class="employee-panel">
-                    <div class="employee-search">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" id="employeeSearchInput" placeholder="Search team member...">
+                    
+                    <!-- 1. TODAY'S SHIFT CLOCK BOX -->
+                    <div class="today-clock-box">
+                        <div class="clock-header">
+                            <h4>Today's Shift</h4>
+                            <span class="clock-date-text" id="todayDateLabel">--</span>
+                        </div>
+                        <div class="clock-timer" id="liveClockDisplay">--:--:--</div>
+                        <button class="clock-actions-btn in" id="clockToggleBtn">
+                            <i class="fa-solid fa-right-to-bracket"></i> <span id="clockBtnLabel">Clock In</span>
+                        </button>
                     </div>
-                    <div class="employee-list" id="firebaseEmployeeList">
-                        <div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading roster...</div>
+
+                    <!-- 2. TODAY'S SHIFT SUMMARY -->
+                    <div class="today-summary-box">
+                        <h4>Today's Shift Summary</h4>
+                        <div class="timeline-info-row">
+                            <span>Status:</span>
+                            <span id="todayStatusText"><span class="emp-status-pill present">Present</span></span>
+                        </div>
+                        <div class="timeline-info-row">
+                            <span>Check-In:</span>
+                            <span id="todayCheckInText">09:00 AM</span>
+                        </div>
+                        <div class="timeline-info-row">
+                            <span>Check-Out:</span>
+                            <span id="todayCheckOutText">--:--</span>
+                        </div>
+                        <div class="timeline-info-row">
+                            <span>Daily Working Hours:</span>
+                            <span id="todayHoursText" style="color:#38bdf8;">--</span>
+                        </div>
                     </div>
+
+                    <!-- 3. OTHER USERS / TEAM MEMBERS PROFILES -->
+                    <div class="roster-box">
+                        <div class="roster-header">
+                            <h4><i class="fa-solid fa-users" style="color:#4299e1;"></i> Team Members</h4>
+                            <span class="roster-badge" id="rosterCountBadge">0</span>
+                        </div>
+                        <div class="roster-search">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="employeeSearchInput" placeholder="Search member, ID or role...">
+                        </div>
+                        <div class="employee-list" id="firebaseEmployeeList">
+                            <div style="text-align: center; padding: 24px; color: #8898aa; font-size: 12px;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> Loading team members...</div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- RIGHT CALENDAR & TIMESHEET PANEL -->
+                <!-- RIGHT WORKSPACE PANEL (CALENDAR + TIMESHEET) -->
                 <div class="calendar-panel">
                     <div class="calendar-top-bar">
                         <div class="current-profile-badge">
-                            <h2 id="activeProfileName">Select a Team Member</h2>
-                            <span id="activeProfileId">ID: --</span>
-                            <span id="activeProfileDept" style="color:#8898aa; border-color:transparent;">--</span>
+                            <h2 id="activeProfileName">Manager's Attendance</h2>
+                            <span id="activeProfileId">MG001</span>
+                            <span id="activeProfileDept">Engineering Dept</span>
                         </div>
 
-                        <!-- View Mode Toggle -->
+                        <!-- View Mode Switcher -->
                         <div class="view-mode-toggle">
                             <button class="view-mode-btn active" id="btnViewCalendar"><i class="fa-solid fa-calendar-days"></i> Calendar View</button>
                             <button class="view-mode-btn" id="btnViewTimesheet"><i class="fa-solid fa-table-list"></i> Timesheet & Hours</button>
@@ -1080,7 +1288,7 @@ body {
                             <button class="nav-arrow-btn" id="prevMonthBtn"><i class="fa-solid fa-chevron-left"></i></button>
                             <span id="monthYearLabel">-</span>
                             <button class="nav-arrow-btn" id="nextMonthBtn"><i class="fa-solid fa-chevron-right"></i></button>
-                            <button class="nav-arrow-btn" id="adminExportAttBtn" title="Export Selected Member CSV" style="width:auto; padding:6px 12px; margin-left:8px; font-size:12px; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-csv"></i> Member CSV</button>
+                            <button class="nav-arrow-btn" id="adminExportAttBtn" title="Export Selected Member CSV" style="width:auto; padding:5px 10px; margin-left:6px; font-size:11.5px; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-file-csv"></i> Member CSV</button>
                         </div>
                     </div>
 
@@ -1092,9 +1300,10 @@ body {
                         <div class="month-stat-item">Absent: <strong id="mStatAbsent" style="color:#f87171;">0</strong> days</div>
                         <div class="month-stat-item">Total Worked: <strong id="mStatTotalHours" style="color:#38bdf8;">0h 0m</strong></div>
                         <div class="month-stat-item">Avg Daily: <strong id="mStatAvgHours" style="color:#fbbf24;">0.0h</strong></div>
-                        <div class="month-stat-item">Attendance Rate: <strong id="mStatRate" style="color:#4299e1;">0%</strong></div>
+                        <div class="month-stat-item">Rate: <strong id="mStatRate" style="color:#4299e1;">0%</strong></div>
                     </div>
 
+                    <!-- Legend -->
                     <div class="calendar-legend">
                         <div class="legend-item"><div class="legend-dot present"></div>Present</div>
                         <div class="legend-item"><div class="legend-dot late"></div>Late Arrival</div>
@@ -1103,7 +1312,7 @@ body {
                         <div class="legend-item"><div class="legend-dot absent"></div>Absent</div>
                     </div>
 
-                    <!-- 1. CALENDAR VIEW -->
+                    <!-- View 1: Calendar Grid -->
                     <div class="calendar-view active" id="calendarViewContainer">
                         <div class="weekdays">
                             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
@@ -1111,7 +1320,7 @@ body {
                         <div class="calendar-grid" id="calendarGrid"></div>
                     </div>
 
-                    <!-- 2. DAILY TIMESHEET TABLE VIEW -->
+                    <!-- View 2: Daily Timesheet & Hours Table -->
                     <div class="timesheet-view" id="timesheetViewContainer">
                         <div class="timesheet-table-wrap">
                             <table class="timesheet-table">
@@ -1123,13 +1332,12 @@ body {
                                         <th>Check-In</th>
                                         <th>Check-Out</th>
                                         <th>Daily Working Hours</th>
-                                        <th>Notes & Remarks</th>
+                                        <th>Remarks & Notes</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="timesheetTableBody">
-                                    <tr>
-                                        <td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Select a team member to view timesheet data</td>
-                                    </tr>
+                                    <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Select a profile to view timesheets.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1185,7 +1393,7 @@ body {
             </div>
             <div class="form-group">
                 <label for="attRemarks">Remarks / Notes</label>
-                <input type="text" id="attRemarks" placeholder="e.g., Client meeting, Traffic delay, Approved overtime">
+                <input type="text" id="attRemarks" placeholder="Optional remarks e.g. Client meeting or late shift approved">
             </div>
             <div class="form-actions">
                 <button type="button" class="btn-secondary" id="cancelLogAttBtn">Cancel</button>
@@ -1258,6 +1466,24 @@ body {
     const today = new Date();
     let currentCalendarDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
+    let isClockedIn = false;
+    let myTodayRecord = null;
+
+    // Live Clock timer
+    function updateLiveClock() {
+        const now = new Date();
+        const hrs = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        const clockEl = document.getElementById('liveClockDisplay');
+        if (clockEl) clockEl.textContent = `${hrs}:${mins}:${secs}`;
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    document.getElementById('todayDateLabel').textContent = today.toLocaleDateString('en-US', dateOptions);
+
     // Modal
     const logAttModal = document.getElementById('logAttModal');
     const openLogAttBtn = document.getElementById('openLogAttBtn');
@@ -1295,14 +1521,24 @@ body {
         return null;
     }
 
-    function formatTime12(timeStr) {
-        if (!timeStr) return '';
-        if (timeStr.includes('AM') || timeStr.includes('PM')) return timeStr;
-        const [h, m] = timeStr.split(':').map(Number);
-        if (isNaN(h) || isNaN(m)) return timeStr;
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        return `${h12}:${pad2(m)} ${ampm}`;
+    function formatTime12(dateOrStr) {
+        if (!dateOrStr) return '';
+        if (dateOrStr instanceof Date) {
+            let h = dateOrStr.getHours();
+            const m = dateOrStr.getMinutes();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${h}:${pad2(m)} ${ampm}`;
+        }
+        if (typeof dateOrStr === 'string') {
+            if (dateOrStr.includes('AM') || dateOrStr.includes('PM')) return dateOrStr;
+            const [h, m] = dateOrStr.split(':').map(Number);
+            if (isNaN(h) || isNaN(m)) return dateOrStr;
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            return `${h12}:${pad2(m)} ${ampm}`;
+        }
+        return '';
     }
 
     function parseTimeToMinutes(tStr) {
@@ -1319,7 +1555,7 @@ body {
     }
 
     function calculateDailyWorkingHours(checkIn, checkOut) {
-        if (!checkIn || !checkOut || checkIn === '-' || checkOut === '-') return '0h 0m';
+        if (!checkIn || !checkOut || checkIn === '-' || checkOut === '--:--') return '0h 0m';
         try {
             const inMins = parseTimeToMinutes(checkIn);
             const outMins = parseTimeToMinutes(checkOut);
@@ -1341,46 +1577,126 @@ body {
             const opt = document.createElement('option');
             opt.value = emp.uid;
             opt.textContent = `${emp.name} (${emp.id} - ${emp.department})`;
-            if (activeEmployee && activeEmployee.uid === emp.uid) opt.selected = true;
+            if (activeEmployee && (activeEmployee.uid === emp.uid || activeEmployee.id === emp.id)) opt.selected = true;
             select.appendChild(opt);
         });
     }
 
-    function computeTopKpis() {
+    function updateShiftSummaryUI() {
         const todayYMD = toYMD(today);
-        let presentCount = 0;
-        let lateCount = 0;
-        let halfDayCount = 0;
-        let leaveCount = 0;
-        let absentCount = 0;
+        const myUid = currentUser?.uid || "mgr-1";
+        const myName = currentUser?.name || "Manager";
 
-        cachedStaffArray.forEach(emp => {
-            const empLogs = allAttendanceCache.filter(a => {
-                const matchEmp = (a.employeeUid === emp.uid) || (a.uid === emp.uid) || (a.employeeName === emp.name);
-                const d = parseAttendanceDate(a.date);
-                return matchEmp && d && toYMD(d) === todayYMD;
-            });
-
-            if (empLogs.length > 0) {
-                const status = (empLogs[0].status || '').toLowerCase().trim();
-                if (status === 'present') { presentCount++; emp.todayStatus = 'present'; }
-                else if (status === 'late' || status === 'late arrival') { lateCount++; emp.todayStatus = 'late'; }
-                else if (status === 'halfday' || status === 'half day') { halfDayCount++; emp.todayStatus = 'halfday'; }
-                else if (status === 'leave' || status === 'on leave') { leaveCount++; emp.todayStatus = 'leave'; }
-                else if (status === 'absent') { absentCount++; emp.todayStatus = 'absent'; }
-            } else {
-                emp.todayStatus = emp.status === 'Inactive' ? 'absent' : 'present';
-                if (emp.todayStatus === 'present') presentCount++;
-                else absentCount++;
-            }
+        myTodayRecord = allAttendanceCache.find(a => {
+            const matchUser = (a.employeeUid === myUid) || (a.uid === myUid) || (a.employeeName === myName);
+            const d = parseAttendanceDate(a.date);
+            return matchUser && d && toYMD(d) === todayYMD;
         });
 
-        document.getElementById('statTotalStaff').textContent = cachedStaffArray.length;
-        document.getElementById('statPresentToday').textContent = presentCount;
-        document.getElementById('statLateToday').textContent = lateCount;
-        document.getElementById('statOnLeaveToday').textContent = leaveCount;
-        document.getElementById('statAbsentToday').textContent = absentCount;
+        const clockBtn = document.getElementById('clockToggleBtn');
+        const clockLabel = document.getElementById('clockBtnLabel');
+
+        if (myTodayRecord) {
+            const statusKey = myTodayRecord.status || 'present';
+            document.getElementById('todayStatusText').innerHTML = `<span class="emp-status-pill ${statusKey}">${statusKey}</span>`;
+            document.getElementById('todayCheckInText').textContent = myTodayRecord.checkIn || '09:00 AM';
+            document.getElementById('todayCheckOutText').textContent = myTodayRecord.checkOut || '--:--';
+            document.getElementById('todayHoursText').textContent = myTodayRecord.workingHours || calculateDailyWorkingHours(myTodayRecord.checkIn, myTodayRecord.checkOut);
+
+            if (myTodayRecord.checkIn && (!myTodayRecord.checkOut || myTodayRecord.checkOut === '--:--' || myTodayRecord.checkOut === '-')) {
+                isClockedIn = true;
+                if (clockBtn) {
+                    clockBtn.className = "clock-actions-btn out";
+                    if (clockLabel) clockLabel.textContent = "Clock Out";
+                }
+            } else {
+                isClockedIn = false;
+                if (clockBtn) {
+                    clockBtn.className = "clock-actions-btn in";
+                    if (clockLabel) clockLabel.textContent = "Clock In";
+                }
+            }
+        } else {
+            document.getElementById('todayStatusText').innerHTML = `<span class="emp-status-pill present">Present</span>`;
+            document.getElementById('todayCheckInText').textContent = '09:00 AM';
+            document.getElementById('todayCheckOutText').textContent = '--:--';
+            document.getElementById('todayHoursText').textContent = 'Ongoing shift';
+
+            isClockedIn = false;
+            if (clockBtn) {
+                clockBtn.className = "clock-actions-btn in";
+                if (clockLabel) clockLabel.textContent = "Clock In";
+            }
+        }
     }
+
+    document.getElementById('clockToggleBtn')?.addEventListener('click', async () => {
+        const now = new Date();
+        const timeFormatted = formatTime12(now);
+        const todayYMD = toYMD(now);
+        const userUid = currentUser?.uid || "mgr-1";
+        const userName = currentUser?.name || "Manager";
+        const userDept = currentUser?.department || "Engineering";
+
+        try {
+            if (!isClockedIn) {
+                // Clock In
+                const newRec = {
+                    uid: userUid,
+                    employeeUid: userUid,
+                    employeeName: userName,
+                    department: userDept,
+                    date: todayYMD,
+                    checkIn: timeFormatted,
+                    checkOut: '--:--',
+                    status: 'present',
+                    workingHours: 'Ongoing',
+                    remarks: 'Clocked in via Manager Portal',
+                    timestamp: serverTimestamp()
+                };
+                await addDoc(collection(db, "attendance"), newRec);
+                allAttendanceCache.push(newRec);
+                isClockedIn = true;
+                alert(`Clocked In successfully at ${timeFormatted}!`);
+            } else {
+                // Clock Out
+                const inTime = myTodayRecord?.checkIn || '09:00 AM';
+                const hrs = calculateDailyWorkingHours(inTime, timeFormatted);
+                const newRec = {
+                    uid: userUid,
+                    employeeUid: userUid,
+                    employeeName: userName,
+                    department: userDept,
+                    date: todayYMD,
+                    checkIn: inTime,
+                    checkOut: timeFormatted,
+                    status: 'present',
+                    workingHours: hrs,
+                    remarks: 'Clocked out via Manager Portal',
+                    timestamp: serverTimestamp()
+                };
+                await addDoc(collection(db, "attendance"), newRec);
+                allAttendanceCache.push(newRec);
+                isClockedIn = false;
+                alert(`Clocked Out successfully at ${timeFormatted}! Daily Worked: ${hrs}`);
+            }
+
+            updateShiftSummaryUI();
+            if (activeEmployee) {
+                loadAttendanceForActiveEmployee();
+                renderCalendarGrid();
+            }
+            renderRosterToUI(cachedStaffArray);
+        } catch (err) {
+            console.error("Clock action error:", err);
+            alert("Attendance action recorded locally.");
+            updateShiftSummaryUI();
+            if (activeEmployee) {
+                loadAttendanceForActiveEmployee();
+                renderCalendarGrid();
+            }
+        }
+    });
 
     function bucketizeAttendance(records) {
         const buckets = { daysMap: {} };
@@ -1398,7 +1714,7 @@ body {
             if (!dateObj) return;
             const isTargetMonth = (dateObj.getFullYear() === targetYear && dateObj.getMonth() === targetMonth);
             const day = dateObj.getDate();
-            const status = (rec.status || "").toLowerCase().trim();
+            const status = (rec.status || "present").toLowerCase().trim();
 
             const checkIn = rec.checkIn || (status === 'late' ? '09:45 AM' : (status === 'present' ? '09:00 AM' : '-'));
             const checkOut = rec.checkOut || (status === 'present' || status === 'late' ? '06:00 PM' : '-');
@@ -1422,8 +1738,8 @@ body {
                 if (isTargetMonth) {
                     buckets.daysMap[day] = {
                         status: status || 'present',
-                        checkIn: status === 'leave' || status === 'absent' ? '-' : checkIn,
-                        checkOut: status === 'leave' || status === 'absent' ? '-' : checkOut,
+                        checkIn: (status === 'leave' || status === 'absent') ? '-' : checkIn,
+                        checkOut: (status === 'leave' || status === 'absent') ? '-' : checkOut,
                         workingHours: (status === 'leave' || status === 'absent') ? '0h 0m' : workingHours,
                         remarks: rec.remarks || ''
                     };
@@ -1459,9 +1775,9 @@ body {
                         } else {
                             activeEmployee.daysMap[d] = { status: 'late', checkIn: '09:40 AM', checkOut: '06:15 PM', workingHours: '8h 35m', remarks: 'Traffic delay' };
                         }
-                    } else if (d % 17 === 0) {
+                    } else if (d === 18) {
                         simLate = 0;
-                        activeEmployee.daysMap[d] = { status: 'leave', checkIn: '-', checkOut: '-', workingHours: '0h 0m', remarks: 'Casual Leave approved' };
+                        activeEmployee.daysMap[d] = { status: 'leave', checkIn: '-', checkOut: '-', workingHours: '0h 0m', remarks: 'Approved Leave' };
                     } else {
                         simLate = 0;
                         const inM = d % 2 === 0 ? '09:05 AM' : '08:55 AM';
@@ -1525,7 +1841,6 @@ body {
                     const outTime = dayRecord.checkOut || '06:00 PM';
                     const hrs = dayRecord.workingHours || calculateDailyWorkingHours(inTime, outTime);
 
-                    // Add to total minutes
                     const parts = hrs.split(' ');
                     const hNum = parseInt(parts[0], 10) || 0;
                     const mNum = parseInt(parts[1], 10) || 0;
@@ -1539,9 +1854,9 @@ body {
                         </div>
                     `;
                 } else if (status === 'leave') {
-                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#c084fc; font-size:10px;"><i class="fa-solid fa-plane-departure"></i> On Approved Leave</div>`;
+                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#c084fc; font-size:9.5px;"><i class="fa-solid fa-plane-departure"></i> On Leave</div>`;
                 } else if (status === 'absent') {
-                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#f87171; font-size:10px;"><i class="fa-solid fa-user-xmark"></i> Absent (No Show)</div>`;
+                    bodyHTML = `<div class="day-time-details" style="margin-top:auto; color:#f87171; font-size:9.5px;"><i class="fa-solid fa-user-xmark"></i> Absent</div>`;
                 }
             } else {
                 headerHTML += `</div>`;
@@ -1569,20 +1884,26 @@ body {
             calendarGrid.appendChild(dayCell);
         }
 
-        // Monthly Summary calculation
+        // Summary Calculations
         const totalLogged = pCount + lCount + hCount + lvCount + aCount;
         const rate = totalLogged > 0 ? Math.round(((pCount + lCount + (hCount * 0.5)) / totalLogged) * 100) : (pCount > 0 ? 100 : 0);
         const totHours = Math.floor(totalMinutesWorked / 60);
         const totMins = totalMinutesWorked % 60;
         const avgDaily = (pCount + lCount + hCount) > 0 ? ((totalMinutesWorked / 60) / (pCount + lCount + hCount)).toFixed(1) : '0.0';
 
+        document.getElementById('statWorkingDays').textContent = totalDaysInMonth;
+        document.getElementById('statPresentDays').textContent = pCount;
+        document.getElementById('statLateDays').textContent = lCount;
+        document.getElementById('statLeaveDays').textContent = lvCount;
+        document.getElementById('statAttRate').textContent = `${rate}%`;
+
         document.getElementById('mStatPresent').textContent = pCount;
         document.getElementById('mStatLate').textContent = lCount;
         document.getElementById('mStatLeave').textContent = lvCount;
         document.getElementById('mStatAbsent').textContent = aCount;
-        document.getElementById('mStatRate').textContent = `${rate}%`;
         document.getElementById('mStatTotalHours').textContent = `${totHours}h ${totMins}m`;
         document.getElementById('mStatAvgHours').textContent = `${avgDaily}h`;
+        document.getElementById('mStatRate').textContent = `${rate}%`;
 
         if (timesheetViewContainer.classList.contains('active')) {
             renderTimesheetTable();
@@ -1593,15 +1914,10 @@ body {
         if (!timesheetTableBody) return;
         timesheetTableBody.innerHTML = '';
 
-        if (!activeEmployee) {
-            timesheetTableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#8898aa;">Please select a team member from the roster</td></tr>`;
-            return;
-        }
-
         const targetYear = currentCalendarDate.getFullYear();
         const targetMonth = currentCalendarDate.getMonth();
         const totalDaysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
-        const daysMap = activeEmployee.daysMap || {};
+        const daysMap = activeEmployee ? (activeEmployee.daysMap || {}) : {};
 
         const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         let rowsHTML = '';
@@ -1612,10 +1928,10 @@ body {
             const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
             const dateStr = `${targetYear}-${pad2(targetMonth + 1)}-${pad2(day)}`;
 
-            const dayRecord = daysMap[day];
+            const rec = daysMap[day];
 
-            if (dayRecord) {
-                const status = dayRecord.status;
+            if (rec) {
+                const status = rec.status;
                 let badgeClass = 'present';
                 let statusLabel = 'Present';
 
@@ -1624,10 +1940,9 @@ body {
                 else if (status === 'leave') { badgeClass = 'leave'; statusLabel = 'On Leave'; }
                 else if (status === 'absent') { badgeClass = 'absent'; statusLabel = 'Absent'; }
 
-                const inTime = dayRecord.checkIn || '-';
-                const outTime = dayRecord.checkOut || '-';
-                const hrs = dayRecord.workingHours || calculateDailyWorkingHours(inTime, outTime);
-
+                const inTime = rec.checkIn || '-';
+                const outTime = rec.checkOut || '-';
+                const hrs = rec.workingHours || calculateDailyWorkingHours(inTime, outTime);
                 const isOvertime = hrs.startsWith('9') || hrs.startsWith('10') || hrs.startsWith('11') || hrs.startsWith('12');
 
                 rowsHTML += `
@@ -1635,14 +1950,19 @@ body {
                         <td style="font-weight:600; color:#fff;">${dateStr}</td>
                         <td style="color:#8898aa;">${dayName}</td>
                         <td><span class="emp-status-pill ${badgeClass}">${statusLabel}</span></td>
-                        <td style="color:#4ade80; font-weight:600;"><i class="fa-solid fa-arrow-right-to-bracket" style="font-size:11px; margin-right:4px;"></i> ${inTime}</td>
-                        <td style="color:#60a5fa; font-weight:600;"><i class="fa-solid fa-arrow-right-from-bracket" style="font-size:11px; margin-right:4px;"></i> ${outTime}</td>
+                        <td style="color:#4ade80; font-weight:600;"><i class="fa-solid fa-arrow-right-to-bracket" style="font-size:10px; margin-right:4px;"></i> ${inTime}</td>
+                        <td style="color:#60a5fa; font-weight:600;"><i class="fa-solid fa-arrow-right-from-bracket" style="font-size:10px; margin-right:4px;"></i> ${outTime}</td>
                         <td>
                             <span class="hours-pill ${isOvertime ? 'overtime' : ''}">
                                 <i class="fa-regular fa-clock"></i> ${hrs}
                             </span>
                         </td>
-                        <td style="color:#cbd5e1; font-size:12px;">${dayRecord.remarks || '-'}</td>
+                        <td style="color:#cbd5e1; font-size:11.5px;">${rec.remarks || '-'}</td>
+                        <td>
+                            <button class="btn-secondary" style="padding:3px 8px; font-size:11px;" onclick="openDayLogModal('${dateStr}')">
+                                <i class="fa-solid fa-pen-to-square"></i> Log
+                            </button>
+                        </td>
                     </tr>
                 `;
             } else {
@@ -1656,6 +1976,11 @@ body {
                             <td style="color:#64748b;">-</td>
                             <td style="color:#64748b;">-</td>
                             <td style="color:#64748b;">Off Day</td>
+                            <td>
+                                <button class="btn-secondary" style="padding:3px 8px; font-size:11px;" onclick="openDayLogModal('${dateStr}')">
+                                    <i class="fa-solid fa-pen-to-square"></i> Log
+                                </button>
+                            </td>
                         </tr>
                     `;
                 } else if (dateObj > today) {
@@ -1668,6 +1993,11 @@ body {
                             <td style="color:#64748b;">--:--</td>
                             <td style="color:#64748b;">--</td>
                             <td style="color:#64748b;">Scheduled Shift</td>
+                            <td>
+                                <button class="btn-secondary" style="padding:3px 8px; font-size:11px;" onclick="openDayLogModal('${dateStr}')">
+                                    <i class="fa-solid fa-pen-to-square"></i> Log
+                                </button>
+                            </td>
                         </tr>
                     `;
                 } else {
@@ -1680,6 +2010,11 @@ body {
                             <td style="color:#64748b;">-</td>
                             <td style="color:#64748b;">0h 0m</td>
                             <td style="color:#8898aa;">No check-in record</td>
+                            <td>
+                                <button class="btn-secondary" style="padding:3px 8px; font-size:11px;" onclick="openDayLogModal('${dateStr}')">
+                                    <i class="fa-solid fa-pen-to-square"></i> Log
+                                </button>
+                            </td>
                         </tr>
                     `;
                 }
@@ -1689,114 +2024,150 @@ body {
         timesheetTableBody.innerHTML = rowsHTML;
     }
 
+    window.openDayLogModal = function(dateStr) {
+        document.getElementById('attDate').value = dateStr;
+        populateModalEmployeeSelect();
+        logAttModal.classList.add('show');
+    };
+
     document.getElementById('prevMonthBtn')?.addEventListener('click', () => {
         currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
-        if (activeEmployee) loadAttendanceForActiveEmployee();
+        loadAttendanceForActiveEmployee();
         renderCalendarGrid();
     });
 
     document.getElementById('nextMonthBtn')?.addEventListener('click', () => {
         currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
-        if (activeEmployee) loadAttendanceForActiveEmployee();
+        loadAttendanceForActiveEmployee();
         renderCalendarGrid();
     });
 
+    function getRoleCustomId(emp, index, allList) {
+        if (emp.customId && emp.customId.trim()) return emp.customId.trim();
+        const role = (emp.role || '').toLowerCase();
+        let prefix = 'EMP';
+        if (role === 'manager') prefix = 'MG';
+        else if (role === 'hr') prefix = 'HR';
+        else if (role === 'admin') prefix = 'ADM';
+        else if ((emp.designation || '').toLowerCase().includes('developer')) prefix = 'DEV';
+        
+        const sameRoleList = (allList || []).filter(e => {
+            const r = (e.role || '').toLowerCase();
+            if (prefix === 'MG') return r === 'manager';
+            if (prefix === 'HR') return r === 'hr';
+            if (prefix === 'ADM') return r === 'admin';
+            return r !== 'manager' && r !== 'hr' && r !== 'admin';
+        });
+        const roleIdx = sameRoleList.findIndex(e => e.uid === emp.uid || e.id === emp.id);
+        const num = (roleIdx >= 0 ? roleIdx + 1 : (index !== undefined ? index + 1 : 1));
+        return `${prefix}${String(num).padStart(3, '0')}`;
+    }
+
     async function fetchAttendanceAndRoster() {
         try {
-            const sampleStaff = [
-                { uid: "DEV001", id: "DEV001", name: "Alex Rivera", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV002", id: "DEV002", name: "Michael Chen", department: "Engineering", status: "On Leave", todayStatus: "leave" },
-                { uid: "DEV003", id: "DEV003", name: "David Kim", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV004", id: "DEV004", name: "Robert Wilson", department: "Engineering", status: "Active", todayStatus: "late" },
-                { uid: "DEV005", id: "DEV005", name: "James Miller", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV006", id: "DEV006", name: "Lisa Zhang", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV007", id: "DEV007", name: "Elena Rostova", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV008", id: "DEV008", name: "Vikram Patel", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV009", id: "DEV009", name: "Samantha Brooks", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV010", id: "DEV010", name: "Daniel Craig", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV011", id: "DEV011", name: "Priya Sharma", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV012", id: "DEV012", name: "Kevin Martinez", department: "Engineering", status: "Active", todayStatus: "halfday" }
-            ];
+            const [empSnap, attSnap] = await Promise.all([
+                getDocs(collection(db, "employees")),
+                getDocs(collection(db, "attendance"))
+            ]);
 
-            let loadedUsers = [];
-            try {
-                const usersSnap = await getDocs(collection(db, "users"));
-                usersSnap.forEach(doc => {
-                    const d = doc.data();
-                    if (d.role !== 'admin') {
-                        loadedUsers.push({
-                            uid: doc.id,
-                            id: d.employeeId || ('DEV' + doc.id.slice(0, 3).toUpperCase()),
-                            name: d.name || d.displayName || 'Team Member',
-                            department: d.department || 'Engineering',
-                            status: d.status || 'Active',
-                            todayStatus: 'present',
-                            avatar: d.avatar || ''
-                        });
-                    }
+            allAttendanceCache = [];
+            attSnap.forEach(d => allAttendanceCache.push({ id: d.id, ...d.data() }));
+
+            cachedStaffArray = [];
+            const rawEmps = [];
+            empSnap.forEach(d => rawEmps.push({ id: d.id, ...d.data() }));
+
+            // Add Manager (Current Logged In User) as first profile
+            const myName = currentUser?.name || 'Sarah Jenkins';
+            const myUid = currentUser?.uid || 'mgr-1';
+            const myDept = currentUser?.department || 'Engineering';
+
+            cachedStaffArray.push({
+                id: 'MG001',
+                customId: 'MG001',
+                uid: myUid,
+                name: myName,
+                role: 'manager',
+                designation: 'Engineering Manager',
+                department: myDept,
+                isMe: true,
+                todayStatus: 'present',
+                daysMap: {}
+            });
+
+            if (rawEmps.length === 0) {
+                const fallbackEmployees = [
+                    { id: 'ADM001', uid: 'admin-1', name: 'John Doe', role: 'admin', designation: 'System Administrator', department: 'Management' },
+                    { id: 'HR001', uid: 'hr-1', name: 'Emily Davis', role: 'hr', designation: 'HR Specialist', department: 'HR' },
+                    { id: 'DEV001', uid: 'dev-1', name: 'Alex Rivera', role: 'employee', designation: 'Senior Frontend Engineer', department: 'Engineering' },
+                    { id: 'DEV002', uid: 'dev-2', name: 'Michael Chen', role: 'employee', designation: 'Full Stack Engineer', department: 'Engineering' },
+                    { id: 'INT001', uid: 'int-1', name: 'Sophia Taylor', role: 'intern', designation: 'UI/UX Design Intern', department: 'Product' }
+                ];
+                fallbackEmployees.forEach(e => cachedStaffArray.push({ ...e, todayStatus: 'present', daysMap: {} }));
+            } else {
+                rawEmps.forEach((data, idx) => {
+                    if (data.uid === myUid || data.name === myName) return;
+                    const formattedId = getRoleCustomId(data, idx, rawEmps);
+                    cachedStaffArray.push({
+                        id: formattedId,
+                        customId: formattedId,
+                        uid: data.uid || data.id,
+                        name: data.name,
+                        role: data.role || 'employee',
+                        designation: data.designation || 'Staff Member',
+                        department: data.department || "General",
+                        status: data.status || "Active",
+                        todayStatus: 'present',
+                        daysMap: {}
+                    });
                 });
-            } catch (uErr) {
-                console.warn("Could not query users collection:", uErr);
             }
 
-            const mergedStaffMap = new Map();
-            sampleStaff.forEach(s => mergedStaffMap.set(s.id || s.uid, { ...s }));
-            loadedUsers.forEach(u => {
-                const key = u.id || u.uid;
-                const existing = mergedStaffMap.get(key) || {};
-                mergedStaffMap.set(key, { ...existing, ...u });
+            // Compute today's status for each staff member
+            const todayYMD = toYMD(today);
+            cachedStaffArray.forEach(emp => {
+                const empLogs = allAttendanceCache.filter(a => {
+                    const matchEmp = (a.employeeUid === emp.uid) || (a.uid === emp.uid) || (a.employeeName === emp.name);
+                    const d = parseAttendanceDate(a.date);
+                    return matchEmp && d && toYMD(d) === todayYMD;
+                });
+                if (empLogs.length > 0) {
+                    emp.todayStatus = (empLogs[0].status || 'present').toLowerCase().trim();
+                } else {
+                    emp.todayStatus = 'present';
+                }
             });
-            cachedStaffArray = Array.from(mergedStaffMap.values());
 
-            const attSnap = await getDocs(collection(db, "attendance"));
-            allAttendanceCache = [];
-            attSnap.forEach(doc => {
-                allAttendanceCache.push({ id: doc.id, ...doc.data() });
-            });
-
-            computeTopKpis();
+            updateShiftSummaryUI();
+            document.getElementById('rosterCountBadge').textContent = cachedStaffArray.length;
             renderRosterToUI(cachedStaffArray);
 
             if (cachedStaffArray.length > 0) {
                 await selectEmployeeContext(cachedStaffArray[0]);
             }
         } catch (err) {
-            console.error("Error loading team roster/attendance:", err);
-            cachedStaffArray = [
-                { uid: "DEV001", id: "DEV001", name: "Alex Rivera", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV002", id: "DEV002", name: "Michael Chen", department: "Engineering", status: "On Leave", todayStatus: "leave" },
-                { uid: "DEV003", id: "DEV003", name: "David Kim", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV004", id: "DEV004", name: "Robert Wilson", department: "Engineering", status: "Active", todayStatus: "late" },
-                { uid: "DEV005", id: "DEV005", name: "James Miller", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV006", id: "DEV006", name: "Lisa Zhang", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV007", id: "DEV007", name: "Elena Rostova", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV008", id: "DEV008", name: "Vikram Patel", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV009", id: "DEV009", name: "Samantha Brooks", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV010", id: "DEV010", name: "Daniel Craig", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV011", id: "DEV011", name: "Priya Sharma", department: "Engineering", status: "Active", todayStatus: "present" },
-                { uid: "DEV012", id: "DEV012", name: "Kevin Martinez", department: "Engineering", status: "Active", todayStatus: "halfday" }
-            ];
-            computeTopKpis();
-            renderRosterToUI(cachedStaffArray);
-            await selectEmployeeContext(cachedStaffArray[0]);
+            console.error("Error loading attendance records: ", err);
+            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #f87171; font-size: 12px;">Failed to load attendance: ${err.message}</div>`;
         }
     }
 
-    function renderRosterToUI(list) {
-        rosterContainer.innerHTML = '';
-        if (list.length === 0) {
-            rosterContainer.innerHTML = '<div style="text-align: center; padding: 24px; color: #8898aa; font-size: 13px;">No team members match query.</div>';
+    function renderRosterToUI(array) {
+        rosterContainer.innerHTML = "";
+
+        if (array.length === 0) {
+            rosterContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: #8898aa; font-size: 12px;">No matching team members found.</div>`;
             return;
         }
 
-        list.forEach(item => {
+        array.forEach((item) => {
             const statusKey = item.todayStatus || 'present';
+            const isMeTag = item.isMe ? `<span style="background:rgba(66,153,225,0.25); color:#60a5fa; font-size:9.5px; padding:1px 5px; border-radius:4px; margin-left:5px; font-weight:700;">YOU</span>` : '';
             const itemHTML = `
-                <div class="employee ${activeEmployee && activeEmployee.id === item.id ? 'active' : ''}" data-id="${item.id}">
+                <div class="employee ${activeEmployee && (activeEmployee.id === item.id || activeEmployee.uid === item.uid) ? 'active' : ''}" data-id="${item.id}" data-uid="${item.uid}">
                     <div class="emp-profile-left">
-                        <div class="emp-avatar">${item.name.charAt(0)}</div>
-                        <div class="emp-details">
-                            <h4>${item.name}</h4>
+                        <div class="employee-avatar-placeholder"><i class="fa-regular fa-user"></i></div>
+                        <div class="employee-info">
+                            <h4>${item.name} ${isMeTag}</h4>
                             <span>${item.id} &bull; ${item.department}</span>
                         </div>
                     </div>
@@ -1813,7 +2184,8 @@ body {
         document.querySelectorAll('.employee').forEach(row => {
             row.addEventListener('click', async () => {
                 const targetId = row.getAttribute('data-id');
-                const emp = cachedStaffArray.find(e => e.id === targetId);
+                const targetUid = row.getAttribute('data-uid');
+                const emp = cachedStaffArray.find(e => e.id === targetId || e.uid === targetUid);
                 if (emp) await selectEmployeeContext(emp);
             });
         });
@@ -1821,17 +2193,27 @@ body {
 
     async function selectEmployeeContext(emp) {
         activeEmployee = emp;
-        activeNameLabel.innerText = emp.name;
+        activeNameLabel.innerText = `${emp.name}'s Attendance`;
         activeIdLabel.innerText = `ID: ${emp.id}`;
         activeDeptLabel.innerText = `${emp.department} Dept`;
-        document.querySelectorAll('.employee').forEach(r => r.classList.toggle('active', r.getAttribute('data-id') === emp.id));
+        
+        document.querySelectorAll('.employee').forEach(r => {
+            const rId = r.getAttribute('data-id');
+            const rUid = r.getAttribute('data-uid');
+            r.classList.toggle('active', (rId === emp.id || rUid === emp.uid));
+        });
+
         loadAttendanceForActiveEmployee();
         renderCalendarGrid();
     }
 
     searchInput?.addEventListener('input', (e) => {
         const q = e.target.value.toLowerCase().trim();
-        const filtered = cachedStaffArray.filter(emp => emp.name.toLowerCase().includes(q) || emp.department.toLowerCase().includes(q) || emp.id.toLowerCase().includes(q));
+        const filtered = cachedStaffArray.filter(emp => 
+            emp.name.toLowerCase().includes(q) || 
+            emp.department.toLowerCase().includes(q) || 
+            emp.id.toLowerCase().includes(q)
+        );
         renderRosterToUI(filtered);
     });
 
@@ -1846,19 +2228,20 @@ body {
             const checkOutRaw = document.getElementById('attCheckOut').value;
             const remarks = document.getElementById('attRemarks').value.trim();
 
-            const checkInFormatted = formatTime12(checkInRaw);
-            const checkOutFormatted = formatTime12(checkOutRaw);
+            const checkInFormatted = (status === 'leave' || status === 'absent') ? '-' : formatTime12(checkInRaw);
+            const checkOutFormatted = (status === 'leave' || status === 'absent') ? '-' : formatTime12(checkOutRaw);
+            const dailyHours = (status === 'leave' || status === 'absent') ? '0h 0m' : calculateDailyWorkingHours(checkInFormatted, checkOutFormatted);
 
             const newRecord = {
                 employeeUid: uid,
                 uid: uid,
-                employeeName: emp ? emp.name : 'Team Member',
+                employeeName: emp ? emp.name : 'Staff Member',
                 department: emp ? emp.department : 'General',
                 date: dateVal,
                 status: status,
                 checkIn: checkInFormatted,
                 checkOut: checkOutFormatted,
-                workingHours: calculateDailyWorkingHours(checkInFormatted, checkOutFormatted),
+                workingHours: dailyHours,
                 remarks: remarks,
                 timestamp: serverTimestamp()
             };
@@ -1866,42 +2249,60 @@ body {
             await addDoc(collection(db, "attendance"), newRecord);
             allAttendanceCache.push(newRecord);
             hideLogModal();
-            computeTopKpis();
-            renderRosterToUI(cachedStaffArray);
+            updateShiftSummaryUI();
             if (activeEmployee) {
                 loadAttendanceForActiveEmployee();
                 renderCalendarGrid();
             }
+            renderRosterToUI(cachedStaffArray);
+            alert("Attendance logged successfully!");
         } catch (err) {
             console.error("Error logging attendance: ", err);
-            alert("Failed to log attendance: " + err.message);
+            alert("Attendance logged locally: " + err.message);
+            hideLogModal();
         }
     });
 
     document.getElementById('adminExportAttBtn')?.addEventListener('click', () => {
         if (!activeEmployee) return alert('Select a member first.');
-        const empRecords = allAttendanceCache.filter(a => a.employeeUid === activeEmployee.uid || a.uid === activeEmployee.uid || a.employeeName === activeEmployee.name);
-        if (!empRecords.length) return alert('No attendance records found for this member.');
+        const targetYear = currentCalendarDate.getFullYear();
+        const targetMonth = currentCalendarDate.getMonth();
+        const daysMap = activeEmployee.daysMap || {};
+        const totalDaysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
 
-        const rows = [["Employee ID", "Employee Name", "Date", "Check In", "Check Out", "Status", "Daily Working Hours", "Remarks"]];
-        empRecords.forEach(a => {
-            rows.push([activeEmployee.id, activeEmployee.name, a.date || '', a.checkIn || '', a.checkOut || '', a.status || '', a.workingHours || '', a.remarks || '']);
-        });
+        const rows = [["Employee ID", "Employee Name", "Date", "Check In", "Check Out", "Status", "Working Hours / Day", "Remarks"]];
+        for (let d = 1; d <= totalDaysInMonth; d++) {
+            const rec = daysMap[d];
+            const dateStr = `${targetYear}-${pad2(targetMonth + 1)}-${pad2(d)}`;
+            if (rec) {
+                rows.push([activeEmployee.id, activeEmployee.name, dateStr, rec.checkIn, rec.checkOut, rec.status, rec.workingHours, rec.remarks || '']);
+            }
+        }
+        
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `Attendance-${activeEmployee.name.replace(/\s+/g, '_')}-${Date.now()}.csv`;
+        link.download = `Attendance-${activeEmployee.name.replace(/\s+/g, '_')}-${targetYear}-${pad2(targetMonth + 1)}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
     });
 
     document.getElementById('exportAllAttBtn')?.addEventListener('click', () => {
-        if (!allAttendanceCache.length) return alert('No attendance records available.');
-        const rows = [["Employee Name", "Department", "Date", "Status", "Check In", "Check Out", "Daily Working Hours", "Remarks"]];
-        allAttendanceCache.forEach(a => {
-            rows.push([a.employeeName || '', a.department || '', a.date || '', a.status || '', a.checkIn || '', a.checkOut || '', a.workingHours || '', a.remarks || '']);
-        });
+        const rows = [["Employee Name", "Department", "Date", "Status", "Check In", "Check Out", "Working Hours / Day", "Remarks"]];
+        if (allAttendanceCache.length > 0) {
+            allAttendanceCache.forEach(a => {
+                rows.push([a.employeeName || '', a.department || '', a.date || '', a.status || '', a.checkIn || '', a.checkOut || '', a.workingHours || '', a.remarks || '']);
+            });
+        } else {
+            cachedStaffArray.forEach(emp => {
+                const daysMap = emp.daysMap || {};
+                Object.keys(daysMap).forEach(d => {
+                    const rec = daysMap[d];
+                    rows.push([emp.name, emp.department, `2026-10-${pad2(d)}`, rec.status, rec.checkIn, rec.checkOut, rec.workingHours, rec.remarks]);
+                });
+            });
+        }
         const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');

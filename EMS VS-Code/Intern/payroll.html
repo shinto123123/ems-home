@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payroll & Stipend - Intern Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    color: #e2e8f0;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #4299e1;
+}
+
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-search i { color: #4a5568; font-size: 14px; }
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.nav-search input::placeholder { color: #4a5568; }
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    transition: .3s;
+    text-decoration: none;
+}
+.nav-icon-btn:hover { color: #4299e1; border-color: #4299e1; }
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+}
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+.nav-profile-info h4 { font-size: 13px; font-weight: 600; color: #ffffff; }
+.nav-profile-info small { font-size: 11px; color: #8898aa; }
+.nav-profile .fa-chevron-down { font-size: 11px; color: #8898aa; }
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
+}
+.nav-profile-dropdown.show { display: block; }
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
+}
+.nav-profile-dropdown a:hover { background: rgba(66,153,225,.12); color: #fff; }
+
+/* ── BODY WRAP ── */
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+.sidebar-top { padding: 24px 16px; text-align: center; border-bottom: 1px solid #1b2e6e; }
+.sidebar-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #0b1437;
+    border: 2px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #8898aa;
+    margin: 0 auto 12px;
+}
+.sidebar-top h3 { font-size: 15px; font-weight: 700; color: #fff; }
+.sidebar-top p { font-size: 12px; color: #8898aa; margin-top: 2px; }
+.sidebar-menu { flex: 1; overflow-y: auto; list-style: none; padding: 12px 0; }
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 20px;
+    color: #8898aa;
+    font-size: 13.5px;
+    text-decoration: none;
+    transition: .2s;
+    border-left: 3px solid transparent;
+}
+.sidebar-menu li a:hover, .sidebar-menu li.active a {
+    background: rgba(66,153,225,.1);
+    color: #fff;
+    border-left-color: #4299e1;
+}
+.sidebar-menu li a i { width: 16px; font-size: 14px; }
+.sidebar-footer { border-top: 1px solid #1b2e6e; padding: 8px 0; }
+
+/* ── MAIN CONTENT ── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    background: #0b1437;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+.page-header h1 { font-size: 22px; font-weight: 700; color: #ffffff; }
+.page-header p { font-size: 13px; color: #8898aa; margin-top: 2px; }
+
+.header-actions { display: flex; gap: 10px; }
+
+.btn-primary {
+    background: #4299e1;
+    border: none;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.btn-primary:hover { background: #3182ce; }
+
+.btn-secondary {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    color: #d7dfef;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: 0.2s;
+}
+.btn-secondary:hover { background: #1b2e6e; color: #fff; }
+
+/* ── 4-COLUMN TOP SUMMARY METRICS ── */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.metric-card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    transition: .2s;
+}
+.metric-card:hover { border-color: #4299e1; transform: translateY(-2px); }
+
+.metric-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #4299e1;
+    flex-shrink: 0;
+}
+
+.metric-info h4 { font-size: 12px; color: #8898aa; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }
+.metric-info h2 { font-size: 20px; font-weight: 700; color: #ffffff; }
+.metric-info p { font-size: 11px; color: #8898aa; margin-top: 2px; }
+
+/* ── SPLIT MAIN WORKSPACE REGION ── */
+.payroll-layout-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 16px;
+    align-items: start;
+    flex: 1;
+}
+
+.card-panel {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 18px rgba(0,0,0,.2);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+.panel-header h3 { font-size: 15px; font-weight: 700; color: #ffffff; }
+
+.select-sm {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    color: #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Payslip History List */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.history-table tr {
+    border-bottom: 1px solid #1b2e6e;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.history-table tr:last-child { border-bottom: none; }
+.history-table tr:hover, .history-table tr.active-row {
+    background: rgba(66, 153, 225, 0.12);
+}
+.history-table td {
+    padding: 12px 8px;
+    vertical-align: middle;
+    font-size: 12.5px;
+}
+
+.history-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.history-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4299e1;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.history-title-desc strong { color: #ffffff; font-size: 13px; display: block; }
+.history-title-desc span { color: #8898aa; font-size: 11px; display: block; margin-top: 1px; }
+
+/* Status Pill */
+.status-pill {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+.status-pill.paid { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+.status-pill.pending { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+
+/* Detailed Breakdown Sheet */
+.user-slip-overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+}
+.user-slip-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.user-slip-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #111c44;
+    border: 1.5px solid #4299e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
+}
+.user-slip-text h4 { font-size: 14px; color: #ffffff; font-weight: 700; }
+.user-slip-text p { font-size: 11.5px; color: #8898aa; margin-top: 1px; }
+
+.user-slip-grid-data {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.data-block-entry span { font-size: 11px; color: #8898aa; display: block; }
+.data-block-entry strong { font-size: 12px; color: #e2e8f0; display: block; margin-top: 2px; }
+
+.breakdown-columns-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.breakdown-box-panel {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+}
+.breakdown-title-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #8898aa;
+    border-bottom: 1px solid #1b2e6e;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.breakdown-row-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #e2e8f0;
+    padding: 6px 0;
+}
+.breakdown-row-item span { color: #cbd5e1; }
+.breakdown-total-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    border-top: 1px solid #1b2e6e;
+    padding-top: 10px;
+    margin-top: auto;
+}
+
+/* Net Pay Highlight Card */
+.summary-net-card {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.net-pay-highlight {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1b2e6e;
+    border-bottom: 1px solid #1b2e6e;
+    padding: 10px 0;
+    margin: 4px 0;
+}
+.net-pay-highlight h3 { font-size: 14px; font-weight: 600; color: #ffffff; }
+.net-pay-highlight h2 { font-size: 22px; font-weight: 700; color: #4ade80; }
+
+.amount-words-lbl { font-size: 11px; color: #8898aa; display: block; }
+.amount-words-val { font-size: 12px; color: #e2e8f0; font-style: italic; margin-top: 2px; }
+
+/* ── YTD SUMMARY ROW ── */
+.lower-full-width-panel {
+    grid-column: span 2;
+}
+.ytd-inline-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 4px;
+}
+.ytd-entry-subcard {
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ytd-icon-min {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4299e1;
+    font-size: 14px;
+}
+.ytd-txt-meta span { font-size: 11px; color: #8898aa; display: block; }
+.ytd-txt-meta strong { font-size: 14px; color: #ffffff; display: block; margin-top: 2px; font-weight: 700; }
+
+@media(max-width:1300px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .payroll-layout-grid { grid-template-columns: 1fr; }
+    .lower-full-width-panel { grid-column: span 1; }
+}
+@media(max-width:768px) {
+    .metrics-grid { grid-template-columns: 1fr; }
+    .ytd-inline-container { grid-template-columns: repeat(2, 1fr); }
+    .breakdown-columns-wrap { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">EMS</div>
+        <span class="navbar-title">INTERNSHIP PORTAL</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search payslips, stipend records, deductions...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <a class="nav-icon-btn" href="notifications.html"><i class="fa-regular fa-bell"></i><span class="badge">2</span></a>
+        <a class="nav-icon-btn" href="communication.html"><i class="fa-regular fa-envelope"></i><span class="badge">3</span></a>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info">
+                <h4 id="navUserName">Sophia Taylor</h4>
+                <small id="navUserRole">Software Intern</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="profile.html"><i class="fa-regular fa-user"></i>Profile</a>
+                <a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a>
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div>
+            <div class="sidebar-top">
+                <div class="sidebar-avatar"><i class="fa-regular fa-user"></i></div>
+                <h3 id="sidebarUserName">Sophia Taylor</h3>
+                <p id="sidebarUserRole">Software Intern</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+                <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+                <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>My Attendance</a></li>
+                <li class="active"><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll & Stipend</a></li>
+                <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
+                <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
+                <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
+                <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
+                <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
+                <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
+                <li><a href="notifications.html"><i class="fa-solid fa-bell"></i>Notifications</a></li>
+                <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <ul class="sidebar-menu">
+                <li><a href="#" id="sidebarLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Intern Stipend & Payroll</h1>
+                    <p>View your monthly stipend breakdowns, performance incentives, and download official payment receipts.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="printSlipBtn"><i class="fa-solid fa-print"></i> Print Payslip</button>
+                    <button class="btn-primary" id="downloadReceiptBtn"><i class="fa-solid fa-file-invoice-dollar"></i> Download PDF Receipt</button>
+                </div>
+            </div>
+
+            <!-- TOP 4 KPI CARDS -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon" style="color:#4299e1;"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="metric-info">
+                        <h4>Monthly Base Stipend</h4>
+                        <h2 id="kpiBaseStipend">$1,850.00</h2>
+                        <p>Standard monthly allocation</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="color:#4ade80;"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="metric-info">
+                        <h4>Latest Net Disbursed</h4>
+                        <h2 id="kpiNetDisbursed" style="color:#4ade80;">$1,950.00</h2>
+                        <p>Credited for Oct 2026</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="color:#fbbf24;"><i class="fa-solid fa-award"></i></div>
+                    <div class="metric-info">
+                        <h4>Incentives / Bonus</h4>
+                        <h2 id="kpiIncentives">$100.00</h2>
+                        <p>Project milestone bonus</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="color:#c084fc;"><i class="fa-solid fa-receipt"></i></div>
+                    <div class="metric-info">
+                        <h4>Deductions (Taxes/Leaves)</h4>
+                        <h2 id="kpiDeductions">$0.00</h2>
+                        <p>Zero deductions</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SPLIT WORKSPACE -->
+            <div class="payroll-layout-grid">
+
+                <!-- Left Column: Payslip History -->
+                <div class="card-panel">
+                    <div class="panel-header">
+                        <h3>Stipend History</h3>
+                        <select class="select-sm" id="yearFilterSelect">
+                            <option value="2026">Year 2026</option>
+                            <option value="2025">Year 2025</option>
+                        </select>
+                    </div>
+                    <table class="history-table">
+                        <tbody id="payslipHistoryBody">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right Column: Detailed Payslip Sheet -->
+                <div class="card-panel">
+                    <div class="panel-header">
+                        <h3>Payslip Breakdown: <span style="color:#4299e1;" id="activeMonthTitle">October 2026</span></h3>
+                        <span class="status-pill paid" id="activeSlipStatus">Paid</span>
+                    </div>
+
+                    <div class="user-slip-overview">
+                        <div class="user-slip-meta">
+                            <div class="user-slip-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div class="user-slip-text">
+                                <h4 id="slipInternName">Sophia Taylor</h4>
+                                <p id="slipInternRole">Software Intern &bull; Product Dept</p>
+                            </div>
+                        </div>
+                        <div class="user-slip-grid-data">
+                            <div class="data-block-entry">
+                                <span>Intern ID:</span>
+                                <strong id="slipInternId">INT001</strong>
+                            </div>
+                            <div class="data-block-entry">
+                                <span>Pay Period:</span>
+                                <strong id="slipPayPeriod">01 Oct - 31 Oct 2026</strong>
+                            </div>
+                            <div class="data-block-entry">
+                                <span>Disbursement Date:</span>
+                                <strong id="slipDisbursementDate">31 Oct 2026</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-columns-wrap">
+                        
+                        <!-- Earnings Column -->
+                        <div class="breakdown-box-panel">
+                            <div class="breakdown-title-header">
+                                <span>Earnings Component</span>
+                                <span>Amount</span>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Base Internship Stipend</span>
+                                <strong id="valBaseStipend">$1,850.00</strong>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Project Milestone Bonus</span>
+                                <strong id="valMilestoneBonus">$100.00</strong>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Mentorship Excellence Award</span>
+                                <strong id="valAwardBonus">$0.00</strong>
+                            </div>
+                            <div class="breakdown-total-bar">
+                                <span>Total Gross Earnings:</span>
+                                <span style="color:#4ade80;" id="valTotalGross">$1,950.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Deductions Column -->
+                        <div class="breakdown-box-panel">
+                            <div class="breakdown-title-header">
+                                <span>Deductions Component</span>
+                                <span>Amount</span>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Tax Withholding (Exempt)</span>
+                                <strong>$0.00</strong>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Unapproved Leave Deductions</span>
+                                <strong>$0.00</strong>
+                            </div>
+                            <div class="breakdown-row-item">
+                                <span>Equipment Deposit</span>
+                                <strong>$0.00</strong>
+                            </div>
+                            <div class="breakdown-total-bar">
+                                <span>Total Deductions:</span>
+                                <span style="color:#cbd5e1;" id="valTotalDeductions">$0.00</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Net Pay Summary -->
+                    <div class="summary-net-card">
+                        <div class="net-pay-highlight">
+                            <div>
+                                <h3>Total Net Stipend Paid</h3>
+                                <span style="font-size:11px; color:#8898aa;">Direct Deposit to Bank Account</span>
+                            </div>
+                            <h2 id="valNetPayFinal">$1,950.00</h2>
+                        </div>
+                        <div>
+                            <span class="amount-words-lbl">Amount in Words:</span>
+                            <span class="amount-words-val" id="valAmountInWords">One Thousand Nine Hundred Fifty Dollars Only</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Lower Region: YTD Matrix -->
+                <div class="card-panel lower-full-width-panel">
+                    <div class="panel-header">
+                        <h3>Year-To-Date (YTD) Summary & Payment Account</h3>
+                    </div>
+                    <div class="ytd-inline-container">
+                        <div class="ytd-entry-subcard">
+                            <div class="ytd-icon-min"><i class="fa-solid fa-coins"></i></div>
+                            <div class="ytd-txt-meta">
+                                <span>Total Gross Stipend YTD</span>
+                                <strong id="ytdGross">$7,550.00</strong>
+                            </div>
+                        </div>
+                        <div class="ytd-entry-subcard">
+                            <div class="ytd-icon-min" style="color:#4ade80;"><i class="fa-solid fa-money-check-dollar"></i></div>
+                            <div class="ytd-txt-meta">
+                                <span>Total Net Disbursed YTD</span>
+                                <strong id="ytdNet">$7,550.00</strong>
+                            </div>
+                        </div>
+                        <div class="ytd-entry-subcard">
+                            <div class="ytd-icon-min" style="color:#fbbf24;"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div class="ytd-txt-meta">
+                                <span>Internship Paid Days</span>
+                                <strong>88 Days</strong>
+                            </div>
+                        </div>
+                        <div class="ytd-entry-subcard">
+                            <div class="ytd-icon-min" style="color:#c084fc;"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="ytd-txt-meta">
+                                <span>Disbursement Method</span>
+                                <strong>Direct Bank Transfer</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout, getTheme } from "../assets/js/auth-session.js";
+    import { buildReceiptHtml } from "../assets/js/payroll-receipt.js";
+
+    const currentUser = requireRole(["intern", "admin", "hr", "manager"]);
+    if (currentUser) {
+        paintNavProfile(currentUser);
+        const nameEls = [document.getElementById('navUserName'), document.getElementById('sidebarUserName'), document.getElementById('slipInternName')];
+        const roleEls = [document.getElementById('navUserRole'), document.getElementById('sidebarUserRole')];
+        nameEls.forEach(el => { if (el && currentUser.name) el.textContent = currentUser.name; });
+        roleEls.forEach(el => { if (el && currentUser.role) el.textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1); });
+    }
+
+    // Logout
+    function doLogout(e) {
+        e.preventDefault();
+        logout("../");
+    }
+    document.getElementById('logoutLink')?.addEventListener('click', doLogout);
+    document.getElementById('sidebarLogoutBtn')?.addEventListener('click', doLogout);
+
+    // Profile dropdown
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+
+    // Sample intern payslips data
+    const internPayslips = [
+        {
+            id: 'PAY-INT-2026-10',
+            month: 'October 2026',
+            payPeriod: '01 Oct - 31 Oct 2026',
+            payDate: '31 Oct 2026',
+            baseStipend: 1850,
+            bonus: 100,
+            award: 0,
+            deductions: 0,
+            netPay: 1950,
+            status: 'Paid',
+            amountWords: 'One Thousand Nine Hundred Fifty Dollars Only'
+        },
+        {
+            id: 'PAY-INT-2026-09',
+            month: 'September 2026',
+            payPeriod: '01 Sep - 30 Sep 2026',
+            payDate: '30 Sep 2026',
+            baseStipend: 1850,
+            bonus: 50,
+            award: 0,
+            deductions: 0,
+            netPay: 1900,
+            status: 'Paid',
+            amountWords: 'One Thousand Nine Hundred Dollars Only'
+        },
+        {
+            id: 'PAY-INT-2026-08',
+            month: 'August 2026',
+            payPeriod: '01 Aug - 31 Aug 2026',
+            payDate: '31 Aug 2026',
+            baseStipend: 1850,
+            bonus: 0,
+            award: 0,
+            deductions: 0,
+            netPay: 1850,
+            status: 'Paid',
+            amountWords: 'One Thousand Eight Hundred Fifty Dollars Only'
+        },
+        {
+            id: 'PAY-INT-2026-07',
+            month: 'July 2026',
+            payPeriod: '01 Jul - 31 Jul 2026',
+            payDate: '31 Jul 2026',
+            baseStipend: 1850,
+            bonus: 0,
+            award: 0,
+            deductions: 0,
+            netPay: 1850,
+            status: 'Paid',
+            amountWords: 'One Thousand Eight Hundred Fifty Dollars Only'
+        }
+    ];
+
+    let selectedSlip = internPayslips[0];
+
+    function renderHistory() {
+        const tbody = document.getElementById('payslipHistoryBody');
+        if (!tbody) return;
+
+        tbody.innerHTML = internPayslips.map((slip, idx) => `
+            <tr class="${slip.id === selectedSlip.id ? 'active-row' : ''}" data-id="${slip.id}">
+                <td>
+                    <div class="history-item-meta">
+                        <div class="history-icon-box"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                        <div class="history-title-desc">
+                            <strong>${slip.month}</strong>
+                            <span>Disbursed on ${slip.payDate}</span>
+                        </div>
+                    </div>
+                </td>
+                <td style="text-align:right;">
+                    <strong style="color:#ffffff; font-size:13px;">$${slip.netPay.toLocaleString()}.00</strong>
+                    <div><span class="status-pill ${slip.status.toLowerCase()}">${slip.status}</span></div>
+                </td>
+            </tr>
+        `).join('');
+
+        document.querySelectorAll('#payslipHistoryBody tr').forEach(tr => {
+            tr.addEventListener('click', () => {
+                const id = tr.getAttribute('data-id');
+                const found = internPayslips.find(s => s.id === id);
+                if (found) {
+                    selectedSlip = found;
+                    renderHistory();
+                    renderSelectedSlip();
+                }
+            });
+        });
+    }
+
+    function renderSelectedSlip() {
+        document.getElementById('activeMonthTitle').textContent = selectedSlip.month;
+        document.getElementById('slipPayPeriod').textContent = selectedSlip.payPeriod;
+        document.getElementById('slipDisbursementDate').textContent = selectedSlip.payDate;
+        
+        document.getElementById('valBaseStipend').textContent = `$${selectedSlip.baseStipend.toLocaleString()}.00`;
+        document.getElementById('valMilestoneBonus').textContent = `$${selectedSlip.bonus.toLocaleString()}.00`;
+        document.getElementById('valAwardBonus').textContent = `$${selectedSlip.award.toLocaleString()}.00`;
+        document.getElementById('valTotalGross').textContent = `$${(selectedSlip.baseStipend + selectedSlip.bonus + selectedSlip.award).toLocaleString()}.00`;
+        
+        document.getElementById('valTotalDeductions').textContent = `$${selectedSlip.deductions.toLocaleString()}.00`;
+        document.getElementById('valNetPayFinal').textContent = `$${selectedSlip.netPay.toLocaleString()}.00`;
+        document.getElementById('valAmountInWords').textContent = selectedSlip.amountWords;
+    }
+
+    // Print & PDF Receipt handlers
+    function openReceiptPopup(autoPrint = false) {
+        const record = {
+            employeeName: currentUser?.name || 'Sophia Taylor',
+            employeeId: 'INT001',
+            department: 'Product',
+            designation: 'Software Intern',
+            flow: 'Outflow',
+            date: selectedSlip.payDate,
+            month: selectedSlip.month,
+            payPeriod: selectedSlip.payPeriod,
+            basicSalary: selectedSlip.baseStipend,
+            allowances: selectedSlip.bonus,
+            deductions: selectedSlip.deductions,
+            netPay: selectedSlip.netPay,
+            status: selectedSlip.status,
+            amountInWords: selectedSlip.amountWords
+        };
+
+        const html = buildReceiptHtml(record, selectedSlip.id);
+        const win = window.open('', '_blank', 'width=900,height=750');
+        if (win) {
+            win.document.write(html);
+            win.document.close();
+            if (autoPrint) {
+                setTimeout(() => { win.print(); }, 500);
+            }
+        }
+    }
+
+    document.getElementById('printSlipBtn')?.addEventListener('click', () => openReceiptPopup(true));
+    document.getElementById('downloadReceiptBtn')?.addEventListener('click', () => openReceiptPopup(false));
+
+    renderHistory();
+    renderSelectedSlip();
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Reports & Management Submissions - Manager Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #0b1437; display: flex; flex-direction: column; height: 100vh; overflow: hidden; color: #d7dfef; }
+
+/* ── NAVBAR ── */
+.navbar { height: 60px; background: #111c44; border-bottom: 1px solid #1b2e6e; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; flex-shrink: 0; z-index: 100; }
+.navbar-left { display: flex; align-items: center; gap: 15px; }
+.hamburger { font-size: 20px; color: #8898aa; cursor: pointer; }
+.navbar-logo { width: 40px; height: 40px; background: #1b2e6e; border: 2px solid #4299e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #4299e1; }
+.navbar-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+.navbar-center { flex: 1; display: flex; justify-content: center; padding: 0 40px; }
+.nav-search { width: 100%; max-width: 420px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 10px; padding: 9px 15px; display: flex; align-items: center; gap: 10px; }
+.nav-search i { color: #4a5568; font-size: 14px; }
+.nav-search input { border: none; outline: none; background: none; width: 100%; color: #e2e8f0; font-size: 14px; }
+.nav-search input::placeholder { color: #4a5568; }
+.navbar-right { display: flex; align-items: center; gap: 20px; }
+.nav-icon-btn { position: relative; width: 38px; height: 38px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #8898aa; font-size: 16px; transition: .3s; text-decoration: none; }
+.nav-icon-btn:hover { border-color: #4299e1; color: #4299e1; }
+.nav-icon-btn .badge { position: absolute; top: -4px; right: -4px; background: #4299e1; color: #fff; font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.nav-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 5px 10px; border-radius: 10px; border: 1px solid #1b2e6e; position: relative; }
+.nav-profile-avatar { width: 34px; height: 34px; border-radius: 50%; background: #1b2e6e; display: flex; align-items: center; justify-content: center; color: #8898aa; font-size: 16px; }
+.nav-profile-info h4 { font-size: 13px; font-weight: 600; color: #fff; }
+.nav-profile-info small { font-size: 11px; color: #8898aa; }
+.nav-profile-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 160px; background: #111c44; border: 1px solid #1b2e6e; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.4); padding: 6px; display: none; z-index: 1000; }
+.nav-profile-dropdown.show { display: block; }
+.nav-profile-dropdown a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; color: #d7dfef; font-size: 13px; text-decoration: none; transition: .15s; }
+.nav-profile-dropdown a:hover { background: rgba(66,153,225,.12); color: #fff; }
+
+/* ── BODY WRAP ── */
+.body-wrap { display: flex; flex: 1; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 240px; height: 100%; background: #111c44; border-right: 1px solid #1b2e6e; overflow-y: auto; flex-shrink: 0; transition: width 0.3s ease; }
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+.sidebar ul { list-style: none; padding: 10px 0; }
+.sidebar ul li { padding: 12px 20px; display: flex; align-items: center; cursor: pointer; transition: .3s; }
+.sidebar ul li a { text-decoration: none; color: #8898aa; display: flex; gap: 12px; align-items: center; width: 100%; font-size: 14px; white-space: nowrap; }
+.sidebar ul li:hover, .sidebar ul li.active { background: #1b2e6e; }
+.sidebar ul li:hover a, .sidebar ul li.active a { color: #fff; }
+.sidebar.collapsed { width: 70px; }
+.sidebar.collapsed ul li span { display: none; }
+.sidebar.collapsed ul li a { justify-content: center; }
+
+/* ── MAIN CONTENT ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.content { flex: 1; padding: 18px 24px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; background: #0b1437; }
+
+.page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; flex-shrink: 0; }
+.page-header h1 { font-size: 22px; color: #ffffff; font-weight: 700; }
+.page-header p { color: #8898aa; font-size: 12.5px; margin-top: 3px; }
+
+/* Tab Switcher */
+.section-tabs-bar {
+    display: flex;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 6px;
+    width: fit-content;
+}
+.sec-tab-btn {
+    background: none;
+    border: none;
+    outline: none;
+    color: #8898aa;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+.sec-tab-btn:hover { color: #fff; }
+.sec-tab-btn.active { background: #4299e1; color: #fff; }
+
+/* Grid layout for Submission Tab */
+.grid-split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; flex: 1; min-height: 0; }
+
+.panel-card { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; box-shadow: 0 4px 18px rgba(0,0,0,0.2); overflow-y: auto; }
+.panel-card h3 { font-size: 15px; color: #ffffff; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.panel-card h3 span i { color: #4299e1; margin-right: 6px; }
+
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; color: #8898aa; font-size: 11.5px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 8px; color: #ffffff; font-size: 13px; outline: none; font-family: inherit; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #4299e1; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn-primary { background: #4299e1; border: none; color: #ffffff; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+.btn-primary:hover { background: #3182ce; }
+.btn-secondary { background: #111c44; border: 1px solid #1b2e6e; color: #d7dfef; padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+.btn-secondary:hover { background: #1b2e6e; color: #fff; }
+
+.report-item { background: #0b1437; border: 1px solid #1b2e6e; border-radius: 10px; padding: 13px 15px; margin-bottom: 10px; transition: .2s; }
+.report-item:hover { border-color: #4299e1; }
+.report-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+.status-pill { padding: 3px 8px; border-radius: 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; }
+.status-pill.approved { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+.status-pill.submitted { background: rgba(66,153,225,0.15); color: #60a5fa; border: 1px solid rgba(66,153,225,0.3); }
+.status-pill.flagged { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+
+/* KPI Cards for Team View */
+.cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; flex-shrink: 0; }
+.card-kpi { background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.card-kpi-icon { width: 44px; height: 44px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #4299e1; flex-shrink: 0; }
+.card-kpi-info h3 { font-size: 20px; color: #ffffff; font-weight: 700; }
+.card-kpi-info p { color: #8898aa; font-size: 12px; margin-top: 2px; }
+
+/* Filter Bar */
+.filter-box { display: flex; gap: 12px; align-items: center; background: #111c44; padding: 10px 16px; border-radius: 12px; border: 1px solid #1b2e6e; flex-wrap: wrap; flex-shrink: 0; }
+.search-input-wrap { flex: 1; min-width: 220px; background: #0b1437; border: 1px solid #1b2e6e; border-radius: 8px; padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+.search-input-wrap i { color: #4a5568; font-size: 13px; }
+.search-input-wrap input { border: none; outline: none; background: none; width: 100%; color: #ffffff; font-size: 13px; }
+.filter-select { background: #0b1437; border: 1px solid #1b2e6e; color: #cbd5e1; padding: 8px 14px; border-radius: 8px; font-size: 13px; outline: none; cursor: pointer; }
+
+/* Table Box */
+.table-panel { flex: 1; background: #111c44; border: 1px solid #1b2e6e; border-radius: 14px; overflow: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.25); min-height: 0; }
+.table-panel::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-panel::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
+
+table { width: 100%; border-collapse: collapse; min-width: 900px; font-size: 13px; }
+thead { background: #16265c; position: sticky; top: 0; z-index: 2; }
+th { padding: 12px 16px; text-align: left; color: #ffffff; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid #1b2e6e; }
+td { padding: 11px 16px; color: #d7dfef; border-bottom: 1px solid #1b2e6e; vertical-align: middle; }
+tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 30, 0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-box { background: #111c44; border: 1px solid #1b2e6e; border-radius: 16px; width: 100%; max-width: 580px; padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: translateY(-20px); transition: transform 0.3s ease; }
+.modal-overlay.show .modal-box { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1b2e6e; padding-bottom: 12px; margin-bottom: 16px; }
+.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
+.modal-close:hover { color: #f87171; }
+
+@media(max-width:960px) {
+    .grid-split { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger" id="hamburgerToggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="navbar-logo">MG</div>
+        <span class="navbar-title">EMPLOYEE MANAGEMENT SYSTEM</span>
+    </div>
+    <div class="navbar-center">
+        <div class="nav-search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Search work logs, reports, tasks...">
+        </div>
+    </div>
+    <div class="navbar-right">
+        <a class="nav-icon-btn" href="notification.html" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </a>
+        <div class="nav-icon-btn" id="navEmailBtn" title="Send Custom Email Notification">
+            <i class="fa-regular fa-envelope"></i>
+            <span class="badge">2</span>
+        </div>
+        <div class="nav-profile" id="navProfileToggle">
+            <div class="nav-profile-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="nav-profile-info">
+                <h4>Manager</h4>
+                <small>Team Lead</small>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+            <div class="nav-profile-dropdown" id="navProfileDropdown">
+                <a href="#" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body-wrap">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="managerSidebar">
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="team-members.html"><i class="fa-solid fa-users"></i> <span>Team Members</span></a></li>
+            <li class="active"><a href="daily-report.html"><i class="fa-solid fa-clipboard-list"></i> <span>Daily Work Report</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave request.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-briefcase"></i> <span>Projects</span></a></li>
+            <li><a href="review.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Work Reports & Submissions</h1>
+                    <p>Submit managerial updates to Admin and review daily work reports logged by team members.</p>
+                </div>
+                <div class="section-tabs-bar">
+                    <button class="sec-tab-btn active" id="tabSubmitManagerReport"><i class="fa-solid fa-paper-plane"></i> Submit Report to Admin</button>
+                    <button class="sec-tab-btn" id="tabTeamWorkReports"><i class="fa-solid fa-users-viewfinder"></i> Team Work Submissions</button>
+                </div>
+            </div>
+
+            <!-- TAB 1: SUBMIT MANAGER REPORT TO ADMIN -->
+            <div id="sectionSubmitReport" class="grid-split">
+                <!-- Left: Submit Form -->
+                <div class="panel-card">
+                    <h3><span><i class="fa-solid fa-pen-nib"></i> Submit Daily Manager Report to Admin</span> <span style="font-size:11px; color:#4299e1; background:rgba(66,153,225,0.15); padding:2px 8px; border-radius:6px; font-weight:600;">To: Executive Admin</span></h3>
+                    <form id="submitManagerReportForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="mgrReportDate">Report Date</label>
+                                <input type="date" id="mgrReportDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mgrReportHours">Productive Hours</label>
+                                <input type="number" id="mgrReportHours" step="0.5" min="1" max="16" value="8.0" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mgrReportProject">Department Initiative / Project</label>
+                            <input type="text" id="mgrReportProject" placeholder="e.g. Q4 Sprint Milestones, Core Infrastructure Upgrade" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mgrReportSummary">Executive Summary Headline</label>
+                            <input type="text" id="mgrReportSummary" placeholder="Brief 1-sentence headline of today's team progress" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mgrReportDetails">Detailed Accomplishments & Sprint Updates</label>
+                            <textarea id="mgrReportDetails" rows="4" placeholder="1. Led daily standup with engineering team...&#10;2. Reviewed pull requests and architecture specs...&#10;3. Cleared critical blockers for release pipeline..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="mgrReportBlockers">Roadblocks / Support Needed from Admin (Optional)</label>
+                            <input type="text" id="mgrReportBlockers" placeholder="None or specify escalation to Admin (e.g. Cloud budget approval)">
+                        </div>
+                        <div class="form-group">
+                            <label for="mgrReportTomorrow">Tomorrow's Planned Milestones</label>
+                            <input type="text" id="mgrReportTomorrow" placeholder="Key goals for tomorrow's team focus">
+                        </div>
+                        <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Report to Admin
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Past Manager Submissions to Admin -->
+                <div class="panel-card">
+                    <h3><span><i class="fa-solid fa-clock-rotate-left"></i> My Reports Sent to Admin</span> <span id="myReportsCountBadge" style="font-size:11.5px; color:#8898aa;">0 submissions</span></h3>
+                    <div id="myManagerReportsList" style="overflow-y:auto; flex:1;">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: TEAM WORK SUBMISSIONS (REVIEW TEAM LOGS) -->
+            <div id="sectionTeamReports" style="display:none; flex-direction:column; gap:14px; flex:1; min-height:0;">
+                
+                <!-- KPI Deck -->
+                <div class="cards-grid">
+                    <div class="card-kpi">
+                        <div class="card-kpi-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                        <div class="card-kpi-info">
+                            <h3 id="statTotalTeamLogs">0</h3>
+                            <p>Total Team Submissions</p>
+                        </div>
+                    </div>
+                    <div class="card-kpi">
+                        <div class="card-kpi-icon" style="color:#4ade80;"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="card-kpi-info">
+                            <h3 id="statApprovedTeamLogs">0</h3>
+                            <p>Approved Reports</p>
+                        </div>
+                    </div>
+                    <div class="card-kpi">
+                        <div class="card-kpi-icon" style="color:#60a5fa;"><i class="fa-solid fa-paper-plane"></i></div>
+                        <div class="card-kpi-info">
+                            <h3 id="statSubmittedTeamLogs">0</h3>
+                            <p>Awaiting Review</p>
+                        </div>
+                    </div>
+                    <div class="card-kpi">
+                        <div class="card-kpi-icon" style="color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="card-kpi-info">
+                            <h3 id="statFlaggedTeamLogs">0</h3>
+                            <p>Blockers Reported</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-box">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="teamReportSearch" placeholder="Search team member name, project or summary...">
+                    </div>
+                    <select class="filter-select" id="teamReportStatusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="Submitted">Submitted (Pending)</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Flagged">Flagged Blockers</option>
+                    </select>
+                    <button class="btn-secondary" id="exportTeamReportsCsv"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                </div>
+
+                <!-- Table View -->
+                <div class="table-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Team Member</th>
+                                <th>Date</th>
+                                <th>Project / Feature</th>
+                                <th>Work Summary</th>
+                                <th>Hours</th>
+                                <th>Blockers</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamReportsTableBody">
+                            <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading team work logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- VIEW REPORT MODAL -->
+<div class="modal-overlay" id="viewReportModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalReportTitle">Work Submission Details</h3>
+            <button class="modal-close" id="closeViewReportBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="viewReportModalContent" style="color:#d7dfef; font-size:13px; line-height:1.6;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px;">
+            <button type="button" class="btn-secondary" id="btnApproveLog"><i class="fa-solid fa-check" style="color:#4ade80;"></i> Approve Work Log</button>
+            <button type="button" class="btn-primary" id="btnCloseViewReportModal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "../assets/js/firebase-config.js";
+    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { initEmailModal } from "../assets/js/email-modal.js";
+
+    const currentUser = requireRole(["manager", "admin"]);
+    paintNavProfile(currentUser);
+    initEmailModal(currentUser);
+
+    // Sidebar toggle
+    document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
+        document.getElementById('managerSidebar')?.classList.toggle('collapsed');
+    });
+
+    // Profile dropdown
+    document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('navProfileDropdown')?.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+        document.getElementById('navProfileDropdown')?.classList.remove('show');
+    });
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout("../");
+    });
+
+    document.getElementById('mgrReportDate').value = new Date().toISOString().slice(0, 10);
+
+    // Tab switching
+    const tabSubmit = document.getElementById('tabSubmitManagerReport');
+    const tabTeam = document.getElementById('tabTeamWorkReports');
+    const sectionSubmit = document.getElementById('sectionSubmitReport');
+    const sectionTeam = document.getElementById('sectionTeamReports');
+
+    tabSubmit?.addEventListener('click', () => {
+        tabSubmit.classList.add('active');
+        tabTeam.classList.remove('active');
+        sectionSubmit.style.display = 'grid';
+        sectionTeam.style.display = 'none';
+    });
+
+    tabTeam?.addEventListener('click', () => {
+        tabTeam.classList.add('active');
+        tabSubmit.classList.remove('active');
+        sectionSubmit.style.display = 'none';
+        sectionTeam.style.display = 'flex';
+        renderTeamReportsTable();
+    });
+
+    let allReportsCache = [];
+    let myReportsCache = [];
+
+    const defaultFallbackReports = [
+        {
+            id: 'REP-101',
+            employeeUid: currentUser?.uid || 'mgr-1',
+            employeeName: currentUser?.name || 'Sarah Jenkins',
+            role: 'manager',
+            department: 'Engineering',
+            date: '2026-10-07',
+            hours: 8.5,
+            project: 'Q4 Product Milestones & Sprint Architecture',
+            summary: 'Finalized architectural RFCs for billing module and orchestrated sprint roadmap',
+            details: '1. Conducted technical spec review with backend leads.\n2. Scheduled release pipeline and automated test matrix.\n3. Synchronized with Product team on delivery milestones.',
+            blockers: 'None',
+            tomorrow: 'Deploy initial staging cluster and review security audits',
+            status: 'Approved',
+            submittedTo: 'Admin'
+        },
+        {
+            id: 'REP-102',
+            employeeUid: 'dev-1',
+            employeeName: 'Alex Rivera',
+            role: 'employee',
+            department: 'Engineering',
+            date: '2026-10-08',
+            hours: 8.0,
+            project: 'EMS Next-Gen Portal',
+            summary: 'Built unified attendance and timesheets page for Admin, HR and Manager',
+            details: '1. Integrated live clock and clock in/out toggle.\n2. Added staff profile list under today shift summary.\n3. Verified real-time calendar and timesheet hours calculations.',
+            blockers: 'None',
+            tomorrow: 'Complete daily work report integrations across portals',
+            status: 'Submitted',
+            submittedTo: 'Manager'
+        },
+        {
+            id: 'REP-103',
+            employeeUid: 'dev-2',
+            employeeName: 'Michael Chen',
+            role: 'employee',
+            department: 'Engineering',
+            date: '2026-10-08',
+            hours: 7.5,
+            project: 'API Gateway & Auth',
+            summary: 'Optimized Firestore real-time listeners and role-based route handlers',
+            details: '1. Reduced query latency by 35% with indexed filters.\n2. Added offline caching fallbacks for timesheet views.',
+            blockers: 'Awaiting staging cluster credentials from DevOps',
+            tomorrow: 'Finalize end-to-end authentication tests',
+            status: 'Flagged',
+            submittedTo: 'Manager'
+        },
+        {
+            id: 'REP-104',
+            employeeUid: 'int-1',
+            employeeName: 'Sophia Taylor',
+            role: 'intern',
+            department: 'Product & Design',
+            date: '2026-10-07',
+            hours: 6.5,
+            project: 'Design System & UI Tokens',
+            summary: 'Polished KPI card components and dark navy color tokens',
+            details: '1. Standardized spacing, shadows, and status badges across dashboard modules.\n2. Exported responsive CSS styles.',
+            blockers: 'None',
+            tomorrow: 'Assist with document preview modal styles',
+            status: 'Approved',
+            submittedTo: 'Manager'
+        }
+    ];
+
+    async function loadAllReports() {
+        try {
+            const snap = await getDocs(collection(db, "dailyReports"));
+            allReportsCache = [];
+            snap.forEach(d => allReportsCache.push({ id: d.id, ...d.data() }));
+
+            if (allReportsCache.length === 0) {
+                allReportsCache = [...defaultFallbackReports];
+            }
+        } catch (err) {
+            console.warn("Using local report data fallback: ", err);
+            allReportsCache = [...defaultFallbackReports];
+        }
+
+        const myUid = currentUser?.uid || 'mgr-1';
+        const myName = currentUser?.name || 'Manager';
+        myReportsCache = allReportsCache.filter(r => r.employeeUid === myUid || r.employeeName === myName || r.role === 'manager');
+
+        renderMyReportsList();
+        computeTeamKpis();
+        renderTeamReportsTable();
+    }
+
+    function renderMyReportsList() {
+        const container = document.getElementById('myManagerReportsList');
+        const badge = document.getElementById('myReportsCountBadge');
+        if (!container) return;
+
+        if (badge) badge.textContent = `${myReportsCache.length} submissions`;
+
+        if (myReportsCache.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:30px; color:#8898aa; font-size:13px;">No manager reports submitted yet. Fill the form to submit to Admin.</div>`;
+            return;
+        }
+
+        container.innerHTML = myReportsCache.map(r => {
+            const statusKey = (r.status || 'Submitted').toLowerCase();
+            return `
+                <div class="report-item">
+                    <div class="report-item-header">
+                        <strong style="color:#ffffff; font-size:13.5px;"><i class="fa-regular fa-calendar" style="color:#4299e1; margin-right:6px;"></i> ${r.date}</strong>
+                        <span class="status-pill ${statusKey}">${r.status || 'Submitted'}</span>
+                    </div>
+                    <div style="font-size:12.5px; color:#60a5fa; font-weight:600; margin-bottom:4px;">${r.project || 'General Management'} &bull; <span style="color:#cbd5e1;">${r.hours || 8} hrs</span></div>
+                    <div style="font-size:12px; color:#cbd5e1; margin-bottom:6px; line-height:1.4;">${r.summary || ''}</div>
+                    ${r.blockers && r.blockers !== 'None' ? `<div style="font-size:11.5px; color:#fbbf24;"><i class="fa-solid fa-triangle-exclamation"></i> Escalated to Admin: ${r.blockers}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function computeTeamKpis() {
+        const teamReports = allReportsCache.filter(r => r.role === 'employee' || r.role === 'intern' || r.submittedTo === 'Manager');
+        const approved = teamReports.filter(r => (r.status || '').toLowerCase() === 'approved').length;
+        const submitted = teamReports.filter(r => (r.status || '').toLowerCase() === 'submitted').length;
+        const flagged = teamReports.filter(r => r.blockers && r.blockers !== 'None' && r.blockers !== 'none').length;
+
+        document.getElementById('statTotalTeamLogs').textContent = teamReports.length;
+        document.getElementById('statApprovedTeamLogs').textContent = approved;
+        document.getElementById('statSubmittedTeamLogs').textContent = submitted;
+        document.getElementById('statFlaggedTeamLogs').textContent = flagged;
+    }
+
+    function renderTeamReportsTable() {
+        const tbody = document.getElementById('teamReportsTableBody');
+        if (!tbody) return;
+
+        const q = (document.getElementById('teamReportSearch')?.value || '').toLowerCase().trim();
+        const statusFilter = document.getElementById('teamReportStatusFilter')?.value || 'all';
+
+        let list = allReportsCache.filter(r => r.role === 'employee' || r.role === 'intern' || r.submittedTo === 'Manager');
+
+        if (statusFilter !== 'all') {
+            list = list.filter(r => (r.status || 'Submitted').toLowerCase() === statusFilter.toLowerCase());
+        }
+
+        if (q) {
+            list = list.filter(r => 
+                (r.employeeName || '').toLowerCase().includes(q) ||
+                (r.project || '').toLowerCase().includes(q) ||
+                (r.summary || '').toLowerCase().includes(q)
+            );
+        }
+
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No team work reports match the current filters.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = list.map(r => {
+            const statusKey = (r.status || 'Submitted').toLowerCase();
+            const hasBlockers = r.blockers && r.blockers !== 'None' && r.blockers !== 'none';
+            return `
+                <tr>
+                    <td>
+                        <div style="font-weight:600; color:#fff;">${r.employeeName}</div>
+                        <small style="color:#8898aa; text-transform:capitalize;">${r.role || 'Member'} &bull; ${r.department || 'Engineering'}</small>
+                    </td>
+                    <td><strong>${r.date}</strong></td>
+                    <td style="color:#60a5fa; font-weight:600;">${r.project || '-'}</td>
+                    <td style="max-width:280px; font-size:12.5px;">
+                        <strong style="color:#fff; display:block;">${r.summary || ''}</strong>
+                    </td>
+                    <td><span style="background:rgba(66,153,225,0.15); color:#60a5fa; padding:2px 8px; border-radius:10px; font-weight:700; font-size:11.5px;">${r.hours || 8}h</span></td>
+                    <td>
+                        ${hasBlockers ? `<span style="color:#fbbf24; font-size:11.5px; font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers}</span>` : `<span style="color:#8898aa; font-size:11.5px;">None</span>`}
+                    </td>
+                    <td><span class="status-pill ${statusKey}">${r.status || 'Submitted'}</span></td>
+                    <td>
+                        <button class="btn-secondary" style="padding:4px 10px; font-size:11.5px;" onclick="viewReportDetails('${r.id}')">
+                            <i class="fa-solid fa-eye"></i> Review
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    let activeModalReport = null;
+    window.viewReportDetails = function(reportId) {
+        activeModalReport = allReportsCache.find(r => r.id === reportId);
+        if (!activeModalReport) return;
+
+        const content = document.getElementById('viewReportModalContent');
+        content.innerHTML = `
+            <div style="background:#0b1437; padding:14px; border-radius:10px; border:1px solid #1b2e6e; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <strong style="font-size:14px; color:#fff;">${activeModalReport.employeeName}</strong>
+                    <span class="status-pill ${(activeModalReport.status || 'Submitted').toLowerCase()}">${activeModalReport.status || 'Submitted'}</span>
+                </div>
+                <div style="font-size:12px; color:#8898aa;">Date: <span style="color:#cbd5e1;">${activeModalReport.date}</span> &bull; Productive Hours: <span style="color:#60a5fa; font-weight:700;">${activeModalReport.hours || 8} hrs</span></div>
+                <div style="font-size:12px; color:#8898aa; margin-top:2px;">Project: <span style="color:#60a5fa; font-weight:600;">${activeModalReport.project}</span></div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Summary Headline</label>
+                <div style="color:#fff; font-size:13.5px; font-weight:600; margin-top:2px;">${activeModalReport.summary}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Detailed Breakdown</label>
+                <div style="background:#0b1437; padding:10px 12px; border-radius:8px; border:1px solid #1b2e6e; color:#cbd5e1; font-size:12.5px; white-space:pre-wrap; margin-top:4px;">${activeModalReport.details || 'No details specified.'}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Blockers / Support Needed</label>
+                <div style="color:${activeModalReport.blockers && activeModalReport.blockers !== 'None' ? '#fbbf24' : '#8898aa'}; font-size:12.5px; margin-top:2px;">${activeModalReport.blockers || 'None'}</div>
+            </div>
+            <div>
+                <label style="color:#8898aa; font-size:11px; font-weight:700; text-transform:uppercase;">Tomorrow's Planned Goals</label>
+                <div style="color:#cbd5e1; font-size:12.5px; margin-top:2px;">${activeModalReport.tomorrow || 'Continue scheduled backlog items.'}</div>
+            </div>
+        `;
+
+        document.getElementById('viewReportModal').classList.add('show');
+    };
+
+    document.getElementById('closeViewReportBtn')?.addEventListener('click', () => document.getElementById('viewReportModal').classList.remove('show'));
+    document.getElementById('btnCloseViewReportModal')?.addEventListener('click', () => document.getElementById('viewReportModal').classList.remove('show'));
+
+    document.getElementById('btnApproveLog')?.addEventListener('click', () => {
+        if (!activeModalReport) return;
+        activeModalReport.status = 'Approved';
+        document.getElementById('viewReportModal').classList.remove('show');
+        computeTeamKpis();
+        renderTeamReportsTable();
+        alert(`Work log for ${activeModalReport.employeeName} marked as Approved!`);
+    });
+
+    document.getElementById('teamReportSearch')?.addEventListener('input', renderTeamReportsTable);
+    document.getElementById('teamReportStatusFilter')?.addEventListener('change', renderTeamReportsTable);
+
+    // Manager Submit Form
+    document.getElementById('submitManagerReportForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const date = document.getElementById('mgrReportDate').value;
+        const hours = parseFloat(document.getElementById('mgrReportHours').value) || 8.0;
+        const project = document.getElementById('mgrReportProject').value.trim();
+        const summary = document.getElementById('mgrReportSummary').value.trim();
+        const details = document.getElementById('mgrReportDetails').value.trim();
+        const blockers = document.getElementById('mgrReportBlockers').value.trim() || 'None';
+        const tomorrow = document.getElementById('mgrReportTomorrow').value.trim() || 'Scheduled sprint roadmap tasks';
+
+        const myUid = currentUser?.uid || 'mgr-1';
+        const myName = currentUser?.name || 'Sarah Jenkins';
+        const myDept = currentUser?.department || 'Engineering';
+
+        const newReport = {
+            id: `REP-${Date.now()}`,
+            employeeUid: myUid,
+            employeeName: myName,
+            role: 'manager',
+            department: myDept,
+            date: date,
+            hours: hours,
+            project: project,
+            summary: summary,
+            details: details,
+            blockers: blockers,
+            tomorrow: tomorrow,
+            status: 'Submitted',
+            submittedTo: 'Admin',
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            await addDoc(collection(db, "dailyReports"), newReport);
+        } catch (dbErr) {
+            console.warn("Saved to local manager reports list: ", dbErr);
+        }
+
+        allReportsCache.unshift(newReport);
+        myReportsCache.unshift(newReport);
+
+        renderMyReportsList();
+        document.getElementById('submitManagerReportForm').reset();
+        document.getElementById('mgrReportDate').value = new Date().toISOString().slice(0, 10);
+        document.getElementById('mgrReportHours').value = '8.0';
+
+        alert("Manager Daily Report successfully submitted to Admin!");
+    });
+
+    document.getElementById('exportTeamReportsCsv')?.addEventListener('click', () => {
+        const teamReports = allReportsCache.filter(r => r.role === 'employee' || r.role === 'intern' || r.submittedTo === 'Manager');
+        const rows = [["Team Member", "Role", "Department", "Date", "Project", "Summary", "Hours", "Blockers", "Status"]];
+        teamReports.forEach(r => {
+            rows.push([r.employeeName, r.role, r.department, r.date, r.project, r.summary, r.hours, r.blockers, r.status]);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Team-Work-Reports-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    loadAllReports();
+</script>
+</body>
+</html>

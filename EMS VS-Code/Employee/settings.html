@@ -136,7 +136,7 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
         <div class="panel">
             <h3>Preferences</h3>
             <div class="row"><label>Email notifications</label><input type="checkbox" id="emailNotifCheckbox" checked></div>
-            <div class="row"><label>Dark mode</label><input type="checkbox" checked disabled></div>
+            <div class="row"><label>Dark mode (uncheck for light mode)</label><input type="checkbox" id="darkModeCheckbox" checked></div>
             <div class="row"><label>Save your preference changes</label><button class="btn" id="savePreferencesBtn">Save</button></div>
         </div>
 
@@ -153,9 +153,9 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
 <script type="module">
     import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
-    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { requireRole, paintNavProfile, logout, getTheme, setTheme } from "../assets/js/auth-session.js";
 
-    const currentUser = requireRole(["employee"]);
+    const currentUser = requireRole(["employee", "admin", "hr", "manager"]);
     if (currentUser) {
         paintNavProfile(currentUser);
 
@@ -183,6 +183,19 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
     document.getElementById('logoutBtn')?.addEventListener('click', doLogout);
     document.getElementById('logoutAccountBtn')?.addEventListener('click', doLogout);
 
+    // Theme toggle handler
+    const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+    if (darkModeCheckbox) {
+        darkModeCheckbox.checked = (getTheme() !== 'light');
+        darkModeCheckbox.addEventListener('change', () => {
+            if (darkModeCheckbox.checked) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        });
+    }
+
     const emailNotifCheckbox = document.getElementById('emailNotifCheckbox');
 
     async function loadPreferences() {
@@ -194,16 +207,24 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
             if (emailNotifCheckbox) {
                 emailNotifCheckbox.checked = data.emailNotifications !== false;
             }
+            if (data.darkMode !== undefined && darkModeCheckbox) {
+                darkModeCheckbox.checked = data.darkMode;
+                setTheme(data.darkMode ? 'dark' : 'light');
+            }
         } catch (err) {
             console.error("Failed to load preferences: ", err);
         }
     }
 
     document.getElementById('savePreferencesBtn')?.addEventListener('click', async () => {
-        if (!currentUser || !currentUser.docId) return alert('Preferences saved.');
+        if (!currentUser || !currentUser.docId) {
+            alert('Preferences saved.');
+            return;
+        }
         try {
             await updateDoc(doc(db, "employees", currentUser.docId), {
-                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true
+                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true,
+                darkMode: darkModeCheckbox ? darkModeCheckbox.checked : true
             });
             alert("Settings saved successfully!");
         } catch (err) {

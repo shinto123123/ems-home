@@ -98,9 +98,11 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
       <ul class="sidebar-menu">
         <li><a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a></li>
         <li><a href="profile.html"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i>My Attendance</a></li>
+        <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i>Payroll & Stipend</a></li>
         <li><a href="projects.html"><i class="fa-solid fa-briefcase"></i>Assigned Projects</a></li>
         <li><a href="work-logs.html"><i class="fa-solid fa-calendar-days"></i>Work Logs</a></li>
-        <li><a href="leave-management.html"><i class="fa-solid fa-calendar-check"></i>Leave Management</a></li>
+        <li><a href="leave-management.html"><i class="fa-solid fa-plane-departure"></i>Leave Management</a></li>
         <li><a href="documents.html"><i class="fa-solid fa-file"></i>Documents</a></li>
         <li><a href="feedback.html"><i class="fa-solid fa-comment-dots"></i>Feedback</a></li>
         <li><a href="communication.html"><i class="fa-solid fa-comments"></i>Communication</a></li>
@@ -133,7 +135,7 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
         <div class="panel">
             <h3>Preferences</h3>
             <div class="row"><label>Email notifications</label><input type="checkbox" id="emailNotifCheckbox" checked></div>
-            <div class="row"><label>Dark mode</label><input type="checkbox" checked disabled></div>
+            <div class="row"><label>Dark mode (uncheck for light mode)</label><input type="checkbox" id="darkModeCheckbox" checked></div>
             <div class="row"><label>Save your preference changes</label><button class="btn" id="savePreferencesBtn">Save</button></div>
         </div>
 
@@ -150,9 +152,9 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
 <script type="module">
     import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
-    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { requireRole, paintNavProfile, logout, getTheme, setTheme } from "../assets/js/auth-session.js";
 
-    const currentUser = requireRole(["intern"]);
+    const currentUser = requireRole(["intern", "admin"]);
     if (currentUser) {
         paintNavProfile(currentUser);
 
@@ -180,6 +182,19 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
     document.getElementById('logoutBtn')?.addEventListener('click', doLogout);
     document.getElementById('logoutAccountBtn')?.addEventListener('click', doLogout);
 
+    // Theme toggle handler
+    const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+    if (darkModeCheckbox) {
+        darkModeCheckbox.checked = (getTheme() !== 'light');
+        darkModeCheckbox.addEventListener('change', () => {
+            if (darkModeCheckbox.checked) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        });
+    }
+
     const emailNotifCheckbox = document.getElementById('emailNotifCheckbox');
 
     async function loadPreferences() {
@@ -191,20 +206,28 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
             if (emailNotifCheckbox) {
                 emailNotifCheckbox.checked = data.emailNotifications !== false;
             }
+            if (data.darkMode !== undefined && darkModeCheckbox) {
+                darkModeCheckbox.checked = data.darkMode;
+                setTheme(data.darkMode ? 'dark' : 'light');
+            }
         } catch (err) {
             console.error("Failed to load preferences: ", err);
         }
     }
 
     document.getElementById('savePreferencesBtn')?.addEventListener('click', async () => {
-        if (!currentUser || !currentUser.docId) return alert('Preferences saved.');
+        if (!currentUser || !currentUser.docId) {
+            alert('Preferences saved.');
+            return;
+        }
         try {
             await updateDoc(doc(db, "interns", currentUser.docId), {
-                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true
+                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true,
+                darkMode: darkModeCheckbox ? darkModeCheckbox.checked : true
             });
             alert("Settings saved successfully!");
         } catch (err) {
-            alert("Error saving settings: " + error.message);
+            alert("Error saving settings: " + err.message);
         }
     });
 

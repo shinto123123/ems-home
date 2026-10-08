@@ -137,7 +137,7 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
         <div class="panel">
             <h3>Preferences</h3>
             <div class="row"><label>Email notifications</label><input type="checkbox" id="emailNotifCheckbox" checked></div>
-            <div class="row"><label>Dark mode</label><input type="checkbox" checked disabled></div>
+            <div class="row"><label>Dark mode (uncheck for light mode)</label><input type="checkbox" id="darkModeCheckbox" checked></div>
             <div class="row"><label>Save your preference changes</label><button class="btn" id="savePreferencesBtn">Save</button></div>
         </div>
 
@@ -154,10 +154,10 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
 <script type="module">
     import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
-    import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
+    import { requireRole, paintNavProfile, logout, getTheme, setTheme } from "../assets/js/auth-session.js";
     import { initEmailModal } from "../assets/js/email-modal.js";
 
-    const currentUser = requireRole(["hr"]);
+    const currentUser = requireRole(["hr", "admin"]);
     if (currentUser) {
         paintNavProfile(currentUser);
         initEmailModal(currentUser);
@@ -185,6 +185,19 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
 
     document.getElementById('logoutBtn')?.addEventListener('click', () => logout("../"));
 
+    // Theme toggle handler
+    const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+    if (darkModeCheckbox) {
+        darkModeCheckbox.checked = (getTheme() !== 'light');
+        darkModeCheckbox.addEventListener('change', () => {
+            if (darkModeCheckbox.checked) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        });
+    }
+
     // Firestore-backed company settings document
     const companySettingsRef = doc(db, "settings", "company");
     const emailNotifCheckbox = document.getElementById('emailNotifCheckbox');
@@ -198,6 +211,10 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
                 if (emailNotifCheckbox) {
                     emailNotifCheckbox.checked = data.emailNotifications !== undefined ? data.emailNotifications : true;
                 }
+                if (data.darkMode !== undefined && darkModeCheckbox) {
+                    darkModeCheckbox.checked = data.darkMode;
+                    setTheme(data.darkMode ? 'dark' : 'light');
+                }
             }
         } catch (error) {
             console.error("Failed to load company settings: ", error);
@@ -208,7 +225,8 @@ input[type="checkbox"] { accent-color:#4299e1; width:18px; height:18px; cursor:p
     document.getElementById('savePreferencesBtn')?.addEventListener('click', async () => {
         try {
             await setDoc(companySettingsRef, {
-                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true
+                emailNotifications: emailNotifCheckbox ? emailNotifCheckbox.checked : true,
+                darkMode: darkModeCheckbox ? darkModeCheckbox.checked : true
             }, { merge: true });
             alert("Settings saved successfully!");
         } catch (error) {

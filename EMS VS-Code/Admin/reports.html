@@ -3,88 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reports & Daily Work Logs - Admin Dashboard</title>
+<title>Reports & Submissions - Admin Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-body{
-    background:#0b1437;
-    display:flex;
-    flex-direction:column;
-    color:#d7dfef;
-    height:100vh;
-    overflow:hidden;
+body {
+    background: #0b1437;
+    display: flex;
+    flex-direction: column;
+    color: #d7dfef;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* =========================
    BODY WRAP
 ========================= */
-.body-wrap{
-    display:flex;
-    flex:1;
-    overflow:hidden;
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* =========================
    SIDEBAR
 ========================= */
-.sidebar{
-    width:240px;
-    height:100%;
-    background:#111c44;
-    border-right:1px solid #1b2e6e;
-    overflow-y:auto;
-    flex-shrink:0;
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background: #111c44;
+    border-right: 1px solid #1b2e6e;
+    overflow-y: auto;
+    flex-shrink: 0;
     transition: width 0.3s ease;
 }
 
-.sidebar::-webkit-scrollbar{
-    width:6px;
+.sidebar::-webkit-scrollbar {
+    width: 6px;
 }
 
-.sidebar::-webkit-scrollbar-thumb{
-    background:#1b2e6e;
-    border-radius:10px;
+.sidebar::-webkit-scrollbar-thumb {
+    background: #1b2e6e;
+    border-radius: 10px;
 }
 
-.sidebar ul{
-    list-style:none;
-    padding:10px 0;
+.sidebar ul {
+    list-style: none;
+    padding: 10px 0;
 }
 
-.sidebar ul li{
-    padding:12px 20px;
-    display:flex;
-    align-items:center;
-    cursor:pointer;
-    transition:.3s;
+.sidebar ul li {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
 }
 
-.sidebar ul li a{
-    text-decoration:none;
-    color:#8898aa;
-    display:flex;
-    gap:12px;
-    align-items:center;
-    width:100%;
-    font-size:14px;
-    white-space:nowrap;
+.sidebar ul li a {
+    text-decoration: none;
+    color: #8898aa;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .sidebar ul li:hover,
-.sidebar ul li.active{
-    background:#1b2e6e;
+.sidebar ul li.active {
+    background: #1b2e6e;
 }
 
 .sidebar ul li:hover a,
-.sidebar ul li.active a{
-    color:#ffffff;
+.sidebar ul li.active a {
+    color: #ffffff;
 }
 
 .sidebar.collapsed { width: 70px; }
@@ -94,265 +94,296 @@ body{
 /* =========================
    MAIN
 ========================= */
-.main{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* =========================
    TOP NAVBAR
 ========================= */
-.navbar{
-    height:60px;
-    background:#111c44;
-    border-bottom:1px solid #1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 25px;
-    flex-shrink:0;
-    z-index:100;
+.navbar {
+    height: 60px;
+    background: #111c44;
+    border-bottom: 1px solid #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    flex-shrink: 0;
+    z-index: 100;
 }
 
-.navbar-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.hamburger{
-    font-size:20px;
-    color:#8898aa;
-    cursor:pointer;
+.hamburger {
+    font-size: 20px;
+    color: #8898aa;
+    cursor: pointer;
 }
 
-.navbar-logo{
-    width:40px;
-    height:40px;
-    background:#1b2e6e;
-    border:2px solid #4299e1;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:11px;
-    font-weight:bold;
-    color:#4299e1;
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    background: #1b2e6e;
+    border: 2px solid #4299e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4299e1;
 }
 
-.navbar-title{
-    font-size:16px;
-    font-weight:700;
-    color:#ffffff;
-    letter-spacing:.5px;
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .5px;
 }
 
-.navbar-center{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    padding:0 40px;
+.navbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 40px;
 }
 
-.nav-search{
-    width:100%;
-    max-width:420px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    padding:9px 15px;
-    display:flex;
-    align-items:center;
-    gap:10px;
+.nav-search {
+    width: 100%;
+    max-width: 420px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.nav-search i{
-    color:#4a5568;
-    font-size:14px;
+.nav-search i {
+    color: #4a5568;
+    font-size: 14px;
 }
 
-.nav-search input{
-    border:none;
-    outline:none;
-    background:none;
-    width:100%;
-    color:#e2e8f0;
-    font-size:14px;
+.nav-search input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #e2e8f0;
+    font-size: 14px;
 }
 
-.nav-search input::placeholder{
-    color:#4a5568;
+.nav-search input::placeholder {
+    color: #4a5568;
 }
 
-.navbar-right{
-    display:flex;
-    align-items:center;
-    gap:20px;
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.nav-icon-btn{
-    position:relative;
-    width:38px;
-    height:38px;
-    background:#0b1437;
-    border:1px solid #1b2e6e;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    color:#8898aa;
-    font-size:16px;
-    transition:.3s;
-    text-decoration:none;
+.nav-icon-btn {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: #0b1437;
+    border: 1px solid #1b2e6e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8898aa;
+    font-size: 16px;
+    transition: .3s;
+    text-decoration: none;
 }
 
-.nav-icon-btn:hover{
-    color:#4299e1;
-    border-color:#4299e1;
+.nav-icon-btn:hover {
+    color: #4299e1;
+    border-color: #4299e1;
 }
 
-.nav-icon-btn .badge{
-    position:absolute;
-    top:-4px;
-    right:-4px;
-    background:#4299e1;
-    color:#fff;
-    font-size:9px;
-    font-weight:bold;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.nav-icon-btn .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #4299e1;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-profile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    cursor:pointer;
-    padding:5px 10px;
-    border-radius:10px;
-    border:1px solid #1b2e6e;
-    position:relative;
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #1b2e6e;
+    position: relative;
 }
 
-.nav-profile-dropdown{
-    position:absolute;
-    top:calc(100% + 8px);
-    right:0;
-    min-width:160px;
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
-    padding:6px;
-    display:none;
-    z-index:1000;
+.nav-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    padding: 6px;
+    display: none;
+    z-index: 1000;
 }
 
-.nav-profile-dropdown.show{
-    display:block;
+.nav-profile-dropdown.show {
+    display: block;
 }
 
-.nav-profile-dropdown a{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:9px 12px;
-    border-radius:8px;
-    color:#d7dfef;
-    font-size:13px;
-    text-decoration:none;
-    transition:.15s;
+.nav-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #d7dfef;
+    font-size: 13px;
+    text-decoration: none;
+    transition: .15s;
 }
 
-.nav-profile-dropdown a:hover{
-    background:rgba(66,153,225,.12);
-    color:#fff;
+.nav-profile-dropdown a:hover {
+    background: rgba(66,153,225,.12);
+    color: #fff;
 }
 
-.nav-profile-dropdown a i{
-    width:14px;
+.nav-profile-dropdown a i {
+    width: 14px;
 }
 
-.nav-profile-avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#1b2e6e;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#8898aa;
-    font-size:16px;
+.nav-profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #1b2e6e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    font-size: 16px;
 }
 
-.nav-profile-info h4{
-    font-size:13px;
-    font-weight:600;
-    color:#ffffff;
+.nav-profile-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
 }
 
-.nav-profile-info small{
-    font-size:11px;
-    color:#8898aa;
+.nav-profile-info small {
+    font-size: 11px;
+    color: #8898aa;
 }
 
-.nav-profile .fa-chevron-down{
-    font-size:11px;
-    color:#8898aa;
+.nav-profile .fa-chevron-down {
+    font-size: 11px;
+    color: #8898aa;
 }
 
 /* =========================
    CONTENT
 ========================= */
-.content{
-    flex:1;
-    padding:18px 22px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    overflow-y:auto;
-    background:#0b1437;
+.content {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    background: #0b1437;
 }
 
 /* =========================
    HEADER & TABS
 ========================= */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
-.header h1{
-    font-size:22px;
-    font-weight:700;
-    color:#ffffff;
-}
-.header p{
-    font-size:12.5px;
-    color:#8898aa;
-    margin-top:3px;
+.header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
 }
 
-.header-actions{
-    display:flex;
-    gap:10px;
-    align-items:center;
+.header p {
+    font-size: 12.5px;
+    color: #8898aa;
+    margin-top: 3px;
 }
 
-.btn-primary { background:#4299e1; border:none; color:#ffffff; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
-.btn-primary:hover { background:#3182ce; }
-.btn-secondary { background:#111c44; border:1px solid #1b2e6e; color:#d7dfef; padding:9px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:7px; transition:0.2s; }
-.btn-secondary:hover { background:#1b2e6e; color:#fff; }
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-primary { 
+    background: #4299e1; 
+    border: none; 
+    color: #ffffff; 
+    padding: 9px 16px; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: 7px; 
+    transition: 0.2s; 
+}
+.btn-primary:hover { background: #3182ce; }
+
+.btn-secondary { 
+    background: #111c44; 
+    border: 1px solid #1b2e6e; 
+    color: #d7dfef; 
+    padding: 9px 16px; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: 7px; 
+    transition: 0.2s; 
+}
+.btn-secondary:hover { background: #1b2e6e; color: #fff; }
 
 /* Section Tabs */
 .section-tabs-bar {
@@ -362,13 +393,16 @@ body{
     border-radius: 12px;
     padding: 4px;
     gap: 6px;
+    width: fit-content;
+    flex-shrink: 0;
 }
+
 .sec-tab-btn {
     background: none;
     border: none;
     outline: none;
     color: #8898aa;
-    padding: 9px 18px;
+    padding: 8px 18px;
     font-size: 13px;
     font-weight: 600;
     border-radius: 8px;
@@ -385,78 +419,80 @@ body{
 }
 
 /* =========================
-   DAILY WORK REPORT KPI CARDS
+   KPI CARDS FOR ORG WORK SUBMISSIONS
 ========================= */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex-shrink: 0;
 }
 
-.card{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:14px;
-    padding:14px 18px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    box-shadow:0 4px 16px rgba(0,0,0,.2);
-    transition:.2s;
+.card {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    transition: .2s;
 }
 
-.card:hover{
-    transform:translateY(-2px);
-    border-color:#4299e1;
+.card:hover {
+    transform: translateY(-2px);
+    border-color: #4299e1;
 }
 
-.icon{
-    width:46px;
-    height:46px;
-    background:#0b1437;
-    border:1.5px solid #1b2e6e;
-    border-radius:12px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:18px;
-    flex-shrink:0;
+.icon {
+    width: 44px;
+    height: 44px;
+    background: #0b1437;
+    border: 1.5px solid #1b2e6e;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
-.card h4{
-    color:#8898aa;
-    font-size:12px;
-    font-weight:600;
-    margin-bottom:3px;
-    text-transform:uppercase;
-    letter-spacing:0.4px;
+.card h4 {
+    color: #8898aa;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
 }
 
-.card h2{
-    color:#ffffff;
-    font-size:20px;
-    font-weight:700;
-    line-height:1.1;
+.card h2 {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
-.card p{
-    color:#8898aa;
-    font-size:11px;
-    margin-top:2px;
+.card p {
+    color: #8898aa;
+    font-size: 11px;
+    margin-top: 2px;
 }
 
 /* =========================
    FILTER PANEL
 ========================= */
-.filter-box{
-    background:#111c44;
-    border:1px solid #1b2e6e;
-    border-radius:12px;
-    padding:12px 16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
+.filter-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 12px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 .search-input-wrap {
@@ -501,6 +537,7 @@ body{
     overflow: auto;
     flex: 1;
     box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    min-height: 0;
 }
 .table-panel::-webkit-scrollbar { width: 6px; height: 6px; }
 .table-panel::-webkit-scrollbar-thumb { background: #1b2e6e; border-radius: 10px; }
@@ -508,7 +545,7 @@ body{
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 1100px;
+    min-width: 1050px;
     font-size: 13px;
 }
 
@@ -517,7 +554,7 @@ th {
     padding: 13px 16px;
     text-align: left;
     color: #ffffff;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -556,7 +593,7 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 .emp-meta small { font-size: 11px; color: #8898aa; }
 
 .task-summary-block {
-    max-width: 320px;
+    max-width: 300px;
     line-height: 1.4;
 }
 .task-summary-block strong { color: #ffffff; font-size: 13px; display: block; }
@@ -586,6 +623,19 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 .status-badge.approved { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
 .status-badge.flagged { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
 
+.role-badge {
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    display: inline-block;
+}
+.role-badge.admin { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.role-badge.manager { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.role-badge.hr { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+.role-badge.employee { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.role-badge.intern { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+
 .blocker-tag {
     display: inline-flex;
     align-items: center;
@@ -595,52 +645,81 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     font-weight: 600;
 }
 
-/* Modals */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(5, 10, 30, 0.75);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+/* =========================
+   SUBMIT ADMIN REPORT SECTION (GRID SPLIT)
+========================= */
+.grid-split { 
+    display: grid; 
+    grid-template-columns: 1.15fr 1fr; 
+    gap: 16px; 
+    flex: 1; 
+    min-height: 0; 
 }
-.modal-overlay.show { opacity: 1; pointer-events: auto; }
-.modal-box {
-    background: #111c44;
-    border: 1px solid #1b2e6e;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 580px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-}
-.modal-overlay.show .modal-box { transform: translateY(0); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1b2e6e; padding-bottom: 12px; margin-bottom: 16px; }
-.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
-.modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
-.modal-close:hover { color: #f87171; }
 
-.footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #8898aa;
-    font-size: 12px;
-    flex-shrink: 0;
+.panel-card { 
+    background: #111c44; 
+    border: 1px solid #1b2e6e; 
+    border-radius: 14px; 
+    padding: 18px; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 4px 18px rgba(0,0,0,0.2); 
+    overflow-y: auto; 
 }
+.panel-card h3 { 
+    font-size: 15px; 
+    color: #ffffff; 
+    font-weight: 700; 
+    margin-bottom: 14px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 8px; 
+}
+.panel-card h3 span i { color: #4299e1; margin-right: 6px; }
+
+.form-group { margin-bottom: 12px; }
+.form-group label { 
+    display: block; 
+    color: #8898aa; 
+    font-size: 11.5px; 
+    font-weight: 600; 
+    margin-bottom: 5px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+}
+.form-group input, .form-group select, .form-group textarea { 
+    width: 100%; 
+    padding: 9px 12px; 
+    background: #0b1437; 
+    border: 1px solid #1b2e6e; 
+    border-radius: 8px; 
+    color: #ffffff; 
+    font-size: 13px; 
+    outline: none; 
+    font-family: inherit; 
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #4299e1; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.report-item { 
+    background: #0b1437; 
+    border: 1px solid #1b2e6e; 
+    border-radius: 10px; 
+    padding: 13px 15px; 
+    margin-bottom: 10px; 
+    transition: .2s; 
+}
+.report-item:hover { border-color: #4299e1; }
+.report-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+.status-pill { padding: 3px 8px; border-radius: 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; }
+.status-pill.approved { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+.status-pill.submitted { background: rgba(66,153,225,0.15); color: #60a5fa; border: 1px solid rgba(66,153,225,0.3); }
+.status-pill.flagged { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
 
 /* =========================
-   GENERAL REPORT STYLES (PREVIOUS DESIGN)
+   GENERAL REPORT / ANALYTICS
 ========================= */
 .general-cards {
     display: grid;
@@ -828,12 +907,57 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 .quick-item i { color: #8898aa; }
 .quick-item:hover i { color: #4299e1; }
 
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 30, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-box {
+    background: #111c44;
+    border: 1px solid #1b2e6e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 580px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.show .modal-box { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1b2e6e; padding-bottom: 12px; margin-bottom: 16px; }
+.modal-header h3 { color: #ffffff; font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: #8898aa; font-size: 18px; cursor: pointer; }
+.modal-close:hover { color: #f87171; }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8898aa;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
 @media(max-width:1400px){
     .general-cards { grid-template-columns: repeat(3, 1fr); }
 }
 @media(max-width:1200px){
     .cards { grid-template-columns: repeat(2, 1fr); }
     .analytics-grid, .bottom-grid { grid-template-columns: 1fr; }
+    .grid-split { grid-template-columns: 1fr; }
 }
 @media(max-width:768px){
     .cards, .general-cards { grid-template-columns: 1fr; }
@@ -854,7 +978,7 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     <div class="navbar-center">
         <div class="nav-search">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="Search daily work reports, employees, deliverables...">
+            <input type="text" placeholder="Search reports, submissions, executive directives...">
         </div>
     </div>
     <div class="navbar-right">
@@ -896,312 +1020,378 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     </div>
 
     <div class="main">
-
-    <div class="content">
-        <div class="header">
-            <div>
-                <h1>Daily Work Reports & Analytics</h1>
-                <p>Real-time employee work submissions, daily task accomplishments, hours spent, and blocker logs.</p>
-            </div>
-            <div class="header-actions">
-                <button class="btn-secondary" id="exportDailyReportsCsv"><i class="fa-solid fa-file-csv"></i> Export Daily Reports CSV</button>
-            </div>
-        </div>
-
-        <!-- Section Switcher Tabs -->
-        <div class="section-tabs-bar">
-            <button class="sec-tab-btn active" id="tabDailyReports"><i class="fa-solid fa-list-check"></i> Employee Daily Work Reports</button>
-            <button class="sec-tab-btn" id="tabAnalyticsSummary"><i class="fa-solid fa-chart-pie"></i> General Report</button>
-        </div>
-
-        <!-- KPI SUMMARY CARDS FOR DAILY REPORTS -->
-        <div class="cards" id="dailyReportKpiDeck">
-            <div class="card">
-                <div class="icon" style="color:#4299e1; border-color:rgba(66,153,225,0.3);"><i class="fa-solid fa-clipboard-check"></i></div>
+        <div class="content">
+            <div class="header">
                 <div>
-                    <h4>Total Reports Today</h4>
-                    <h2 id="kpiReportsToday">0</h2>
-                    <p>Submissions received</p>
+                    <h1>Reports, Logs & Executive Submissions</h1>
+                    <p>Track organization-wide work submissions from Managers, HR, and Staff, submit Executive reports, and review analytics.</p>
                 </div>
-            </div>
-            <div class="card">
-                <div class="icon" style="color:#4ade80; border-color:rgba(74,222,128,0.3);"><i class="fa-solid fa-user-check"></i></div>
-                <div>
-                    <h4>Active Submissions</h4>
-                    <h2 id="kpiReportingRate">96%</h2>
-                    <p>On-time completion rate</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon" style="color:#60a5fa; border-color:rgba(96,165,250,0.3);"><i class="fa-regular fa-clock"></i></div>
-                <div>
-                    <h4>Avg Hours / Day</h4>
-                    <h2 id="kpiAvgHours">8.4 hrs</h2>
-                    <p>Productive time logged</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon" style="color:#fbbf24; border-color:rgba(251,191,36,0.3);"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div>
-                    <h4>Blockers Reported</h4>
-                    <h2 id="kpiBlockersCount">0</h2>
-                    <p>Requires attention</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- FILTER TOOLBAR FOR DAILY WORK REPORTS -->
-        <div class="filter-box" id="dailyReportFilterToolbar">
-            <div class="search-input-wrap">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" id="workReportSearch" placeholder="Search by employee, task keyword, project, or role...">
-            </div>
-            <select class="filter-select" id="reportDateFilter">
-                <option value="All">All Dates</option>
-                <option value="Today" selected>Today (Latest)</option>
-                <option value="Yesterday">Yesterday</option>
-            </select>
-            <select class="filter-select" id="reportDeptFilter">
-                <option value="All">All Departments</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Product">Product</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Operations">Operations</option>
-                <option value="HR">HR</option>
-            </select>
-            <select class="filter-select" id="reportRoleFilter">
-                <option value="All">All Roles</option>
-                <option value="Employee">Regular Employees</option>
-                <option value="Manager">Managers</option>
-                <option value="Intern">Interns</option>
-            </select>
-            <select class="filter-select" id="reportStatusFilter">
-                <option value="All">All Statuses</option>
-                <option value="Submitted">Submitted</option>
-                <option value="Approved">Approved</option>
-                <option value="Flagged">Flagged / Blocked</option>
-            </select>
-        </div>
-
-        <!-- DAILY WORK REPORTS TABLE -->
-        <div class="table-panel" id="dailyReportsTableContainer">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date & Time</th>
-                        <th>Employee Details</th>
-                        <th>Tasks Accomplished (Daily Work)</th>
-                        <th>Project / Module</th>
-                        <th>Hours Logged</th>
-                        <th>Blockers / Issues</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="dailyReportsTableBody">
-                    <tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading employee work reports...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- GENERAL REPORT SECTION (PREVIOUS DESIGN RESTORED) -->
-        <div id="generalAnalyticsSection" style="display:none; flex-direction:column; gap:18px;">
-            <div class="filter-box" style="margin-bottom:2px;">
-                <input type="text" value="01 May 2025 - 31 May 2025" style="min-width:210px;">
-                <select class="filter-select">
-                    <option>All Departments</option>
-                    <option>Engineering</option>
-                    <option>Product</option>
-                    <option>Marketing</option>
-                    <option>Operations</option>
-                    <option>HR</option>
-                </select>
-                <select class="filter-select">
-                    <option>All Locations</option>
-                    <option>Headquarters (HQ)</option>
-                    <option>Remote</option>
-                </select>
-            </div>
-
-            <div class="general-cards">
-                <div class="card">
-                    <div class="icon" style="color:#4299e1; border-color:#4299e1;"><i class="fa-solid fa-users"></i></div>
-                    <div>
-                        <h4>Total Employees</h4>
-                        <h2 id="kpiTotalEmployees">--</h2>
-                        <p style="color:#4ade80;">↑ 5 this month</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="icon" style="color:#60a5fa; border-color:#60a5fa;"><i class="fa-solid fa-briefcase"></i></div>
-                    <div>
-                        <h4>Active Employees</h4>
-                        <h2 id="kpiActiveEmployees">--</h2>
-                        <p style="color:#4ade80;">↑ 3 this month</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="icon" style="color:#4ade80; border-color:#4ade80;"><i class="fa-solid fa-user-plus"></i></div>
-                    <div>
-                        <h4>New Hires</h4>
-                        <h2>8</h2>
-                        <p style="color:#4ade80;">↑ 2 this month</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="icon" style="color:#f87171; border-color:#f87171;"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                    <div>
-                        <h4>Resignations</h4>
-                        <h2>3</h2>
-                        <p style="color:#f87171;">↓ 1 this month</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="icon" style="color:#fbbf24; border-color:#fbbf24;"><i class="fa-solid fa-calendar-days"></i></div>
-                    <div>
-                        <h4>Attendance Rate</h4>
-                        <h2>94%</h2>
-                        <p style="color:#4ade80;">↑ 2% this month</p>
-                    </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="exportDailyReportsCsv"><i class="fa-solid fa-file-csv"></i> Export Submissions CSV</button>
                 </div>
             </div>
 
-            <div class="analytics-grid">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Employees by Department</h3>
-                        <select class="filter-select"><option>All Departments</option></select>
+            <!-- Section Switcher Tabs -->
+            <div class="section-tabs-bar">
+                <button class="sec-tab-btn active" id="tabOrgSubmissions"><i class="fa-solid fa-list-check"></i> Organization Work Submissions</button>
+                <button class="sec-tab-btn" id="tabSubmitAdminReport"><i class="fa-solid fa-paper-plane"></i> Submit Executive Report</button>
+                <button class="sec-tab-btn" id="tabAnalyticsSummary"><i class="fa-solid fa-chart-pie"></i> General Report & Analytics</button>
+            </div>
+
+            <!-- TAB 1: ORGANIZATION WORK SUBMISSIONS -->
+            <div id="sectionOrgSubmissions" style="display:flex; flex-direction:column; gap:14px; flex:1; min-height:0;">
+                
+                <!-- KPI SUMMARY CARDS -->
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon" style="color:#4299e1; border-color:rgba(66,153,225,0.3);"><i class="fa-solid fa-clipboard-check"></i></div>
+                        <div>
+                            <h4>Total Submissions Today</h4>
+                            <h2 id="kpiReportsToday">0</h2>
+                            <p>Reports received</p>
+                        </div>
                     </div>
-                    <div class="chart-content">
-                        <div class="circle-chart"></div>
-                        <div class="chart-legend">
-                            <p><span class="dot" style="background:#4299e1;"></span> HR &nbsp;&nbsp;20 (13%)</p>
-                            <p><span class="dot" style="background:#60a5fa;"></span> IT &nbsp;&nbsp;45 (30%)</p>
-                            <p><span class="dot" style="background:#22c55e;"></span> Finance &nbsp;&nbsp;25 (16%)</p>
-                            <p><span class="dot" style="background:#fbbf24;"></span> Marketing &nbsp;&nbsp;22 (14%)</p>
-                            <p><span class="dot" style="background:#a855f7;"></span> Operations &nbsp;&nbsp;30 (20%)</p>
-                            <p><span class="dot" style="background:#f87171;"></span> Others &nbsp;&nbsp;10 (7%)</p>
+                    <div class="card">
+                        <div class="icon" style="color:#fbbf24; border-color:rgba(251,191,36,0.3);"><i class="fa-solid fa-user-tie"></i></div>
+                        <div>
+                            <h4>Manager & HR Reports</h4>
+                            <h2 id="kpiManagerHrCount">0</h2>
+                            <p>Leadership updates</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#4ade80; border-color:rgba(74,222,128,0.3);"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <h4>Approved Reports</h4>
+                            <h2 id="kpiApprovedCount">0</h2>
+                            <p>Validated work logs</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#f87171; border-color:rgba(248,113,113,0.3);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div>
+                            <h4>Blockers & Escalations</h4>
+                            <h2 id="kpiBlockersCount">0</h2>
+                            <p>Requires attention</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Monthly Payroll Trend</h3>
-                        <select class="filter-select"><option>Last 6 Months</option></select>
+                <!-- FILTER TOOLBAR -->
+                <div class="filter-box">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="workReportSearch" placeholder="Search by name, task summary, project, department...">
                     </div>
-                    <div class="bar-chart">
-                        <div class="bar" style="height:90px"></div>
-                        <div class="bar" style="height:90px"></div>
-                        <div class="bar" style="height:130px"></div>
-                        <div class="bar" style="height:120px"></div>
-                        <div class="bar" style="height:130px"></div>
-                        <div class="bar" style="height:120px"></div>
-                    </div>
-                    <div class="months">
-                        <span>Dec 2024</span>
-                        <span>Jan 2025</span>
-                        <span>Feb 2025</span>
-                        <span>Mar 2025</span>
-                        <span>Apr 2025</span>
-                        <span>May 2025</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="analytics-grid">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Leave Summary</h3>
-                        <select class="filter-select"><option>This Month</option></select>
-                    </div>
-                    <div class="chart-content">
-                        <div class="circle-chart" style="background:conic-gradient(#22c55e 0% 45%, #fbbf24 45% 70%, #f87171 70% 85%, #8898aa 85% 100%);"></div>
-                        <div class="chart-legend">
-                            <p><span class="dot" style="background:#22c55e;"></span> Approved &nbsp;45 (45%)</p>
-                            <p><span class="dot" style="background:#fbbf24;"></span> Pending &nbsp;25 (25%)</p>
-                            <p><span class="dot" style="background:#f87171;"></span> Rejected &nbsp;15 (15%)</p>
-                            <p><span class="dot" style="background:#8898aa;"></span> Cancelled &nbsp;15 (15%)</p>
-                        </div>
-                    </div>
+                    <select class="filter-select" id="reportDateFilter">
+                        <option value="All">All Dates</option>
+                        <option value="Today" selected>Today (Latest)</option>
+                        <option value="Yesterday">Yesterday</option>
+                    </select>
+                    <select class="filter-select" id="reportRoleFilter">
+                        <option value="All">All Roles</option>
+                        <option value="manager">Managers</option>
+                        <option value="hr">HR Specialists</option>
+                        <option value="employee">Regular Employees</option>
+                        <option value="intern">Interns</option>
+                        <option value="admin">Admins</option>
+                    </select>
+                    <select class="filter-select" id="reportDeptFilter">
+                        <option value="All">All Departments</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="HR">HR</option>
+                        <option value="Product">Product</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Executive">Executive</option>
+                    </select>
+                    <select class="filter-select" id="reportStatusFilter">
+                        <option value="All">All Statuses</option>
+                        <option value="Submitted">Submitted (Pending)</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Flagged">Flagged / Blocked</option>
+                    </select>
                 </div>
 
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Performance Rating Distribution</h3>
-                        <select class="filter-select"><option>This Month</option></select>
-                    </div>
-                    <div class="bar-chart ratings">
-                        <div class="bar" style="height:70px"></div>
-                        <div class="bar" style="height:110px"></div>
-                        <div class="bar" style="height:60px"></div>
-                        <div class="bar" style="height:40px"></div>
-                        <div class="bar" style="height:20px"></div>
-                    </div>
-                    <div class="months">
-                        <span>Excellent</span>
-                        <span>Good</span>
-                        <span>Average</span>
-                        <span>Below Avg</span>
-                        <span>Poor</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bottom-grid">
-                <div class="report-table">
-                    <h3>Recent Reports</h3>
+                <!-- SUBMISSIONS TABLE -->
+                <div class="table-panel">
                     <table>
                         <thead>
                             <tr>
-                                <th>Report Name</th>
-                                <th>Type</th>
-                                <th>Generated By</th>
-                                <th>Generated On</th>
+                                <th>Date & Time</th>
+                                <th>Submitter Details</th>
+                                <th>Role</th>
+                                <th>Project / Initiative</th>
+                                <th>Tasks Accomplished (Work Summary)</th>
+                                <th>Hours</th>
+                                <th>Blockers / Escalations</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Employee Attendance Report - May 2025</td>
-                                <td>Attendance</td>
-                                <td>John Doe</td>
-                                <td>31 May 2025 10:30 AM</td>
-                                <td><button class="btn-secondary quick-download-btn" data-report="attendance" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
-                            </tr>
-                            <tr>
-                                <td>Payroll Summary - May 2025</td>
-                                <td>Payroll</td>
-                                <td>John Doe</td>
-                                <td>31 May 2025 09:15 AM</td>
-                                <td><button class="btn-secondary quick-download-btn" data-report="payroll" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
-                            </tr>
-                            <tr>
-                                <td>Employee Directory Master - May 2025</td>
-                                <td>Directory</td>
-                                <td>John Doe</td>
-                                <td>28 May 2025 04:20 PM</td>
-                                <td><button class="btn-secondary quick-download-btn" data-report="directory" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
-                            </tr>
+                        <tbody id="dailyReportsTableBody">
+                            <tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">Loading organization work reports...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="quick-report">
-                    <h3>Quick Reports (CSV Export)</h3>
-                    <div class="quick-item" data-report="directory"><span><i class="fa-solid fa-users" style="color:#4299e1; margin-right:8px;"></i> Employee Directory</span> <i class="fa-solid fa-angle-right"></i></div>
-                    <div class="quick-item" data-report="attendance"><span><i class="fa-solid fa-calendar-check" style="color:#4ade80; margin-right:8px;"></i> Attendance Summary</span> <i class="fa-solid fa-angle-right"></i></div>
-                    <div class="quick-item" data-report="leave"><span><i class="fa-solid fa-plane-departure" style="color:#fbbf24; margin-right:8px;"></i> Leave Summary</span> <i class="fa-solid fa-angle-right"></i></div>
-                    <div class="quick-item" data-report="payroll"><span><i class="fa-solid fa-money-bill" style="color:#c084fc; margin-right:8px;"></i> Payroll Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                <div class="footer">
+                    <div id="reportsEntriesCount">Showing 0 of 0 submissions</div>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: SUBMIT EXECUTIVE / ADMIN REPORT -->
+            <div id="sectionSubmitAdminReport" class="grid-split" style="display:none;">
+                <!-- Left: Submit Form -->
+                <div class="panel-card">
+                    <h3>
+                        <span><i class="fa-solid fa-pen-to-square"></i> Submit Executive Daily Report / Log</span> 
+                        <span style="font-size:11px; color:#f87171; background:rgba(239,68,68,0.15); padding:2px 8px; border-radius:6px; font-weight:600;">Role: Executive Admin</span>
+                    </h3>
+                    <form id="submitAdminReportForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminReportDate">Report Date</label>
+                                <input type="date" id="adminReportDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminReportHours">Executive Hours Logged</label>
+                                <input type="number" id="adminReportHours" step="0.5" min="1" max="18" value="8.5" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminReportProject">Strategic Initiative / Operational Focus</label>
+                            <input type="text" id="adminReportProject" placeholder="e.g. Q4 Executive Strategy, Infrastructure Expansion, Budget Review" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminReportSummary">Executive Headline</label>
+                            <input type="text" id="adminReportSummary" placeholder="Brief 1-sentence headline of today's executive focus & decisions" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminReportDetails">Key Decisions, Governance & Operational Highlights</label>
+                            <textarea id="adminReportDetails" rows="4" placeholder="1. Approved department expansion budget for Engineering...&#10;2. Reviewed cross-functional quarterly deliverables with Managers...&#10;3. Audited corporate compliance and timesheet approvals..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminReportDirectives">Executive Directives / Direct Instructions for Managers & HR (Optional)</label>
+                            <input type="text" id="adminReportDirectives" placeholder="None or specify directives (e.g. Fast-track senior backend hiring)">
+                        </div>
+                        <div class="form-group">
+                            <label for="adminReportTomorrow">Strategic Priorities for Tomorrow</label>
+                            <input type="text" id="adminReportTomorrow" placeholder="Key goals for tomorrow's executive oversight">
+                        </div>
+                        <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Executive Report
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Past Admin Submissions -->
+                <div class="panel-card">
+                    <h3>
+                        <span><i class="fa-solid fa-clock-rotate-left"></i> My Executive Reports & Logs</span> 
+                        <span id="myAdminReportsCountBadge" style="font-size:11.5px; color:#8898aa;">0 submissions</span>
+                    </h3>
+                    <div id="myAdminReportsList" style="overflow-y:auto; flex:1;">
+                        <!-- Populated via JS -->
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="footer" id="dailyReportsFooter">
-            <div id="reportsEntriesCount">Showing 0 of 0 submissions</div>
-        </div>
+            <!-- TAB 3: GENERAL REPORT & ANALYTICS -->
+            <div id="generalAnalyticsSection" style="display:none; flex-direction:column; gap:18px; flex:1; min-height:0; overflow-y:auto;">
+                <div class="filter-box" style="margin-bottom:2px;">
+                    <input type="text" value="01 May 2025 - 31 May 2025" style="min-width:210px; background:#0b1437; border:1px solid #1b2e6e; color:#fff; padding:8px 12px; border-radius:8px; font-size:13px;">
+                    <select class="filter-select">
+                        <option>All Departments</option>
+                        <option>Engineering</option>
+                        <option>Product</option>
+                        <option>Marketing</option>
+                        <option>Operations</option>
+                        <option>HR</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Locations</option>
+                        <option>Headquarters (HQ)</option>
+                        <option>Remote</option>
+                    </select>
+                </div>
 
-    </div>
+                <div class="general-cards">
+                    <div class="card">
+                        <div class="icon" style="color:#4299e1; border-color:#4299e1;"><i class="fa-solid fa-users"></i></div>
+                        <div>
+                            <h4>Total Employees</h4>
+                            <h2 id="kpiTotalEmployees">38</h2>
+                            <p style="color:#4ade80;">↑ 5 this month</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#60a5fa; border-color:#60a5fa;"><i class="fa-solid fa-briefcase"></i></div>
+                        <div>
+                            <h4>Active Employees</h4>
+                            <h2 id="kpiActiveEmployees">35</h2>
+                            <p style="color:#4ade80;">↑ 3 this month</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#4ade80; border-color:#4ade80;"><i class="fa-solid fa-user-plus"></i></div>
+                        <div>
+                            <h4>New Hires</h4>
+                            <h2>8</h2>
+                            <p style="color:#4ade80;">↑ 2 this month</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#f87171; border-color:#f87171;"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <div>
+                            <h4>Resignations</h4>
+                            <h2>3</h2>
+                            <p style="color:#f87171;">↓ 1 this month</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="icon" style="color:#fbbf24; border-color:#fbbf24;"><i class="fa-solid fa-calendar-days"></i></div>
+                        <div>
+                            <h4>Attendance Rate</h4>
+                            <h2>94%</h2>
+                            <p style="color:#4ade80;">↑ 2% this month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Employees by Department</h3>
+                            <select class="filter-select"><option>All Departments</option></select>
+                        </div>
+                        <div class="chart-content">
+                            <div class="circle-chart"></div>
+                            <div class="chart-legend">
+                                <p><span class="dot" style="background:#4299e1;"></span> HR &nbsp;&nbsp;20 (13%)</p>
+                                <p><span class="dot" style="background:#60a5fa;"></span> IT &nbsp;&nbsp;45 (30%)</p>
+                                <p><span class="dot" style="background:#22c55e;"></span> Finance &nbsp;&nbsp;25 (16%)</p>
+                                <p><span class="dot" style="background:#fbbf24;"></span> Marketing &nbsp;&nbsp;22 (14%)</p>
+                                <p><span class="dot" style="background:#a855f7;"></span> Operations &nbsp;&nbsp;30 (20%)</p>
+                                <p><span class="dot" style="background:#f87171;"></span> Others &nbsp;&nbsp;10 (7%)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Monthly Payroll Trend</h3>
+                            <select class="filter-select"><option>Last 6 Months</option></select>
+                        </div>
+                        <div class="bar-chart">
+                            <div class="bar" style="height:90px"></div>
+                            <div class="bar" style="height:90px"></div>
+                            <div class="bar" style="height:130px"></div>
+                            <div class="bar" style="height:120px"></div>
+                            <div class="bar" style="height:130px"></div>
+                            <div class="bar" style="height:120px"></div>
+                        </div>
+                        <div class="months">
+                            <span>Dec 2024</span>
+                            <span>Jan 2025</span>
+                            <span>Feb 2025</span>
+                            <span>Mar 2025</span>
+                            <span>Apr 2025</span>
+                            <span>May 2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Leave Summary</h3>
+                            <select class="filter-select"><option>This Month</option></select>
+                        </div>
+                        <div class="chart-content">
+                            <div class="circle-chart" style="background:conic-gradient(#22c55e 0% 45%, #fbbf24 45% 70%, #f87171 70% 85%, #8898aa 85% 100%);"></div>
+                            <div class="chart-legend">
+                                <p><span class="dot" style="background:#22c55e;"></span> Approved &nbsp;45 (45%)</p>
+                                <p><span class="dot" style="background:#fbbf24;"></span> Pending &nbsp;25 (25%)</p>
+                                <p><span class="dot" style="background:#f87171;"></span> Rejected &nbsp;15 (15%)</p>
+                                <p><span class="dot" style="background:#8898aa;"></span> Cancelled &nbsp;15 (15%)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Performance Rating Distribution</h3>
+                            <select class="filter-select"><option>This Month</option></select>
+                        </div>
+                        <div class="bar-chart ratings">
+                            <div class="bar" style="height:70px"></div>
+                            <div class="bar" style="height:110px"></div>
+                            <div class="bar" style="height:60px"></div>
+                            <div class="bar" style="height:40px"></div>
+                            <div class="bar" style="height:20px"></div>
+                        </div>
+                        <div class="months">
+                            <span>Excellent</span>
+                            <span>Good</span>
+                            <span>Average</span>
+                            <span>Below Avg</span>
+                            <span>Poor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-grid">
+                    <div class="report-table">
+                        <h3>Recent Reports</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Report Name</th>
+                                    <th>Type</th>
+                                    <th>Generated By</th>
+                                    <th>Generated On</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Employee Attendance Report - May 2025</td>
+                                    <td>Attendance</td>
+                                    <td>John Doe</td>
+                                    <td>31 May 2025 10:30 AM</td>
+                                    <td><button class="btn-secondary quick-download-btn" data-report="attendance" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Payroll Summary - May 2025</td>
+                                    <td>Payroll</td>
+                                    <td>John Doe</td>
+                                    <td>31 May 2025 09:15 AM</td>
+                                    <td><button class="btn-secondary quick-download-btn" data-report="payroll" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Employee Directory Master - May 2025</td>
+                                    <td>Directory</td>
+                                    <td>John Doe</td>
+                                    <td>28 May 2025 04:20 PM</td>
+                                    <td><button class="btn-secondary quick-download-btn" data-report="directory" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-download" style="color:#4299e1;"></i> Download</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="quick-report">
+                        <h3>Quick Reports (CSV Export)</h3>
+                        <div class="quick-item" data-report="directory"><span><i class="fa-solid fa-users" style="color:#4299e1; margin-right:8px;"></i> Employee Directory</span> <i class="fa-solid fa-angle-right"></i></div>
+                        <div class="quick-item" data-report="attendance"><span><i class="fa-solid fa-calendar-check" style="color:#4ade80; margin-right:8px;"></i> Attendance Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                        <div class="quick-item" data-report="leave"><span><i class="fa-solid fa-plane-departure" style="color:#fbbf24; margin-right:8px;"></i> Leave Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                        <div class="quick-item" data-report="payroll"><span><i class="fa-solid fa-money-bill" style="color:#c084fc; margin-right:8px;"></i> Payroll Summary</span> <i class="fa-solid fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -1209,21 +1399,24 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
 <div class="modal-overlay" id="viewReportModal">
     <div class="modal-box">
         <div class="modal-header">
-            <h3>Employee Daily Work Submission</h3>
+            <h3 id="modalReportTitle">Work Submission Details</h3>
             <button class="modal-close" id="closeViewReportBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="viewReportModalContent" style="color:#d7dfef; font-size:13px; line-height:1.6;">
             <!-- Populated via JS -->
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px;">
-            <button type="button" class="btn-secondary" id="btnApproveLog"><i class="fa-solid fa-check" style="color:#4ade80;"></i> Approve Work Log</button>
+            <div style="display:flex; gap:8px;">
+                <button type="button" class="btn-secondary" id="btnApproveLog" style="color:#4ade80;"><i class="fa-solid fa-check"></i> Approve Work Log</button>
+                <button type="button" class="btn-secondary" id="btnFlagLog" style="color:#f87171;"><i class="fa-solid fa-flag"></i> Flag</button>
+            </div>
             <button type="button" class="btn-primary" id="btnCloseViewReportModal">Close</button>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, getDocs, addDoc, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { db } from "../assets/js/firebase-config.js";
     import { requireRole, paintNavProfile, logout } from "../assets/js/auth-session.js";
     import { initEmailModal } from "../assets/js/email-modal.js";
@@ -1232,10 +1425,12 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
     paintNavProfile(currentUser);
     initEmailModal(currentUser);
 
+    // Sidebar toggle
     document.getElementById('hamburgerToggle')?.addEventListener('click', () => {
         document.getElementById('adminSidebar')?.classList.toggle('collapsed');
     });
 
+    // Profile dropdown
     document.getElementById('navProfileToggle')?.addEventListener('click', (e) => {
         e.stopPropagation();
         document.getElementById('navProfileDropdown')?.classList.toggle('show');
@@ -1248,41 +1443,510 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
         logout("../");
     });
 
-    // Tab Switching
-    const tabDailyReports = document.getElementById('tabDailyReports');
+    // Set today's date in Admin form
+    const adminDateInput = document.getElementById('adminReportDate');
+    if (adminDateInput) adminDateInput.value = new Date().toISOString().slice(0, 10);
+
+    // Section Switching Tabs
+    const tabOrgSubmissions = document.getElementById('tabOrgSubmissions');
+    const tabSubmitAdminReport = document.getElementById('tabSubmitAdminReport');
     const tabAnalyticsSummary = document.getElementById('tabAnalyticsSummary');
-    const dailyReportKpiDeck = document.getElementById('dailyReportKpiDeck');
-    const dailyReportFilterToolbar = document.getElementById('dailyReportFilterToolbar');
-    const dailyReportsTableContainer = document.getElementById('dailyReportsTableContainer');
+
+    const sectionOrgSubmissions = document.getElementById('sectionOrgSubmissions');
+    const sectionSubmitAdminReport = document.getElementById('sectionSubmitAdminReport');
     const generalAnalyticsSection = document.getElementById('generalAnalyticsSection');
-    const dailyReportsFooter = document.getElementById('dailyReportsFooter');
     const exportDailyReportsCsv = document.getElementById('exportDailyReportsCsv');
 
-    tabDailyReports?.addEventListener('click', () => {
-        tabDailyReports.classList.add('active');
+    tabOrgSubmissions?.addEventListener('click', () => {
+        tabOrgSubmissions.classList.add('active');
+        tabSubmitAdminReport.classList.remove('active');
         tabAnalyticsSummary.classList.remove('active');
-        dailyReportKpiDeck.style.display = 'grid';
-        dailyReportFilterToolbar.style.display = 'flex';
-        dailyReportsTableContainer.style.display = 'block';
-        if (dailyReportsFooter) dailyReportsFooter.style.display = 'flex';
-        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'inline-flex';
+
+        sectionOrgSubmissions.style.display = 'flex';
+        sectionSubmitAdminReport.style.display = 'none';
         generalAnalyticsSection.style.display = 'none';
+        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'inline-flex';
+        renderTable();
+    });
+
+    tabSubmitAdminReport?.addEventListener('click', () => {
+        tabSubmitAdminReport.classList.add('active');
+        tabOrgSubmissions.classList.remove('active');
+        tabAnalyticsSummary.classList.remove('active');
+
+        sectionOrgSubmissions.style.display = 'none';
+        sectionSubmitAdminReport.style.display = 'grid';
+        generalAnalyticsSection.style.display = 'none';
+        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'none';
+        renderMyAdminReportsList();
     });
 
     tabAnalyticsSummary?.addEventListener('click', () => {
         tabAnalyticsSummary.classList.add('active');
-        tabDailyReports.classList.remove('active');
-        dailyReportKpiDeck.style.display = 'none';
-        dailyReportFilterToolbar.style.display = 'none';
-        dailyReportsTableContainer.style.display = 'none';
-        if (dailyReportsFooter) dailyReportsFooter.style.display = 'none';
-        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'none';
+        tabOrgSubmissions.classList.remove('active');
+        tabSubmitAdminReport.classList.remove('active');
+
+        sectionOrgSubmissions.style.display = 'none';
+        sectionSubmitAdminReport.style.display = 'none';
         generalAnalyticsSection.style.display = 'flex';
-        loadKpis();
+        if (exportDailyReportsCsv) exportDailyReportsCsv.style.display = 'none';
+        loadGeneralKpis();
+    });
+
+    // Comprehensive Fallback Work Submissions Covering All Roles
+    const sampleAllReports = [
+        {
+            id: 'RPT-MGR-01',
+            date: '2026-10-08',
+            time: '05:30 PM',
+            employeeUid: 'mgr-1',
+            employeeName: 'Sarah Jenkins',
+            employeeId: 'MG001',
+            role: 'manager',
+            department: 'Engineering',
+            project: 'Q4 Product Milestones & Sprint Architecture',
+            taskSummary: 'Conducted engineering sprint review, PR reviews, and roadmap alignment',
+            details: '1. Reviewed 6 pull requests for attendance timesheet calculation.\n2. Hosted 1-on-1 mentorship session with Alex.\n3. Updated team velocity metrics and cleared blockers.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Deploy initial staging cluster and review security audits.',
+            submittedTo: 'Admin'
+        },
+        {
+            id: 'RPT-HR-01',
+            date: '2026-10-08',
+            time: '05:15 PM',
+            employeeUid: 'hr-1',
+            employeeName: 'Emily Davis',
+            employeeId: 'HR001',
+            role: 'hr',
+            department: 'HR',
+            project: 'Q2 Performance & Compliance Review',
+            taskSummary: 'Processed 14 leave requests, audited attendance logs, and onboarded new hires',
+            details: '1. Reconciled 3x consecutive late attendance logs.\n2. Sent custom broadcast email to department leads.\n3. Completed onboarding checklist for 2 new hires.',
+            hours: 8.0,
+            blockers: 'None',
+            status: 'Submitted',
+            tomorrowPlan: 'Coordinate interview schedules for backend candidates.',
+            submittedTo: 'Admin'
+        },
+        {
+            id: 'RPT-DEV-01',
+            date: '2026-10-08',
+            time: '05:00 PM',
+            employeeUid: 'dev-1',
+            employeeName: 'Alex Rivera',
+            employeeId: 'DEV001',
+            role: 'employee',
+            department: 'Engineering',
+            project: 'EMS Next-Gen Portal',
+            taskSummary: 'Implemented real-time communication tab & websocket sync',
+            details: '1. Designed messaging channels UI and 1-on-1 contact list.\n2. Bound Firestore real-time snapshot listeners.\n3. Verified responsiveness and theme tokens across desktop and mobile.',
+            hours: 8.5,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Finalize email notification modal and automated tests.',
+            submittedTo: 'Manager'
+        },
+        {
+            id: 'RPT-DEV-02',
+            date: '2026-10-08',
+            time: '04:45 PM',
+            employeeUid: 'dev-2',
+            employeeName: 'Michael Chen',
+            employeeId: 'DEV002',
+            role: 'employee',
+            department: 'Engineering',
+            project: 'Accounts Inflow Service',
+            taskSummary: 'Integrated client receiving revenue calculation & ledger',
+            details: '1. Built dual cashflow aggregation for receiving inflow and payroll payouts.\n2. Added invoice generator popup.\n3. Connected Firestore index queries.',
+            hours: 8.0,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Build receipt printing PDF export styling.',
+            submittedTo: 'Manager'
+        },
+        {
+            id: 'RPT-INT-01',
+            date: '2026-10-08',
+            time: '04:30 PM',
+            employeeUid: 'int-1',
+            employeeName: 'Sophia Taylor',
+            employeeId: 'INT001',
+            role: 'intern',
+            department: 'Product',
+            project: 'Design System Tokens',
+            taskSummary: 'Mentorship UI redesign matching internship design cards',
+            details: '1. Replaced legacy table styles with internship card grid.\n2. Built progress bar indicator for sessions.\n3. Styled modals for mentor assignment.',
+            hours: 7.5,
+            blockers: 'Waiting for mentor review on Figma tokens',
+            status: 'Flagged',
+            tomorrowPlan: 'Prepare UX presentation for Friday demo.',
+            submittedTo: 'Manager'
+        },
+        {
+            id: 'RPT-ADM-01',
+            date: '2026-10-07',
+            time: '06:00 PM',
+            employeeUid: currentUser?.uid || 'admin-root',
+            employeeName: currentUser?.name || 'John Doe',
+            employeeId: 'ADM001',
+            role: 'admin',
+            department: 'Executive',
+            project: 'Executive Corporate Governance',
+            taskSummary: 'Approved Q4 budget allocations and coordinated quarterly milestones with Managers and HR',
+            details: '1. Conducted executive sync with engineering and HR leadership.\n2. Approved resource acquisition requests for cloud infrastructure.\n3. Finalized annual compliance report.',
+            hours: 9.0,
+            blockers: 'None',
+            status: 'Approved',
+            tomorrowPlan: 'Review client enterprise contract proposals.',
+            submittedTo: 'Executive Board / Management'
+        }
+    ];
+
+    let allReportsCache = [];
+    let myAdminReportsCache = [];
+
+    const searchInput = document.getElementById('workReportSearch');
+    const dateFilter = document.getElementById('reportDateFilter');
+    const deptFilter = document.getElementById('reportDeptFilter');
+    const roleFilter = document.getElementById('reportRoleFilter');
+    const statusFilter = document.getElementById('reportStatusFilter');
+    const tableBody = document.getElementById('dailyReportsTableBody');
+    const countLabel = document.getElementById('reportsEntriesCount');
+
+    // Load All Reports from Firestore
+    async function loadReports() {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;"><i class="fa-solid fa-spinner fa-spin"></i> Loading organization work reports...</td></tr>`;
+        try {
+            allReportsCache = [...sampleAllReports];
+
+            try {
+                const snap = await getDocs(collection(db, "dailyReports"));
+                snap.forEach(docSnap => {
+                    const d = docSnap.data();
+                    const existingIdx = allReportsCache.findIndex(x => x.id === docSnap.id);
+                    const formatted = {
+                        id: docSnap.id,
+                        date: d.date || new Date().toISOString().slice(0, 10),
+                        time: d.time || '05:00 PM',
+                        employeeUid: d.employeeUid || '',
+                        employeeName: d.employeeName || 'Staff Member',
+                        employeeId: d.employeeId || 'EMP001',
+                        role: (d.role || 'employee').toLowerCase(),
+                        department: d.department || 'General',
+                        project: d.project || 'Initiative Tasks',
+                        taskSummary: d.taskSummary || d.summary || 'Daily work completed',
+                        details: d.details || d.taskSummary || d.summary || 'Detailed tasks completed.',
+                        hours: Number(d.hours) || 8.0,
+                        blockers: d.blockers || 'None',
+                        status: d.status || 'Submitted',
+                        tomorrowPlan: d.tomorrowPlan || d.tomorrow || 'Continue sprint tasks.',
+                        submittedTo: d.submittedTo || 'Admin'
+                    };
+
+                    if (existingIdx >= 0) {
+                        allReportsCache[existingIdx] = formatted;
+                    } else {
+                        allReportsCache.unshift(formatted);
+                    }
+                });
+            } catch (fbErr) {
+                console.warn("Firestore dailyReports fetch fallback: ", fbErr);
+            }
+
+            filterAdminReports();
+            renderKpis();
+            renderTable();
+            renderMyAdminReportsList();
+        } catch (err) {
+            console.error("Error loading daily reports: ", err);
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#f87171;">Failed to load reports: ${err.message}</td></tr>`;
+        }
+    }
+
+    function filterAdminReports() {
+        myAdminReportsCache = allReportsCache.filter(r => 
+            r.role === 'admin' || 
+            (currentUser?.uid && r.employeeUid === currentUser.uid) ||
+            r.employeeName === (currentUser?.name || 'John Doe')
+        );
+    }
+
+    function renderKpis() {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const todayReports = allReportsCache.filter(r => r.date === todayStr || r.date === '2026-10-08');
+        const mgrHrReports = allReportsCache.filter(r => r.role === 'manager' || r.role === 'hr');
+        const approvedCount = allReportsCache.filter(r => r.status.toLowerCase() === 'approved').length;
+        const totalBlockers = allReportsCache.filter(r => r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0).length;
+
+        document.getElementById('kpiReportsToday').textContent = todayReports.length || allReportsCache.length;
+        document.getElementById('kpiManagerHrCount').textContent = mgrHrReports.length;
+        document.getElementById('kpiApprovedCount').textContent = approvedCount;
+        document.getElementById('kpiBlockersCount').textContent = totalBlockers;
+    }
+
+    function renderTable() {
+        const q = (searchInput?.value || '').trim().toLowerCase();
+        const selDate = dateFilter?.value || 'All';
+        const selDept = deptFilter?.value || 'All';
+        const selRole = roleFilter?.value || 'All';
+        const selStatus = statusFilter?.value || 'All';
+
+        const filtered = allReportsCache.filter(r => {
+            const matchesQ = !q ||
+                r.employeeName.toLowerCase().includes(q) ||
+                r.taskSummary.toLowerCase().includes(q) ||
+                r.project.toLowerCase().includes(q) ||
+                r.department.toLowerCase().includes(q) ||
+                r.role.toLowerCase().includes(q);
+            const matchesDate = selDate === 'All' || 
+                (selDate === 'Today' ? (r.date.includes('2026-10-08') || r.date === new Date().toISOString().slice(0, 10)) : r.date.includes('2026-10-07'));
+            const matchesDept = selDept === 'All' || r.department.toLowerCase() === selDept.toLowerCase();
+            const matchesRole = selRole === 'All' || r.role.toLowerCase() === selRole.toLowerCase();
+            const matchesStatus = selStatus === 'All' || r.status.toLowerCase() === selStatus.toLowerCase();
+            return matchesQ && matchesDate && matchesDept && matchesRole && matchesStatus;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#8898aa;">No organization work submissions match your filter criteria.</td></tr>`;
+            if (countLabel) countLabel.textContent = "Showing 0 of 0 submissions";
+            return;
+        }
+
+        tableBody.innerHTML = filtered.map(r => {
+            const hasBlocker = r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0;
+            const statusClass = r.status.toLowerCase();
+            const roleClass = r.role.toLowerCase();
+            const roleBadgeLabel = r.role === 'hr' ? 'HR Specialist' : (r.role.charAt(0).toUpperCase() + r.role.slice(1));
+
+            return `
+                <tr>
+                    <td>
+                        <strong style="color:#ffffff;">${r.date}</strong>
+                        <div style="font-size:11px; color:#8898aa;">${r.time}</div>
+                    </td>
+                    <td>
+                        <div class="emp-cell">
+                            <div class="emp-avatar"><i class="fa-solid fa-user"></i></div>
+                            <div class="emp-meta">
+                                <h4>${r.employeeName}</h4>
+                                <small>${r.employeeId || 'ID'} &bull; ${r.department}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="role-badge ${roleClass}">${roleBadgeLabel}</span>
+                    </td>
+                    <td><span style="color:#60a5fa; font-weight:600;">${r.project}</span></td>
+                    <td>
+                        <div class="task-summary-block">
+                            <strong>${r.taskSummary}</strong>
+                            <p>${r.details ? r.details.replace(/\n/g, ' ') : ''}</p>
+                        </div>
+                    </td>
+                    <td><span class="hours-badge"><i class="fa-regular fa-clock"></i> ${r.hours}h</span></td>
+                    <td>
+                        ${hasBlocker ? `<span class="blocker-tag"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers.slice(0, 28)}...</span>` : `<span style="color:#8898aa; font-size:12px;">None</span>`}
+                    </td>
+                    <td><span class="status-badge ${statusClass}">${r.status}</span></td>
+                    <td>
+                        <button class="btn-secondary view-report-btn" data-id="${r.id}" style="padding:4px 10px; font-size:12px;">
+                            <i class="fa-solid fa-eye" style="color:#4299e1;"></i> View Log
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        if (countLabel) countLabel.textContent = `Showing ${filtered.length} of ${allReportsCache.length} total work reports`;
+
+        document.querySelectorAll('.view-report-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const report = allReportsCache.find(x => x.id === id);
+                if (report) openReportModal(report);
+            });
+        });
+    }
+
+    // Modal controls
+    let selectedReport = null;
+    const viewModal = document.getElementById('viewReportModal');
+    const closeViewBtn = document.getElementById('closeViewReportBtn');
+    const closeBtn2 = document.getElementById('btnCloseViewReportModal');
+    const approveBtn = document.getElementById('btnApproveLog');
+    const flagBtn = document.getElementById('btnFlagLog');
+    const modalContent = document.getElementById('viewReportModalContent');
+
+    function openReportModal(report) {
+        selectedReport = report;
+        const roleBadgeLabel = report.role === 'hr' ? 'HR Specialist' : (report.role.charAt(0).toUpperCase() + report.role.slice(1));
+
+        modalContent.innerHTML = `
+            <div style="background:#0b1437; padding:16px; border-radius:12px; border:1px solid #1b2e6e; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h4 style="color:#fff; font-size:15px;">${report.employeeName}</h4>
+                        <span style="font-size:12px; color:#8898aa;">${report.employeeId || 'ID'} &bull; ${report.department} Department &bull; <strong style="color:#60a5fa;">${roleBadgeLabel}</strong></span>
+                    </div>
+                    <span class="status-badge ${report.status.toLowerCase()}">${report.status}</span>
+                </div>
+                <div style="font-size:11.5px; color:#8898aa; margin-top:8px;">
+                    Submitted On: <strong style="color:#cbd5e1;">${report.date} at ${report.time}</strong> &bull; Hours Logged: <strong style="color:#60a5fa;">${report.hours} hrs</strong> &bull; Submitted To: <strong style="color:#4ade80;">${report.submittedTo || 'Admin'}</strong>
+                </div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Initiative / Project</label>
+                <div style="color:#60a5fa; font-weight:600;">${report.project}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Headline Summary</label>
+                <div style="color:#ffffff; font-weight:600;">${report.taskSummary}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tasks Accomplished & Detailed Log</label>
+                <div style="background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e; white-space:pre-line; color:#e2e8f0;">${report.details}</div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Blockers / Escalations</label>
+                <div style="color:${report.blockers !== 'None' ? '#fbbf24' : '#8898aa'}; font-weight:${report.blockers !== 'None' ? '600' : 'normal'};">${report.blockers}</div>
+            </div>
+            <div>
+                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tomorrow's Planned Focus</label>
+                <div style="color:#cbd5e1;">${report.tomorrowPlan || 'Standard sprint operations.'}</div>
+            </div>
+        `;
+        viewModal.classList.add('show');
+    }
+
+    closeViewBtn?.addEventListener('click', () => viewModal.classList.remove('show'));
+    closeBtn2?.addEventListener('click', () => viewModal.classList.remove('show'));
+
+    approveBtn?.addEventListener('click', () => {
+        if (selectedReport) {
+            selectedReport.status = 'Approved';
+            viewModal.classList.remove('show');
+            renderKpis();
+            renderTable();
+            renderMyAdminReportsList();
+        }
+    });
+
+    flagBtn?.addEventListener('click', () => {
+        if (selectedReport) {
+            selectedReport.status = 'Flagged';
+            viewModal.classList.remove('show');
+            renderKpis();
+            renderTable();
+            renderMyAdminReportsList();
+        }
+    });
+
+    // Submit Executive / Admin Report to Firestore
+    const adminReportForm = document.getElementById('submitAdminReportForm');
+    adminReportForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = adminReportForm.querySelector('button[type="submit"]');
+        const originalBtnHtml = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+
+        const newReport = {
+            employeeUid: currentUser?.uid || 'admin-root',
+            employeeName: currentUser?.name || 'John Doe',
+            employeeId: 'ADM001',
+            role: 'admin',
+            department: 'Executive',
+            date: document.getElementById('adminReportDate').value,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            hours: Number(document.getElementById('adminReportHours').value) || 8.5,
+            project: document.getElementById('adminReportProject').value.trim(),
+            summary: document.getElementById('adminReportSummary').value.trim(),
+            taskSummary: document.getElementById('adminReportSummary').value.trim(),
+            details: document.getElementById('adminReportDetails').value.trim(),
+            blockers: document.getElementById('adminReportDirectives').value.trim() || 'None',
+            tomorrow: document.getElementById('adminReportTomorrow').value.trim() || 'Executive oversight and strategic roadmap execution.',
+            tomorrowPlan: document.getElementById('adminReportTomorrow').value.trim() || 'Executive oversight and strategic roadmap execution.',
+            status: 'Approved',
+            submittedTo: 'Executive Board / Management',
+            timestamp: serverTimestamp()
+        };
+
+        try {
+            const docRef = await addDoc(collection(db, "dailyReports"), newReport);
+            newReport.id = docRef.id;
+        } catch (err) {
+            console.warn("Firestore offline, saving report to memory: ", err);
+            newReport.id = 'ADM-LOCAL-' + Date.now();
+        }
+
+        allReportsCache.unshift(newReport);
+        filterAdminReports();
+        renderKpis();
+        renderMyAdminReportsList();
+        renderTable();
+
+        adminReportForm.reset();
+        document.getElementById('adminReportDate').value = new Date().toISOString().slice(0, 10);
+        document.getElementById('adminReportHours').value = '8.5';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+
+        alert('Executive Report submitted and logged successfully!');
+    });
+
+    // Render Admin Reports in Right Panel
+    function renderMyAdminReportsList() {
+        const container = document.getElementById('myAdminReportsList');
+        const badge = document.getElementById('myAdminReportsCountBadge');
+        if (!container) return;
+
+        if (badge) badge.textContent = `${myAdminReportsCache.length} submissions`;
+
+        if (myAdminReportsCache.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:30px; color:#8898aa;">No executive reports submitted yet.</div>`;
+            return;
+        }
+
+        container.innerHTML = myAdminReportsCache.map(r => `
+            <div class="report-item">
+                <div class="report-item-header">
+                    <div>
+                        <strong style="color:#ffffff; font-size:13.5px;">${r.project}</strong>
+                        <div style="font-size:11px; color:#8898aa; margin-top:2px;">
+                            ${r.date} &bull; ${r.time} &bull; <span style="color:#60a5fa;">${r.hours} hrs</span>
+                        </div>
+                    </div>
+                    <span class="status-pill ${r.status.toLowerCase()}">${r.status}</span>
+                </div>
+                <div style="font-size:12.5px; color:#d7dfef; margin:6px 0; font-weight:600;">${r.summary || r.taskSummary}</div>
+                <div style="font-size:12px; color:#8898aa; white-space:pre-line; background:#111c44; padding:8px 10px; border-radius:6px; border:1px solid #1b2e6e;">
+                    ${r.details}
+                </div>
+                ${r.blockers && r.blockers !== 'None' ? `<div style="font-size:11.5px; color:#fbbf24; margin-top:6px;"><i class="fa-solid fa-bullhorn"></i> Directives: ${r.blockers}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // CSV Download
+    document.getElementById('exportDailyReportsCsv')?.addEventListener('click', () => {
+        const rows = [["Date", "Time", "Submitter ID", "Submitter Name", "Department", "Role", "Project / Initiative", "Summary", "Hours", "Blockers / Directives", "Status", "Submitted To"]];
+        allReportsCache.forEach(r => {
+            rows.push([r.date, r.time, r.employeeId, r.employeeName, r.department, r.role, r.project, r.taskSummary, r.hours, r.blockers, r.status, r.submittedTo || 'Admin']);
+        });
+        const csv = rows.map(r => r.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Organization-Work-Reports-${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
     });
 
     // General Reports KPI Loader
-    async function loadKpis() {
+    async function loadGeneralKpis() {
         try {
             const allEmployees = await getDocs(collection(db, "employees"));
             const kpiTotal = document.getElementById('kpiTotalEmployees');
@@ -1296,11 +1960,9 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
         }
     }
 
-    // Builds a CSV file from an array of objects and triggers a download
-    function downloadCsv(filename, rows) {
-        const csv = rows.map(row =>
-            row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')
-        ).join('\r\n');
+    // General Quick CSV Generator Handlers
+    function downloadGeneralCsv(filename, rows) {
+        const csv = rows.map(row => row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -1312,420 +1974,69 @@ tbody tr:hover { background: rgba(66, 153, 225, 0.06); }
         URL.revokeObjectURL(url);
     }
 
-    async function generateEmployeeDirectoryReport() {
-        try {
+    const generalGenerators = {
+        directory: async () => {
             const snap = await getDocs(collection(db, "employees"));
             const rows = [["Name", "Email", "Department", "Designation", "Role", "Status"]];
-            snap.forEach(docSnap => {
-                const e = docSnap.data();
-                rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]);
-            });
+            snap.forEach(d => { const e = d.data(); rows.push([e.name, e.email, e.department, e.designation, e.role, e.status]); });
             if (rows.length === 1) {
                 rows.push(["Alex Rivera", "alex@example.com", "Engineering", "Senior Developer", "Employee", "Active"]);
-                rows.push(["Michael Chen", "michael@example.com", "Engineering", "Full Stack Developer", "Employee", "Active"]);
                 rows.push(["Sarah Jenkins", "sarah@example.com", "Engineering", "Engineering Manager", "Manager", "Active"]);
             }
-            downloadCsv(`Employee-Directory-${Date.now()}.csv`, rows);
-        } catch (err) {
-            alert("Error downloading report: " + err.message);
-        }
-    }
-
-    async function generateAttendanceSummaryReport() {
-        try {
-            const [employeeSnap, attendanceSnap] = await Promise.all([
-                getDocs(collection(db, "employees")),
-                getDocs(collection(db, "attendance"))
-            ]);
-            const nameByUid = {};
-            employeeSnap.forEach(docSnap => {
-                const e = docSnap.data();
-                if (e.uid) nameByUid[e.uid] = e.name;
-            });
-            const rows = [["Employee", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
-            attendanceSnap.forEach(docSnap => {
-                const a = docSnap.data();
-                rows.push([nameByUid[a.employeeUid] || nameByUid[a.uid] || a.employeeUid || '-', a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]);
-            });
+            downloadGeneralCsv(`Employee-Directory-${Date.now()}.csv`, rows);
+        },
+        attendance: async () => {
+            const snap = await getDocs(collection(db, "attendance"));
+            const rows = [["Employee UID", "Department", "Date", "Check In", "Check Out", "Status", "Working Hours"]];
+            snap.forEach(d => { const a = d.data(); rows.push([a.employeeUid || a.uid, a.department, a.date, a.checkIn, a.checkOut, a.status, a.workingHours]); });
             if (rows.length === 1) {
-                rows.push(["Alex Rivera", "Engineering", "2025-05-30", "09:00 AM", "05:30 PM", "Present", "8h 30m"]);
-                rows.push(["Michael Chen", "Engineering", "2025-05-30", "08:50 AM", "05:00 PM", "Present", "8h 10m"]);
+                rows.push(["DEV001", "Engineering", "2026-10-08", "09:00 AM", "05:30 PM", "Present", "8h 30m"]);
             }
-            downloadCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
-        } catch (err) {
-            alert("Error downloading report: " + err.message);
-        }
-    }
-
-    async function generateLeaveSummaryReport() {
-        try {
+            downloadGeneralCsv(`Attendance-Summary-${Date.now()}.csv`, rows);
+        },
+        leave: async () => {
             const snap = await getDocs(collection(db, "leaveRequests"));
             const rows = [["Employee", "Department", "Leave Type", "From", "To", "Total Days", "Status"]];
-            snap.forEach(docSnap => {
-                const l = docSnap.data();
-                rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]);
-            });
+            snap.forEach(d => { const l = d.data(); rows.push([l.employeeName, l.department, l.leaveType, l.fromDate, l.toDate, l.totalDays, l.status]); });
             if (rows.length === 1) {
-                rows.push(["Sarah Jenkins", "Engineering", "Annual Leave", "2025-06-05", "2025-06-08", "4", "Approved"]);
+                rows.push(["Sarah Jenkins", "Engineering", "Annual Leave", "2026-10-15", "2026-10-18", "4", "Approved"]);
             }
-            downloadCsv(`Leave-Summary-${Date.now()}.csv`, rows);
-        } catch (err) {
-            alert("Error downloading report: " + err.message);
-        }
-    }
-
-    async function generatePayrollSummaryReport() {
-        try {
+            downloadGeneralCsv(`Leave-Summary-${Date.now()}.csv`, rows);
+        },
+        payroll: async () => {
             const snap = await getDocs(collection(db, "payroll"));
-            const rows = [["Employee", "Department", "Designation", "Basic Salary", "Allowances", "Deductions", "Net Pay", "Status"]];
-            snap.forEach(docSnap => {
-                const p = docSnap.data();
-                rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.allowances, p.deductions, p.netPay, p.status]);
-            });
+            const rows = [["Employee", "Department", "Designation", "Basic Salary", "Net Pay", "Status"]];
+            snap.forEach(d => { const p = d.data(); rows.push([p.employeeName, p.department, p.designation, p.basicSalary, p.netPay, p.status]); });
             if (rows.length === 1) {
-                rows.push(["Alex Rivera", "Engineering", "Senior Developer", "6500", "500", "200", "6800", "Paid"]);
+                rows.push(["Alex Rivera", "Engineering", "Senior Developer", "6500", "6800", "Paid"]);
             }
-            downloadCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
-        } catch (err) {
-            alert("Error downloading report: " + err.message);
+            downloadGeneralCsv(`Payroll-Summary-${Date.now()}.csv`, rows);
         }
-    }
-
-    const reportGenerators = {
-        directory: generateEmployeeDirectoryReport,
-        attendance: generateAttendanceSummaryReport,
-        leave: generateLeaveSummaryReport,
-        payroll: generatePayrollSummaryReport
     };
 
     document.querySelectorAll('.quick-item, .quick-download-btn').forEach(item => {
         item.addEventListener('click', async () => {
             const rType = item.getAttribute('data-report');
-            const generator = reportGenerators[rType];
+            const generator = generalGenerators[rType];
             if (!generator) return;
             const icon = item.querySelector('i');
-            const originalIconClass = icon ? icon.className : '';
+            const originalClass = icon ? icon.className : '';
             if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
             try {
                 await generator();
+            } catch(e) {
+                alert('Export error: ' + e.message);
             } finally {
-                if (icon) icon.className = originalIconClass;
+                if (icon) icon.className = originalClass;
             }
         });
     });
 
-    loadKpis();
-
-    const searchInput = document.getElementById('workReportSearch');
-    const dateFilter = document.getElementById('reportDateFilter');
-    const deptFilter = document.getElementById('reportDeptFilter');
-    const roleFilter = document.getElementById('reportRoleFilter');
-    const statusFilter = document.getElementById('reportStatusFilter');
-    const tableBody = document.getElementById('dailyReportsTableBody');
-    const countLabel = document.getElementById('reportsEntriesCount');
-
-    let allDailyReports = [];
-
-    // Comprehensive sample employee daily work submissions
-    const sampleDailyReports = [
-        {
-            id: 'RPT-001',
-            date: '2025-05-30',
-            time: '05:45 PM',
-            employeeName: 'Alex Rivera',
-            employeeId: 'DEV001',
-            role: 'Employee',
-            department: 'Engineering',
-            project: 'EMS Next-Gen Portal',
-            taskSummary: 'Implemented real-time communication tab & websocket sync',
-            details: '1. Designed messaging channels UI and 1-on-1 contact list.\n2. Bound Firestore real-time snapshot listeners.\n3. Verified responsiveness and theme tokens across desktop and mobile.',
-            hours: 8.5,
-            blockers: 'None',
-            status: 'Approved',
-            tomorrowPlan: 'Finalize email notification modal and automated tests.'
-        },
-        {
-            id: 'RPT-002',
-            date: '2025-05-30',
-            time: '05:30 PM',
-            employeeName: 'Michael Chen',
-            employeeId: 'DEV002',
-            role: 'Employee',
-            department: 'Engineering',
-            project: 'Accounts Inflow Service',
-            taskSummary: 'Integrated client receiving revenue calculation & ledger',
-            details: '1. Built dual cashflow aggregation for receiving inflow and payroll payouts.\n2. Added invoice generator popup.\n3. Connected Firestore index queries.',
-            hours: 8.0,
-            blockers: 'None',
-            status: 'Approved',
-            tomorrowPlan: 'Build receipt printing PDF export styling.'
-        },
-        {
-            id: 'RPT-003',
-            date: '2025-05-30',
-            time: '05:15 PM',
-            employeeName: 'Sarah Jenkins',
-            employeeId: 'MG001',
-            role: 'Manager',
-            department: 'Engineering',
-            project: 'Sprint 24 Architecture',
-            taskSummary: 'Conducted sprint review, roadmap alignment, and code reviews',
-            details: '1. Reviewed 6 pull requests for attendance timesheet calculation.\n2. Hosted 1-on-1 mentorship session with Alex.\n3. Updated team velocity metrics.',
-            hours: 9.0,
-            blockers: 'Waiting on staging cluster API gateway credentials.',
-            status: 'Flagged',
-            tomorrowPlan: 'Resolve gateway configuration with DevOps team.'
-        },
-        {
-            id: 'RPT-004',
-            date: '2025-05-30',
-            time: '05:00 PM',
-            employeeName: 'Sophia Taylor',
-            employeeId: 'INT001',
-            role: 'Intern',
-            department: 'Product',
-            project: 'Design System Tokens',
-            taskSummary: 'Mentorship UI redesign matching internship design cards',
-            details: '1. Replaced legacy table styles with internship card grid.\n2. Built progress bar indicator for sessions.\n3. Styled modals for mentor assignment.',
-            hours: 7.5,
-            blockers: 'None',
-            status: 'Approved',
-            tomorrowPlan: 'Prepare UX presentation for Friday demo.'
-        },
-        {
-            id: 'RPT-005',
-            date: '2025-05-30',
-            time: '04:45 PM',
-            employeeName: 'Emily Davis',
-            employeeId: 'HR001',
-            role: 'Employee',
-            department: 'HR',
-            project: 'Q2 Performance Cycle',
-            taskSummary: 'Processed 14 leave requests and reviewed timesheets',
-            details: '1. Reconciled 3x consecutive late attendance logs.\n2. Sent custom broadcast email to department leads.\n3. Completed onboarding checklist for 2 new hires.',
-            hours: 8.0,
-            blockers: 'None',
-            status: 'Submitted',
-            tomorrowPlan: 'Coordinate interview schedules for backend candidates.'
-        },
-        {
-            id: 'RPT-006',
-            date: '2025-05-29',
-            time: '06:00 PM',
-            employeeName: 'Alex Rivera',
-            employeeId: 'DEV001',
-            role: 'Employee',
-            department: 'Engineering',
-            project: 'EMS Next-Gen Portal',
-            taskSummary: 'Refactored attendance calendar day cell timestamp badges',
-            details: '1. Added Check-in and Check-out badges inside day cells.\n2. Computed working hours per day.\n3. Created timesheet table view switcher.',
-            hours: 8.5,
-            blockers: 'None',
-            status: 'Approved',
-            tomorrowPlan: 'Proceed to communication hub.'
-        }
-    ];
-
-    async function loadReports() {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">Loading employee work reports...</td></tr>`;
-        try {
-            allDailyReports = [...sampleDailyReports];
-
-            try {
-                const snap = await getDocs(collection(db, "dailyReports"));
-                snap.forEach(docSnap => {
-                    const d = docSnap.data();
-                    allDailyReports.unshift({
-                        id: docSnap.id,
-                        date: d.date || new Date().toISOString().slice(0, 10),
-                        time: d.time || '05:00 PM',
-                        employeeName: d.employeeName || 'Staff Member',
-                        employeeId: d.employeeId || 'EMP001',
-                        role: d.role || 'Employee',
-                        department: d.department || 'General',
-                        project: d.project || 'General Tasks',
-                        taskSummary: d.taskSummary || d.summary || 'Daily work completed',
-                        details: d.details || d.taskSummary || 'Detailed tasks completed.',
-                        hours: Number(d.hours) || 8.0,
-                        blockers: d.blockers || 'None',
-                        status: d.status || 'Submitted',
-                        tomorrowPlan: d.tomorrowPlan || 'Continue standard sprint tasks.'
-                    });
-                });
-            } catch (fbErr) {
-                console.warn("Firestore dailyReports fetch fallback: ", fbErr);
-            }
-
-            renderKpis();
-            renderTable();
-        } catch (err) {
-            console.error("Error loading daily reports: ", err);
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#f87171;">Failed to load reports: ${err.message}</td></tr>`;
-        }
-    }
-
-    function renderKpis() {
-        const todayStr = '2025-05-30';
-        const todayReports = allDailyReports.filter(r => r.date === todayStr || r.date === new Date().toISOString().slice(0, 10));
-        const totalBlockers = allDailyReports.filter(r => r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0).length;
-        const totalHours = allDailyReports.reduce((s, r) => s + (r.hours || 0), 0);
-        const avgHours = allDailyReports.length > 0 ? (totalHours / allDailyReports.length).toFixed(1) : '8.0';
-
-        document.getElementById('kpiReportsToday').textContent = todayReports.length || allDailyReports.length;
-        document.getElementById('kpiAvgHours').textContent = `${avgHours} hrs`;
-        document.getElementById('kpiBlockersCount').textContent = totalBlockers;
-    }
-
-    function renderTable() {
-        const q = searchInput.value.trim().toLowerCase();
-        const selDate = dateFilter.value;
-        const selDept = deptFilter.value;
-        const selRole = roleFilter.value;
-        const selStatus = statusFilter.value;
-
-        const filtered = allDailyReports.filter(r => {
-            const matchesQ = !q ||
-                r.employeeName.toLowerCase().includes(q) ||
-                r.taskSummary.toLowerCase().includes(q) ||
-                r.project.toLowerCase().includes(q) ||
-                r.department.toLowerCase().includes(q);
-            const matchesDate = selDate === 'All' || (selDate === 'Today' ? r.date.includes('2025-05-30') || r.date === new Date().toISOString().slice(0, 10) : r.date.includes('2025-05-29'));
-            const matchesDept = selDept === 'All' || r.department === selDept;
-            const matchesRole = selRole === 'All' || r.role.toLowerCase() === selRole.toLowerCase();
-            const matchesStatus = selStatus === 'All' || r.status.toLowerCase() === selStatus.toLowerCase();
-            return matchesQ && matchesDate && matchesDept && matchesRole && matchesStatus;
-        });
-
-        if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#8898aa;">No employee daily work reports match your filter criteria.</td></tr>`;
-            countLabel.textContent = "Showing 0 of 0 submissions";
-            return;
-        }
-
-        tableBody.innerHTML = filtered.map(r => {
-            const hasBlocker = r.blockers && r.blockers !== 'None' && r.blockers.trim().length > 0;
-            const statusClass = r.status.toLowerCase();
-
-            return `
-                <tr>
-                    <td>
-                        <strong style="color:#ffffff;">${r.date}</strong>
-                        <div style="font-size:11px; color:#8898aa;">${r.time}</div>
-                    </td>
-                    <td>
-                        <div class="emp-cell">
-                            <div class="emp-avatar"><i class="fa-solid fa-user"></i></div>
-                            <div class="emp-meta">
-                                <h4>${r.employeeName}</h4>
-                                <small>${r.employeeId} &bull; ${r.department} (${r.role})</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="task-summary-block">
-                            <strong>${r.taskSummary}</strong>
-                            <p>${r.details.replace(/\n/g, ' ')}</p>
-                        </div>
-                    </td>
-                    <td><span style="color:#60a5fa; font-weight:600;">${r.project}</span></td>
-                    <td><span class="hours-badge"><i class="fa-regular fa-clock"></i> ${r.hours}h</span></td>
-                    <td>
-                        ${hasBlocker ? `<span class="blocker-tag"><i class="fa-solid fa-triangle-exclamation"></i> ${r.blockers.slice(0, 30)}...</span>` : `<span style="color:#8898aa; font-size:12px;">None</span>`}
-                    </td>
-                    <td><span class="status-badge ${statusClass}">${r.status}</span></td>
-                    <td>
-                        <button class="btn-secondary view-report-btn" data-id="${r.id}" style="padding:4px 10px; font-size:12px;">
-                            <i class="fa-solid fa-eye" style="color:#4299e1;"></i> View Full Log
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        countLabel.textContent = `Showing ${filtered.length} of ${allDailyReports.length} total work reports`;
-
-        document.querySelectorAll('.view-report-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-id');
-                const report = allDailyReports.find(x => x.id === id);
-                if (report) openReportModal(report);
-            });
-        });
-    }
-
-    // Modal controls
-    let selectedReport = null;
-    const viewModal = document.getElementById('viewReportModal');
-    const closeViewBtn = document.getElementById('closeViewReportBtn');
-    const closeBtn2 = document.getElementById('btnCloseViewReportModal');
-    const approveBtn = document.getElementById('btnApproveLog');
-    const modalContent = document.getElementById('viewReportModalContent');
-
-    function openReportModal(report) {
-        selectedReport = report;
-        modalContent.innerHTML = `
-            <div style="background:#0b1437; padding:16px; border-radius:12px; border:1px solid #1b2e6e; margin-bottom:14px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <h4 style="color:#fff; font-size:15px;">${report.employeeName}</h4>
-                        <span style="font-size:12px; color:#8898aa;">${report.employeeId} &bull; ${report.department} Department &bull; ${report.role}</span>
-                    </div>
-                    <span class="status-badge ${report.status.toLowerCase()}">${report.status}</span>
-                </div>
-                <div style="font-size:11.5px; color:#8898aa; margin-top:8px;">
-                    Submitted On: <strong style="color:#cbd5e1;">${report.date} at ${report.time}</strong> &bull; Hours Logged: <strong style="color:#60a5fa;">${report.hours} hrs</strong>
-                </div>
-            </div>
-            <div style="margin-bottom:12px;">
-                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Project / Deliverable</label>
-                <div style="color:#60a5fa; font-weight:600;">${report.project}</div>
-            </div>
-            <div style="margin-bottom:12px;">
-                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tasks Accomplished & Detailed Log</label>
-                <div style="background:#0b1437; padding:12px; border-radius:8px; border:1px solid #1b2e6e; white-space:pre-line; color:#e2e8f0;">${report.details}</div>
-            </div>
-            <div style="margin-bottom:12px;">
-                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Blockers / Challenges</label>
-                <div style="color:${report.blockers !== 'None' ? '#fbbf24' : '#8898aa'}; font-weight:${report.blockers !== 'None' ? '600' : 'normal'};">${report.blockers}</div>
-            </div>
-            <div>
-                <label style="color:#8898aa; font-size:11px; text-transform:uppercase; font-weight:700; display:block; margin-bottom:4px;">Tomorrow's Planned Tasks</label>
-                <div style="color:#cbd5e1;">${report.tomorrowPlan || 'Standard sprint backlog.'}</div>
-            </div>
-        `;
-        viewModal.classList.add('show');
-    }
-
-    closeViewBtn?.addEventListener('click', () => viewModal.classList.remove('show'));
-    closeBtn2?.addEventListener('click', () => viewModal.classList.remove('show'));
-    approveBtn?.addEventListener('click', () => {
-        if (selectedReport) {
-            selectedReport.status = 'Approved';
-            viewModal.classList.remove('show');
-            renderTable();
-        }
-    });
-
-    // CSV Download
-    document.getElementById('exportDailyReportsCsv')?.addEventListener('click', () => {
-        const rows = [["Date", "Time", "Employee ID", "Employee Name", "Department", "Role", "Project", "Tasks Summary", "Hours", "Blockers", "Status"]];
-        allDailyReports.forEach(r => {
-            rows.push([r.date, r.time, r.employeeId, r.employeeName, r.department, r.role, r.project, r.taskSummary, r.hours, r.blockers, r.status]);
-        });
-        const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `Employee-Daily-Work-Reports-${Date.now()}.csv`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-    });
-
-    searchInput.addEventListener('input', renderTable);
-    dateFilter.addEventListener('change', renderTable);
-    deptFilter.addEventListener('change', renderTable);
-    roleFilter.addEventListener('change', renderTable);
-    statusFilter.addEventListener('change', renderTable);
+    searchInput?.addEventListener('input', renderTable);
+    dateFilter?.addEventListener('change', renderTable);
+    deptFilter?.addEventListener('change', renderTable);
+    roleFilter?.addEventListener('change', renderTable);
+    statusFilter?.addEventListener('change', renderTable);
 
     loadReports();
 </script>
