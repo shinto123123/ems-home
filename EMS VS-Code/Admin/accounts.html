@@ -114,9 +114,12 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5, 10, 30, 0.75); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
 .modal-overlay.show { opacity:1; pointer-events:auto; }
 .modal-box { background:#111c44; border:1px solid #1b2e6e; border-radius:16px; width:100%; max-width:500px; padding:24px; box-shadow:0 10px 30px rgba(0, 0, 0, 0.5); transform:translateY(-20px); transition:transform 0.3s ease; }
+.modal-box.modal-large { max-width:860px; max-height:88vh; overflow-y:auto; padding:24px 28px; }
+.modal-box.modal-large::-webkit-scrollbar { width:6px; }
+.modal-box.modal-large::-webkit-scrollbar-thumb { background:#1b2e6e; border-radius:10px; }
 .modal-overlay.show .modal-box { transform:translateY(0); }
 .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1b2e6e; padding-bottom:12px; margin-bottom:18px; }
-.modal-header h3 { color:#ffffff; font-size:17px; font-weight:600; }
+.modal-header h3 { color:#ffffff; font-size:17px; font-weight:600; display:flex; align-items:center; }
 .modal-close { background:none; border:none; color:#8898aa; font-size:18px; cursor:pointer; }
 .modal-close:hover { color:#f87171; }
 .form-group { margin-bottom:14px; }
@@ -125,6 +128,22 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 .form-group input:focus, .form-group select:focus { border-color:#4299e1; }
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .form-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid #1b2e6e; padding-top:14px; }
+
+.section-divider { font-size:12.5px; font-weight:700; color:#60a5fa; text-transform:uppercase; letter-spacing:0.5px; margin:16px 0 10px; padding-bottom:6px; border-bottom:1px solid rgba(27, 46, 110, 0.8); display:flex; align-items:center; gap:8px; }
+
+.items-table-wrapper { background:#0b1437; border:1px solid #1b2e6e; border-radius:10px; overflow-x:auto; margin-bottom:12px; }
+.items-table { width:100%; min-width:620px; border-collapse:collapse; }
+.items-table th { background:#16265c; padding:9px 12px; font-size:11.5px; color:#94a3b8; text-transform:uppercase; text-align:left; }
+.items-table td { padding:8px 10px; border-top:1px solid #1b2e6e; vertical-align:top; }
+.items-table input, .items-table select { width:100%; padding:7px 10px; background:#111c44; border:1px solid #1b2e6e; border-radius:6px; color:#fff; font-size:12.5px; }
+.btn-remove-item { background:rgba(248, 113, 113, 0.15); border:1px solid rgba(248, 113, 113, 0.3); color:#f87171; border-radius:6px; width:30px; height:30px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:.2s; }
+.btn-remove-item:hover { background:#f87171; color:#fff; }
+.btn-add-item { background:rgba(66, 153, 225, 0.15); border:1px dashed #4299e1; color:#60a5fa; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:.2s; }
+.btn-add-item:hover { background:rgba(66, 153, 225, 0.28); color:#fff; }
+
+.calc-summary-card { background:#0b1437; border:1px solid #1b2e6e; border-radius:10px; padding:14px 18px; margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+.calc-row { display:flex; justify-content:space-between; font-size:13px; color:#8898aa; }
+.calc-row.total { border-top:1px solid #1b2e6e; padding-top:8px; font-size:15px; font-weight:700; color:#4ade80; }
 
 @media(max-width:1200px){ .stats-row { grid-template-columns:repeat(2, 1fr); } }
 @media(max-width:768px){ .stats-row { grid-template-columns:1fr; } .sidebar { width:70px; } .sidebar ul li a span { display:none; } }
@@ -198,7 +217,8 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
     </div>
     <div class="header-actions">
         <button class="btn-secondary" id="exportAccountsCsvBtn"><i class="fa-solid fa-file-csv"></i> Export Ledger CSV</button>
-        <button class="btn-primary" id="openAddInvoiceBtn"><i class="fa-solid fa-plus"></i> Record Receiving Amount</button>
+        <button class="btn-secondary" id="openAddInvoiceBtn"><i class="fa-solid fa-plus"></i> Record Receiving Amount</button>
+        <button class="btn-primary" id="openGenerateInvoiceBtn" style="background: linear-gradient(135deg, #3b82f6, #6366f1);"><i class="fa-solid fa-file-invoice"></i> Generate Invoice</button>
     </div>
 </div>
 
@@ -268,7 +288,7 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
     <th>Receiving Amount</th>
     <th>Paid Out Amount</th>
     <th>Status</th>
-    <th>Invoice & Receipt</th>
+    <th>Receipt</th>
 </tr>
 </thead>
 <tbody id="transactionsTableBody">
@@ -344,6 +364,188 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
             <div class="form-actions">
                 <button type="button" class="btn-secondary" id="cancelAddInvoiceBtn">Cancel</button>
                 <button type="submit" class="btn-primary">Save Receiving Entry</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- GENERATE OFFICIAL INVOICE MODAL -->
+<div class="modal-overlay" id="generateInvoiceModal">
+    <div class="modal-box modal-large">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-file-invoice" style="color:#60a5fa; margin-right:8px;"></i> Generate Client & Service Invoice</h3>
+            <button class="modal-close" id="closeGenInvBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="generateInvoiceForm">
+            <!-- 1. Invoice Meta -->
+            <div class="section-divider"><i class="fa-solid fa-receipt"></i> 1. Invoice Details</div>
+            <div class="form-row" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="form-group">
+                    <label for="giInvoiceNo">Invoice Number</label>
+                    <input type="text" id="giInvoiceNo" required>
+                </div>
+                <div class="form-group">
+                    <label for="giInvoiceDate">Issue Date</label>
+                    <input type="date" id="giInvoiceDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="giDueDate">Due Date</label>
+                    <input type="date" id="giDueDate" required>
+                </div>
+            </div>
+            <div class="form-row" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="form-group">
+                    <label for="giPoNo">PO / Reference No</label>
+                    <input type="text" id="giPoNo" placeholder="e.g. PO-2026-045">
+                </div>
+                <div class="form-group">
+                    <label for="giPaymentTerms">Payment Terms</label>
+                    <input type="text" id="giPaymentTerms" value="15 Days" placeholder="e.g. 15 Days / Net 30">
+                </div>
+                <div class="form-group">
+                    <label for="giPlaceOfSupply">Place of Supply</label>
+                    <input type="text" id="giPlaceOfSupply" value="Kerala (32)" placeholder="e.g. Kerala (32)">
+                </div>
+            </div>
+
+            <!-- 2. Billed To (Client Details) -->
+            <div class="section-divider"><i class="fa-solid fa-building"></i> 2. Client Billing Details (Billed To)</div>
+            <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr;">
+                <div class="form-group">
+                    <label for="giClientName">Client / Company Name *</label>
+                    <input type="text" id="giClientName" placeholder="e.g. TechNova Solutions Pvt. Ltd." required>
+                </div>
+                <div class="form-group">
+                    <label for="giClientEmail">Client Email</label>
+                    <input type="email" id="giClientEmail" placeholder="billing@client.com">
+                </div>
+                <div class="form-group">
+                    <label for="giClientPhone">Phone Number</label>
+                    <input type="text" id="giClientPhone" placeholder="+91 987 654 3210">
+                </div>
+            </div>
+            <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="form-group">
+                    <label for="giClientGstin">Client GSTIN / Tax ID</label>
+                    <input type="text" id="giClientGstin" placeholder="e.g. 32ABCDE1234F1Z5">
+                </div>
+                <div class="form-group">
+                    <label for="giClientAddr1">Address Line 1</label>
+                    <input type="text" id="giClientAddr1" placeholder="e.g. 4th Floor, Global Tech Park">
+                </div>
+                <div class="form-group">
+                    <label for="giClientAddr2">Address Line 2</label>
+                    <input type="text" id="giClientAddr2" placeholder="e.g. Kakkanad, Kochi, Kerala – 682037">
+                </div>
+            </div>
+
+            <!-- 3. Line Items & Services -->
+            <div class="section-divider" style="justify-content:space-between;">
+                <span><i class="fa-solid fa-list-check"></i> 3. Deliverables & Line Items</span>
+                <button type="button" class="btn-add-item" id="giAddItemBtn"><i class="fa-solid fa-plus"></i> Add Item Row</button>
+            </div>
+            <div class="items-table-wrapper">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width:38%;">Item / Service Description</th>
+                            <th style="width:14%;">HSN/SAC</th>
+                            <th style="width:10%;">Qty</th>
+                            <th style="width:14%;">Unit</th>
+                            <th style="width:16%;">Rate (₹)</th>
+                            <th style="width:8%; text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="giItemsTableBody">
+                        <!-- Dynamic Item Rows populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4. Discounts & Taxes -->
+            <div class="section-divider"><i class="fa-solid fa-calculator"></i> 4. Taxes & Financial Calculation</div>
+            <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="form-group">
+                    <label for="giDiscount">Discount (₹ INR)</label>
+                    <input type="number" id="giDiscount" value="0" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="giTaxType">GST Tax Mode</label>
+                    <select id="giTaxType">
+                        <option value="intra" selected>Intra-State (CGST 9% + SGST 9%)</option>
+                        <option value="inter">Inter-State (IGST 18%)</option>
+                        <option value="exempt">Zero Tax / Exempt (0%)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="giDepartment">Department</label>
+                    <select id="giDepartment">
+                        <option value="Engineering" selected>Engineering</option>
+                        <option value="Product">Product</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Consulting">Consulting</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Calculation Preview Box -->
+            <div class="calc-summary-card">
+                <div class="calc-row">
+                    <span>Subtotal:</span>
+                    <strong id="giSumSubtotal">₹0.00</strong>
+                </div>
+                <div class="calc-row">
+                    <span>Discount:</span>
+                    <strong id="giSumDiscount" style="color:#f87171;">₹0.00</strong>
+                </div>
+                <div class="calc-row">
+                    <span>Taxable Amount:</span>
+                    <strong id="giSumTaxable">₹0.00</strong>
+                </div>
+                <div class="calc-row">
+                    <span id="giTaxLabel">CGST (9%) + SGST (9%):</span>
+                    <strong id="giSumTax">₹0.00</strong>
+                </div>
+                <div class="calc-row total">
+                    <span>Grand Total (Final Invoice Amount):</span>
+                    <span id="giSumGrandTotal">₹0.00</span>
+                </div>
+            </div>
+
+            <!-- 5. Ledger & Options -->
+            <div class="form-row" style="margin-top:14px; grid-template-columns: 1fr 1fr;">
+                <div class="form-group">
+                    <label for="giPaymentStatus">Payment Status</label>
+                    <select id="giPaymentStatus">
+                        <option value="Paid" selected>Received / Cleared</option>
+                        <option value="Pending">Pending / Invoiced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="giPaymentMethod">Payment Method</label>
+                    <select id="giPaymentMethod">
+                        <option value="Direct Deposit" selected>Direct Deposit</option>
+                        <option value="Wire Transfer">Wire Transfer</option>
+                        <option value="UPI / QR">UPI / QR</option>
+                        <option value="Stripe / Card">Stripe / Card</option>
+                        <option value="ACH Transfer">ACH Transfer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="giRecordInLedger" checked style="width:16px; height:16px; accent-color:#4299e1; cursor:pointer;">
+                <label for="giRecordInLedger" style="font-size:12.5px; color:#d7dfef; cursor:pointer; text-transform:none; letter-spacing:normal;">
+                    Record this invoice into Accounts Ledger & update live financial KPI statistics
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="cancelGenInvBtn">Cancel</button>
+                <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, #3b82f6, #6366f1);">
+                    <i class="fa-solid fa-file-invoice"></i> Generate Invoice
+                </button>
             </div>
         </form>
     </div>
@@ -864,14 +1066,9 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                     <td class="amount-outflow">${t.paidAmount > 0 ? money(t.paidAmount) : '-'}</td>
                     <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
                     <td>
-                        <div class="action-btn-group">
-                            <button class="receipt-btn action-view-invoice" data-id="${t.id}" title="View / Print Official Invoice">
-                                <i class="fa-solid fa-file-invoice-dollar" style="color:#60a5fa;"></i> Invoice
-                            </button>
-                            <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View Payment Receipt">
-                                <i class="fa-solid fa-receipt" style="color:#4ade80;"></i> Receipt
-                            </button>
-                        </div>
+                        <button class="receipt-btn action-view-receipt" data-id="${t.id}" title="View Payment Receipt">
+                            <i class="fa-solid fa-receipt" style="color:#4ade80;"></i> Receipt
+                        </button>
                     </td>
                 </tr>
             `;
@@ -886,15 +1083,285 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                 if (record) openReceiptWindow(record, id);
             });
         });
+    }
 
-        document.querySelectorAll('.action-view-invoice').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.getAttribute('data-id');
-                const record = allTransactions.find(t => t.id === id);
-                if (record) openInvoiceWindow(record, id);
+    // Dynamic Invoice Generation Modal Controls
+    const generateInvoiceModal = document.getElementById('generateInvoiceModal');
+    const openGenerateInvoiceBtn = document.getElementById('openGenerateInvoiceBtn');
+    const closeGenInvBtn = document.getElementById('closeGenInvBtn');
+    const cancelGenInvBtn = document.getElementById('cancelGenInvBtn');
+    const generateInvoiceForm = document.getElementById('generateInvoiceForm');
+    const giItemsTableBody = document.getElementById('giItemsTableBody');
+    const giAddItemBtn = document.getElementById('giAddItemBtn');
+
+    let currentInvoiceItems = [];
+
+    function generateNextInvoiceNumber() {
+        const year = new Date().getFullYear();
+        const existingNumbers = allTransactions
+            .map(t => t.invoiceNo)
+            .filter(Boolean)
+            .map(no => {
+                const match = no.match(/\d+$/);
+                return match ? parseInt(match[0], 10) : 0;
+            });
+        const maxNo = existingNumbers.length ? Math.max(...existingNumbers) : 6;
+        const nextNo = String(maxNo + 1).padStart(3, '0');
+        return `INV-${year}-${nextNo}`;
+    }
+
+    function renderInvoiceItemsTable() {
+        if (!currentInvoiceItems.length) {
+            currentInvoiceItems.push({
+                title: 'UI/UX Design & Next-Gen 3D Assets',
+                description: 'Interactive UI design, 3D Unreal Engine models & motion assets',
+                hsn: '998314',
+                qty: 1,
+                unit: 'Nos',
+                rate: 85000.00
+            });
+        }
+
+        giItemsTableBody.innerHTML = currentInvoiceItems.map((item, idx) => `
+            <tr data-index="${idx}">
+                <td>
+                    <input type="text" class="gi-item-title" value="${item.title || ''}" placeholder="Service / Deliverable Name" required style="font-weight:600; margin-bottom:4px;">
+                    <input type="text" class="gi-item-desc" value="${item.description || ''}" placeholder="Scope & deliverable details" style="font-size:11.5px; color:#94a3b8;">
+                </td>
+                <td><input type="text" class="gi-item-hsn" value="${item.hsn || '998314'}" placeholder="HSN/SAC"></td>
+                <td><input type="number" class="gi-item-qty" value="${item.qty || 1}" min="1" step="1" required></td>
+                <td>
+                    <select class="gi-item-unit">
+                        <option value="Nos" ${item.unit === 'Nos' ? 'selected' : ''}>Nos</option>
+                        <option value="Month" ${item.unit === 'Month' ? 'selected' : ''}>Month</option>
+                        <option value="Hours" ${item.unit === 'Hours' ? 'selected' : ''}>Hours</option>
+                        <option value="Project" ${item.unit === 'Project' ? 'selected' : ''}>Project</option>
+                        <option value="Package" ${item.unit === 'Package' ? 'selected' : ''}>Package</option>
+                    </select>
+                </td>
+                <td><input type="number" class="gi-item-rate" value="${item.rate || 0}" min="0" step="0.01" required></td>
+                <td style="text-align:center;">
+                    ${currentInvoiceItems.length > 1 ? `<button type="button" class="btn-remove-item" data-index="${idx}" title="Remove Item"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                </td>
+            </tr>
+        `).join('');
+
+        giItemsTableBody.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', () => {
+                syncItemsFromDOM();
+                calculateInvoiceTotals();
             });
         });
+
+        giItemsTableBody.querySelectorAll('.btn-remove-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-index'), 10);
+                syncItemsFromDOM();
+                currentInvoiceItems.splice(idx, 1);
+                renderInvoiceItemsTable();
+                calculateInvoiceTotals();
+            });
+        });
+
+        calculateInvoiceTotals();
     }
+
+    function syncItemsFromDOM() {
+        const rows = giItemsTableBody.querySelectorAll('tr');
+        currentInvoiceItems = Array.from(rows).map(row => ({
+            title: row.querySelector('.gi-item-title')?.value || '',
+            description: row.querySelector('.gi-item-desc')?.value || '',
+            hsn: row.querySelector('.gi-item-hsn')?.value || '998314',
+            qty: parseFloat(row.querySelector('.gi-item-qty')?.value) || 1,
+            unit: row.querySelector('.gi-item-unit')?.value || 'Nos',
+            rate: parseFloat(row.querySelector('.gi-item-rate')?.value) || 0
+        }));
+    }
+
+    function calculateInvoiceTotals() {
+        syncItemsFromDOM();
+        const subTotal = currentInvoiceItems.reduce((sum, it) => sum + ((it.qty || 1) * (it.rate || 0)), 0);
+        const discount = Math.max(0, parseFloat(document.getElementById('giDiscount')?.value) || 0);
+        const taxableAmount = Math.max(0, subTotal - discount);
+        const taxType = document.getElementById('giTaxType')?.value || 'intra';
+
+        let cgstRate = 0, cgstAmount = 0, sgstRate = 0, sgstAmount = 0, igstRate = 0, igstAmount = 0;
+
+        if (taxType === 'intra') {
+            cgstRate = 9;
+            sgstRate = 9;
+            cgstAmount = Number((taxableAmount * 0.09).toFixed(2));
+            sgstAmount = Number((taxableAmount * 0.09).toFixed(2));
+            document.getElementById('giTaxLabel').textContent = 'CGST (9%) + SGST (9%):';
+            document.getElementById('giSumTax').textContent = `₹${(cgstAmount + sgstAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        } else if (taxType === 'inter') {
+            igstRate = 18;
+            igstAmount = Number((taxableAmount * 0.18).toFixed(2));
+            document.getElementById('giTaxLabel').textContent = 'Integrated GST (IGST 18%):';
+            document.getElementById('giSumTax').textContent = `₹${igstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        } else {
+            document.getElementById('giTaxLabel').textContent = 'GST Tax (Exempt / 0%):';
+            document.getElementById('giSumTax').textContent = '₹0.00';
+        }
+
+        const grandTotal = taxableAmount + cgstAmount + sgstAmount + igstAmount;
+
+        document.getElementById('giSumSubtotal').textContent = money(subTotal);
+        document.getElementById('giSumDiscount').textContent = discount > 0 ? `- ${money(discount)}` : '₹0.00';
+        document.getElementById('giSumTaxable').textContent = money(taxableAmount);
+        document.getElementById('giSumGrandTotal').textContent = money(grandTotal);
+
+        return { subTotal, discount, taxableAmount, cgstRate, cgstAmount, sgstRate, sgstAmount, igstRate, igstAmount, grandTotal };
+    }
+
+    giAddItemBtn?.addEventListener('click', () => {
+        syncItemsFromDOM();
+        currentInvoiceItems.push({
+            title: '',
+            description: '',
+            hsn: '998314',
+            qty: 1,
+            unit: 'Nos',
+            rate: 0
+        });
+        renderInvoiceItemsTable();
+    });
+
+    document.getElementById('giDiscount')?.addEventListener('input', calculateInvoiceTotals);
+    document.getElementById('giTaxType')?.addEventListener('change', calculateInvoiceTotals);
+
+    openGenerateInvoiceBtn?.addEventListener('click', () => {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const dueObj = new Date();
+        dueObj.setDate(dueObj.getDate() + 15);
+        const dueStr = dueObj.toISOString().slice(0, 10);
+
+        document.getElementById('giInvoiceNo').value = generateNextInvoiceNumber();
+        document.getElementById('giInvoiceDate').value = todayStr;
+        document.getElementById('giDueDate').value = dueStr;
+        document.getElementById('giPoNo').value = `PO-${new Date().getFullYear()}-${String(Math.floor(10 + Math.random() * 90))}`;
+
+        if (!currentInvoiceItems.length) {
+            currentInvoiceItems = [
+                {
+                    title: 'UI/UX Design & Next-Gen 3D Assets',
+                    description: 'Interactive UI design, 3D Unreal Engine models & motion assets',
+                    hsn: '998314',
+                    qty: 1,
+                    unit: 'Nos',
+                    rate: 85000.00
+                }
+            ];
+        }
+
+        renderInvoiceItemsTable();
+        calculateInvoiceTotals();
+        generateInvoiceModal.classList.add('show');
+    });
+
+    const hideGenInvModal = () => generateInvoiceModal.classList.remove('show');
+    closeGenInvBtn?.addEventListener('click', hideGenInvModal);
+    cancelGenInvBtn?.addEventListener('click', hideGenInvModal);
+
+    generateInvoiceForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        syncItemsFromDOM();
+
+        const validItems = currentInvoiceItems.filter(it => it.title && it.rate > 0);
+        if (!validItems.length) {
+            alert('Please enter at least one service/item with a title and valid rate.');
+            return;
+        }
+
+        const totals = calculateInvoiceTotals();
+        const invoiceNo = document.getElementById('giInvoiceNo').value.trim() || generateNextInvoiceNumber();
+        const rawDate = document.getElementById('giInvoiceDate').value || new Date().toISOString().slice(0, 10);
+        const rawDueDate = document.getElementById('giDueDate').value || rawDate;
+        const poNo = document.getElementById('giPoNo').value.trim() || 'PO-2026-001';
+        const paymentTerms = document.getElementById('giPaymentTerms').value.trim() || '15 Days';
+        const placeOfSupply = document.getElementById('giPlaceOfSupply').value.trim() || 'Kerala (32)';
+
+        const clientName = document.getElementById('giClientName').value.trim();
+        const clientEmail = document.getElementById('giClientEmail').value.trim();
+        const clientPhone = document.getElementById('giClientPhone').value.trim();
+        const clientGstin = document.getElementById('giClientGstin').value.trim();
+        const clientAddr1 = document.getElementById('giClientAddr1').value.trim();
+        const clientAddr2 = document.getElementById('giClientAddr2').value.trim();
+
+        const department = document.getElementById('giDepartment').value;
+        const paymentStatus = document.getElementById('giPaymentStatus').value;
+        const paymentMethod = document.getElementById('giPaymentMethod').value;
+        const recordInLedger = document.getElementById('giRecordInLedger').checked;
+
+        const formattedItems = currentInvoiceItems.map((it, idx) => ({
+            sl: idx + 1,
+            title: it.title,
+            description: it.description || it.title,
+            hsn: it.hsn || '998314',
+            qty: Number(it.qty) || 1,
+            unit: it.unit || 'Nos',
+            rate: Number(it.rate) || 0,
+            amount: Number(((Number(it.qty) || 1) * (Number(it.rate) || 0)).toFixed(2))
+        }));
+
+        const isInterState = document.getElementById('giTaxType').value === 'inter';
+
+        const newRecord = {
+            id: `REC-${Date.now()}`,
+            invoiceNo: invoiceNo,
+            date: rawDate,
+            invoiceDate: new Date(rawDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }),
+            dueDate: rawDueDate,
+            poNo: poNo,
+            paymentTerms: paymentTerms,
+            placeOfSupply: placeOfSupply,
+            name: clientName,
+            desc: formattedItems[0]?.title || 'Professional Client Deliverables',
+            department: department,
+            flow: 'Inflow',
+            category: 'Client Revenue',
+            method: paymentMethod,
+            receivingAmount: totals.grandTotal,
+            paidAmount: 0.00,
+            status: paymentStatus,
+            billTo: {
+                name: clientName,
+                addressLine1: clientAddr1 || 'Client Corporate Address',
+                addressLine2: clientAddr2 || 'Kochi, Kerala – India',
+                gstin: clientGstin || '32ABCDE1234F1Z5',
+                email: clientEmail || `billing@${clientName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'client'}.com`,
+                phone: clientPhone || '+91 987 654 3210'
+            },
+            shipTo: {
+                name: clientName,
+                addressLine1: clientAddr1 || 'Client Corporate Address',
+                addressLine2: clientAddr2 || 'Kochi, Kerala – India'
+            },
+            items: formattedItems,
+            subTotal: totals.subTotal,
+            discount: totals.discount,
+            taxableAmount: totals.taxableAmount,
+            isInterState: isInterState,
+            cgstRate: totals.cgstRate,
+            cgstAmount: totals.cgstAmount,
+            sgstRate: totals.sgstRate,
+            sgstAmount: totals.sgstAmount,
+            igstRate: totals.igstRate,
+            igstAmount: totals.igstAmount,
+            grandTotal: totals.grandTotal
+        };
+
+        openInvoiceWindow(newRecord, newRecord.invoiceNo);
+
+        if (recordInLedger) {
+            allTransactions.unshift(newRecord);
+            renderStats();
+            renderTransactions();
+        }
+
+        hideGenInvModal();
+        generateInvoiceForm.reset();
+    });
 
     // Modal controls for Adding Receiving Record
     const addInvoiceModal = document.getElementById('addInvoiceModal');
