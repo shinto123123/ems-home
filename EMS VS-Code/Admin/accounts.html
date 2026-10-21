@@ -341,7 +341,9 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                         <option value="Marketing">Marketing</option>
                         <option value="Consulting">Consulting</option>
                         <option value="Operations">Operations</option>
+                        <option value="Other">Other</option>
                     </select>
+                    <input type="text" id="invDeptOther" placeholder="Specify other department..." style="display:none; margin-top:8px;">
                 </div>
                 <div class="form-group">
                     <label for="invMethod">Payment Method</label>
@@ -485,7 +487,9 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
                         <option value="Marketing">Marketing</option>
                         <option value="Consulting">Consulting</option>
                         <option value="Operations">Operations</option>
+                        <option value="Other">Other</option>
                     </select>
+                    <input type="text" id="giDeptOther" placeholder="Specify other department..." style="display:none; margin-top:8px;">
                 </div>
             </div>
 
@@ -1288,7 +1292,11 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
         const clientAddr1 = document.getElementById('giClientAddr1').value.trim();
         const clientAddr2 = document.getElementById('giClientAddr2').value.trim();
 
-        const department = document.getElementById('giDepartment').value;
+        let department = document.getElementById('giDepartment').value;
+        if (department === 'Other') {
+            const customDept = document.getElementById('giDeptOther')?.value.trim();
+            department = customDept || 'Other';
+        }
         const paymentStatus = document.getElementById('giPaymentStatus').value;
         const paymentMethod = document.getElementById('giPaymentMethod').value;
         const recordInLedger = document.getElementById('giRecordInLedger').checked;
@@ -1355,13 +1363,35 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 
         if (recordInLedger) {
             allTransactions.unshift(newRecord);
+            updateDepartmentFilter();
             renderStats();
             renderTransactions();
         }
 
         hideGenInvModal();
         generateInvoiceForm.reset();
+        document.getElementById('giDeptOther').style.display = 'none';
     });
+
+    document.getElementById('giDepartment')?.addEventListener('change', (e) => {
+        const otherInput = document.getElementById('giDeptOther');
+        if (otherInput) {
+            if (e.target.value === 'Other') {
+                otherInput.style.display = 'block';
+                otherInput.focus();
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = '';
+            }
+        }
+    });
+
+    function updateDepartmentFilter() {
+        const departments = Array.from(new Set(allTransactions.map(t => t.department).filter(Boolean))).sort();
+        const currentSelected = departmentFilter.value;
+        departmentFilter.innerHTML = `<option value="All">All Departments</option>` +
+            departments.map(d => `<option value="${d}" ${d === currentSelected ? 'selected' : ''}>${d}</option>`).join('');
+    }
 
     // Modal controls for Adding Receiving Record
     const addInvoiceModal = document.getElementById('addInvoiceModal');
@@ -1372,11 +1402,25 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
 
     openAddInvoiceBtn?.addEventListener('click', () => {
         document.getElementById('invDate').value = new Date().toISOString().slice(0, 10);
+        document.getElementById('invDeptOther').style.display = 'none';
         addInvoiceModal.classList.add('show');
     });
     const hideInvModal = () => addInvoiceModal.classList.remove('show');
     closeAddInvoiceBtn?.addEventListener('click', hideInvModal);
     cancelAddInvoiceBtn?.addEventListener('click', hideInvModal);
+
+    document.getElementById('invDept')?.addEventListener('change', (e) => {
+        const otherInput = document.getElementById('invDeptOther');
+        if (otherInput) {
+            if (e.target.value === 'Other') {
+                otherInput.style.display = 'block';
+                otherInput.focus();
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = '';
+            }
+        }
+    });
 
     addInvoiceForm?.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1384,7 +1428,11 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
         const desc = document.getElementById('invDescription').value.trim();
         const date = document.getElementById('invDate').value;
         const amount = parseFloat(document.getElementById('invAmount').value) || 0;
-        const dept = document.getElementById('invDept').value;
+        let dept = document.getElementById('invDept').value;
+        if (dept === 'Other') {
+            const customDept = document.getElementById('invDeptOther')?.value.trim();
+            dept = customDept || 'Other';
+        }
         const method = document.getElementById('invMethod').value;
         const status = document.getElementById('invStatus').value;
 
@@ -1448,6 +1496,8 @@ tbody tr:hover { background:rgba(66,153,225,.07); }
         allTransactions.unshift(newRec);
         hideInvModal();
         addInvoiceForm.reset();
+        document.getElementById('invDeptOther').style.display = 'none';
+        updateDepartmentFilter();
         renderStats();
         renderTransactions();
     });
