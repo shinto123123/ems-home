@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landing Page CMS - Admin Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    /* Signature Brinjal Violet & Off-White Palette */
+    --brinjal-darkest: #1a0222;
+    --brinjal-deep: #280436;
+    --brinjal-primary: #38064a;
+    --brinjal-medium: #540e69;
+    --brinjal-light: #72148c;
+    --brinjal-vibrant: #8d1eb0;
+    --brinjal-soft: #f4eaf8;
+    --brinjal-soft-hover: #ede0f3;
+    --brinjal-border: #ebdff0;
+    --brinjal-border-focus: #9c27b0;
+    
+    /* Off-White & Surface Grays */
+    --bg-page: #fbf8fd;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f8f4fb;
+    --bg-sidebar: #21032d;
+    --bg-sidebar-hover: #320743;
+    --bg-sidebar-active: #44095c;
+    
+    /* Text Hierarchy */
+    --text-primary: #21032c;
+    --text-secondary: #574663;
+    --text-muted: #847291;
+    --text-white: #ffffff;
+    --text-sidebar: #d7c9e3;
+    --text-sidebar-muted: #9b8ba9;
+
+    /* Status Colors */
+    --success: #10b981;
+    --success-bg: #ecfdf5;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --danger-bg: #fef2f2;
+    --info: #3b82f6;
+
+    /* Shadows & Radii */
+    --shadow-sm: 0 2px 8px rgba(35, 3, 44, 0.05);
+    --shadow-md: 0 8px 24px rgba(35, 3, 44, 0.08);
+    --shadow-lg: 0 16px 40px rgba(35, 3, 44, 0.12);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 9999px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── TOP NAVBAR ── */
+.navbar {
+    height: 64px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--brinjal-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(40, 4, 54, 0.03);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-left .hamburger {
+    font-size: 18px;
+    color: var(--brinjal-primary);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.navbar-left .hamburger:hover {
+    background: var(--brinjal-soft);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.navbar-logo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--brinjal-primary) 0%, var(--brinjal-light) 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 16px;
+    box-shadow: 0 3px 8px rgba(56, 6, 74, 0.25);
+}
+
+.navbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.navbar-badge {
+    background: var(--brinjal-soft);
+    color: var(--brinjal-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--brinjal-border);
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cms-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brinjal-soft);
+    border: 1px solid var(--brinjal-border);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    color: var(--brinjal-primary);
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-header-secondary {
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    border: 1px solid var(--brinjal-border);
+}
+
+.btn-header-secondary:hover {
+    background: var(--brinjal-soft);
+    color: var(--brinjal-primary);
+    border-color: var(--brinjal-medium);
+}
+
+.btn-header-primary {
+    background: linear-gradient(135deg, var(--brinjal-primary) 0%, var(--brinjal-medium) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 3px 12px rgba(56, 6, 74, 0.25);
+}
+
+.btn-header-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(56, 6, 74, 0.35);
+}
+
+/* ── BODY WRAP ── */
+.body-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background: var(--bg-sidebar);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-heading {
+    padding: 16px 20px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-sidebar-muted);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 4px 10px;
+}
+
+.sidebar ul li {
+    margin-bottom: 3px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: var(--text-sidebar);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.sidebar ul li a i {
+    width: 18px;
+    text-align: center;
+    font-size: 15px;
+    color: var(--text-sidebar-muted);
+    transition: color 0.2s;
+}
+
+.sidebar ul li:hover a {
+    background: var(--bg-sidebar-hover);
+    color: #ffffff;
+}
+
+.sidebar ul li:hover a i {
+    color: #e0b0ff;
+}
+
+.sidebar ul li.active a {
+    background: linear-gradient(135deg, var(--brinjal-primary) 0%, var(--brinjal-medium) 100%);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(40, 4, 54, 0.35);
+}
+
+.sidebar ul li.active a i {
+    color: #ffffff;
+}
+
+.sidebar-badge {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+}
+
+.sidebar.collapsed {
+    width: 72px;
+}
+
+.sidebar.collapsed .sidebar-heading,
+.sidebar.collapsed span,
+.sidebar.collapsed .sidebar-badge {
+    display: none;
+}
+
+.sidebar.collapsed ul li a {
+    justify-content: center;
+    padding: 12px;
+}
+
+/* ── MAIN CONTENT CONTAINER ── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-page);
+}
+
+/* ── CMS SUBHEADER WITH TABS ── */
+.cms-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--brinjal-border);
+    padding: 16px 28px 0;
+    flex-shrink: 0;
+}
+
+.cms-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cms-title-left h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cms-title-left p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+}
+
+.cms-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-cms {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-cms-outline {
+    background: var(--bg-surface);
+    border: 1.5px solid var(--brinjal-border);
+    color: var(--text-secondary);
+}
+
+.btn-cms-outline:hover {
+    background: var(--brinjal-soft);
+    border-color: var(--brinjal-primary);
+    color: var(--brinjal-primary);
+}
+
+.btn-cms-primary {
+    background: linear-gradient(135deg, var(--brinjal-primary) 0%, var(--brinjal-medium) 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(56, 6, 74, 0.25);
+}
+
+.btn-cms-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 6, 74, 0.35);
+}
+
+.btn-cms-danger {
+    background: #fff;
+    border: 1.5px solid #fee2e2;
+    color: var(--danger);
+}
+
+.btn-cms-danger:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+}
+
+/* CMS TABS BAR */
+.cms-tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.cms-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.cms-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.cms-tab-btn i {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.cms-tab-btn:hover {
+    color: var(--brinjal-primary);
+}
+
+.cms-tab-btn:hover i {
+    color: var(--brinjal-primary);
+}
+
+.cms-tab-btn.active {
+    color: var(--brinjal-primary);
+    border-bottom-color: var(--brinjal-primary);
+    background: linear-gradient(180deg, rgba(84, 14, 105, 0.04) 0%, rgba(84, 14, 105, 0.08) 100%);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.cms-tab-btn.active i {
+    color: var(--brinjal-primary);
+}
+
+/* ── CMS TAB CONTENT AREA ── */
+.cms-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tab-pane {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeIn 0.25s ease;
+}
+
+.tab-pane.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CARDS & FORMS ── */
+.editor-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--brinjal-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    transition: box-shadow 0.2s ease;
+}
+
+.editor-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.editor-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--brinjal-border);
+}
+
+.editor-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.editor-card-title i {
+    color: var(--brinjal-primary);
+}
+
+.editor-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* FORM CONTROLS */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.col-span-2 {
+    grid-column: span 2;
+}
+
+.form-group.col-span-full {
+    grid-column: 1 / -1;
+}
+
+label.form-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+label.form-label span.hint {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--brinjal-border);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 13.5px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--brinjal-primary);
+    box-shadow: 0 0 0 3px rgba(84, 14, 105, 0.12);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* Dynamic Item Repeater (Products, Positions, Cards) */
+.repeater-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.repeater-item {
+    background: var(--bg-surface-elevated);
+    border: 1.5px solid var(--brinjal-border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.repeater-item:hover {
+    border-color: var(--brinjal-medium);
+}
+
+.repeater-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.repeater-item-badge {
+    background: var(--brinjal-soft);
+    color: var(--brinjal-primary);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-remove-item {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.btn-remove-item:hover {
+    background: var(--danger-bg);
+}
+
+.btn-add-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1.5px dashed var(--brinjal-primary);
+    border-radius: var(--radius-md);
+    background: var(--brinjal-soft);
+    color: var(--brinjal-primary);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-add-item:hover {
+    background: var(--brinjal-soft-hover);
+    transform: translateY(-1px);
+}
+
+/* Color Swatches Grid */
+.theme-swatches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.color-picker-box {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--brinjal-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.color-picker-info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.color-picker-info p {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.color-picker-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-input {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+}
+
+/* ── MODAL & PREVIEW DRAWER ── */
+.preview-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(33, 3, 44, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.preview-modal.show {
+    display: flex;
+}
+
+.preview-container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 1280px;
+    height: 92vh;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: zoomModal 0.25s ease;
+}
+
+@keyframes zoomModal {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.preview-topbar {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--brinjal-border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.preview-topbar h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preview-iframe {
+    width: 100%;
+    flex: 1;
+    border: none;
+    background: #ffffff;
+}
+
+/* Toast Message */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--brinjal-deep);
+    color: #ffffff;
+    padding: 14px 22px;
+    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(40, 4, 54, 0.4);
+    font-size: 13.5px;
+    font-weight: 600;
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast i {
+    color: #34d399;
+    font-size: 16px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+    .sidebar { width: 72px; }
+    .sidebar .sidebar-heading, .sidebar span, .sidebar .sidebar-badge { display: none; }
+    .sidebar ul li a { justify-content: center; }
+    .form-group.col-span-2 { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOP NAVBAR ─── -->
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="hamburger" id="sidebarToggle" title="Toggle Sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+            <span class="navbar-title">EMS ADMIN</span>
+        </a>
+        <span class="navbar-badge">CMS Engine</span>
+    </div>
+
+    <div class="navbar-center">
+        <div class="cms-status-indicator">
+            <span class="status-dot"></span>
+            <span>Live Sync Active: Index.html Connected</span>
+        </div>
+    </div>
+
+    <div class="navbar-right">
+        <a href="../index.html" target="_blank" class="btn-header btn-header-secondary" title="Open Landing Page in new tab">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span>View Live Site</span>
+        </a>
+        <button type="button" class="btn-header btn-header-primary" onclick="openLivePreviewModal()">
+            <i class="fa-solid fa-eye"></i>
+            <span>Live Preview</span>
+        </button>
+    </div>
+</header>
+
+<div class="body-wrap">
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="adminSidebar">
+        <div class="sidebar-heading">Navigation</div>
+        <ul>
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a></li>
+            <li><a href="Employee.html"><i class="fa-solid fa-users"></i> <span>Employees</span></a></li>
+            <li><a href="accounts.html"><i class="fa-solid fa-address-card"></i> <span>Accounts</span></a></li>
+            <li><a href="department.html"><i class="fa-solid fa-building"></i> <span>Departments</span></a></li>
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a></li>
+            <li><a href="leave management.html"><i class="fa-solid fa-plane-departure"></i> <span>Leave Management</span></a></li>
+            <li><a href="recruitment.html"><i class="fa-solid fa-user-plus"></i> <span>Recruitment</span></a></li>
+            <li><a href="perfomance.html"><i class="fa-solid fa-chart-line"></i> <span>Performance</span></a></li>
+            <li><a href="project.html"><i class="fa-solid fa-folder"></i> <span>Projects</span></a></li>
+            <li><a href="internship.html"><i class="fa-solid fa-user-graduate"></i> <span>Internship</span></a></li>
+            <li><a href="document.html"><i class="fa-solid fa-file"></i> <span>Documents</span></a></li>
+            <li><a href="payroll.html"><i class="fa-solid fa-money-bill"></i> <span>Payroll</span></a></li>
+            <li><a href="mentorship.html"><i class="fa-solid fa-user-group"></i> <span>Mentorship</span></a></li>
+            <li><a href="communication.html"><i class="fa-solid fa-comments"></i> <span>Communication</span></a></li>
+            <li><a href="reports.html"><i class="fa-solid fa-chart-column"></i> <span>Reports</span></a></li>
+            <li><a href="notification.html"><i class="fa-solid fa-bell"></i> <span>Notifications</span></a></li>
+            <li class="active"><a href="landing-editor.html"><i class="fa-solid fa-pen-to-square"></i> <span>Edit Landing Page</span> <span class="sidebar-badge">CMS</span></a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> <span>Settings</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <main class="main">
+        
+        <!-- CMS Header & Navigation Tabs -->
+        <div class="cms-header">
+            <div class="cms-title-row">
+                <div class="cms-title-left">
+                    <h1><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--brinjal-primary);"></i> Landing Page Editor &amp; CMS</h1>
+                    <p>Customize all content, hero headline, services, product suite, career openings, and brinjal violet theme.</p>
+                </div>
+                <div class="cms-action-buttons">
+                    <button type="button" class="btn-cms btn-cms-outline" onclick="resetToDefaultData()">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset Defaults</span>
+                    </button>
+                    <button type="button" class="btn-cms btn-cms-outline" onclick="exportDataJSON()">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Export JSON</span>
+                    </button>
+                    <button type="button" class="btn-cms btn-cms-primary" onclick="saveCMSContent()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Save &amp; Publish</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation (6 Options from Landing Page + Theme & Settings) -->
+            <nav class="cms-tabs" aria-label="CMS Navigation Tabs">
+                <button type="button" class="cms-tab-btn active" data-tab="tab-hero" onclick="switchCMSTab('tab-hero', this)">
+                    <i class="fa-solid fa-house"></i> Home / Hero
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-about" onclick="switchCMSTab('tab-about', this)">
+                    <i class="fa-solid fa-users"></i> About us
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-services" onclick="switchCMSTab('tab-services', this)">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Services
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-products" onclick="switchCMSTab('tab-products', this)">
+                    <i class="fa-solid fa-box-open"></i> Product
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-career" onclick="switchCMSTab('tab-career', this)">
+                    <i class="fa-solid fa-briefcase"></i> Career
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-contact" onclick="switchCMSTab('tab-contact', this)">
+                    <i class="fa-solid fa-paper-plane"></i> Contact us
+                </button>
+                <button type="button" class="cms-tab-btn" data-tab="tab-theme" onclick="switchCMSTab('tab-theme', this)">
+                    <i class="fa-solid fa-palette"></i> Brinjal Violet Theme
+                </button>
+            </nav>
+        </div>
+
+        <!-- ─── CMS TAB PANES BODY ─── -->
+        <div class="cms-body">
+            
+            <!-- ═════════ TAB 1: HERO / HOME ═════════ -->
+            <section class="tab-pane active" id="tab-hero">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-star"></i> Hero Banner &amp; Main Headline</h2>
+                            <p class="editor-card-desc">Edit the very first impression visitors see when they land on the home page.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Top Location / Studio Badge <span class="hint">Appears in small pill badge</span></label>
+                            <input type="text" id="heroBadge" class="form-control" placeholder="e.g. Paoyaila Technologies LLP • Infopark Phase-1, Kochi, Kerala">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Hero Title (Normal Text) <span class="hint">Beginning of main heading</span></label>
+                            <input type="text" id="heroTitlePrefix" class="form-control" placeholder="e.g. Next-Gen 3D Animation, IT Solutions &amp; ">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Hero Title (Brinjal Gradient Highlight) <span class="hint">Emphasized in gradient violet</span></label>
+                            <input type="text" id="heroTitleHighlight" class="form-control" placeholder="e.g. Intelligent Digital Realities">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Hero Description Subtext</label>
+                            <textarea id="heroDescription" class="form-control" rows="3" placeholder="Pioneering Hollywood-grade 3D CGI, Unreal Engine 5 interactive game worlds..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Primary Button Text</label>
+                            <input type="text" id="heroPrimaryBtnText" class="form-control" placeholder="Get Free Consultation">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Primary Button Link URL</label>
+                            <input type="text" id="heroPrimaryBtnLink" class="form-control" placeholder="#contact">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Secondary Button Text</label>
+                            <input type="text" id="heroSecondaryBtnText" class="form-control" placeholder="Explore Capabilities">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Secondary Button Link URL</label>
+                            <input type="text" id="heroSecondaryBtnLink" class="form-control" placeholder="#services">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Artwork Showcase Slides -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-images"></i> Hero AI &amp; 3D Showcase Cards</h2>
+                            <p class="editor-card-desc">Manage the 4 rotating cards displayed on the interactive 3D hero showcase.</p>
+                        </div>
+                    </div>
+                    <div class="form-grid" id="heroArtworksGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 2: ABOUT US ═════════ -->
+            <section class="tab-pane" id="tab-about">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-users"></i> About Studio Overview</h2>
+                            <p class="editor-card-desc">Edit the studio story, mission statement, and core philosophy.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Section Tag / Pill</label>
+                            <input type="text" id="aboutBadge" class="form-control" placeholder="Who We Are">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Main Title</label>
+                            <input type="text" id="aboutTitle" class="form-control" placeholder="Where Creative Artistry Meets Advanced Technology">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">About Story / Subtitle Paragraph</label>
+                            <textarea id="aboutDescription" class="form-control" rows="3" placeholder="Headquartered at Infopark Phase-1, Kochi, Kerala..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Bento Highlight Cards -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-shapes"></i> Studio Core Pillars (3 Bento Cards)</h2>
+                            <p class="editor-card-desc">Update the 3 feature highlight cards in the About section.</p>
+                        </div>
+                    </div>
+                    <div class="repeater-list" id="aboutCardsContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 3: SERVICES ═════════ -->
+            <section class="tab-pane" id="tab-services">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Services Section Header</h2>
+                            <p class="editor-card-desc">Configure the titles and introduction text for the comprehensive services catalog.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Services Pill Badge</label>
+                            <input type="text" id="servicesBadge" class="form-control" placeholder="OUR SERVICES">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Main Title</label>
+                            <input type="text" id="servicesTitle" class="form-control" placeholder="End-to-End Creative &amp; Technology Solutions">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Subtitle Description</label>
+                            <textarea id="servicesSubtitle" class="form-control" rows="2" placeholder="Comprehensive, world-class capabilities spanning enterprise software..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Custom Services -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-cubes"></i> Featured Service Highlights</h2>
+                            <p class="editor-card-desc">Add or modify priority services promoted across the landing page.</p>
+                        </div>
+                        <button type="button" class="btn-cms btn-cms-outline" onclick="addCustomServiceCard()">
+                            <i class="fa-solid fa-plus"></i> Add Service Card
+                        </button>
+                    </div>
+                    <div class="repeater-list" id="servicesListContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 4: PRODUCT ═════════ -->
+            <section class="tab-pane" id="tab-products">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-box-open"></i> Product Suite Header</h2>
+                            <p class="editor-card-desc">Control the proprietary digital software products and platform offerings.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Section Tag Pill</label>
+                            <input type="text" id="productsBadge" class="form-control" placeholder="Proprietary Platforms">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Main Title</label>
+                            <input type="text" id="productsTitle" class="form-control" placeholder="Next-Generation Digital Products &amp; Platforms">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Subtitle</label>
+                            <textarea id="productsSubtitle" class="form-control" rows="2" placeholder="Our in-house developed software suites powering workforce management, real-time 3D workflows, and spatial simulations."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Repeater -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-boxes-stacked"></i> Products Catalog</h2>
+                            <p class="editor-card-desc">Add, edit, or remove software suites showcased on the landing page.</p>
+                        </div>
+                        <button type="button" class="btn-cms btn-cms-outline" onclick="addProductItem()">
+                            <i class="fa-solid fa-plus"></i> Add New Product
+                        </button>
+                    </div>
+                    <div class="repeater-list" id="productsListContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 5: CAREER ═════════ -->
+            <section class="tab-pane" id="tab-career">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-briefcase"></i> Careers &amp; Hiring Banner</h2>
+                            <p class="editor-card-desc">Attract creative talent, animators, and software engineers to Paoyaila.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Section Tag</label>
+                            <input type="text" id="careerBadge" class="form-control" placeholder="We Are Hiring">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Main Headline</label>
+                            <input type="text" id="careerHeadline" class="form-control" placeholder="Join Our High-Energy Creative Studio">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Banner Subtitle / Description</label>
+                            <textarea id="careerSubtext" class="form-control" rows="3" placeholder="We are constantly searching for passionate 3D modelers, Unreal Engine gameplay developers, motion designers, and full-stack software engineers."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Open Job Positions -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-user-plus"></i> Featured Open Job Positions</h2>
+                            <p class="editor-card-desc">Manage the immediate job vacancies displayed to applicants.</p>
+                        </div>
+                        <button type="button" class="btn-cms btn-cms-outline" onclick="addJobPositionItem()">
+                            <i class="fa-solid fa-plus"></i> Add Open Role
+                        </button>
+                    </div>
+                    <div class="repeater-list" id="careerPositionsContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 6: CONTACT US & FOOTER ═════════ -->
+            <section class="tab-pane" id="tab-contact">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-paper-plane"></i> Contact Us Section</h2>
+                            <p class="editor-card-desc">Update studio addresses, contact phone numbers, and communication channels.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Section Tag</label>
+                            <input type="text" id="contactBadge" class="form-control" placeholder="Get In Touch">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Section Title</label>
+                            <input type="text" id="contactTitle" class="form-control" placeholder="Let's Create Something Extraordinary Together">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Studio Physical Address</label>
+                            <input type="text" id="contactAddress" class="form-control" placeholder="Infopark, Phase-1, Kochi, Kerala, India - 682042">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Primary Phone</label>
+                            <input type="text" id="contactPhone1" class="form-control" placeholder="+91 9400197544">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Secondary Phone</label>
+                            <input type="text" id="contactPhone2" class="form-control" placeholder="+91 9495463841">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Inquiry Email</label>
+                            <input type="email" id="contactEmail" class="form-control" placeholder="paoyaila@gmail.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Working Hours</label>
+                            <input type="text" id="contactHours" class="form-control" placeholder="Monday - Friday: 9:00 AM - 6:30 PM IST">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer & Social Links -->
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-globe"></i> Footer &amp; Social Links</h2>
+                            <p class="editor-card-desc">Social network profiles and footer statement.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Footer Brand Summary</label>
+                            <textarea id="footerBrandText" class="form-control" rows="2" placeholder="Paoyaila Technologies LLP is a premier technology-driven creative studio..."></textarea>
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Copyright Text</label>
+                            <input type="text" id="footerCopyright" class="form-control" placeholder="© 2026 Paoyaila Technologies LLP. All Rights Reserved.">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-brands fa-linkedin"></i> LinkedIn URL</label>
+                            <input type="url" id="socialLinkedin" class="form-control" placeholder="https://linkedin.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-brands fa-instagram"></i> Instagram URL</label>
+                            <input type="url" id="socialInstagram" class="form-control" placeholder="https://instagram.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-brands fa-youtube"></i> YouTube URL</label>
+                            <input type="url" id="socialYoutube" class="form-control" placeholder="https://youtube.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-brands fa-github"></i> GitHub URL</label>
+                            <input type="url" id="socialGithub" class="form-control" placeholder="https://github.com">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═════════ TAB 7: BRINJAL VIOLET THEME ═════════ -->
+            <section class="tab-pane" id="tab-theme">
+                <div class="editor-card">
+                    <div class="editor-card-header">
+                        <div>
+                            <h2 class="editor-card-title"><i class="fa-solid fa-palette"></i> Signature Brinjal Violet &amp; Off-White Palette</h2>
+                            <p class="editor-card-desc">Adjust the deep aubergine violet hues and clean off-white canvas variables.</p>
+                        </div>
+                        <button type="button" class="btn-cms btn-cms-outline" onclick="applySignatureBrinjalTheme()">
+                            <i class="fa-solid fa-wand-sparkles"></i> Load Signature Preset
+                        </button>
+                    </div>
+
+                    <div class="theme-swatches-grid">
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Deep Brinjal Violet</h4>
+                                <p>Primary brand &amp; button color</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themePrimaryViolet" class="color-input" value="#38064a" onchange="syncColorText(this, 'themePrimaryVioletText')">
+                                <input type="text" id="themePrimaryVioletText" class="form-control" style="width: 90px;" value="#38064a" onchange="syncColorInput(this, 'themePrimaryViolet')">
+                            </div>
+                        </div>
+
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Aubergine Dark Slate</h4>
+                                <p>Headings &amp; high contrast text</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themeVioletDark" class="color-input" value="#23032c" onchange="syncColorText(this, 'themeVioletDarkText')">
+                                <input type="text" id="themeVioletDarkText" class="form-control" style="width: 90px;" value="#23032c" onchange="syncColorInput(this, 'themeVioletDark')">
+                            </div>
+                        </div>
+
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Medium Violet Accent</h4>
+                                <p>Gradients, chips &amp; badges</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themeVioletMedium" class="color-input" value="#540e69" onchange="syncColorText(this, 'themeVioletMediumText')">
+                                <input type="text" id="themeVioletMediumText" class="form-control" style="width: 90px;" value="#540e69" onchange="syncColorInput(this, 'themeVioletMedium')">
+                            </div>
+                        </div>
+
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Vibrant Violet Glow</h4>
+                                <p>Interactive hovers &amp; glow</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themeVioletVibrant" class="color-input" value="#741793" onchange="syncColorText(this, 'themeVioletVibrantText')">
+                                <input type="text" id="themeVioletVibrantText" class="form-control" style="width: 90px;" value="#741793" onchange="syncColorInput(this, 'themeVioletVibrant')">
+                            </div>
+                        </div>
+
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Clean Off-White Base</h4>
+                                <p>Page body background</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themeBgOffWhite" class="color-input" value="#fbf8fd" onchange="syncColorText(this, 'themeBgOffWhiteText')">
+                                <input type="text" id="themeBgOffWhiteText" class="form-control" style="width: 90px;" value="#fbf8fd" onchange="syncColorInput(this, 'themeBgOffWhite')">
+                            </div>
+                        </div>
+
+                        <div class="color-picker-box">
+                            <div class="color-picker-info">
+                                <h4>Pure Card Surface</h4>
+                                <p>Card containers &amp; modals</p>
+                            </div>
+                            <div class="color-picker-wrap">
+                                <input type="color" id="themeBgCard" class="color-input" value="#ffffff" onchange="syncColorText(this, 'themeBgCardText')">
+                                <input type="text" id="themeBgCardText" class="form-control" style="width: 90px;" value="#ffffff" onchange="syncColorInput(this, 'themeBgCard')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- ─── LIVE PREVIEW MODAL ─── -->
+<div class="preview-modal" id="previewModal">
+    <div class="preview-container">
+        <div class="preview-topbar">
+            <h3><i class="fa-solid fa-laptop-code" style="color: var(--brinjal-primary);"></i> Interactive Landing Page Live Preview</h3>
+            <div class="preview-topbar-actions">
+                <button type="button" class="btn-cms btn-cms-outline" onclick="refreshPreviewIframe()">
+                    <i class="fa-solid fa-rotate"></i> Refresh Preview
+                </button>
+                <a href="../index.html" target="_blank" class="btn-cms btn-cms-primary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open In New Tab
+                </a>
+                <button type="button" class="btn-remove-item" onclick="closeLivePreviewModal()" style="font-size: 18px; padding: 6px 12px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+        <iframe id="previewIframe" class="preview-iframe" src="../index.html"></iframe>
+    </div>
+</div>
+
+<!-- ─── TOAST NOTIFICATION ─── -->
+<div class="toast" id="cmsToast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMessage">Changes saved and synchronized to Landing Page!</span>
+</div>
+
+<!-- Hidden File Input for JSON Import -->
+<input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+
+<script>
+// ── DEFAULT SEED DATA (Brinjal Violet & Off-White Theme) ──
+const DEFAULT_CMS_DATA = {
+    theme: {
+        primaryViolet: "#38064a",
+        violetDark: "#23032c",
+        violetMedium: "#540e69",
+        violetVibrant: "#741793",
+        bgOffWhite: "#fbf8fd",
+        bgCard: "#ffffff"
+    },
+    hero: {
+        badge: "Paoyaila Technologies LLP • Infopark Phase-1, Kochi, Kerala",
+        titlePrefix: "Next-Gen 3D Animation, IT Solutions & ",
+        titleHighlight: "Intelligent Digital Realities",
+        description: "Pioneering Hollywood-grade 3D CGI, Unreal Engine 5 interactive game worlds, spatial AR/VR computing, high-impact video production, and bespoke enterprise software from our world-class studio headquarters.",
+        primaryBtnText: "Get Free Consultation",
+        primaryBtnLink: "#contact",
+        secondaryBtnText: "Explore Capabilities",
+        secondaryBtnLink: "#services",
+        artworks: [
+            { title: "Cybernetic Odyssey 2026", desc: "3D Cinematics • AI Character Rigging • Unreal Engine 5", tag: "CGI & Cinema" },
+            { title: "Neon Sector 07 Metacity", desc: "Unreal Engine 5.4 • Real-Time Raytracing • AAA Cyberpunk", tag: "Game Dev" },
+            { title: "Spatial Horizon AR / VR", desc: "Interactive Spatial Computing • VisionOS & Quest • 3D Telepresence", tag: "Spatial XR" },
+            { title: "Quantum Ethereal VFX & AI", desc: "Generative AI Video • Particle Pyro Simulations • Octane 8K", tag: "Next-Gen VFX" }
+        ]
+    },
+    about: {
+        badge: "Who We Are",
+        title: "Where Creative Artistry Meets Advanced Technology",
+        description: "Headquartered at Infopark Phase-1, Kochi, Kerala, Paoyaila Technologies LLP brings together seasoned animators, game developers, VFX artists, and software architects to craft extraordinary visual stories and digital enterprise tools.",
+        cards: [
+            {
+                tag: "Studio Philosophy",
+                title: "Pushing the Boundaries of Imagination",
+                desc: "Since 2015, we have blended cinematic storytelling with bleeding-edge real-time 3D pipelines. From interactive mobile gaming to photo-realistic architectural VR, our multi-disciplinary team turns ambitious ideas into breathtaking digital reality.",
+                icon: "fa-wand-magic-sparkles"
+            },
+            {
+                tag: "Tech DNA",
+                title: "Next-Gen Tech Pipeline",
+                desc: "Automated cloud rendering, custom Python pipeline toolsets, and real-time raytracing ensure fast iterations with zero compromise on visual quality.",
+                icon: "fa-microchip"
+            },
+            {
+                tag: "Global Footprint",
+                title: "60+ International Clients",
+                desc: "Trusted by entertainment giants, leading gaming studios, tech innovators, and enterprise leaders across India, USA, Europe, and UAE.",
+                icon: "fa-globe"
+            }
+        ]
+    },
+    services: {
+        badge: "OUR SERVICES",
+        title: "End-to-End Creative & Technology Solutions",
+        subtitle: "Comprehensive, world-class capabilities spanning enterprise software, Hollywood-grade animation, interactive gaming, spatial AR/VR, and full-funnel digital growth.",
+        customItems: [
+            { title: "Enterprise Custom Software", icon: "fa-laptop-code", tag: "Scalable & Secure", desc: "Tailor-made cloud architectures, internal dashboards, and ERP suites designed to boost organizational efficiency." },
+            { title: "Hollywood 3D CGI & VFX", icon: "fa-film", tag: "High-Fidelity 8K", desc: "Character design, hyper-realistic rigging, photorealistic texturing, and cinematic lighting for feature productions." },
+            { title: "Unreal Engine 5 Game Dev", icon: "fa-gamepad", tag: "AAA Mechanics", desc: "Cross-platform multiplayer titles, Lumen raytracing, Nanite virtualized geometry, and immersive mobile game engines." },
+            { title: "Spatial AR & VR Realities", icon: "fa-vr-cardboard", tag: "VisionOS Ready", desc: "Interactive enterprise training simulations, architectural walk-throughs, and digital twin environments." }
+        ]
+    },
+    products: {
+        badge: "Proprietary Platforms",
+        title: "Next-Generation Digital Products & Platforms",
+        subtitle: "Our in-house developed software suites powering workforce management, real-time 3D workflows, and spatial simulations.",
+        items: [
+            {
+                id: "ems",
+                name: "Paoyaila EMS Suite",
+                tagline: "Enterprise Workforce & HR Operations",
+                badge: "Flagship SaaS",
+                icon: "fa-id-card-clip",
+                desc: "An all-in-one employee management platform featuring biometric & selfie attendance, real-time leave approvals, automated payroll generation, project tracking, and secure document vault.",
+                features: "Smart Attendance & Geo-tracking, Automated Payroll & Tax Slips, Task & Performance KPI Dashboards, Role-Based Security (Admin HR Employee)",
+                link: "Admin/index.html",
+                linkText: "Launch Portal"
+            },
+            {
+                id: "omniverse",
+                name: "OmniVerse 3D Engine",
+                tagline: "Collaborative 3D Asset Management",
+                badge: "Studio Tech",
+                icon: "fa-cubes",
+                desc: "Centralized digital asset management system for Maya, 3ds Max, Blender, and Unreal Engine 5. Automated LOD generation, texture compression, and versioning.",
+                features: "Real-time Cloud Sync, Automated LOD Optimization, Integrated Rigging Validations, Multi-user Asset Check-in",
+                link: "#contact",
+                linkText: "Request Demo"
+            },
+            {
+                id: "spatialxr",
+                name: "SpatialReality XR Studio",
+                tagline: "Enterprise AR / VR Simulation Suite",
+                badge: "Immersive Tech",
+                icon: "fa-vr-cardboard",
+                desc: "Bespoke VR training simulators and augmented reality interactive visualizers for defense, medical, automotive, and architectural enterprises.",
+                features: "VisionOS & Meta Quest 3 Ready, Haptic Feedback Integration, Physics-accurate Simulations, Multi-participant Sessions",
+                link: "#contact",
+                linkText: "Explore Capabilities"
+            },
+            {
+                id: "aetherrender",
+                name: "AetherRender Cloud",
+                tagline: "High-Speed Distributed VFX Farm",
+                badge: "Cloud Platform",
+                icon: "fa-server",
+                desc: "Scalable GPU-accelerated distributed rendering cloud designed for high-resolution 4K/8K cinematics, Octane, Redshift, and Unreal path tracing.",
+                features: "Instant Cluster Provisioning, Cost-effective Burst Compute, Secure Encrypted Pipelines, Web-based Job Monitor",
+                link: "#contact",
+                linkText: "Get Access"
+            }
+        ]
+    },
+    career: {
+        badge: "We Are Hiring",
+        headline: "Join Our High-Energy Creative Studio",
+        subtext: "We are constantly searching for passionate 3D modelers, Unreal Engine gameplay developers, motion designers, and full-stack software engineers.",
+        positions: [
+            {
+                title: "Senior 3D Animator & Character TD",
+                department: "Animation & Rigging",
+                type: "Full-Time • Onsite",
+                location: "Infopark, Kochi",
+                experience: "3-6 Years",
+                link: "careers.html"
+            },
+            {
+                title: "Unreal Engine 5 Gameplay Developer",
+                department: "Interactive & Gaming",
+                type: "Full-Time • Hybrid",
+                location: "Kochi / Remote",
+                experience: "2-5 Years",
+                link: "careers.html"
+            },
+            {
+                title: "Full-Stack Enterprise Software Engineer",
+                department: "Digital Platforms",
+                type: "Full-Time • Onsite",
+                location: "Infopark, Kochi",
+                experience: "2-4 Years",
+                link: "careers.html"
+            },
+            {
+                title: "Motion Graphics & VFX Compositor",
+                department: "Cinematics & Post-Production",
+                type: "Full-Time • Onsite",
+                location: "Infopark, Kochi",
+                experience: "1-3 Years",
+                link: "careers.html"
+            }
+        ]
+    },
+    contact: {
+        badge: "Get In Touch",
+        title: "Let's Create Something Extraordinary Together",
+        address: "Infopark, Phase-1, Kochi, Kerala, India - 682042",
+        phone1: "+91 9400197544",
+        phone2: "+91 9495463841",
+        email: "paoyaila@gmail.com",
+        hours: "Monday - Friday: 9:00 AM - 6:30 PM IST",
+        social: {
+            linkedin: "https://linkedin.com",
+            instagram: "https://instagram.com",
+            youtube: "https://youtube.com",
+            github: "https://github.com"
+        }
+    },
+    footer: {
+        brandText: "Paoyaila Technologies LLP is a premier technology-driven creative studio delivering world-class 3D CGI, XR/VR games, VFX cinematics, and digital enterprise software.",
+        copyright: "© 2026 Paoyaila Technologies LLP. All Rights Reserved."
+    }
+};
+
+let currentCMSData = JSON.parse(JSON.stringify(DEFAULT_CMS_DATA));
+
+// ── INITIALIZATION ──
+document.addEventListener('DOMContentLoaded', () => {
+    loadStoredCMSData();
+    populateFormFields();
+
+    // Toggle Sidebar
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const adminSidebar = document.getElementById('adminSidebar');
+    if (sidebarToggle && adminSidebar) {
+        sidebarToggle.addEventListener('click', () => {
+            adminSidebar.classList.toggle('collapsed');
+        });
+    }
+});
+
+// ── LOAD & PERSISTENCE ──
+function loadStoredCMSData() {
+    try {
+        const stored = localStorage.getItem('landingPageContent');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            currentCMSData = deepMerge(DEFAULT_CMS_DATA, parsed);
+        }
+    } catch (e) {
+        console.warn('Using default seed CMS data:', e);
+        currentCMSData = JSON.parse(JSON.stringify(DEFAULT_CMS_DATA));
+    }
+}
+
+function deepMerge(target, source) {
+    const output = Object.assign({}, target);
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach(key => {
+            if (isObject(source[key])) {
+                if (!(key in target)) Object.assign(output, { [key]: source[key] });
+                else output[key] = deepMerge(target[key], source[key]);
+            } else {
+                Object.assign(output, { [key]: source[key] });
+            }
+        });
+    }
+    return output;
+}
+
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+// ── POPULATE FORM FIELDS ──
+function populateFormFields() {
+    // 1. Hero
+    setVal('heroBadge', currentCMSData.hero.badge);
+    setVal('heroTitlePrefix', currentCMSData.hero.titlePrefix);
+    setVal('heroTitleHighlight', currentCMSData.hero.titleHighlight);
+    setVal('heroDescription', currentCMSData.hero.description);
+    setVal('heroPrimaryBtnText', currentCMSData.hero.primaryBtnText);
+    setVal('heroPrimaryBtnLink', currentCMSData.hero.primaryBtnLink);
+    setVal('heroSecondaryBtnText', currentCMSData.hero.secondaryBtnText);
+    setVal('heroSecondaryBtnLink', currentCMSData.hero.secondaryBtnLink);
+    renderHeroArtworksList();
+
+    // 2. About
+    setVal('aboutBadge', currentCMSData.about.badge);
+    setVal('aboutTitle', currentCMSData.about.title);
+    setVal('aboutDescription', currentCMSData.about.description);
+    renderAboutCardsList();
+
+    // 3. Services
+    setVal('servicesBadge', currentCMSData.services.badge);
+    setVal('servicesTitle', currentCMSData.services.title);
+    setVal('servicesSubtitle', currentCMSData.services.subtitle);
+    renderServicesList();
+
+    // 4. Products
+    setVal('productsBadge', currentCMSData.products.badge);
+    setVal('productsTitle', currentCMSData.products.title);
+    setVal('productsSubtitle', currentCMSData.products.subtitle);
+    renderProductsList();
+
+    // 5. Career
+    setVal('careerBadge', currentCMSData.career.badge);
+    setVal('careerHeadline', currentCMSData.career.headline);
+    setVal('careerSubtext', currentCMSData.career.subtext);
+    renderCareerPositionsList();
+
+    // 6. Contact & Footer
+    setVal('contactBadge', currentCMSData.contact.badge);
+    setVal('contactTitle', currentCMSData.contact.title);
+    setVal('contactAddress', currentCMSData.contact.address);
+    setVal('contactPhone1', currentCMSData.contact.phone1);
+    setVal('contactPhone2', currentCMSData.contact.phone2);
+    setVal('contactEmail', currentCMSData.contact.email);
+    setVal('contactHours', currentCMSData.contact.hours);
+    setVal('footerBrandText', currentCMSData.footer.brandText);
+    setVal('footerCopyright', currentCMSData.footer.copyright);
+    setVal('socialLinkedin', currentCMSData.contact.social?.linkedin || '');
+    setVal('socialInstagram', currentCMSData.contact.social?.instagram || '');
+    setVal('socialYoutube', currentCMSData.contact.social?.youtube || '');
+    setVal('socialGithub', currentCMSData.contact.social?.github || '');
+
+    // 7. Theme
+    if (currentCMSData.theme) {
+        setThemeColor('themePrimaryViolet', currentCMSData.theme.primaryViolet || '#38064a');
+        setThemeColor('themeVioletDark', currentCMSData.theme.violetDark || '#23032c');
+        setThemeColor('themeVioletMedium', currentCMSData.theme.violetMedium || '#540e69');
+        setThemeColor('themeVioletVibrant', currentCMSData.theme.violetVibrant || '#741793');
+        setThemeColor('themeBgOffWhite', currentCMSData.theme.bgOffWhite || '#fbf8fd');
+        setThemeColor('themeBgCard', currentCMSData.theme.bgCard || '#ffffff');
+    }
+}
+
+function setVal(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.value = value || '';
+}
+
+function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+
+function setThemeColor(id, hex) {
+    const input = document.getElementById(id);
+    const text = document.getElementById(id + 'Text');
+    if (input) input.value = hex;
+    if (text) text.value = hex;
+}
+
+function syncColorText(input, textId) {
+    const text = document.getElementById(textId);
+    if (text) text.value = input.value;
+}
+
+function syncColorInput(text, inputId) {
+    const input = document.getElementById(inputId);
+    if (input && /^#[0-9A-Fa-f]{6}$/.test(text.value)) {
+        input.value = text.value;
+    }
+}
+
+// ── REPEATERS RENDERING ──
+
+// Hero Artworks
+function renderHeroArtworksList() {
+    const container = document.getElementById('heroArtworksGrid');
+    if (!container) return;
+    container.innerHTML = '';
+    (currentCMSData.hero.artworks || []).forEach((art, index) => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.innerHTML = `
+            <div style="background: var(--bg-surface-elevated); border: 1px solid var(--brinjal-border); padding: 14px; border-radius: var(--radius-md);">
+                <span class="repeater-item-badge" style="margin-bottom: 8px;"><i class="fa-solid fa-cube"></i> Slide ${index + 1} (${art.tag || 'Showcase'})</span>
+                <label class="form-label" style="margin-top:6px;">Artwork Title</label>
+                <input type="text" class="form-control hero-art-title" value="${escapeHtml(art.title)}" data-index="${index}">
+                <label class="form-label" style="margin-top:8px;">Artwork Subtitle / Tech Specs</label>
+                <input type="text" class="form-control hero-art-desc" value="${escapeHtml(art.desc)}" data-index="${index}">
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// About Bento Cards
+function renderAboutCardsList() {
+    const container = document.getElementById('aboutCardsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    (currentCMSData.about.cards || []).forEach((card, index) => {
+        const div = document.createElement('div');
+        div.className = 'repeater-item';
+        div.innerHTML = `
+            <div class="repeater-item-header">
+                <span class="repeater-item-badge"><i class="fa-solid ${card.icon || 'fa-star'}"></i> Pillar ${index + 1}</span>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Tag Pill</label>
+                    <input type="text" class="form-control about-card-tag" value="${escapeHtml(card.tag || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Card Headline</label>
+                    <input type="text" class="form-control about-card-title" value="${escapeHtml(card.title || '')}" data-index="${index}">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">Card Description</label>
+                    <textarea class="form-control about-card-desc" rows="2" data-index="${index}">${escapeHtml(card.desc || '')}</textarea>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Services List
+function renderServicesList() {
+    const container = document.getElementById('servicesListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    (currentCMSData.services.customItems || []).forEach((svc, index) => {
+        const div = document.createElement('div');
+        div.className = 'repeater-item';
+        div.innerHTML = `
+            <div class="repeater-item-header">
+                <span class="repeater-item-badge"><i class="fa-solid ${svc.icon || 'fa-cube'}"></i> Service #${index + 1}</span>
+                <button type="button" class="btn-remove-item" onclick="removeServiceItem(${index})"><i class="fa-solid fa-trash-can"></i> Remove</button>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Service Title</label>
+                    <input type="text" class="form-control svc-title" value="${escapeHtml(svc.title || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Feature Tag</label>
+                    <input type="text" class="form-control svc-tag" value="${escapeHtml(svc.tag || '')}" data-index="${index}">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control svc-desc" rows="2" data-index="${index}">${escapeHtml(svc.desc || '')}</textarea>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addCustomServiceCard() {
+    currentCMSData.services.customItems = currentCMSData.services.customItems || [];
+    currentCMSData.services.customItems.push({
+        title: "New Creative Service",
+        icon: "fa-cubes",
+        tag: "High Impact",
+        desc: "Explain the details and business advantages of this service."
+    });
+    renderServicesList();
+}
+
+function removeServiceItem(index) {
+    if (confirm("Remove this service card?")) {
+        currentCMSData.services.customItems.splice(index, 1);
+        renderServicesList();
+    }
+}
+
+// Products List
+function renderProductsList() {
+    const container = document.getElementById('productsListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    (currentCMSData.products.items || []).forEach((prod, index) => {
+        const div = document.createElement('div');
+        div.className = 'repeater-item';
+        div.innerHTML = `
+            <div class="repeater-item-header">
+                <span class="repeater-item-badge"><i class="fa-solid ${prod.icon || 'fa-box'}"></i> Product ${index + 1}: ${escapeHtml(prod.name || '')}</span>
+                <button type="button" class="btn-remove-item" onclick="removeProductItem(${index})"><i class="fa-solid fa-trash-can"></i> Remove</button>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control prod-name" value="${escapeHtml(prod.name || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tagline</label>
+                    <input type="text" class="form-control prod-tagline" value="${escapeHtml(prod.tagline || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Badge Pill</label>
+                    <input type="text" class="form-control prod-badge" value="${escapeHtml(prod.badge || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Action Link &amp; Text</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" class="form-control prod-link-text" placeholder="e.g. Launch Portal" value="${escapeHtml(prod.linkText || 'Learn More')}" data-index="${index}">
+                        <input type="text" class="form-control prod-link" placeholder="e.g. Admin/index.html" value="${escapeHtml(prod.link || '#contact')}" data-index="${index}">
+                    </div>
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">Product Description</label>
+                    <textarea class="form-control prod-desc" rows="2" data-index="${index}">${escapeHtml(prod.desc || '')}</textarea>
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">Feature Highlights <span class="hint">Separate with commas</span></label>
+                    <input type="text" class="form-control prod-features" value="${escapeHtml(prod.features || '')}" data-index="${index}">
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addProductItem() {
+    currentCMSData.products.items = currentCMSData.products.items || [];
+    currentCMSData.products.items.push({
+        id: "product-" + Date.now(),
+        name: "New Paoyaila Product",
+        tagline: "Innovative Creative & Software Solution",
+        badge: "New Release",
+        icon: "fa-rocket",
+        desc: "State of the art technology engineered for seamless enterprise deployment and creative performance.",
+        features: "Cloud Synchronized, High Security, Modular Architecture, Real-Time Analytics",
+        link: "#contact",
+        linkText: "Request Demo"
+    });
+    renderProductsList();
+}
+
+function removeProductItem(index) {
+    if (confirm("Remove this product?")) {
+        currentCMSData.products.items.splice(index, 1);
+        renderProductsList();
+    }
+}
+
+// Career Positions
+function renderCareerPositionsList() {
+    const container = document.getElementById('careerPositionsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    (currentCMSData.career.positions || []).forEach((pos, index) => {
+        const div = document.createElement('div');
+        div.className = 'repeater-item';
+        div.innerHTML = `
+            <div class="repeater-item-header">
+                <span class="repeater-item-badge"><i class="fa-solid fa-briefcase"></i> Role ${index + 1}: ${escapeHtml(pos.title || '')}</span>
+                <button type="button" class="btn-remove-item" onclick="removeJobPositionItem(${index})"><i class="fa-solid fa-trash-can"></i> Remove</button>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Job Title</label>
+                    <input type="text" class="form-control pos-title" value="${escapeHtml(pos.title || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-control pos-dept" value="${escapeHtml(pos.department || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Type &amp; Work Model</label>
+                    <input type="text" class="form-control pos-type" value="${escapeHtml(pos.type || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control pos-loc" value="${escapeHtml(pos.location || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Experience</label>
+                    <input type="text" class="form-control pos-exp" value="${escapeHtml(pos.experience || '')}" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Application Link</label>
+                    <input type="text" class="form-control pos-link" value="${escapeHtml(pos.link || 'careers.html')}" data-index="${index}">
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addJobPositionItem() {
+    currentCMSData.career.positions = currentCMSData.career.positions || [];
+    currentCMSData.career.positions.push({
+        title: "Senior Pipeline Engineer",
+        department: "Technology & Infrastructure",
+        type: "Full-Time • Hybrid",
+        location: "Infopark, Kochi",
+        experience: "3-5 Years",
+        link: "careers.html"
+    });
+    renderCareerPositionsList();
+}
+
+function removeJobPositionItem(index) {
+    if (confirm("Remove this job position?")) {
+        currentCMSData.career.positions.splice(index, 1);
+        renderCareerPositionsList();
+    }
+}
+
+// ── SAVE & SYNC TO LOCALSTORAGE ──
+function saveCMSContent() {
+    // 1. Hero
+    currentCMSData.hero.badge = getVal('heroBadge');
+    currentCMSData.hero.titlePrefix = getVal('heroTitlePrefix');
+    currentCMSData.hero.titleHighlight = getVal('heroTitleHighlight');
+    currentCMSData.hero.description = getVal('heroDescription');
+    currentCMSData.hero.primaryBtnText = getVal('heroPrimaryBtnText');
+    currentCMSData.hero.primaryBtnLink = getVal('heroPrimaryBtnLink');
+    currentCMSData.hero.secondaryBtnText = getVal('heroSecondaryBtnText');
+    currentCMSData.hero.secondaryBtnLink = getVal('heroSecondaryBtnLink');
+
+    document.querySelectorAll('.hero-art-title').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.hero.artworks[idx]) currentCMSData.hero.artworks[idx].title = input.value;
+    });
+    document.querySelectorAll('.hero-art-desc').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.hero.artworks[idx]) currentCMSData.hero.artworks[idx].desc = input.value;
+    });
+
+    // 2. About
+    currentCMSData.about.badge = getVal('aboutBadge');
+    currentCMSData.about.title = getVal('aboutTitle');
+    currentCMSData.about.description = getVal('aboutDescription');
+    document.querySelectorAll('.about-card-tag').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.about.cards[idx]) currentCMSData.about.cards[idx].tag = input.value;
+    });
+    document.querySelectorAll('.about-card-title').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.about.cards[idx]) currentCMSData.about.cards[idx].title = input.value;
+    });
+    document.querySelectorAll('.about-card-desc').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.about.cards[idx]) currentCMSData.about.cards[idx].desc = input.value;
+    });
+
+    // 3. Services
+    currentCMSData.services.badge = getVal('servicesBadge');
+    currentCMSData.services.title = getVal('servicesTitle');
+    currentCMSData.services.subtitle = getVal('servicesSubtitle');
+    document.querySelectorAll('.svc-title').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.services.customItems[idx]) currentCMSData.services.customItems[idx].title = input.value;
+    });
+    document.querySelectorAll('.svc-tag').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.services.customItems[idx]) currentCMSData.services.customItems[idx].tag = input.value;
+    });
+    document.querySelectorAll('.svc-desc').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.services.customItems[idx]) currentCMSData.services.customItems[idx].desc = input.value;
+    });
+
+    // 4. Products
+    currentCMSData.products.badge = getVal('productsBadge');
+    currentCMSData.products.title = getVal('productsTitle');
+    currentCMSData.products.subtitle = getVal('productsSubtitle');
+    document.querySelectorAll('.prod-name').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].name = input.value;
+    });
+    document.querySelectorAll('.prod-tagline').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].tagline = input.value;
+    });
+    document.querySelectorAll('.prod-badge').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].badge = input.value;
+    });
+    document.querySelectorAll('.prod-link-text').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].linkText = input.value;
+    });
+    document.querySelectorAll('.prod-link').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].link = input.value;
+    });
+    document.querySelectorAll('.prod-desc').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].desc = input.value;
+    });
+    document.querySelectorAll('.prod-features').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.products.items[idx]) currentCMSData.products.items[idx].features = input.value;
+    });
+
+    // 5. Career
+    currentCMSData.career.badge = getVal('careerBadge');
+    currentCMSData.career.headline = getVal('careerHeadline');
+    currentCMSData.career.subtext = getVal('careerSubtext');
+    document.querySelectorAll('.pos-title').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].title = input.value;
+    });
+    document.querySelectorAll('.pos-dept').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].department = input.value;
+    });
+    document.querySelectorAll('.pos-type').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].type = input.value;
+    });
+    document.querySelectorAll('.pos-loc').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].location = input.value;
+    });
+    document.querySelectorAll('.pos-exp').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].experience = input.value;
+    });
+    document.querySelectorAll('.pos-link').forEach(input => {
+        const idx = parseInt(input.dataset.index);
+        if (currentCMSData.career.positions[idx]) currentCMSData.career.positions[idx].link = input.value;
+    });
+
+    // 6. Contact & Footer
+    currentCMSData.contact.badge = getVal('contactBadge');
+    currentCMSData.contact.title = getVal('contactTitle');
+    currentCMSData.contact.address = getVal('contactAddress');
+    currentCMSData.contact.phone1 = getVal('contactPhone1');
+    currentCMSData.contact.phone2 = getVal('contactPhone2');
+    currentCMSData.contact.email = getVal('contactEmail');
+    currentCMSData.contact.hours = getVal('contactHours');
+    currentCMSData.footer.brandText = getVal('footerBrandText');
+    currentCMSData.footer.copyright = getVal('footerCopyright');
+    currentCMSData.contact.social = {
+        linkedin: getVal('socialLinkedin'),
+        instagram: getVal('socialInstagram'),
+        youtube: getVal('socialYoutube'),
+        github: getVal('socialGithub')
+    };
+
+    // 7. Theme
+    currentCMSData.theme = {
+        primaryViolet: getVal('themePrimaryVioletText') || '#38064a',
+        violetDark: getVal('themeVioletDarkText') || '#23032c',
+        violetMedium: getVal('themeVioletMediumText') || '#540e69',
+        violetVibrant: getVal('themeVioletVibrantText') || '#741793',
+        bgOffWhite: getVal('themeBgOffWhiteText') || '#fbf8fd',
+        bgCard: getVal('themeBgCardText') || '#ffffff'
+    };
+
+    // Save to LocalStorage
+    localStorage.setItem('landingPageContent', JSON.stringify(currentCMSData));
+    showToast('All changes published successfully! Live landing page updated.');
+
+    // If preview iframe is open, refresh it
+    refreshPreviewIframe();
+}
+
+function resetToDefaultData() {
+    if (confirm("Reset all landing page content to the original defaults?")) {
+        currentCMSData = JSON.parse(JSON.stringify(DEFAULT_CMS_DATA));
+        localStorage.setItem('landingPageContent', JSON.stringify(currentCMSData));
+        populateFormFields();
+        showToast('Default content restored.');
+        refreshPreviewIframe();
+    }
+}
+
+function applySignatureBrinjalTheme() {
+    setThemeColor('themePrimaryViolet', '#38064a');
+    setThemeColor('themeVioletDark', '#23032c');
+    setThemeColor('themeVioletMedium', '#540e69');
+    setThemeColor('themeVioletVibrant', '#741793');
+    setThemeColor('themeBgOffWhite', '#fbf8fd');
+    setThemeColor('themeBgCard', '#ffffff');
+    showToast('Signature Brinjal Violet & Off-White palette loaded.');
+}
+
+// ── IMPORT & EXPORT JSON ──
+function exportDataJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentCMSData, null, 2));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", `landing-page-content-${Date.now()}.json`);
+    dlAnchorElem.click();
+}
+
+function triggerImportJSON() {
+    document.getElementById('importFileInput').click();
+}
+
+function handleImportFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            currentCMSData = deepMerge(DEFAULT_CMS_DATA, parsed);
+            localStorage.setItem('landingPageContent', JSON.stringify(currentCMSData));
+            populateFormFields();
+            showToast('Configuration imported successfully!');
+            refreshPreviewIframe();
+        } catch (err) {
+            alert('Invalid JSON file format.');
+        }
+    };
+    reader.readAsText(file);
+}
+
+// ── TAB SWITCHING ──
+function switchCMSTab(tabId, btn) {
+    document.querySelectorAll('.cms-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const target = document.getElementById(tabId);
+    if (target) target.classList.add('active');
+}
+
+// ── PREVIEW MODAL ──
+function openLivePreviewModal() {
+    saveCMSContent();
+    const modal = document.getElementById('previewModal');
+    if (modal) modal.classList.add('show');
+}
+
+function closeLivePreviewModal() {
+    const modal = document.getElementById('previewModal');
+    if (modal) modal.classList.remove('show');
+}
+
+function refreshPreviewIframe() {
+    const iframe = document.getElementById('previewIframe');
+    if (iframe) {
+        iframe.src = iframe.src;
+    }
+}
+
+// ── TOAST HELPER ──
+function showToast(msg) {
+    const toast = document.getElementById('cmsToast');
+    const text = document.getElementById('toastMessage');
+    if (text) text.textContent = msg;
+    if (toast) {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3800);
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+</script>
+</body>
+</html>
