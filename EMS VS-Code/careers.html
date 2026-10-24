@@ -130,7 +130,11 @@
     }
 
     @media (max-width: 640px) {
-      .job-card-top { flex-direction: column; }
+      .page, .topbar-inner { width: calc(100% - 24px); }
+      .hero { padding: 40px 0 24px; }
+      .hero h1 { font-size: 1.8rem; }
+      .job-card { padding: 20px 16px; border-radius: 18px; }
+      .job-card-top { flex-direction: column; gap: 12px; }
       .apply-btn { width: 100%; text-align: center; }
     }
   </style>

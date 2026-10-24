@@ -290,11 +290,18 @@
       }
     }
     @media (max-width: 540px) {
-      .auth-card { padding: 28px 16px; }
+      .auth-container { width: calc(100% - 24px); padding: 24px 0; }
+      .auth-card { padding: 28px 18px; border-radius: 20px; }
       .role-selector { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
       .role-option label { padding: 10px 2px; font-size: 0.72rem; border-radius: 10px; }
-      .role-icon { font-size: 1.2rem; }
+      .role-icon { font-size: 1.15rem; }
       .social-buttons { grid-template-columns: 1fr; }
+      .field input { font-size: 16px; }
+    }
+    @media (max-width: 400px) {
+      .auth-header h1 { font-size: 1.6rem; }
+      .role-selector { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .role-option label { padding: 8px 4px; font-size: 0.75rem; }
     }
   </style>
 </head>

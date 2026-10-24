@@ -7,9 +7,9 @@ const THEME_KEY = "ems_theme";
 
 // Automatically determine the relative path prefix to assets
 function getAssetsPathPrefix() {
-    const path = window.location.pathname;
+    const path = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase();
     // If in a subfolder (Admin, HR, manager, Employee, Intern)
-    if (path.includes('/Admin/') || path.includes('/HR/') || path.includes('/manager/') || path.includes('/Employee/') || path.includes('/Intern/')) {
+    if (path.includes('/admin/') || path.includes('/hr/') || path.includes('/manager/') || path.includes('/employee/') || path.includes('/intern/')) {
         return '../assets/';
     }
     return './assets/';
@@ -78,14 +78,91 @@ export function initTheme() {
     setTheme(current);
 }
 
-// Auto-run on script execution
+/**
+ * Initializes responsive mobile navigation & off-canvas drawer across all dashboards
+ */
+export function initMobileNavigation() {
+    if (typeof window === 'undefined') return;
+
+    // 1. Create mobile backdrop if not present
+    let backdrop = document.getElementById('emsMobileSidebarBackdrop');
+    if (!backdrop && document.body) {
+        backdrop = document.createElement('div');
+        backdrop.id = 'emsMobileSidebarBackdrop';
+        backdrop.className = 'ems-mobile-backdrop';
+        document.body.appendChild(backdrop);
+    }
+
+    const closeSidebar = () => {
+        const sidebars = document.querySelectorAll('.sidebar, [id$="Sidebar"], aside.sidebar');
+        sidebars.forEach(s => s.classList.remove('mobile-open'));
+        if (backdrop) backdrop.classList.remove('active');
+        if (document.body) document.body.classList.remove('mobile-nav-active');
+    };
+
+    if (backdrop && !backdrop.dataset.attached) {
+        backdrop.dataset.attached = "true";
+        backdrop.addEventListener('click', closeSidebar);
+    }
+
+    // 2. Wire up hamburger buttons
+    const hamburgers = document.querySelectorAll('.hamburger, #hamburgerToggle, #sidebarToggle, [id*="hamburger"], [id*="sidebarToggle"]');
+    hamburgers.forEach(btn => {
+        if (btn.dataset.mobileAttached) return;
+        btn.dataset.mobileAttached = "true";
+
+        btn.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.stopPropagation();
+                const sidebar = document.querySelector('.sidebar, [id$="Sidebar"], aside.sidebar');
+                if (sidebar) {
+                    const isOpen = sidebar.classList.contains('mobile-open');
+                    if (isOpen) {
+                        closeSidebar();
+                    } else {
+                        sidebar.classList.add('mobile-open');
+                        if (backdrop) backdrop.classList.add('active');
+                        if (document.body) document.body.classList.add('mobile-nav-active');
+                    }
+                }
+            }
+        });
+    });
+
+    // 3. Close when any link inside sidebar is tapped
+    const sidebarLinks = document.querySelectorAll('.sidebar a, [id$="Sidebar"] a');
+    sidebarLinks.forEach(link => {
+        if (!link.dataset.mobileCloseAttached) {
+            link.dataset.mobileCloseAttached = "true";
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        }
+    });
+
+    // 4. Ensure data tables have mobile horizontal scrolling container
+    document.querySelectorAll('table').forEach(tbl => {
+        const parent = tbl.parentElement;
+        if (parent && !parent.classList.contains('table-container') && !parent.classList.contains('table-wrap') && !parent.classList.contains('table-responsive')) {
+            parent.style.overflowX = 'auto';
+            parent.style.webkitOverflowScrolling = 'touch';
+            parent.style.maxWidth = '100%';
+        }
+    });
+}
+
+// Auto-run theme initialization
 initTheme();
 
-// Ensure body gets the class once DOM is ready
+// Ensure body gets theme class and mobile navigation once DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initTheme();
+        initMobileNavigation();
     });
 } else {
     initTheme();
+    initMobileNavigation();
 }
