@@ -195,10 +195,31 @@ body.light-theme {
 .light-theme .panel,
 .light-theme .panel-card,
 .light-theme .card,
+.light-theme .card-panel,
+.light-theme .mini-panel,
 .light-theme .chart-card,
 .light-theme .report-table,
 .light-theme .quick-report,
 .light-theme .table-panel,
+.light-theme .table-container,
+.light-theme .table-box,
+.light-theme .table-wrap,
+.light-theme .table-wrapper,
+.light-theme .data-table-container,
+.light-theme .items-table-wrapper,
+.light-theme .timesheet-table-wrap,
+.light-theme .sessions-table-wrap,
+.light-theme .roster-box,
+.light-theme .calendar-panel,
+.light-theme .today-clock-box,
+.light-theme .today-summary-box,
+.light-theme .my-leave-panel,
+.light-theme .section-panel-container,
+.light-theme .chart-panel-container,
+.light-theme .details-panel,
+.light-theme .notification-box,
+.light-theme .filter-panel,
+.light-theme .filter-card,
 .light-theme .form-container,
 .light-theme .grid-panel,
 .light-theme .att-card,
@@ -355,31 +376,298 @@ body.light-theme {
     background-color: #dc2626 !important;
 }
 
-/* ── TABLES ── */
-.light-theme table {
+/* ── TABLES & DATA GRIDS ── */
+.light-theme table,
+.light-theme .data-table,
+.light-theme .dept-table,
+.light-theme .document-table,
+.light-theme .emp-table,
+.light-theme .history-table,
+.light-theme .intern-table,
+.light-theme .items-table,
+.light-theme .leave-table,
+.light-theme .noti-table,
+.light-theme .panel-table,
+.light-theme .payroll-table,
+.light-theme .perf-table,
+.light-theme .project-table,
+.light-theme .recruitment-table,
+.light-theme .timesheet-table {
+    border-color: #e2e8f0 !important;
+    background-color: transparent !important;
+    color: #1e293b !important;
+}
+
+.light-theme thead,
+.light-theme table thead,
+.light-theme .data-table thead,
+.light-theme .dept-table thead,
+.light-theme .document-table thead,
+.light-theme .emp-table thead,
+.light-theme .history-table thead,
+.light-theme .intern-table thead,
+.light-theme .items-table thead,
+.light-theme .leave-table thead,
+.light-theme .noti-table thead,
+.light-theme .panel-table thead,
+.light-theme .payroll-table thead,
+.light-theme .perf-table thead,
+.light-theme .project-table thead,
+.light-theme .recruitment-table thead,
+.light-theme .timesheet-table thead {
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.light-theme th,
+.light-theme table th,
+.light-theme thead th,
+.light-theme .data-table th,
+.light-theme .dept-table th,
+.light-theme .document-table th,
+.light-theme .emp-table th,
+.light-theme .history-table th,
+.light-theme .intern-table th,
+.light-theme .items-table th,
+.light-theme .leave-table th,
+.light-theme .noti-table th,
+.light-theme .panel-table th,
+.light-theme .payroll-table th,
+.light-theme .perf-table th,
+.light-theme .project-table th,
+.light-theme .recruitment-table th,
+.light-theme .timesheet-table th {
+    color: #475569 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-top: none !important;
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
+}
+
+.light-theme td,
+.light-theme table td,
+.light-theme tbody td,
+.light-theme .data-table td,
+.light-theme .dept-table td,
+.light-theme .document-table td,
+.light-theme .emp-table td,
+.light-theme .history-table td,
+.light-theme .intern-table td,
+.light-theme .items-table td,
+.light-theme .leave-table td,
+.light-theme .noti-table td,
+.light-theme .panel-table td,
+.light-theme .payroll-table td,
+.light-theme .perf-table td,
+.light-theme .project-table td,
+.light-theme .recruitment-table td,
+.light-theme .timesheet-table td {
+    color: #334155 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     border-color: #e2e8f0 !important;
 }
 
-.light-theme thead {
-    background-color: #f1f5f9 !important;
-    background: #f1f5f9 !important;
+.light-theme tbody tr,
+.light-theme table tbody tr {
+    background-color: transparent !important;
 }
 
-.light-theme th {
-    color: #475569 !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    background-color: #f1f5f9 !important;
-    background: #f1f5f9 !important;
-}
-
-.light-theme td {
-    color: #334155 !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-.light-theme tbody tr:hover {
+.light-theme tbody tr:hover,
+.light-theme table tbody tr:hover,
+.light-theme .data-table tbody tr:hover,
+.light-theme .dept-table tbody tr:hover,
+.light-theme .document-table tbody tr:hover,
+.light-theme .emp-table tbody tr:hover,
+.light-theme .history-table tbody tr:hover,
+.light-theme .intern-table tbody tr:hover,
+.light-theme .items-table tbody tr:hover,
+.light-theme .leave-table tbody tr:hover,
+.light-theme .noti-table tbody tr:hover,
+.light-theme .panel-table tbody tr:hover,
+.light-theme .payroll-table tbody tr:hover,
+.light-theme .perf-table tbody tr:hover,
+.light-theme .project-table tbody tr:hover,
+.light-theme .recruitment-table tbody tr:hover,
+.light-theme .timesheet-table tbody tr:hover {
     background-color: #f8fafc !important;
     background: #f8fafc !important;
+}
+
+.light-theme tbody tr:hover td,
+.light-theme table tr:hover td,
+.light-theme .data-table tr:hover td,
+.light-theme .dept-table tr:hover td,
+.light-theme .document-table tr:hover td,
+.light-theme .emp-table tr:hover td,
+.light-theme .history-table tr:hover td,
+.light-theme .intern-table tr:hover td,
+.light-theme .items-table tr:hover td,
+.light-theme .leave-table tr:hover td,
+.light-theme .noti-table tr:hover td,
+.light-theme .payroll-table tr:hover td,
+.light-theme .perf-table tr:hover td,
+.light-theme .project-table tr:hover td,
+.light-theme .recruitment-table tr:hover td,
+.light-theme .timesheet-table tr:hover td {
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+.light-theme tr.selected td,
+.light-theme tr.active-row td,
+.light-theme .data-table tr.selected td,
+.light-theme .dept-table tr.selected td,
+.light-theme .document-table tr.selected td,
+.light-theme .emp-table tr.selected td,
+.light-theme .intern-table tr.selected td,
+.light-theme .leave-table tr.selected td,
+.light-theme .noti-table tr.selected td,
+.light-theme .payroll-table tr.selected td,
+.light-theme .perf-table tr.selected td {
+    background-color: #eff6ff !important;
+    background: #eff6ff !important;
+    color: #1e40af !important;
+}
+
+/* ── TABLE FOOTERS & PAGINATION BARS ── */
+.light-theme .table-footer,
+.light-theme .pagination-footer {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+}
+
+.light-theme .table-footer span,
+.light-theme .table-footer div,
+.light-theme .pagination-footer span,
+.light-theme .pagination-footer div,
+.light-theme #tableEntriesCounter {
+    color: #64748b !important;
+}
+
+/* ── TABLE ACTION BUTTONS & DROPDOWNS ── */
+.light-theme .btn-table-action,
+.light-theme .btn-table-dropdown {
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+}
+
+.light-theme .btn-table-action:hover,
+.light-theme .btn-table-dropdown:hover {
+    background-color: #e2e8f0 !important;
+    background: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+.light-theme .items-table input,
+.light-theme .items-table select {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+/* ── ROSTER, ATTENDANCE & CALENDAR STRIPS ── */
+.light-theme .roster-header,
+.light-theme .monthly-stats-strip,
+.light-theme .calendar-top-bar,
+.light-theme .calendar-legend {
+    background-color: #f8fafc !important;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+.light-theme .roster-search {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+.light-theme .roster-search input {
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+.light-theme .roster-badge {
+    background-color: #eff6ff !important;
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    border: 1px solid #bfdbfe !important;
+}
+
+.light-theme .timeline-info-row {
+    border-bottom-color: #e2e8f0 !important;
+    color: #64748b !important;
+}
+
+.light-theme .timeline-info-row span:last-child {
+    color: #0f172a !important;
+}
+
+/* ── TABLE CONTAINER SCROLLBARS ── */
+.light-theme .table-container::-webkit-scrollbar-thumb,
+.light-theme .table-box::-webkit-scrollbar-thumb,
+.light-theme .table-wrap::-webkit-scrollbar-thumb,
+.light-theme .table-wrapper::-webkit-scrollbar-thumb,
+.light-theme .table-panel::-webkit-scrollbar-thumb,
+.light-theme .timesheet-table-wrap::-webkit-scrollbar-thumb,
+.light-theme .sessions-table-wrap::-webkit-scrollbar-thumb,
+.light-theme .items-table-wrapper::-webkit-scrollbar-thumb,
+.light-theme .roster-box::-webkit-scrollbar-thumb,
+.light-theme .employee-panel::-webkit-scrollbar-thumb,
+.light-theme .employee-list::-webkit-scrollbar-thumb,
+.light-theme .directory-content::-webkit-scrollbar-thumb,
+.light-theme .details-content::-webkit-scrollbar-thumb,
+.light-theme .inspector-content::-webkit-scrollbar-thumb,
+.light-theme .comm-list::-webkit-scrollbar-thumb,
+.light-theme .chat-messages::-webkit-scrollbar-thumb,
+.light-theme .announcements-feed-stack::-webkit-scrollbar-thumb,
+.light-theme .workspace-content::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1 !important;
+    border-radius: 10px !important;
+}
+
+.light-theme .table-box::-webkit-scrollbar-track,
+.light-theme .table-container::-webkit-scrollbar-track,
+.light-theme .table-wrap::-webkit-scrollbar-track,
+.light-theme .timesheet-table-wrap::-webkit-scrollbar-track,
+.light-theme .sessions-table-wrap::-webkit-scrollbar-track {
+    background-color: #f8fafc !important;
+}
+
+/* ── DETAILS FOOTER & YTD SUB-CARDS ── */
+.light-theme .details-footer,
+.light-theme .modal-footer {
+    background-color: #f8fafc !important;
+    background: #f8fafc !important;
+    border-top: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+.light-theme .ytd-entry-subcard,
+.light-theme .summary-net-card,
+.light-theme .breakdown-box-panel {
+    background-color: #f8fafc !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+.light-theme .ytd-icon-min {
+    background-color: #eff6ff !important;
+    border: 1px solid #bfdbfe !important;
+    color: #2563eb !important;
 }
 
 .light-theme .emp-meta h4 {
