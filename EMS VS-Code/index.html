@@ -3063,13 +3063,13 @@
       transform: scale(1);
     }
 
-    /* Transparent vignette: only slight top & bottom edge fade, CENTER IS COMPLETELY CLEAR */
+    /* Transparent vignette: subtle gradient so images remain bright and crisp */
     .clear-slide-vignette {
       position: absolute;
       inset: 0;
       background: 
-        linear-gradient(180deg, rgba(18, 2, 25, 0.6) 0%, transparent 16%),
-        linear-gradient(0deg, rgba(18, 2, 25, 0.88) 0%, rgba(18, 2, 25, 0.2) 26%, transparent 50%);
+        linear-gradient(180deg, rgba(18, 2, 25, 0.5) 0%, transparent 16%),
+        linear-gradient(0deg, rgba(18, 2, 25, 0.72) 0%, rgba(18, 2, 25, 0.15) 24%, transparent 48%);
       z-index: 2;
       pointer-events: none;
     }
@@ -3081,16 +3081,17 @@
       width: 100%;
     }
 
-    /* Floating Frosted Glass Card: sleek, compact, readable */
+    /* Floating Hero Content Overlay: completely transparent box with luminous left accent line so images are 100% clearly visible */
     .clear-glass-card {
-      max-width: 660px;
-      background: rgba(22, 3, 31, 0.72);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1.5px solid rgba(192, 132, 252, 0.35);
-      border-radius: var(--radius-xl);
-      padding: 26px 32px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(168, 85, 247, 0.2);
+      max-width: 760px;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: none;
+      border-radius: 0;
+      padding: 0 0 0 22px;
+      border-left: 3.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow: -4px 0 20px rgba(168, 85, 247, 0.45);
       animation: clearCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
@@ -3108,63 +3109,135 @@
     .clear-card-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
+      gap: 10px;
+      padding: 7px 18px;
       border-radius: var(--radius-pill);
-      background: rgba(168, 85, 247, 0.25);
-      border: 1px solid rgba(192, 132, 252, 0.45);
-      color: #ffffff;
-      font-size: 0.76rem;
+      background: rgba(18, 2, 25, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff !important;
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 20px rgba(168, 85, 247, 0.25);
     }
 
     .clear-card-title {
-      font-size: clamp(2rem, 3.4vw, 2.9rem);
+      font-size: clamp(2.2rem, 3.8vw, 3.2rem);
       line-height: 1.15;
       font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+      margin-bottom: 14px;
+      letter-spacing: -0.025em;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 4px 28px rgba(0, 0, 0, 0.85), 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-text-glow {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+      background: none !important;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.7), 0 2px 12px rgba(0, 0, 0, 0.95);
+      display: inline;
+      font-weight: 800;
     }
 
     .clear-card-desc {
-      font-size: 0.96rem;
-      color: #e4d5ef;
-      line-height: 1.6;
-      margin-bottom: 22px;
+      font-size: 1.05rem;
+      color: #ffffff !important;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 660px;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95), 0 2px 16px rgba(0, 0, 0, 0.85);
+      font-weight: 450;
+      letter-spacing: 0.01em;
+    }
+
+    /* Attractive Hero Micro Feature Pills */
+    .clear-card-features {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .clear-feature-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(18, 2, 25, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff !important;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      transition: all 0.25s ease;
+    }
+
+    .clear-feature-chip:hover {
+      background: rgba(168, 85, 247, 0.35);
+      border-color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .clear-feature-chip i {
+      color: #2dd48f;
+      font-size: 0.82rem;
     }
 
     .clear-card-actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .btn-white {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: var(--radius-pill);
-      background: #ffffff;
-      color: #1a0325;
-      font-weight: 700;
-      font-size: 0.92rem;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
-      transition: all 0.25s ease;
+    .clear-card-actions .btn-ghost {
+      background: rgba(18, 2, 25, 0.65);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #ffffff !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
-    .btn-white:hover {
-      background: #f5edfa;
-      color: #120219;
+
+    .clear-card-actions .btn-ghost:hover {
+      background: rgba(168, 85, 247, 0.45);
+      border-color: #ffffff;
+      color: #ffffff !important;
       transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45);
+    }
+
+    .clear-card-actions .btn-primary {
+      box-shadow: 0 6px 24px rgba(168, 85, 247, 0.45);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .clear-card-actions .btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .clear-card-actions .btn-white {
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .clear-card-actions .btn-white:hover {
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.45);
+      transform: translateY(-2px) scale(1.03);
     }
 
     /* Side Nav Arrows */
@@ -3175,8 +3248,8 @@
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: rgba(22, 3, 31, 0.65);
-      border: 1.5px solid rgba(192, 132, 252, 0.35);
+      background: rgba(18, 2, 25, 0.68);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -3185,14 +3258,15 @@
       cursor: pointer;
       z-index: 10;
       backdrop-filter: blur(12px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .clear-nav-arrow:hover {
       background: var(--primary-violet);
       border-color: #ffffff;
       transform: translateY(-50%) scale(1.1);
-      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.5);
+      box-shadow: 0 8px 26px rgba(168, 85, 247, 0.6);
     }
     .clear-prev { left: 24px; }
     .clear-next { right: 24px; }
@@ -3204,17 +3278,22 @@
       right: 32px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
+      gap: 10px;
+      padding: 9px 20px;
       border-radius: var(--radius-pill);
       background: rgba(18, 2, 25, 0.72);
-      border: 1px solid rgba(192, 132, 252, 0.35);
-      color: #ffffff;
-      font-size: 0.76rem;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff !important;
+      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.25);
       z-index: 10;
+    }
+    .clear-top-status span {
+      color: #ffffff !important;
     }
 
     /* Bottom Pillar Tabs Bar */
@@ -3328,7 +3407,8 @@
         padding-bottom: 24px;
       }
       .clear-glass-card {
-        padding: 22px;
+        padding: 0 0 0 14px;
+        border-left-width: 2.5px;
       }
       .clear-pillar-tabs {
         grid-template-columns: repeat(2, 1fr);
@@ -3461,6 +3541,11 @@
             <p class="clear-card-desc">
               High-throughput data lakes, predictive AI neural models, enterprise ERP/CRM solutions, and scalable cloud architecture engineered for relentless global enterprise performance.
             </p>
+            <div class="clear-card-features">
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Enterprise Data Lakes</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Predictive AI Models</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> 99.99% Cloud Uptime</span>
+            </div>
             <div class="clear-card-actions">
               <a href="#services" onclick="filterServiceCategory('it-solutions', document.querySelector('.services-tab-btn[data-category=\'it-solutions\']'))" class="btn-primary">
                 <i class="fa-solid fa-cubes-stacked"></i>
@@ -3495,6 +3580,11 @@
             <p class="clear-card-desc">
               Hollywood-grade 3D character design, photorealistic CGI visual effects, commercial motion graphics, and generative AI video synthesis crafted inside our Infopark creative studio.
             </p>
+            <div class="clear-card-features">
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> 4K / 60FPS CGI VFX</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Generative AI Video</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Hollywood CGI Studio</span>
+            </div>
             <div class="clear-card-actions">
               <a href="#services" onclick="filterServiceCategory('animations', document.querySelector('.services-tab-btn[data-category=\'animations\']'))" class="btn-primary">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -3529,6 +3619,11 @@
             <p class="clear-card-desc">
               Unreal Engine 5.4 cybernetic worlds, real-time physics, AAA 3D environments, cross-platform multiplayer networking, and captivating gameplay across PC, console, and mobile.
             </p>
+            <div class="clear-card-features">
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Unreal Engine 5.4</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Real-time Lumen &amp; Nanite</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> AAA Multiplayer</span>
+            </div>
             <div class="clear-card-actions">
               <a href="#services" onclick="filterServiceCategory('game-dev', document.querySelector('.services-tab-btn[data-category=\'game-dev\']'))" class="btn-primary">
                 <i class="fa-solid fa-gamepad"></i>
@@ -3563,6 +3658,11 @@
             <p class="clear-card-desc">
               Pioneering spatial computing applications, medical training simulations, architectural digital twins, and immersive mixed reality built for Apple Vision Pro &amp; Meta Quest 3.
             </p>
+            <div class="clear-card-features">
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Apple Vision Pro</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Meta Quest 3 Spatial</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Medical &amp; Digital Twins</span>
+            </div>
             <div class="clear-card-actions">
               <a href="#services" onclick="filterServiceCategory('ar-vr', document.querySelector('.services-tab-btn[data-category=\'ar-vr\']'))" class="btn-primary">
                 <i class="fa-solid fa-vr-cardboard"></i>
@@ -3597,6 +3697,11 @@
             <p class="clear-card-desc">
               Accelerating brand dominance with high-intent algorithmic paid ads, viral short-form social reels, search engine authority, and full-funnel conversion engineering.
             </p>
+            <div class="clear-card-features">
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Algorithmic Paid ROI</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Viral Social Growth</span>
+              <span class="clear-feature-chip"><i class="fa-solid fa-circle-check"></i> Full-Funnel Engineering</span>
+            </div>
             <div class="clear-card-actions">
               <a href="#services" onclick="filterServiceCategory('digital-marketing', document.querySelector('.services-tab-btn[data-category=\'digital-marketing\']'))" class="btn-primary">
                 <i class="fa-solid fa-bullhorn"></i>
