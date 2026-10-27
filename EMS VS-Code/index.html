@@ -1174,7 +1174,7 @@
     /* ─── BENTO GRID (ABOUT SECTION) ─── */
     .bento-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 24px;
     }
 
@@ -1216,7 +1216,7 @@
     }
 
     .bento-card.highlight {
-      grid-column: span 2;
+      grid-column: 1 / -1;
       background: linear-gradient(135deg, #38064a 0%, #4e0b62 100%);
       border-color: #6b1487;
       color: #ffffff;
@@ -1556,16 +1556,17 @@
       position: relative;
     }
 
-    /* Individual Service Card matching PDF (Deep Violet Box + Emerald Pill) */
+    /* Individual Service Card (Matching sketch: Top Image Banner + Divider + Clean Title + Description) */
     .service-card-node {
-      background: #230533;
+      background: #1c0326;
       border: 1.5px solid rgba(192, 132, 252, 0.22);
-      border-radius: var(--radius-lg);
-      padding: 32px 26px 26px;
+      border-radius: 20px;
+      padding: 0;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow: hidden;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -1579,76 +1580,126 @@
       height: 3.5px;
       background: linear-gradient(90deg, #741793 0%, #a855f7 50%, #e879f9 100%);
       opacity: 0;
+      z-index: 4;
       transition: opacity 0.3s ease;
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
 
     .service-card-node:hover {
       transform: translateY(-8px);
       border-color: #c084fc;
-      background: #2f0744;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(168, 85, 247, 0.3);
+      background: #250532;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(168, 85, 247, 0.3);
     }
 
     .service-card-node:hover::before {
       opacity: 1;
     }
 
-    .service-node-icon {
-      width: 52px;
-      height: 52px;
+    /* Top Image Banner with Divider */
+    .service-card-media {
+      position: relative;
+      width: 100%;
+      height: 195px;
+      overflow: hidden;
+      background: #110216;
+      border-bottom: 1.5px solid rgba(192, 132, 252, 0.22);
+    }
+
+    .service-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .service-card-node:hover .service-card-img {
+      transform: scale(1.08);
+      filter: saturate(1.15) contrast(1.05);
+    }
+
+    .service-card-img-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(18, 2, 25, 0.1) 0%, rgba(18, 2, 25, 0.55) 100%);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-card-node:hover .service-card-img-vignette {
+      opacity: 0.35;
+    }
+
+    .service-card-icon-floating {
+      position: absolute;
+      bottom: 12px;
+      right: 14px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid rgba(255, 255, 255, 0.22);
+      background: rgba(22, 2, 30, 0.85);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
-      font-size: 1.3rem;
-      margin: 0 auto 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      color: var(--accent-cyan, #2dd4bf);
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      z-index: 2;
       transition: all 0.3s ease;
     }
 
-    .service-card-node:hover .service-node-icon {
+    .service-card-node:hover .service-card-icon-floating {
+      background: var(--primary-violet, #741793);
+      color: #ffffff;
       transform: scale(1.12) rotate(6deg);
-      border-color: var(--accent-cyan);
-      background: var(--accent-cyan);
-      color: #0b0110;
-      box-shadow: 0 6px 20px rgba(39, 196, 133, 0.45);
-    }
-
-    /* THE SIGNATURE EMERALD GREEN PILL FROM PDF */
-    .service-node-pill {
-      background: rgba(168, 85, 247, 0.24);
-      border: 1.5px solid rgba(192, 132, 252, 0.4);
-      color: #ffffff;
-      padding: 10px 18px;
-      border-radius: var(--radius-pill);
-      font-size: 0.98rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-      text-align: center;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-      transition: all 0.25s ease;
-      display: block;
-    }
-
-    .service-card-node:hover .service-node-pill {
-      background: #a855f7;
-      border-color: #ffffff;
-      color: #ffffff;
-      transform: scale(1.02);
+      border-color: #c084fc;
       box-shadow: 0 6px 18px rgba(168, 85, 247, 0.45);
     }
 
-    .service-node-desc {
-      color: #f1e4f7;
-      font-size: 0.93rem;
-      line-height: 1.65;
-      margin-bottom: 22px;
-      text-align: center;
+    /* Card Content Body (Title + Description + Footer) */
+    .service-card-body {
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .service-card-node .service-node-pill {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 0 10px 0 !important;
+      color: #ffffff !important;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-align: left;
+      line-height: 1.35;
+      display: block;
+      transition: color 0.25s ease;
+      transform: none !important;
+    }
+
+    .service-card-node:hover .service-node-pill {
+      color: #c084fc !important;
+      background: transparent !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .service-card-node .service-node-desc {
+      color: #d8c2e6;
+      font-size: 0.90rem;
+      line-height: 1.62;
+      margin-bottom: 20px;
+      text-align: left;
       flex: 1;
     }
 
@@ -1656,18 +1707,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 14px;
+      border-top: 1px solid rgba(192, 132, 252, 0.15);
       gap: 12px;
+      margin-top: auto;
     }
 
     .service-capability-tag {
       font-size: 0.74rem;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: var(--radius-pill);
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
+      background: rgba(192, 132, 252, 0.12);
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      color: #f1e4f7;
       font-weight: 600;
     }
 
@@ -1682,12 +1734,14 @@
       transition: all 0.2s ease;
       background: transparent;
       border: none;
+      padding: 0;
     }
 
     .service-inquire-btn:hover {
       color: #ffffff;
       text-shadow: 0 0 10px #c084fc;
       transform: translateX(3px);
+    }
     }
 
     /* ─── 4-STEP PIPELINE ─── */
@@ -2393,43 +2447,189 @@
       padding: 0 24px 22px;
     }
 
-    /* ─── CAREERS CTA BANNER ─── */
-    .careers-banner {
-      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: var(--radius-xl);
-      padding: 56px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 32px;
-      margin: 60px auto 30px;
+    /* ─── RECRUITMENT SECTION (MATCHING SKETCH) ─── */
+    .recruitment-card {
       position: relative;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(56, 6, 74, 0.2);
+      background: #180322;
+      border: 1.5px solid rgba(192, 132, 252, 0.28);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 35px rgba(116, 23, 147, 0.15);
+      margin: 10px auto 44px;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .careers-banner::after {
-      content: '';
+    .recruitment-card:hover {
+      border-color: #c084fc;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65), 0 0 45px rgba(168, 85, 247, 0.25);
+    }
+
+    /* Top Half Image */
+    .recruitment-media-wrap {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      background: #110216;
+    }
+
+    .recruitment-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.08) contrast(1.03);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .recruitment-card:hover .recruitment-img {
+      transform: scale(1.05);
+    }
+
+    .recruitment-img-vignette {
       position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(39, 196, 133, 0.3), transparent 70%);
+      inset: 0;
+      background: linear-gradient(180deg, rgba(18, 2, 25, 0.25) 0%, rgba(18, 2, 25, 0.75) 100%);
       pointer-events: none;
     }
 
-    .careers-banner-content h2 {
-      font-size: 2.2rem;
+    .recruitment-location-pill {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(18, 2, 25, 0.82);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #ffffff;
-      margin-bottom: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
     }
-    .careers-banner-content p {
-      color: #f1e4f7;
-      max-width: 600px;
-      font-size: 1.05rem;
+
+    .recruitment-location-pill i {
+      color: var(--accent-cyan);
+    }
+
+    /* Horizontal Divider Line across the container */
+    .recruitment-divider {
+      width: 100%;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(192, 132, 252, 0.08) 0%, rgba(192, 132, 252, 0.45) 50%, rgba(192, 132, 252, 0.08) 100%);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Lower Base Area */
+    .recruitment-lower-base {
+      flex: 1;
+      min-height: 240px;
+      background: radial-gradient(circle at 50% 100%, rgba(116, 23, 147, 0.25) 0%, transparent 70%),
+                  linear-gradient(180deg, #1b0324 0%, #120119 100%);
+    }
+
+    /* Centered Floating Inner Card matching sketch */
+    .recruitment-inner-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(560px, calc(100% - 48px));
+      background: rgba(26, 3, 36, 0.90);
+      border: 1.5px solid rgba(192, 132, 252, 0.38);
+      border-radius: 22px;
+      padding: 38px 36px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(168, 85, 247, 0.22);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.35s ease;
+    }
+
+    .recruitment-inner-card:hover {
+      border-color: #c084fc;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 45px rgba(168, 85, 247, 0.35);
+      transform: translate(-50%, calc(-50% - 4px));
+    }
+
+    .recruitment-inner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #c084fc;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .recruitment-inner-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .recruitment-inner-desc {
+      color: #e4d5ef;
+      font-size: 1.02rem;
+      line-height: 1.65;
+      margin: 0 0 26px;
+      max-width: 460px;
+    }
+
+    /* "Link" button matching sketch */
+    .recruitment-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 36px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #741793 0%, #a855f7 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 24px rgba(116, 23, 147, 0.45);
+      transition: all 0.28s ease;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .recruitment-link-btn:hover {
+      background: linear-gradient(135deg, #8a1cb0 0%, #c084fc 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(168, 85, 247, 0.55);
+      color: #ffffff;
+    }
+
+    .recruitment-link-btn i {
+      transition: transform 0.25s ease;
+    }
+
+    .recruitment-link-btn:hover i {
+      transform: translateX(4px);
     }
 
     /* ─── FOOTER (DEEP VIOLET AS SHOWN IN PDF) ─── */
@@ -3653,12 +3853,21 @@
         gap: 16px !important;
       }
       .service-card-node {
-        padding: 22px 18px 18px;
+        padding: 0 !important;
         border-radius: var(--radius-md);
+      .service-card-media {
+        height: 165px;
+      }
+      .service-card-body {
+        padding: 18px 16px 16px;
       }
       .service-node-pill {
+        font-size: 1.05rem !important;
+        padding: 0 !important;
+      }
+      .service-node-desc {
         font-size: 0.88rem;
-        padding: 8px 14px;
+      }
       }
       .service-node-desc {
         font-size: 0.88rem;
@@ -3806,15 +4015,35 @@
         word-break: break-all;
       }
 
-      /* Careers Banner & Open Positions */
-      .careers-banner {
-        padding: 28px 18px;
-        flex-direction: column;
-        text-align: center;
-        gap: 18px;
-        border-radius: var(--radius-lg);
+      /* Recruitment Showcase & Open Positions */
+      .recruitment-card {
+        min-height: auto;
       }
-      .careers-banner .btn-primary {
+      .recruitment-media-wrap {
+        height: 220px;
+      }
+      .recruitment-lower-base {
+        display: none;
+      }
+      .recruitment-inner-card {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: calc(100% - 24px);
+        margin: -60px auto 20px;
+        padding: 30px 20px;
+      }
+      .recruitment-inner-card:hover {
+        transform: translateY(-4px);
+      }
+      .recruitment-inner-title {
+        font-size: 1.85rem;
+      }
+      .recruitment-inner-desc {
+        font-size: 0.92rem;
+      }
+      .recruitment-link-btn {
         width: 100%;
         justify-content: center;
       }
@@ -4054,7 +4283,7 @@
         <a href="#about" class="nav-link">About us</a>
         <a href="#services" class="nav-link">Services</a>
         <a href="#products" class="nav-link">Product</a>
-        <a href="#careers" class="nav-link">Career</a>
+        <a href="#careers" class="nav-link">Recruitment</a>
         <a href="#contact" class="nav-link">Contact us</a>
       </nav>
 
@@ -4088,7 +4317,7 @@
         <li><a href="#about" class="drawer-link"><i class="fa-solid fa-users"></i> About us</a></li>
         <li><a href="#services" class="drawer-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Services</a></li>
         <li><a href="#products" class="drawer-link"><i class="fa-solid fa-box-open"></i> Product</a></li>
-        <li><a href="#careers" class="drawer-link"><i class="fa-solid fa-briefcase"></i> Career</a></li>
+        <li><a href="#careers" class="drawer-link"><i class="fa-solid fa-user-astronaut"></i> Recruitment</a></li>
         <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-paper-plane"></i> Contact us</a></li>
       </ul>
     </div>
@@ -4216,9 +4445,9 @@
                 <i class="fa-solid fa-gamepad"></i>
                 <span>Explore Game Studio</span>
               </a>
-              <a href="#work" class="btn-white">
+              <a href="#products" class="btn-white">
                 <i class="fa-solid fa-layer-group"></i>
-                <span>View Game Portfolio</span>
+                <span>Explore Products</span>
               </a>
               <a href="#contact" class="btn-ghost">
                 <i class="fa-solid fa-headset"></i>
@@ -4259,9 +4488,9 @@
                 <i class="fa-solid fa-cube"></i>
                 <span>Request Spatial Demo</span>
               </a>
-              <a href="#studio" class="btn-ghost">
-                <i class="fa-solid fa-eye"></i>
-                <span>Tour Spatial Bay</span>
+              <a href="tel:+919400197544" class="btn-ghost">
+                <i class="fa-solid fa-phone" style="color: var(--accent-emerald);"></i>
+                <span>+91 9400197544</span>
               </a>
             </div>
           </div>
@@ -4433,53 +4662,10 @@
           </div>
           <div class="bento-footer">
             <span class="service-tag">10+ Years of Craftsmanship</span>
-            <a href="#work" class="service-link" style="color: #ffffff;">View Highlights <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#services" class="service-link" style="color: #ffffff;">Explore Services <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Bento Card 2 -->
-        <article class="bento-card">
-          <div>
-            <div class="service-icon-box">
-              <i class="fa-solid fa-microchip"></i>
-            </div>
-            <span class="service-tag">Tech DNA</span>
-            <h3>Next-Gen Tech Pipeline</h3>
-            <p>
-              Automated cloud rendering, custom Python pipeline toolsets, and real-time raytracing ensure fast iterations with zero compromise on visual quality.
-            </p>
-            <ul class="service-features">
-              <li><i class="fa-solid fa-bolt"></i> Real-time Unreal Engine 5</li>
-              <li><i class="fa-solid fa-bolt"></i> GPU Farm Acceleration</li>
-            </ul>
-          </div>
-          <div class="bento-footer">
-            <span class="service-tag">High Performance</span>
-            <a href="#pipeline" class="service-link">Our Pipeline <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
-
-        <!-- Bento Card 3 -->
-        <article class="bento-card">
-          <div>
-            <div class="service-icon-box">
-              <i class="fa-solid fa-globe"></i>
-            </div>
-            <span class="service-tag">Global Footprint</span>
-            <h3>60+ International Clients</h3>
-            <p>
-              Trusted by entertainment giants, leading gaming studios, tech innovators, and enterprise leaders across India, USA, Europe, and UAE.
-            </p>
-            <ul class="service-features">
-              <li><i class="fa-solid fa-star"></i> 95% Repeat Partnership Rate</li>
-              <li><i class="fa-solid fa-shield"></i> Strict NDA & IP Protection</li>
-            </ul>
-          </div>
-          <div class="bento-footer">
-            <span class="service-tag">Enterprise Ready</span>
-            <a href="#contact" class="service-link">Partner With Us <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </article>
       </div>
     </div>
   </section>
@@ -4568,79 +4754,127 @@
           <div class="services-nodes-grid">
             <!-- 1.1 Custom Software Development -->
             <article class="service-card-node" data-keywords="custom software development applications secure scalable streamline efficiency growth">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-code"></i></div>
-                <span class="service-node-pill">Custom Software Development</span>
-                <p class="service-node-desc">We create tailor-made software solutions designed around your business needs. Our custom applications are secure, scalable, and built to streamline processes, boost efficiency, and drive growth.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Custom Software Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-code"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Tailor-Made &amp; Secure</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Custom Software Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Custom Software Development</h3>
+                  <p class="service-node-desc">We create tailor-made software solutions designed around your business needs. Our custom applications are secure, scalable, and built to streamline processes, boost efficiency, and drive growth.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Tailor-Made &amp; Secure</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Custom Software Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 1.2 Web Portal Development -->
             <article class="service-card-node" data-keywords="web portal development dynamic platforms collaboration streamline operations employees customers partners">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-globe"></i></div>
-                <span class="service-node-pill">Web Portal Development</span>
-                <p class="service-node-desc">Our Web Portals development services deliver dynamic, user-friendly platforms that connect businesses with customers, employees, and partners. We build secure, scalable portals tailored to enhance collaboration and streamline operations.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Web Portal Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-globe"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Scalable Portals</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Web Portal Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Web Portal Development</h3>
+                  <p class="service-node-desc">Our Web Portals development services deliver dynamic, user-friendly platforms that connect businesses with customers, employees, and partners. We build secure, scalable portals tailored to enhance collaboration and streamline operations.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Scalable Portals</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Web Portal Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 1.3 ERP/CRM/HRM Solutions -->
             <article class="service-card-node" data-keywords="erp crm hrm solutions operations customer relationships workforce management efficiency productivity ems">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-network-wired"></i></div>
-                <span class="service-node-pill">ERP/CRM/HRM Solutions</span>
-                <p class="service-node-desc">We deliver integrated ERP, CRM, and HRM solutions that streamline your business operations, improve customer relationships, and optimize workforce management. Our systems are tailored to enhance efficiency, productivity, and growth.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="ERP/CRM/HRM Solutions" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-network-wired"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Enterprise Efficiency</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('ERP/CRM/HRM Solutions')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">ERP/CRM/HRM Solutions</h3>
+                  <p class="service-node-desc">We deliver integrated ERP, CRM, and HRM solutions that streamline your business operations, improve customer relationships, and optimize workforce management. Our systems are tailored to enhance efficiency, productivity, and growth.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Enterprise Efficiency</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('ERP/CRM/HRM Solutions')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 1.4 UI/UX Designing -->
             <article class="service-card-node" data-keywords="ui ux designing intuitive visually engaging elevate user experience conversions usability aesthetics devices figma">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-bezier-curve"></i></div>
-                <span class="service-node-pill">UI/UX Designing</span>
-                <p class="service-node-desc">We craft intuitive and visually engaging UI/UX designs that elevate user experience and drive conversions. Our designs focus on usability aesthetics and seamless navigation across all devices.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80" alt="UI/UX Designing" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-bezier-curve"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Usability Aesthetics</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('UI/UX Designing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">UI/UX Designing</h3>
+                  <p class="service-node-desc">We craft intuitive and visually engaging UI/UX designs that elevate user experience and drive conversions. Our designs focus on usability aesthetics and seamless navigation across all devices.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Usability Aesthetics</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('UI/UX Designing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 1.5 Mobile App Development -->
             <article class="service-card-node" data-keywords="mobile app development android ios intuitive high performance engage users scalability security flutter react native">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                <span class="service-node-pill">Mobile App Development</span>
-                <p class="service-node-desc">We create intuitive and high-performance mobile apps for Android and iOS that engage users and drive business growth. Our apps are designed for seamless user experience, scalability, and security.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80" alt="Mobile App Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Android &amp; iOS Native</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Mobile App Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Mobile App Development</h3>
+                  <p class="service-node-desc">We create intuitive and high-performance mobile apps for Android and iOS that engage users and drive business growth. Our apps are designed for seamless user experience, scalability, and security.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Android &amp; iOS Native</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Mobile App Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 1.6 Website Development -->
             <article class="service-card-node" data-keywords="website development responsive visually appealing engage users results performance user experience business growth">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-window-maximize"></i></div>
-                <span class="service-node-pill">Website Development</span>
-                <p class="service-node-desc">We design and develop responsive, visually appealing websites that engage users and drive results. Our websites are optimized for performance, user experience, and business growth across all devices.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800&q=80" alt="Website Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-window-maximize"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">High Performance Web</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Website Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Website Development</h3>
+                  <p class="service-node-desc">We design and develop responsive, visually appealing websites that engage users and drive results. Our websites are optimized for performance, user experience, and business growth across all devices.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">High Performance Web</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Website Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -4662,92 +4896,148 @@
           <div class="services-nodes-grid">
             <!-- 2.1 AI Video Production -->
             <article class="service-card-node" data-keywords="ai video production artificial intelligence generated videos ideas quickly efficiently creativity scalable engaging">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <span class="service-node-pill">AI Video Production</span>
-                <p class="service-node-desc">We create high-quality AI-generated videos that bring your ideas to life quickly and efficiently. Our solutions combine creativity and scalability to produce engaging, professional, and scalable video content.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="AI Video Production" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Generative AI Video</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('AI Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">AI Video Production</h3>
+                  <p class="service-node-desc">We create high-quality AI-generated videos that bring your ideas to life quickly and efficiently. Our solutions combine creativity and scalability to produce engaging, professional, and scalable video content.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Generative AI Video</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('AI Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.2 Explainer Video Creation -->
             <article class="service-card-node" data-keywords="explainer video creation compelling simplify complex concepts captivate audience increase engagement drive action">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                <span class="service-node-pill">Explainer Video Creation</span>
-                <p class="service-node-desc">We craft compelling explainer videos that simplify complex concepts and captivate your audience. Our videos are designed to increase engagement and drive action.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80" alt="Explainer Video Creation" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-lightbulb"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">High-Clarity Narrative</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Explainer Video Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Explainer Video Creation</h3>
+                  <p class="service-node-desc">We craft compelling explainer videos that simplify complex concepts and captivate your audience. Our videos are designed to increase engagement and drive action.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">High-Clarity Narrative</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Explainer Video Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.3 Product Visualization -->
             <article class="service-card-node" data-keywords="product visualization realistic 3d product showcase detail elevate marketing branding informed design decisions">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-cube"></i></div>
-                <span class="service-node-pill">Product Visualization</span>
-                <p class="service-node-desc">We create realistic 3D product visualizations that showcase your products in stunning detail. Our visuals help businesses elevate marketing, enhance branding, and make informed design decisions.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" alt="Product Visualization" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-cube"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Photoreal 3D CGI</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Product Visualization')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Product Visualization</h3>
+                  <p class="service-node-desc">We create realistic 3D product visualizations that showcase your products in stunning detail. Our visuals help businesses elevate marketing, enhance branding, and make informed design decisions.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Photoreal 3D CGI</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Product Visualization')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.4 Social Media Reels Creation -->
             <article class="service-card-node" data-keywords="social media reels creation eye-catching engage audiences boost brand presence creative videos drive interaction shares online engagement tiktok instagram youtube">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-photo-film"></i></div>
-                <span class="service-node-pill">Social Media Reels Creation</span>
-                <p class="service-node-desc">We produce eye-catching social media reels that engage audiences and boost your brand presence. Our creative videos are designed to drive interaction, shares, and meaningful online engagement.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80" alt="Social Media Reels Creation" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-photo-film"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Viral Reels &amp; Shorts</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Reels Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Social Media Reels Creation</h3>
+                  <p class="service-node-desc">We produce eye-catching social media reels that engage audiences and boost your brand presence. Our creative videos are designed to drive interaction, shares, and meaningful online engagement.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Viral Reels &amp; Shorts</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Reels Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.5 Corporate Video Production -->
             <article class="service-card-node" data-keywords="corporate video production professional communicate vision values achievements inform inspire engage stakeholders executive">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-briefcase"></i></div>
-                <span class="service-node-pill">Corporate Video Production</span>
-                <p class="service-node-desc">We produce professional corporate videos that clearly communicate your brand's vision, values, and achievements. Our videos are designed to inform, inspire, and engage stakeholders.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80" alt="Corporate Video Production" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-briefcase"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Brand Storytelling</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Corporate Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Corporate Video Production</h3>
+                  <p class="service-node-desc">We produce professional corporate videos that clearly communicate your brand's vision, values, and achievements. Our videos are designed to inform, inspire, and engage stakeholders.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Brand Storytelling</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Corporate Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.6 Marketing Video Production -->
             <article class="service-card-node" data-keywords="marketing video production compelling capture attention drive customer engagement promote brand highlight benefits measurable results">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-bullhorn"></i></div>
-                <span class="service-node-pill">Marketing Video Production</span>
-                <p class="service-node-desc">We produce compelling marketing videos that capture attention and drive customer engagement. Our videos are designed to promote your brand, highlight benefits, and generate measurable results.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80" alt="Marketing Video Production" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-bullhorn"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Conversion Focused</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Marketing Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Marketing Video Production</h3>
+                  <p class="service-node-desc">We produce compelling marketing videos that capture attention and drive customer engagement. Our videos are designed to promote your brand, highlight benefits, and generate measurable results.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Conversion Focused</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Marketing Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 2.7 Training Video Production -->
             <article class="service-card-node" data-keywords="training video production engaging simplify learning enhance skill development educate employees improve retention streamline training">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
-                <span class="service-node-pill">Training Video Production</span>
-                <p class="service-node-desc">We develop engaging training videos that simplify learning and enhance skill development. Our videos are designed to educate employees, improve retention, and streamline training processes.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="Training Video Production" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Interactive Learning</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Training Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Training Video Production</h3>
+                  <p class="service-node-desc">We develop engaging training videos that simplify learning and enhance skill development. Our videos are designed to educate employees, improve retention, and streamline training processes.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Interactive Learning</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Training Video Production')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -4769,79 +5059,127 @@
           <div class="services-nodes-grid">
             <!-- 3.1 Motion Graphics -->
             <article class="service-card-node" data-keywords="motion graphics dynamic bring ideas stories life presentations videos digital content engage audiences communicate messages effectively after effects">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-shapes"></i></div>
-                <span class="service-node-pill">Motion Graphics</span>
-                <p class="service-node-desc">We create dynamic motion graphics that bring your ideas and stories to life. Our animations enhance presentations, videos, and digital content to engage audiences and communicate messages effectively.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Motion Graphics" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-shapes"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Dynamic Kinetic Motion</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Motion Graphics')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Motion Graphics</h3>
+                  <p class="service-node-desc">We create dynamic motion graphics that bring your ideas and stories to life. Our animations enhance presentations, videos, and digital content to engage audiences and communicate messages effectively.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Dynamic Kinetic Motion</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Motion Graphics')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 3.2 Character Designing And Creation -->
             <article class="service-card-node" data-keywords="character designing and creation craft unique memorable characters resonate brand animations games marketing connect audiences">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-user-astronaut"></i></div>
-                <span class="service-node-pill">Character Designing And Creation</span>
-                <p class="service-node-desc">We craft unique and memorable characters that resonate with your brand. Our characters are tailored for animations, games, and marketing to connect with audiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80" alt="Character Designing And Creation" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-user-astronaut"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Iconic Character IP</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Character Designing And Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Character Designing And Creation</h3>
+                  <p class="service-node-desc">We craft unique and memorable characters that resonate with your brand. Our characters are tailored for animations, games, and marketing to connect with audiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Iconic Character IP</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Character Designing And Creation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 3.3 Character/ Product 3D Modeling -->
             <article class="service-card-node" data-keywords="character product 3d modeling detailed models characters products games animations marketing virtual experiences maya blender zbrush">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-cubes"></i></div>
-                <span class="service-node-pill">Character/ Product 3D Modeling</span>
-                <p class="service-node-desc">We create detailed 3D models of characters and products that bring your ideas to life. Our models are optimized for games, animations, marketing, and virtual experiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80" alt="Character/ Product 3D Modeling" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-cubes"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Subdivision &amp; Retopology</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Character/ Product 3D Modeling')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Character/ Product 3D Modeling</h3>
+                  <p class="service-node-desc">We create detailed 3D models of characters and products that bring your ideas to life. Our models are optimized for games, animations, marketing, and virtual experiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Subdivision &amp; Retopology</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Character/ Product 3D Modeling')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 3.4 2D/3D Animations -->
             <article class="service-card-node" data-keywords="2d 3d animations captivating bring ideas stories products life marketing training games immersive digital experiences">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-play"></i></div>
-                <span class="service-node-pill">2D/3D Animations</span>
-                <p class="service-node-desc">We produce captivating 2D and 3D animations that bring ideas, stories, and products to life. Our animations are perfect for marketing, training, games, and immersive digital experiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80" alt="2D/3D Animations" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-play"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Cinema-Grade Motion</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('2D/3D Animations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">2D/3D Animations</h3>
+                  <p class="service-node-desc">We produce captivating 2D and 3D animations that bring ideas, stories, and products to life. Our animations are perfect for marketing, training, games, and immersive digital experiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Cinema-Grade Motion</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('2D/3D Animations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 3.5 Whiteboard Animations -->
             <article class="service-card-node" data-keywords="whiteboard animations engaging simplify complex ideas communicate messages effectively education marketing storytelling captivate inspire audiences">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-pen-fancy"></i></div>
-                <span class="service-node-pill">Whiteboard Animations</span>
-                <p class="service-node-desc">We create engaging whiteboard animations that simplify complex ideas and communicate messages effectively. Our videos are perfect for education, marketing, and storytelling to captivate and inspire audiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80" alt="Whiteboard Animations" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-pen-fancy"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Visual Sketch Explainer</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Whiteboard Animations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Whiteboard Animations</h3>
+                  <p class="service-node-desc">We create engaging whiteboard animations that simplify complex ideas and communicate messages effectively. Our videos are perfect for education, marketing, and storytelling to captivate and inspire audiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Visual Sketch Explainer</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Whiteboard Animations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 3.6 VFX Services -->
             <article class="service-card-node" data-keywords="vfx services visual effects high-quality solutions enhance visuals imagination films commercials games digital media stunning immersive experiences houdini">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-fire"></i></div>
-                <span class="service-node-pill">VFX Services</span>
-                <p class="service-node-desc">We deliver high-quality VFX solutions that enhance visuals and bring imagination to life. Our effects are crafted for films, commercials, games, and digital media to create stunning, immersive experiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" alt="VFX Services" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-fire"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Pyro &amp; Particle FX</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('VFX Services')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">VFX Services</h3>
+                  <p class="service-node-desc">We deliver high-quality VFX solutions that enhance visuals and bring imagination to life. Our effects are crafted for films, commercials, games, and digital media to create stunning, immersive experiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Pyro &amp; Particle FX</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('VFX Services')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -4863,66 +5201,106 @@
           <div class="services-nodes-grid">
             <!-- 4.1 Game Designing: Concept Development -->
             <article class="service-card-node" data-keywords="game designing concept development innovative concepts lay foundation engaging immersive gameplay turn ideas playable experiences entertain captivate players gdd">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-chess-knight"></i></div>
-                <span class="service-node-pill">Game Designing: Concept Development</span>
-                <p class="service-node-desc">We craft innovative game concepts and designs that lay the foundation for engaging and immersive gameplay. Our services turn ideas into playable experiences tailored to entertain and captivate players.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" alt="Game Designing: Concept Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-chess-knight"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Game Design &amp; GDD</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Game Designing: Concept Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Game Designing: Concept Development</h3>
+                  <p class="service-node-desc">We craft innovative game concepts and designs that lay the foundation for engaging and immersive gameplay. Our services turn ideas into playable experiences tailored to entertain and captivate players.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Game Design &amp; GDD</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Game Designing: Concept Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 4.2 Game Art Animation -->
             <article class="service-card-node" data-keywords="game art animation visually stunning bring characters environments assets life gameplay players imagination 2d 3d sprites rigging">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-palette"></i></div>
-                <span class="service-node-pill">Game Art Animation</span>
-                <p class="service-node-desc">We deliver visually stunning game art and animations that bring characters, environments, and assets to life. Our art enhances gameplay and captures players' imagination.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80" alt="Game Art Animation" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-palette"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Game Assets &amp; Rigging</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Game Art Animation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Game Art Animation</h3>
+                  <p class="service-node-desc">We deliver visually stunning game art and animations that bring characters, environments, and assets to life. Our art enhances gameplay and captures players' imagination.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Game Assets &amp; Rigging</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Game Art Animation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 4.3 Game UI/UX Development -->
             <article class="service-card-node" data-keywords="game ui ux development intuitive engaging interfaces player experience immersion seamless navigation responsive controls aesthetic game interaction hud">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-layer-group"></i></div>
-                <span class="service-node-pill">Game UI/UX Development</span>
-                <p class="service-node-desc">We develop intuitive and engaging UI/UX interfaces that elevate player experience and immersion. Our interfaces are crafted for seamless navigation, responsive controls, and aesthetic game interaction.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="Game UI/UX Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Immersive Game HUD</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Game UI/UX Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Game UI/UX Development</h3>
+                  <p class="service-node-desc">We develop intuitive and engaging UI/UX interfaces that elevate player experience and immersion. Our interfaces are crafted for seamless navigation, responsive controls, and aesthetic game interaction.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Immersive Game HUD</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Game UI/UX Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 4.4 Game Programming/Development -->
             <article class="service-card-node" data-keywords="game programming development high performance games smooth programming robust architecture platform smooth gameplay responsive mechanics immersive unreal engine 5 unity c++ c#">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-terminal"></i></div>
-                <span class="service-node-pill">Game Programming/Development</span>
-                <p class="service-node-desc">We develop high-performance games with smooth programming and robust architecture tailored to your platform. Our development ensures smooth gameplay, responsive mechanics, and immersive player experiences across platforms.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1556438064-2d7646166914?auto=format&fit=crop&w=800&q=80" alt="Game Programming/Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-terminal"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Unreal Engine 5 &amp; Unity</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Game Programming/Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Game Programming/Development</h3>
+                  <p class="service-node-desc">We develop high-performance games with smooth programming and robust architecture tailored to your platform. Our development ensures smooth gameplay, responsive mechanics, and immersive player experiences across platforms.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Unreal Engine 5 &amp; Unity</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Game Programming/Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 4.5 Game Testing -->
             <article class="service-card-node" data-keywords="game testing thorough performance balanced gameplay bug-free experiences qa process stability user satisfaction overall game quality launch">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-bug-slash"></i></div>
-                <span class="service-node-pill">Game Testing</span>
-                <p class="service-node-desc">We provide thorough game testing to ensure flawless performance, balanced gameplay, and bug-free experiences. Our QA process enhances stability, user satisfaction, and overall game quality before launch.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=800&q=80" alt="Game Testing" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-bug-slash"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Multi-Device QA</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Game Testing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Game Testing</h3>
+                  <p class="service-node-desc">We provide thorough game testing to ensure flawless performance, balanced gameplay, and bug-free experiences. Our QA process enhances stability, user satisfaction, and overall game quality before launch.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Multi-Device QA</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Game Testing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -4944,79 +5322,127 @@
           <div class="services-nodes-grid">
             <!-- 5.1 AR/VR App Development -->
             <article class="service-card-node" data-keywords="ar vr app development augmented virtual reality applications engage users transform experiences cutting-edge technology intuitive design gaming training marketing enterprise">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-headset"></i></div>
-                <span class="service-node-pill">AR/VR App Development</span>
-                <p class="service-node-desc">We create immersive AR and VR applications that engage users and transform experiences. Our solutions combine cutting-edge technology with intuitive design for gaming, training, marketing, and enterprise use.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=800&q=80" alt="AR/VR App Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-headset"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Spatial Computing</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('AR/VR App Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">AR/VR App Development</h3>
+                  <p class="service-node-desc">We create immersive AR and VR applications that engage users and transform experiences. Our solutions combine cutting-edge technology with intuitive design for gaming, training, marketing, and enterprise use.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Spatial Computing</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('AR/VR App Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 5.2 AR/VR Environment Development -->
             <article class="service-card-node" data-keywords="ar vr environment development realistic interactive 3d environments immerse users virtual worlds gaming simulations training virtual tours">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-mountain-sun"></i></div>
-                <span class="service-node-pill">AR/VR Environment Development</span>
-                <p class="service-node-desc">We build realistic and interactive 3D environments that immerse users in virtual worlds. Our environments are optimized for gaming, simulations, training, and virtual tours.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1626379953822-baec19c3accd?auto=format&fit=crop&w=800&q=80" alt="AR/VR Environment Development" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-mountain-sun"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Photoreal Metaverses</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('AR/VR Environment Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">AR/VR Environment Development</h3>
+                  <p class="service-node-desc">We build realistic and interactive 3D environments that immerse users in virtual worlds. Our environments are optimized for gaming, simulations, training, and virtual tours.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Photoreal Metaverses</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('AR/VR Environment Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 5.3 Immersive Training Simulations -->
             <article class="service-card-node" data-keywords="immersive training simulations interactive realistic hands-on learning experiences skill development improve retention employees real-world scenarios vr simulator">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-person-chalkboard"></i></div>
-                <span class="service-node-pill">Immersive Training Simulations</span>
-                <p class="service-node-desc">We develop interactive training simulations that provide realistic, hands-on learning experiences. Our simulations enhance skill development, improve retention, and prepare employees for real-world scenarios.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80" alt="Immersive Training Simulations" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-person-chalkboard"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Industrial &amp; Flight Sim</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Immersive Training Simulations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Immersive Training Simulations</h3>
+                  <p class="service-node-desc">We develop interactive training simulations that provide realistic, hands-on learning experiences. Our simulations enhance skill development, improve retention, and prepare employees for real-world scenarios.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Industrial &amp; Flight Sim</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Immersive Training Simulations')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 5.4 Architectural VR Visualization -->
             <article class="service-card-node" data-keywords="architectural vr visualization 3d visualizations virtual walkthroughs real estate properties realistically marketing design decisions sales engagement archviz">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-building"></i></div>
-                <span class="service-node-pill">Architectural VR Visualization</span>
-                <p class="service-node-desc">We create stunning 3D visualizations and virtual walkthroughs for architectural and real estate projects. Our visuals help clients experience properties realistically, enhancing marketing, design decisions, and sales engagement.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Architectural VR Visualization" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-building"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Real Estate Walkthroughs</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Architectural VR Visualization')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Architectural VR Visualization</h3>
+                  <p class="service-node-desc">We create stunning 3D visualizations and virtual walkthroughs for architectural and real estate projects. Our visuals help clients experience properties realistically, enhancing marketing, design decisions, and sales engagement.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Real Estate Walkthroughs</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Architectural VR Visualization')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 5.5 Healthcare And Medical VR Solutions -->
             <article class="service-card-node" data-keywords="healthcare and medical vr solutions immersive medical training simulations students professionals patients surgical practice patient care">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-                <span class="service-node-pill">Healthcare And Medical VR Solutions</span>
-                <p class="service-node-desc">We develop immersive VR solutions for medical and healthcare training, enabling realistic simulations for students, professionals, and patients. Our VR solutions improve learning, surgical practice, and patient care through immersive experiences.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" alt="Healthcare And Medical VR Solutions" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-heart-pulse"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Surgical &amp; Clinical VR</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Healthcare And Medical VR Solutions')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Healthcare And Medical VR Solutions</h3>
+                  <p class="service-node-desc">We develop immersive VR solutions for medical and healthcare training, enabling realistic simulations for students, professionals, and patients. Our VR solutions improve learning, surgical practice, and patient care through immersive experiences.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Surgical &amp; Clinical VR</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Healthcare And Medical VR Solutions')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 5.6 UI/UX Designing For AR/VR Platforms -->
             <article class="service-card-node" data-keywords="ui ux designing for ar vr platforms intuitive immersive user experiences visionos quest navigation responsive controls virtual environments">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-hand-pointer"></i></div>
-                <span class="service-node-pill">UI/UX Designing For AR/VR Platforms</span>
-                <p class="service-node-desc">We design intuitive and immersive UI/UX experiences tailored for AR and VR platforms. Our interfaces ensure seamless navigation, responsive controls, and effortless virtual environments for users.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1617802690992-15d93263d3a9?auto=format&fit=crop&w=800&q=80" alt="UI/UX Designing For AR/VR Platforms" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-hand-pointer"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Spatial UX &amp; Gestures</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('UI/UX Designing For AR/VR Platforms')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">UI/UX Designing For AR/VR Platforms</h3>
+                  <p class="service-node-desc">We design intuitive and immersive UI/UX experiences tailored for AR and VR platforms. Our interfaces ensure seamless navigation, responsive controls, and effortless virtual environments for users.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Spatial UX &amp; Gestures</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('UI/UX Designing For AR/VR Platforms')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -5038,92 +5464,148 @@
           <div class="services-nodes-grid">
             <!-- 6.1 Search Engine Optimization (SEO) -->
             <article class="service-card-node" data-keywords="search engine optimization seo optimize website rankings organic traffic online visibility technical on-page off-page google rank">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                <span class="service-node-pill">Search Engine Optimization (SEO)</span>
-                <p class="service-node-desc">We optimize your website to improve search engine rankings, increase organic traffic, and boost online visibility. Our SEO strategies combine technical, on-page, and off-page techniques for measurable results.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80" alt="Search Engine Optimization (SEO)" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-magnifying-glass-chart"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Rank #1 Growth</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Search Engine Optimization (SEO)')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Search Engine Optimization (SEO)</h3>
+                  <p class="service-node-desc">We optimize your website to improve search engine rankings, increase organic traffic, and boost online visibility. Our SEO strategies combine technical, on-page, and off-page techniques for measurable results.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Rank #1 Growth</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Search Engine Optimization (SEO)')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.2 Content Marketing -->
             <article class="service-card-node" data-keywords="content marketing craft compelling relevant engaging brand awareness trust audience educate inspire convert copywriting">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-newspaper"></i></div>
-                <span class="service-node-pill">Content Marketing</span>
-                <p class="service-node-desc">We craft compelling, relevant, and engaging content that drives brand awareness, builds trust, and connects with your audience. Our content strategies are designed to educate, inspire, and convert.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80" alt="Content Marketing" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-newspaper"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">High-Impact Copywriting</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Content Marketing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Content Marketing</h3>
+                  <p class="service-node-desc">We craft compelling, relevant, and engaging content that drives brand awareness, builds trust, and connects with your audience. Our content strategies are designed to educate, inspire, and convert.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">High-Impact Copywriting</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Content Marketing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.3 Email Marketing Automation -->
             <article class="service-card-node" data-keywords="email marketing automation automated campaigns nurture leads customer engagement conversions personalized customer relationships increase roi newsletters">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
-                <span class="service-node-pill">Email Marketing Automation</span>
-                <p class="service-node-desc">We design and execute automated email campaigns that nurture leads, boost customer engagement, and drive conversions. Our personalized email strategies build lasting customer relationships and increase ROI.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Email Marketing Automation" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Automated Nurture ROI</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Email Marketing Automation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Email Marketing Automation</h3>
+                  <p class="service-node-desc">We design and execute automated email campaigns that nurture leads, boost customer engagement, and drive conversions. Our personalized email strategies build lasting customer relationships and increase ROI.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Automated Nurture ROI</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Email Marketing Automation')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.4 Affiliate And Influencer Marketing -->
             <article class="service-card-node" data-keywords="affiliate and influencer marketing connect brand right affiliates influencers expand reach credibility drive sales engagement marketing results">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
-                <span class="service-node-pill">Affiliate And Influencer Marketing</span>
-                <p class="service-node-desc">We connect your brand with the right affiliates and influencers to expand reach, build credibility, and drive sales. Our strategies maximize engagement and generate measurable marketing results.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Affiliate And Influencer Marketing" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-users-viewfinder"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Influencer Outreach</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Affiliate And Influencer Marketing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Affiliate And Influencer Marketing</h3>
+                  <p class="service-node-desc">We connect your brand with the right affiliates and influencers to expand reach, build credibility, and drive sales. Our strategies maximize engagement and generate measurable marketing results.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Influencer Outreach</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Affiliate And Influencer Marketing')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.5 Social Media Strategy And Planning -->
             <article class="service-card-node" data-keywords="social media strategy and planning customized strategies business goals target audience brand identity data-driven consistent growth online presence">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-calendar-check"></i></div>
-                <span class="service-node-pill">Social Media Strategy And Planning</span>
-                <p class="service-node-desc">We develop customized social media strategies that align with your business goals, target audience, and brand identity. Our data-driven approach ensures consistent growth and strong online presence.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Social Media Strategy And Planning" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Data-Driven Growth</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Strategy And Planning')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Social Media Strategy And Planning</h3>
+                  <p class="service-node-desc">We develop customized social media strategies that align with your business goals, target audience, and brand identity. Our data-driven approach ensures consistent growth and strong online presence.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Data-Driven Growth</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Strategy And Planning')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.6 S M Community Management -->
             <article class="service-card-node" data-keywords="s m community management manage engage social media communities build strong relationships comments discussions active loyal followers">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-comments"></i></div>
-                <span class="service-node-pill">S M Community Management</span>
-                <p class="service-node-desc">We manage and engage your social media communities to build strong relationships with your audience. Our services include responding to comments, moderating discussions, and fostering active, loyal followers.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="S M Community Management" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-comments"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Active Audience Retention</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('S M Community Management')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">S M Community Management</h3>
+                  <p class="service-node-desc">We manage and engage your social media communities to build strong relationships with your audience. Our services include responding to comments, moderating discussions, and fostering active, loyal followers.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Active Audience Retention</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('S M Community Management')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
 
             <!-- 6.7 Social Media Paid Ads -->
             <article class="service-card-node" data-keywords="social media paid ads create manage targeted ad campaigns reach audience measurable results optimize budget boost conversions roi facebook instagram linkedin x">
-              <div>
-                <div class="service-node-icon"><i class="fa-solid fa-bullseye"></i></div>
-                <span class="service-node-pill">Social Media Paid Ads</span>
-                <p class="service-node-desc">We create and manage targeted social media ad campaigns to reach the right audience and drive measurable results. Our campaigns optimize budget, boost conversions, and ROI across platforms like Facebook, Instagram, LinkedIn, and X.</p>
+              <div class="service-card-media">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Social Media Paid Ads" class="service-card-img" loading="lazy" />
+                <div class="service-card-img-vignette"></div>
+                <div class="service-card-icon-floating">
+                  <i class="fa-solid fa-bullseye"></i>
+                </div>
               </div>
-              <div class="service-node-footer">
-                <span class="service-capability-tag">Performance Ad ROI</span>
-                <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Paid Ads')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+              <div class="service-card-body">
+                <div>
+                  <h3 class="service-node-pill">Social Media Paid Ads</h3>
+                  <p class="service-node-desc">We create and manage targeted social media ad campaigns to reach the right audience and drive measurable results. Our campaigns optimize budget, boost conversions, and ROI across platforms like Facebook, Instagram, LinkedIn, and X.</p>
+                </div>
+                <div class="service-node-footer">
+                  <span class="service-capability-tag">Performance Ad ROI</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Social Media Paid Ads')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
               </div>
             </article>
           </div>
@@ -5335,277 +5817,6 @@
     </div>
   </section>
 
-  <!-- ─── FEATURED WORK / PORTFOLIO ─── -->
-  <section class="section-wrap" id="work">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-clapperboard"></i> Portfolio</span>
-        <h2 class="section-title">Selected <span class="gradient-text">Masterpieces & Case Studies</span></h2>
-        <p class="section-subtitle">
-          Explore a curated selection of our recent 3D animation, interactive XR games, VFX films, and enterprise software.
-        </p>
-      </div>
-
-      <!-- Filter Tabs -->
-      <div class="filter-tabs">
-        <button class="filter-btn active" data-filter="all">All Projects</button>
-        <button class="filter-btn" data-filter="animation">3D Animation</button>
-        <button class="filter-btn" data-filter="games">Games & XR</button>
-        <button class="filter-btn" data-filter="motion">Motion & VFX</button>
-        <button class="filter-btn" data-filter="software">IT & Web Apps</button>
-      </div>
-
-      <!-- Portfolio Grid -->
-      <div class="portfolio-grid">
-        <!-- Item 1 -->
-        <article class="portfolio-card" data-category="animation">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">3D Animation</span>
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80" alt="Cyber City 3D CGI" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('Cyber City 2099', '3D CGI Cinematic Short', 'A futuristic cybernetic metropolis cinematic featuring custom character rigging, volumetric neon lighting, and high-octane vehicular chases crafted in Maya and Blender.', 'Cyberpunk Media Corp', 'Maya • Houdini • Octane Render')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>Cyber City 2099</h3>
-              <p>Futuristic cinematic short with advanced character rigging and volumetric lighting.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">3D CGI</span>
-              <span class="meta-tag">Maya</span>
-              <span class="meta-tag">Octane</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Item 2 -->
-        <article class="portfolio-card" data-category="games">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">Games & XR</span>
-            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80" alt="Aero Quest Game" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('Aero Quest VR', 'Unreal Engine 5 VR Flight Combat', 'An adrenaline-fueled VR flight simulation with spatial audio, photorealistic weather systems, and low-latency multiplayer netcode.', 'Nova Interactive', 'Unreal Engine 5 • Meta Quest 3 • C++')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>Aero Quest VR Flight</h3>
-              <p>High-octane VR aerial combat simulation with real-time multiplayer dogfights.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">Unreal Engine 5</span>
-              <span class="meta-tag">VR Sim</span>
-              <span class="meta-tag">C++</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Item 3 -->
-        <article class="portfolio-card" data-category="motion">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">Motion & VFX</span>
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80" alt="FinTech Explainer" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('FinTech Genesis Explainer', 'Motion Graphics Brand Campaign', 'A dynamic 3D motion graphics brand film that simplified complex decentralized finance architectures for global launch.', 'Apex Pay International', 'After Effects • Cinema 4D • Redshift')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>FinTech Genesis Campaign</h3>
-              <p>3D motion graphics brand film simplifying decentralized finance architectures.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">Motion Graphics</span>
-              <span class="meta-tag">After Effects</span>
-              <span class="meta-tag">C4D</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Item 4 -->
-        <article class="portfolio-card" data-category="software">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">IT & Web Apps</span>
-            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80" alt="EMS Enterprise System" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('Paoyaila EMS Suite', 'Enterprise Employee & Intern Management System', 'Complete modular multi-role EMS with payroll generation, attendance analytics, leave approval matrices, and intern task tracking.', 'Internal & Enterprise Clients', 'JavaScript • Firebase • Chart.js • CSS3')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>Paoyaila EMS Platform</h3>
-              <p>Comprehensive Employee, HR, Manager & Intern management ecosystem.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">EMS Suite</span>
-              <span class="meta-tag">Full-Stack</span>
-              <span class="meta-tag">Realtime DB</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Item 5 -->
-        <article class="portfolio-card" data-category="games">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">Games & XR</span>
-            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80" alt="Chronicles of Eldoria" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('Chronicles of Eldoria', 'Cross-Platform Action RPG', 'Rich fantasy roleplaying game with custom combat mechanics, fluid character animation blending, and immersive worldbuilding.', 'Mythic Realm Games', 'Unity 6 • C# • Blender • Spine 2D')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>Chronicles of Eldoria</h3>
-              <p>Cross-platform mobile action RPG featuring fluid animation blending.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">Unity 6</span>
-              <span class="meta-tag">Action RPG</span>
-              <span class="meta-tag">3D Blending</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Item 6 -->
-        <article class="portfolio-card" data-category="animation">
-          <div class="portfolio-thumb-wrap">
-            <span class="portfolio-category-pill">3D Animation</span>
-            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80" alt="Solaris Luxury Automobile" class="portfolio-img" />
-            <div class="portfolio-quick-view" onclick="openProjectModal('Solaris EV Launch', 'Photorealistic Automotive Visualizer', 'Photorealistic automotive lighting, procedural carbon fiber shaders, and interactive 3D configurator for electric luxury vehicles.', 'Solaris Motors', 'Unreal Engine 5 • Ray Tracing • WebGL')">
-              <span class="btn-view-project"><i class="fa-solid fa-eye"></i> View Case Study</span>
-            </div>
-          </div>
-          <div class="portfolio-info">
-            <div>
-              <h3>Solaris EV Launch Film</h3>
-              <p>Photorealistic 3D automotive commercial with real-time web configurator.</p>
-            </div>
-            <div class="portfolio-meta-tags">
-              <span class="meta-tag">Auto CGI</span>
-              <span class="meta-tag">Unreal 5.4</span>
-              <span class="meta-tag">Raytracing</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── INSIDE OUR STUDIO / VIRTUAL TOUR ─── -->
-  <section class="section-wrap" id="studio" style="background: #180324;">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-building"></i> Studio Tour</span>
-        <h2 class="section-title">Inside Our <span class="gradient-text">Creative Space</span></h2>
-        <p class="section-subtitle">
-          Take a peek inside our Mumbai production facility where cutting-edge technology and passionate artists converge.
-        </p>
-      </div>
-
-      <div class="studio-grid">
-        <div class="studio-card" onclick="openStudioModal('Open Production Floor', 'Our open-plan creative studio floor facilitates spontaneous brainstorming and seamless collaboration between 3D animators, modelers, and technical directors.', 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80')">
-          <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="Studio Floor" class="studio-img" />
-          <div class="studio-card-overlay">
-            <span class="studio-tag">Workspace</span>
-            <h3>Open Production Floor</h3>
-            <p>High-spec dual monitor creative suites for animators and designers.</p>
-          </div>
-        </div>
-
-        <div class="studio-card" onclick="openStudioModal('Render & Color Bay', 'Equipped with color-calibrated OLED reference monitors, multi-GPU render workstations, and sound dampening for final delivery polish.', 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80')">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80" alt="Render Bay" class="studio-img" />
-          <div class="studio-card-overlay">
-            <span class="studio-tag">Post-Production</span>
-            <h3>Render & Color Grading Bay</h3>
-            <p>Calibrated mastering suites for 4K color grading, audio sync & compositing.</p>
-          </div>
-        </div>
-
-        <div class="studio-card" onclick="openStudioModal('XR & Motion Review Lab', 'Interactive screening zone with VR headsets, tracking sensors, and 4K projection for client presentations and playtests.', 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80')">
-          <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80" alt="Review Room" class="studio-img" />
-          <div class="studio-card-overlay">
-            <span class="studio-tag">Innovation Lab</span>
-            <h3>XR & Motion Review Lab</h3>
-            <p>Spatial testing room for VR prototypes, playtests, and live client dailies.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── TESTIMONIALS ─── -->
-  <section class="section-wrap" id="testimonials">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-star"></i> Client Endorsements</span>
-        <h2 class="section-title">Trusted by Industry <span class="gradient-text">Pioneers Worldwide</span></h2>
-        <p class="section-subtitle">
-          See what our global partners have to say about our creative execution, technical rigor, and delivery speed.
-        </p>
-      </div>
-
-      <div class="testimonials-grid">
-        <!-- Testimonial 1 -->
-        <article class="testimonial-card">
-          <div>
-            <div class="star-rating">
-              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Paoyaila delivered an outstanding 3D animation commercial for our flagship launch. The character modeling and lighting exceeded Hollywood standards, and the turnaround time was phenomenal."
-            </p>
-          </div>
-          <div class="client-profile">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
-            <div class="client-meta">
-              <h5>Elena Rostova</h5>
-              <span>VP of Marketing, Horizon Digital (UK)</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Testimonial 2 -->
-        <article class="testimonial-card">
-          <div>
-            <div class="star-rating">
-              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Their Unreal Engine 5 expertise is second to none. They built a highly interactive VR training suite for our enterprise team that reduced onboarding cycle time by 45%."
-            </p>
-          </div>
-          <div class="client-profile">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
-            <div class="client-meta">
-              <h5>Marcus Vance</h5>
-              <span>Lead Producer, Apex Interactive (USA)</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Testimonial 3 -->
-        <article class="testimonial-card">
-          <div>
-            <div class="star-rating">
-              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-            </div>
-            <p class="testimonial-quote">
-              "Not only did they produce beautiful VFX motion assets for our brand, but their custom enterprise software implementation streamlined our internal workflows tremendously."
-            </p>
-          </div>
-          <div class="client-profile">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Client Avatar" class="client-avatar" />
-            <div class="client-meta">
-              <h5>Priya Sharma</h5>
-              <span>Director of Product, NovaTech India</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <!-- ─── INTERACTIVE ESTIMATOR & CONTACT FORM ─── -->
   <section class="section-wrap" id="contact" style="background: #120219; border-top: 1px solid rgba(192, 132, 252, 0.15);">
     <div class="container">
@@ -5756,77 +5967,52 @@
     </div>
   </section>
 
-  <!-- ─── FAQ ACCORDION ─── -->
-  <section class="section-wrap" style="padding-top: 40px;">
+  <!-- ─── RECRUITMENT SECTION (MATCHING SKETCH) ─── -->
+  <section class="section-wrap" id="careers" style="padding-top: 40px; border-top: 1px solid rgba(192, 132, 252, 0.15);">
+    <div id="recruitment" style="position: relative; top: -80px; visibility: hidden;"></div>
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag"><i class="fa-solid fa-circle-question"></i> Common Inquiries</span>
-        <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+      <div class="section-header" style="text-align: center; margin-bottom: 36px;">
+        <div class="services-pill-badge" style="margin: 0 auto 14px;">
+          <i class="fa-solid fa-sparkles"></i>
+          <span>RECRUITMENT</span>
+          <i class="fa-solid fa-sparkles"></i>
+        </div>
+        <h2 class="section-title">Join Our <span class="gradient-text">World-Class Team</span></h2>
+        <p class="section-subtitle">
+          Be part of an ambitious studio shaping the future of digital artistry, real-time 3D, and high-performance technology.
+        </p>
       </div>
 
-      <div class="faq-container">
-        <!-- FAQ 1 -->
-        <div class="faq-item active">
-          <div class="faq-question" onclick="toggleFaq(this)">
-            <span>What 3D software and rendering engines do you utilize?</span>
-            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
-          </div>
-          <div class="faq-answer">
-            Our pipeline primarily leverages Autodesk Maya, Blender 4, Houdini FX, and Unreal Engine 5.4 with real-time Lumen and Nanite rendering. For post-production, we rely on Adobe After Effects, DaVinci Resolve, and Foundry Nuke.
-          </div>
+      <!-- Recruitment Showcase Card (Matching Hand-Drawn Sketch) -->
+      <div class="recruitment-card">
+        <div class="recruitment-media-wrap">
+          <img src="assets/images/paoyaila-office-hq.jpg" alt="Paoyaila Studio Office" class="recruitment-img" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80'" />
+          <div class="recruitment-img-vignette"></div>
+          <span class="recruitment-location-pill"><i class="fa-solid fa-location-dot"></i> Infopark Kochi • Studio HQ</span>
         </div>
 
-        <!-- FAQ 2 -->
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFaq(this)">
-            <span>How does your project milestone and revision cycle work?</span>
-            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
-          </div>
-          <div class="faq-answer">
-            We follow a structured 4-phase approval cycle: Storyboard/Animatic sign-off, Rough 3D Layout review, Textured/Lighting preview, and Final 4K Render mastering. Standard contracts include up to 2 major revision iterations per phase.
-          </div>
-        </div>
+        <div class="recruitment-divider"></div>
 
-        <!-- FAQ 3 -->
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFaq(this)">
-            <span>Can Paoyaila build custom enterprise ERP and EMS portals?</span>
-            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
-          </div>
-          <div class="faq-answer">
-            Yes! In addition to digital animation, we design and engineer full-stack Employee Management Systems (EMS), payroll engines, multi-tiered role authentication portals, and real-time database integrations.
-          </div>
-        </div>
+        <div class="recruitment-lower-base"></div>
 
-        <!-- FAQ 4 -->
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFaq(this)">
-            <span>Do you offer internship programs for aspiring 3D artists?</span>
-            <div class="faq-icon"><i class="fa-solid fa-chevron-down"></i></div>
-          </div>
-          <div class="faq-answer">
-            Absolutely. We run dedicated 3-month and 6-month intensive internship programs with direct mentorship from senior TDs and animators. Visit our <a href="careers.html" style="color: var(--accent-cyan); text-decoration: underline;">Careers Portal</a> to apply!
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── CAREERS CTA & OPEN ROLES ─── -->
-  <section class="section-wrap" id="careers" style="padding-top: 30px;">
-    <div class="container">
-      <div class="careers-banner">
-        <div class="careers-banner-content">
-          <span class="section-tag" id="cmsCareerBadge" style="background: rgba(255,255,255,0.15); color: #ffffff;"><i class="fa-solid fa-user-astronaut"></i> We Are Hiring</span>
-          <h2 id="cmsCareerHeadline">Join Our High-Energy Creative Studio</h2>
-          <p id="cmsCareerSubtext">
-            We are constantly searching for passionate 3D modelers, Unreal Engine gameplay developers, motion designers, and full-stack software engineers.
+        <!-- Centered Floating Inner Card from Sketch -->
+        <div class="recruitment-inner-card">
+          <span class="recruitment-inner-badge" id="cmsCareerBadge">
+            <i class="fa-solid fa-user-astronaut"></i> We Are Hiring
+          </span>
+          <h3 class="recruitment-inner-title" id="cmsCareerHeadline">
+            We Are <span class="gradient-text">Hiring</span>
+          </h3>
+          <p class="recruitment-inner-desc" id="cmsCareerSubtext">
+            We are constantly searching for passionate 3D artists, Unreal Engine gameplay developers, motion designers, and full-stack software engineers to build the extraordinary.
           </p>
+          <a href="careers.html" class="recruitment-link-btn" id="cmsCareerLink">
+            <span>Explore Open Roles</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
-        <a href="careers.html" class="btn-primary" style="padding: 16px 32px; font-size: 1.05rem; background: #ffffff; color: var(--primary-violet); border: none;">
-          <i class="fa-solid fa-sparkles" style="color: var(--primary-violet);"></i> <span style="color: var(--primary-violet);">View All Positions</span>
-        </a>
       </div>
+
 
       <!-- Featured Positions Grid (CMS Connected) -->
       <div class="career-positions-grid" id="landingCareersGrid">
