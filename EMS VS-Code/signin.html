@@ -403,6 +403,18 @@
     </div>
   </div>
 
+  <script>
+    (function initSigninRoleAndSession() {
+      // Clear any previous session when explicitly visiting sign-in so authentication is required
+      localStorage.removeItem('emsUser');
+      const params = new URLSearchParams(window.location.search);
+      const roleParam = (params.get('role') || '').toLowerCase();
+      if (roleParam) {
+        const radio = document.getElementById('role-' + roleParam);
+        if (radio) radio.checked = true;
+      }
+    })();
+  </script>
   <script type="module">
     import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";

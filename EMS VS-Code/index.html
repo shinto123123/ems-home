@@ -4433,6 +4433,283 @@
       }
     }
 
+    /* ─── 1. WHO WE ARE: CENTER ALIGN BOX CONTENT ─── */
+    #about .bento-card.highlight {
+      text-align: center !important;
+      align-items: center !important;
+    }
+    #about .bento-card.highlight > div:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    #about .bento-card.highlight .service-icon-box {
+      margin: 0 auto 20px !important;
+    }
+    #about .bento-card.highlight h3 {
+      text-align: center !important;
+      max-width: 760px;
+      margin: 0 auto 14px !important;
+    }
+    #about .bento-card.highlight p {
+      text-align: center !important;
+      max-width: 780px;
+      margin: 0 auto 26px !important;
+    }
+    #about .bento-card.highlight .service-features {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 14px 28px !important;
+      max-width: 780px;
+      margin: 0 auto 28px !important;
+    }
+    #about .bento-card.highlight .service-features li {
+      justify-content: center;
+    }
+    #about .bento-card.highlight .bento-footer {
+      width: 100%;
+      justify-content: center !important;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── 2. SERVICES: INCREASED BOX LENGTH + SMALL CONTENT UNDER TITLE ─── */
+    #services .service-card-node {
+      height: 385px !important;
+    }
+    .service-card-front-heading {
+      padding: 18px 20px 20px !important;
+      min-height: 118px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      background: linear-gradient(180deg, #1c0326 0%, #14021c 100%);
+      text-align: center;
+    }
+    .service-front-sub {
+      color: #d8c2e6;
+      font-size: 0.83rem;
+      line-height: 1.45;
+      margin: 0;
+      max-width: 95%;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-weight: 500;
+    }
+    .services-small-lead {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 18px;
+      border-radius: var(--radius-pill);
+      background: rgba(45, 212, 143, 0.12);
+      border: 1px solid rgba(45, 212, 143, 0.32);
+      color: #2dd48f;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* ─── 3. PRODUCTS: HAND-DRAWN SKETCH LAYOUT (TOP IMAGE + DIVIDER + CONTENT) ─── */
+    #products .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    #products .product-card {
+      padding: 0 !important;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #1c0326;
+      border: 1.5px solid rgba(192, 132, 252, 0.26);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-sketch-media {
+      position: relative;
+      width: 100%;
+      height: 205px;
+      overflow: hidden;
+      background: #110216;
+    }
+    .product-sketch-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #products .product-card:hover .product-sketch-img {
+      transform: scale(1.06);
+    }
+    .product-sketch-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(18, 2, 25, 0.15) 0%, rgba(18, 2, 25, 0.72) 100%);
+      pointer-events: none;
+    }
+    .product-sketch-divider {
+      width: 100%;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(192, 132, 252, 0.12) 0%, rgba(192, 132, 252, 0.55) 50%, rgba(192, 132, 252, 0.12) 100%);
+    }
+    .product-sketch-body {
+      padding: 24px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #21042d 0%, #16021f 100%);
+    }
+    .product-sketch-body h3 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .product-sketch-body .product-tagline {
+      text-align: center;
+      color: #2dd48f;
+      margin-bottom: 12px;
+    }
+    .product-sketch-body .product-desc {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .product-sketch-body .product-card-footer {
+      width: 100%;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    /* ─── 4. HOW WE WORK: SINGLE UNIFIED STEP-BY-STEP BOX ─── */
+    .pipeline-single-box {
+      background: linear-gradient(145deg, #240433 0%, #170221 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.32);
+      border-radius: 26px;
+      padding: 42px 36px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .pipeline-single-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #741793 0%, #a855f7 50%, #2dd48f 100%);
+    }
+    .pipeline-steps-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      position: relative;
+    }
+    .pipeline-step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 12px 10px;
+    }
+    .pipeline-step-item:not(:last-child)::after {
+      content: '\f061';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      top: 26px;
+      right: -20px;
+      color: #2dd48f;
+      font-size: 1rem;
+      opacity: 0.75;
+    }
+    .pipeline-step-item h4 {
+      font-size: 1.18rem;
+      color: #ffffff;
+      margin: 14px 0 8px;
+    }
+    .pipeline-step-item p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ─── 5. CAREER: BRINJAL GREEN LARGE BOX UNDER IMAGE AREA ─── */
+    #careers .recruitment-card {
+      background: #14031c;
+      border-color: rgba(45, 212, 143, 0.38);
+    }
+    #careers .recruitment-divider {
+      height: 2px;
+      background: linear-gradient(90deg, rgba(45, 212, 143, 0.12) 0%, #2dd48f 50%, rgba(168, 85, 247, 0.25) 100%);
+    }
+    #careers .recruitment-lower-base {
+      background:
+        radial-gradient(circle at 50% 100%, rgba(45, 212, 143, 0.32) 0%, rgba(16, 185, 129, 0.14) 45%, transparent 75%),
+        linear-gradient(135deg, #1d0428 0%, #0b3b2d 52%, #0f543e 100%) !important;
+      min-height: 250px;
+    }
+    #careers .recruitment-inner-card {
+      background: linear-gradient(145deg, rgba(27, 5, 38, 0.94) 0%, rgba(10, 58, 43, 0.94) 100%) !important;
+      border: 1.5px solid rgba(45, 212, 143, 0.5) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 36px rgba(45, 212, 143, 0.22) !important;
+    }
+    #careers .recruitment-inner-card:hover {
+      border-color: #2dd48f !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(45, 212, 143, 0.35) !important;
+    }
+    #careers .recruitment-inner-badge {
+      background: rgba(45, 212, 143, 0.16) !important;
+      border: 1px solid rgba(45, 212, 143, 0.45) !important;
+      color: #2dd48f !important;
+    }
+    #careers .recruitment-inner-title .gradient-text {
+      background: linear-gradient(135deg, #d8b4fe 0%, #2dd48f 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    #careers .recruitment-link-btn {
+      background: linear-gradient(135deg, #3b0752 0%, #0d7a56 55%, #2dd48f 100%) !important;
+      border: 1px solid rgba(45, 212, 143, 0.5) !important;
+      box-shadow: 0 8px 24px rgba(13, 122, 86, 0.45) !important;
+    }
+    #careers .recruitment-link-btn:hover {
+      background: linear-gradient(135deg, #4c0969 0%, #109468 50%, #34d399 100%) !important;
+      box-shadow: 0 12px 30px rgba(45, 212, 143, 0.5) !important;
+    }
+
+    @media (max-width: 960px) {
+      .pipeline-steps-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pipeline-step-item:not(:last-child)::after {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      #services .service-card-node {
+        height: 350px !important;
+      }
+      .pipeline-single-box {
+        padding: 28px 20px;
+      }
+      .pipeline-steps-list {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -4458,7 +4735,7 @@
         <a href="#about" class="nav-link">About us</a>
         <a href="#services" class="nav-link">Services</a>
         <a href="#products" class="nav-link">Product</a>
-        <a href="#careers" class="nav-link">Recruitment</a>
+        <a href="#careers" class="nav-link">Career</a>
         <a href="#contact" class="nav-link">Contact us</a>
       </nav>
 
@@ -4492,7 +4769,7 @@
         <li><a href="#about" class="drawer-link"><i class="fa-solid fa-users"></i> About us</a></li>
         <li><a href="#services" class="drawer-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Services</a></li>
         <li><a href="#products" class="drawer-link"><i class="fa-solid fa-box-open"></i> Product</a></li>
-        <li><a href="#careers" class="drawer-link"><i class="fa-solid fa-user-astronaut"></i> Recruitment</a></li>
+        <li><a href="#careers" class="drawer-link"><i class="fa-solid fa-user-astronaut"></i> Career</a></li>
         <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-paper-plane"></i> Contact us</a></li>
       </ul>
     </div>
@@ -5032,23 +5309,23 @@
               </div>
             </article>
 
-            <!-- 1.6 Website Development -->
-            <article class="service-card-node" data-keywords="website development responsive visually appealing engage users results performance user experience business growth">
+            <!-- 1.6 Data Analytics -->
+            <article class="service-card-node" data-keywords="data analytics business intelligence bi dashboards predictive modeling kpi insights reporting big data">
               <div class="service-card-media">
-                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800&q=80" alt="Website Development" class="service-card-img" loading="lazy" />
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85" alt="Data Analytics" class="service-card-img" loading="lazy" />
                 <div class="service-card-img-vignette"></div>
                 <div class="service-card-icon-floating">
-                  <i class="fa-solid fa-window-maximize"></i>
+                  <i class="fa-solid fa-chart-pie"></i>
                 </div>
               </div>
               <div class="service-card-body">
                 <div>
-                  <h3 class="service-node-pill">Website Development</h3>
-                  <p class="service-node-desc">We design and develop responsive, visually appealing websites that engage users and drive results. Our websites are optimized for performance, user experience, and business growth across all devices.</p>
+                  <h3 class="service-node-pill">Data Analytics</h3>
+                  <p class="service-node-desc">We transform complex business data into actionable intelligence through interactive BI dashboards, predictive modeling, KPI tracking, and real-time analytics that drive smarter decisions and measurable growth.</p>
                 </div>
                 <div class="service-node-footer">
-                  <span class="service-capability-tag">High Performance Web</span>
-                  <button type="button" class="service-inquire-btn" onclick="inquireService('Website Development')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
+                  <span class="service-capability-tag">Predictive BI &amp; Insights</span>
+                  <button type="button" class="service-inquire-btn" onclick="inquireService('Data Analytics')">Inquire <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
               </div>
             </article>
@@ -5824,7 +6101,7 @@
           </div>
           <div class="product-card-footer">
             <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;"><i class="fa-solid fa-shield-halved" style="color: var(--primary-violet);"></i> Cloud Enterprise</span>
-            <a href="Admin/index.html" class="btn-primary" style="padding: 10px 22px; font-size: 0.88rem;">
+            <a href="signin.html?role=admin" class="btn-primary" style="padding: 10px 22px; font-size: 0.88rem;">
               <span>Launch Portal</span> <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i>
             </a>
           </div>
@@ -6149,7 +6426,7 @@
       <div class="section-header" style="text-align: center; margin-bottom: 36px;">
         <div class="services-pill-badge" style="margin: 0 auto 14px;">
           <i class="fa-solid fa-sparkles"></i>
-          <span>RECRUITMENT</span>
+          <span>CAREER</span>
           <i class="fa-solid fa-sparkles"></i>
         </div>
         <h2 class="section-title">Join Our <span class="gradient-text">World-Class Team</span></h2>
@@ -6190,7 +6467,7 @@
 
 
       <!-- Featured Positions Grid (CMS Connected) -->
-      <div class="career-positions-grid" id="landingCareersGrid">
+      <div class="career-positions-grid" id="landingCareersGrid" style="display: none !important;">
         <div class="career-card-item">
           <div>
             <div class="career-meta-tags" style="margin-bottom: 12px;">
@@ -6285,11 +6562,11 @@
           <h4>EMS Ecosystem</h4>
           <ul class="footer-links-list">
             <li><a href="signin.html"><i class="fa-solid fa-lock" style="font-size: 0.7rem; color: var(--accent-cyan);"></i> Central Sign In</a></li>
-            <li><a href="Admin/index.html"><i class="fa-solid fa-crown" style="font-size: 0.7rem; color: #f59e0b;"></i> Admin Dashboard</a></li>
-            <li><a href="HR/index.html"><i class="fa-solid fa-users" style="font-size: 0.7rem; color: var(--accent-cyan);"></i> HR &amp; Recruitment</a></li>
-            <li><a href="manager/index.html"><i class="fa-solid fa-briefcase" style="font-size: 0.7rem; color: var(--accent-indigo);"></i> Manager Portal</a></li>
-            <li><a href="Employee/index.html"><i class="fa-solid fa-user-tie" style="font-size: 0.7rem; color: var(--accent-emerald);"></i> Employee Desk</a></li>
-            <li><a href="Intern/index.html"><i class="fa-solid fa-graduation-cap" style="font-size: 0.7rem; color: var(--accent-purple);"></i> Intern Work Logs</a></li>
+            <li><a href="signin.html?role=admin"><i class="fa-solid fa-crown" style="font-size: 0.7rem; color: #f59e0b;"></i> Admin Dashboard</a></li>
+            <li><a href="signin.html?role=hr"><i class="fa-solid fa-users" style="font-size: 0.7rem; color: var(--accent-cyan);"></i> HR &amp; Career</a></li>
+            <li><a href="signin.html?role=manager"><i class="fa-solid fa-briefcase" style="font-size: 0.7rem; color: var(--accent-indigo);"></i> Manager Portal</a></li>
+            <li><a href="signin.html?role=employee"><i class="fa-solid fa-user-tie" style="font-size: 0.7rem; color: var(--accent-emerald);"></i> Employee Desk</a></li>
+            <li><a href="signin.html?role=intern"><i class="fa-solid fa-graduation-cap" style="font-size: 0.7rem; color: var(--accent-purple);"></i> Intern Work Logs</a></li>
           </ul>
         </div>
 
@@ -7175,7 +7452,7 @@
         'ERP/CRM/HRM Solutions': 'IT Solutions',
         'UI/UX Designing': 'IT Solutions',
         'Mobile App Development': 'IT Solutions',
-        'Website Development': 'IT Solutions',
+        'Data Analytics': 'IT Solutions',
         'AI Video Production': 'Video Content',
         'Explainer Video Creation': 'Video Content',
         'Product Visualization': 'Video Content',
@@ -7314,8 +7591,170 @@
     }
 
     // Initialize Clear Photo Hero
-    // Initialize 3D Flip Structure for All Service Cards (Front: Image + Heading Only, Back: Description)
+
+    // Initialize 3D Flip Structure for All Service Cards + Product Sketch Layout + Single-Box Pipeline
     (function initServiceFlipCards() {
+      // 1. Add small content under Services main section title
+      const servicesHeader = document.querySelector('#services .section-header');
+      if (servicesHeader && !servicesHeader.querySelector('.services-small-lead')) {
+        const smallLead = document.createElement('div');
+        smallLead.className = 'services-small-lead';
+        smallLead.innerHTML = '<i class="fa-solid fa-rotate" style="margin-right: 6px;"></i> Hover over any service card to flip &amp; explore full deliverables';
+        servicesHeader.appendChild(smallLead);
+      }
+
+      // Curated High-Quality Images & Short Subtitles for all 37 Services
+      const serviceMeta = {
+        'Custom Software Development': {
+          img: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Tailor-made, scalable enterprise applications built for operational speed.'
+        },
+        'Web Portal Development': {
+          img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Secure cloud portals connecting teams, customers, and global partners.'
+        },
+        'ERP/CRM/HRM Solutions': {
+          img: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Unified workforce, customer, and resource management platforms.'
+        },
+        'UI/UX Designing': {
+          img: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Human-centered interface systems and interactive design prototypes.'
+        },
+        'Mobile App Development': {
+          img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1000&q=85',
+          sub: 'High-performance native & cross-platform iOS and Android apps.'
+        },
+        'Data Analytics': {
+          img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Interactive BI dashboards, predictive AI modeling & real-time KPIs.'
+        },
+        'AI Video Production': {
+          img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Next-gen generative AI video synthesis with studio-grade polish.'
+        },
+        'Explainer Video Creation': {
+          img: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Clear, engaging visual stories that simplify complex products.'
+        },
+        'Product Visualization': {
+          img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Photorealistic 3D CGI product renders and studio lighting.'
+        },
+        'Social Media Reels Creation': {
+          img: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=1000&q=85',
+          sub: 'High-retention vertical reels & shorts engineered for virality.'
+        },
+        'Corporate Video Production': {
+          img: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Executive brand films and documentary-style studio storytelling.'
+        },
+        'Marketing Video Production': {
+          img: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Conversion-focused commercial campaigns that drive action.'
+        },
+        'Training Video Production': {
+          img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Structured e-learning modules and onboarding video series.'
+        },
+        'Motion Graphics': {
+          img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Kinetic typography, 2D/3D broadcast design & dynamic visual FX.'
+        },
+        'Character Designing And Creation': {
+          img: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Original IP heroes, stylized mascots & detailed concept art.'
+        },
+        'Character/ Product 3D Modeling': {
+          img: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Precision topology, PBR texturing & game-ready 3D assets.'
+        },
+        '2D/3D Animations': {
+          img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Cinema-quality character performance and expressive storytelling.'
+        },
+        'Whiteboard Animations': {
+          img: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Hand-drawn illustrated explainers for education and pitches.'
+        },
+        'VFX Services': {
+          img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Houdini particle simulations, compositing & cinematic CGI.'
+        },
+        'Game Designing: Concept Development': {
+          img: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Core game loops, world-building lore & complete GDD blueprints.'
+        },
+        'Game Art Animation': {
+          img: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Skeletal rigging, combat cycles & stylized environment art.'
+        },
+        'Game UI/UX Development': {
+          img: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Diegetic HUDs, inventory menus & responsive controller flows.'
+        },
+        'Game Programming/Development': {
+          img: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Unreal Engine 5 C++ & Unity multiplayer gameplay systems.'
+        },
+        'Game Testing': {
+          img: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Frame-rate profiling, balance tuning & multi-device QA.'
+        },
+        'AR/VR App Development': {
+          img: 'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Custom spatial computing apps for Meta Quest & VisionOS.'
+        },
+        'AR/VR Environment Development': {
+          img: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Immersive real-time 3D virtual worlds and digital twins.'
+        },
+        'Immersive Training Simulations': {
+          img: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Risk-free hands-on VR simulators for industrial safety & ops.'
+        },
+        'Architectural VR Visualization': {
+          img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Interactive 1:1 scale real estate and archviz walkthroughs.'
+        },
+        'Healthcare And Medical VR Solutions': {
+          img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Precision surgical rehearsal, anatomy & clinical therapy VR.'
+        },
+        'UI/UX Designing For AR/VR Platforms': {
+          img: 'https://images.unsplash.com/photo-1617802690992-15d93263d3a9?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Eye-tracking, hand-gesture & spatial 3D interface design.'
+        },
+        'Search Engine Optimization (SEO)': {
+          img: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Technical SEO, authority backlinks & organic search dominance.'
+        },
+        'Content Marketing': {
+          img: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1000&q=85',
+          sub: 'High-impact brand storytelling, articles & thought leadership.'
+        },
+        'Email Marketing Automation': {
+          img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Lifecycle drip sequences & personalized lead conversion flows.'
+        },
+        'Affiliate And Influencer Marketing': {
+          img: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Creator partnerships that amplify brand trust and reach.'
+        },
+        'Social Media Strategy And Planning': {
+          img: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Data-backed content calendars and omnichannel brand growth.'
+        },
+        'S M Community Management': {
+          img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85',
+          sub: 'Active audience engagement, moderation & brand advocacy.'
+        },
+        'Social Media Paid Ads': {
+          img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=85',
+          sub: 'High-ROI targeted ad campaigns across Meta, LinkedIn & Google.'
+        }
+      };
+
       const serviceCards = document.querySelectorAll('#services .service-card-node');
       serviceCards.forEach(card => {
         if (card.querySelector('.service-card-flip-inner')) return;
@@ -7325,15 +7764,30 @@
         if (!media || !body || !pill) return;
 
         const headingText = pill.textContent.trim();
+        const meta = serviceMeta[headingText] || {};
+        const imgEl = media.querySelector('img');
+        if (imgEl && meta.img) {
+          imgEl.src = meta.img;
+          imgEl.onerror = function() {
+            this.src = 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80';
+          };
+        }
+
         const floatingIcon = media.querySelector('.service-card-icon-floating i');
         const iconClass = floatingIcon ? floatingIcon.className : 'fa-solid fa-sparkles';
 
-        // Front Face: Only Image and Heading
+        // Front Face: Image + Heading + Small Content Under Service Title
         const front = document.createElement('div');
         front.className = 'service-card-front';
         const frontHeading = document.createElement('div');
         frontHeading.className = 'service-card-front-heading';
         frontHeading.appendChild(pill);
+
+        const smallSub = document.createElement('p');
+        smallSub.className = 'service-front-sub';
+        smallSub.textContent = meta.sub || 'Hover to flip and view complete service details.';
+        frontHeading.appendChild(smallSub);
+
         front.appendChild(media);
         front.appendChild(frontHeading);
 
@@ -7367,6 +7821,85 @@
           }
         });
       });
+
+      // 3. Transform Product Cards to Match Hand-Drawn Sketch (Top Image + Horizontal Divider + Centered Content + Link)
+      const productImages = [
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=85',
+        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=85',
+        'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=1000&q=85',
+        'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=85'
+      ];
+      const productCards = document.querySelectorAll('#landingProductsGrid .product-card');
+      productCards.forEach((pCard, idx) => {
+        if (pCard.querySelector('.product-sketch-media')) return;
+        const badgeText = pCard.querySelector('.product-badge-pill')?.textContent || 'Platform';
+        const titleText = pCard.querySelector('h3')?.textContent || 'Product';
+        const taglineText = pCard.querySelector('.product-tagline')?.textContent || '';
+        const descText = pCard.querySelector('.product-desc')?.textContent || '';
+        const footerEl = pCard.querySelector('.product-card-footer');
+        const linkEl = footerEl ? footerEl.querySelector('a') : null;
+        if (linkEl && linkEl.getAttribute('href') === 'Admin/index.html') {
+          linkEl.setAttribute('href', 'signin.html?role=admin');
+        }
+        const imgUrl = productImages[idx % productImages.length];
+
+        pCard.innerHTML = `
+          <div class="product-sketch-media">
+            <img src="${imgUrl}" alt="${titleText}" class="product-sketch-img" loading="lazy" />
+            <div class="product-sketch-vignette"></div>
+            <span class="product-badge-pill" style="position: absolute; top: 14px; right: 14px; z-index: 2; background: rgba(18, 2, 25, 0.85); color: #2dd48f; border-color: rgba(45, 212, 143, 0.45);">${badgeText}</span>
+          </div>
+          <div class="product-sketch-divider"></div>
+          <div class="product-sketch-body">
+            <div>
+              <h3>${titleText}</h3>
+              <p class="product-tagline">${taglineText}</p>
+              <p class="product-desc">${descText}</p>
+            </div>
+            <div class="product-card-footer">
+              ${linkEl ? linkEl.outerHTML : `<a href="#contact" class="btn-primary"><span>Explore Product</span></a>`}
+            </div>
+          </div>
+        `;
+      });
+
+      // 4. How We Work (#pipeline): Consolidate into ONE Single Box Explaining Step-by-Step Process
+      const pipelineGrid = document.querySelector('#pipeline .pipeline-grid');
+      if (pipelineGrid) {
+        const singleBox = document.createElement('div');
+        singleBox.className = 'pipeline-single-box';
+        singleBox.innerHTML = `
+          <div class="pipeline-steps-list">
+            <div class="pipeline-step-item">
+              <div class="step-badge">01</div>
+              <h4>Concept &amp; Vision</h4>
+              <p>Creative brainstorming, moodboards, scriptwriting, character concept sketches, and technical feasibility scoping.</p>
+            </div>
+            <div class="pipeline-step-item">
+              <div class="step-badge">02</div>
+              <h4>3D &amp; Asset Creation</h4>
+              <p>High-polygon modeling, UV unwrapping, texturing with Substance Painter, rigging, and custom shader development.</p>
+            </div>
+            <div class="pipeline-step-item">
+              <div class="step-badge">03</div>
+              <h4>Animation &amp; FX Engine</h4>
+              <p>Keyframe animation, motion capture cleanup, particle simulation, Unreal Engine lighting, and interactive logic.</p>
+            </div>
+            <div class="pipeline-step-item">
+              <div class="step-badge">04</div>
+              <h4>Render &amp; Global Launch</h4>
+              <p>Color grading, sound design, cloud farm multi-pass rendering, multi-device QA optimization, and global delivery.</p>
+            </div>
+          </div>
+        `;
+        pipelineGrid.replaceWith(singleBox);
+      }
+
+      // 5. Remove job posts grid from landing page (#careers)
+      const landingCareersGrid = document.getElementById('landingCareersGrid');
+      if (landingCareersGrid) {
+        landingCareersGrid.remove();
+      }
     })();
 
     startClearAutoPlay();
