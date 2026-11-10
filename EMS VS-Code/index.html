@@ -4381,14 +4381,17 @@
 
     .service-card-back-header {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
       margin-bottom: 12px;
     }
 
     .service-card-back-icon {
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: rgba(168, 85, 247, 0.2);
       border: 1px solid rgba(192, 132, 252, 0.4);
@@ -4396,18 +4399,19 @@
       align-items: center;
       justify-content: center;
       color: var(--accent-cyan, #2dd4bf);
-      font-size: 0.88rem;
+      font-size: 0.95rem;
       flex-shrink: 0;
+      margin: 0 auto;
     }
 
     .service-card-back-title {
       color: #c084fc;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
+      font-size: 1.02rem;
       font-weight: 700;
       margin: 0;
       line-height: 1.3;
-      text-align: left;
+      text-align: center !important;
     }
 
     .service-card-back .service-node-desc {
@@ -4415,8 +4419,12 @@
       font-size: 0.92rem !important;
       line-height: 1.65 !important;
       margin-bottom: 14px !important;
-      text-align: left;
+      text-align: center !important;
       flex: 1;
+    }
+
+    .service-card-back .service-node-footer {
+      justify-content: center !important;
     }
 
     @media (max-width: 768px) {
@@ -4514,89 +4522,119 @@
       font-weight: 600;
     }
 
-    /* ─── 3. PRODUCTS: HAND-DRAWN SKETCH LAYOUT (TOP IMAGE + DIVIDER + CONTENT) ─── */
+    /* ─── 3. PRODUCTS: SINGLE BOX MATCHING HAND-DRAWN SKETCH ─── */
     #products .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
+      display: block !important;
+      max-width: 920px;
+      margin: 0 auto;
     }
-    #products .product-card {
-      padding: 0 !important;
+    .product-single-showcase {
+      border-radius: 28px;
       overflow: hidden;
-      border-radius: 22px;
       background: #1c0326;
-      border: 1.5px solid rgba(192, 132, 252, 0.26);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(192, 132, 252, 0.34);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(168, 85, 247, 0.16);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
-    .product-sketch-media {
+    .product-top-banner-wrap {
       position: relative;
       width: 100%;
-      height: 205px;
+      height: 360px;
       overflow: hidden;
-      background: #110216;
+      background: #0c0214;
     }
-    .product-sketch-img {
+    .product-top-banner-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    #products .product-card:hover .product-sketch-img {
-      transform: scale(1.06);
-    }
-    .product-sketch-vignette {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(18, 2, 25, 0.15) 0%, rgba(18, 2, 25, 0.72) 100%);
-      pointer-events: none;
+    .product-single-showcase:hover .product-top-banner-img {
+      transform: scale(1.03);
     }
     .product-sketch-divider {
       width: 100%;
-      height: 1.5px;
-      background: linear-gradient(90deg, rgba(192, 132, 252, 0.12) 0%, rgba(192, 132, 252, 0.55) 50%, rgba(192, 132, 252, 0.12) 100%);
+      height: 2px;
+      background: rgba(192, 132, 252, 0.45);
     }
-    .product-sketch-body {
-      padding: 24px 22px 22px;
+    .product-lower-showcase {
+      padding: 40px 28px 46px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      flex: 1;
-      justify-content: space-between;
-      background: linear-gradient(180deg, #21042d 0%, #16021f 100%);
+      background: linear-gradient(180deg, #21042d 0%, #15021e 100%);
     }
-    .product-sketch-body h3 {
+    .product-showcase-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 28px;
+      letter-spacing: -0.01em;
       text-align: center;
-      margin-bottom: 6px;
     }
-    .product-sketch-body .product-tagline {
-      text-align: center;
-      color: #2dd48f;
-      margin-bottom: 12px;
-    }
-    .product-sketch-body .product-desc {
-      text-align: center;
-      margin-bottom: 18px;
-    }
-    .product-sketch-body .product-card-footer {
+    .product-mobile-frame {
       width: 100%;
+      max-width: 360px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 2px solid rgba(192, 132, 252, 0.42);
+      background: #0d0214;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65), 0 0 28px rgba(168, 85, 247, 0.25);
+      margin: 0 auto 30px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .product-mobile-frame:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.75), 0 0 36px rgba(45, 212, 143, 0.3);
+      border-color: rgba(45, 212, 143, 0.6);
+    }
+    .product-mobile-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .product-demo-btn {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 10px;
+      min-width: 210px;
+      padding: 14px 36px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #741793 0%, #a855f7 100%);
+      border: 1.5px solid rgba(216, 180, 254, 0.55);
+      color: #ffffff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: 0 10px 28px rgba(116, 23, 147, 0.5);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .product-demo-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #8b1eb0 0%, #c084fc 100%);
+      box-shadow: 0 14px 34px rgba(168, 85, 247, 0.65);
+      color: #ffffff;
     }
 
-    /* ─── 4. HOW WE WORK: SINGLE UNIFIED STEP-BY-STEP BOX ─── */
+    /* ─── 4. HOW WE WORK: SINGLE UNIFIED BOX WITH VERTICAL STEPS ─── */
     .pipeline-single-box {
       background: linear-gradient(145deg, #240433 0%, #170221 100%);
       border: 1.5px solid rgba(192, 132, 252, 0.32);
       border-radius: 26px;
-      padding: 42px 36px;
+      padding: 44px 40px;
       box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.15);
       position: relative;
       overflow: hidden;
+      max-width: 920px;
+      margin: 0 auto;
     }
     .pipeline-single-box::before {
       content: '';
@@ -4608,105 +4646,87 @@
       background: linear-gradient(90deg, #741793 0%, #a855f7 50%, #2dd48f 100%);
     }
     .pipeline-steps-list {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
       position: relative;
     }
     .pipeline-step-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
+      text-align: left;
       position: relative;
-      padding: 12px 10px;
+      padding: 24px 28px;
+      background: rgba(18, 2, 26, 0.55);
+      border: 1px solid rgba(192, 132, 252, 0.22);
+      border-left: 4px solid #a855f7;
+      border-radius: 18px;
+      transition: border-color 0.3s ease, transform 0.3s ease;
     }
-    .pipeline-step-item:not(:last-child)::after {
-      content: '\f061';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 26px;
-      right: -20px;
-      color: #2dd48f;
-      font-size: 1rem;
-      opacity: 0.75;
+    .pipeline-step-item:hover {
+      border-color: rgba(45, 212, 143, 0.5);
+      border-left-color: #2dd48f;
+      transform: translateX(4px);
     }
     .pipeline-step-item h4 {
-      font-size: 1.18rem;
+      font-size: 1.28rem;
       color: #ffffff;
-      margin: 14px 0 8px;
+      margin: 0 0 4px;
+      font-weight: 800;
+    }
+    .pipeline-step-subtitle {
+      font-weight: 700;
+      color: #c084fc;
+      font-size: 1rem;
+      margin: 0 0 10px;
     }
     .pipeline-step-item p {
       color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
+      font-size: 0.96rem;
+      line-height: 1.7;
       margin: 0;
     }
+    .pipeline-closing-motto {
+      margin-top: 32px;
+      padding: 20px 24px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(116, 23, 147, 0.32) 0%, rgba(45, 212, 143, 0.18) 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.38);
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.08rem, 2vw, 1.32rem);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.01em;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
 
-    /* ─── 5. CAREER: BRINJAL GREEN LARGE BOX UNDER IMAGE AREA ─── */
-    #careers .recruitment-card {
-      background: #14031c;
-      border-color: rgba(45, 212, 143, 0.38);
-    }
-    #careers .recruitment-divider {
-      height: 2px;
-      background: linear-gradient(90deg, rgba(45, 212, 143, 0.12) 0%, #2dd48f 50%, rgba(168, 85, 247, 0.25) 100%);
-    }
+    /* ─── 5. CAREER: SOLID FLAT COLOR UNDER IMAGE + ORIGINAL FRONT BOX COLOR ─── */
     #careers .recruitment-lower-base {
-      background:
-        radial-gradient(circle at 50% 100%, rgba(45, 212, 143, 0.32) 0%, rgba(16, 185, 129, 0.14) 45%, transparent 75%),
-        linear-gradient(135deg, #1d0428 0%, #0b3b2d 52%, #0f543e 100%) !important;
+      background: #0d3b2e !important;
+      background-image: none !important;
       min-height: 250px;
     }
-    #careers .recruitment-inner-card {
-      background: linear-gradient(145deg, rgba(27, 5, 38, 0.94) 0%, rgba(10, 58, 43, 0.94) 100%) !important;
-      border: 1.5px solid rgba(45, 212, 143, 0.5) !important;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 36px rgba(45, 212, 143, 0.22) !important;
-    }
-    #careers .recruitment-inner-card:hover {
-      border-color: #2dd48f !important;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(45, 212, 143, 0.35) !important;
-    }
-    #careers .recruitment-inner-badge {
-      background: rgba(45, 212, 143, 0.16) !important;
-      border: 1px solid rgba(45, 212, 143, 0.45) !important;
-      color: #2dd48f !important;
-    }
-    #careers .recruitment-inner-title .gradient-text {
-      background: linear-gradient(135deg, #d8b4fe 0%, #2dd48f 100%) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-      background-clip: text !important;
-    }
-    #careers .recruitment-link-btn {
-      background: linear-gradient(135deg, #3b0752 0%, #0d7a56 55%, #2dd48f 100%) !important;
-      border: 1px solid rgba(45, 212, 143, 0.5) !important;
-      box-shadow: 0 8px 24px rgba(13, 122, 86, 0.45) !important;
-    }
-    #careers .recruitment-link-btn:hover {
-      background: linear-gradient(135deg, #4c0969 0%, #109468 50%, #34d399 100%) !important;
-      box-shadow: 0 12px 30px rgba(45, 212, 143, 0.5) !important;
-    }
 
-    @media (max-width: 960px) {
-      .pipeline-steps-list {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .pipeline-step-item:not(:last-child)::after {
-        display: none;
-      }
-    }
     @media (max-width: 768px) {
       #services .service-card-node {
         height: 350px !important;
       }
+      .product-top-banner-wrap {
+        height: 220px;
+      }
+      .product-lower-showcase {
+        padding: 28px 18px 34px;
+      }
+      .product-mobile-frame {
+        max-width: 290px;
+      }
       .pipeline-single-box {
         padding: 28px 20px;
       }
-      .pipeline-steps-list {
-        grid-template-columns: 1fr;
-        gap: 22px;
+      .pipeline-step-item {
+        padding: 20px 18px;
       }
     }
 
@@ -4736,14 +4756,14 @@
         <a href="#services" class="nav-link">Services</a>
         <a href="#products" class="nav-link">Product</a>
         <a href="#careers" class="nav-link">Career</a>
-        <a href="#contact" class="nav-link">Contact us</a>
+        <a href="#contact" class="nav-link">Get in Touch</a>
       </nav>
 
       <div class="nav-actions">
-        <a href="signin.html" class="btn-ghost">
+        <a href="signin.html" class="btn-ghost" style="display: none !important;">
           <i class="fa-solid fa-lock" style="font-size: 0.8rem; color: var(--accent-cyan);"></i> Sign In
         </a>
-        <a href="#contact" class="btn-primary">
+        <a href="signin.html" class="btn-primary">
           <span>Get In Touch</span>
           <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
         </a>
@@ -4770,15 +4790,15 @@
         <li><a href="#services" class="drawer-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Services</a></li>
         <li><a href="#products" class="drawer-link"><i class="fa-solid fa-box-open"></i> Product</a></li>
         <li><a href="#careers" class="drawer-link"><i class="fa-solid fa-user-astronaut"></i> Career</a></li>
-        <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-paper-plane"></i> Contact us</a></li>
+        <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-paper-plane"></i> Get in Touch</a></li>
       </ul>
     </div>
     <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
-      <a href="signin.html" class="btn-ghost" style="justify-content: center;">
+      <a href="signin.html" class="btn-ghost" style="display: none !important; justify-content: center;">
         <i class="fa-solid fa-lock"></i> Employee & Admin Sign In
       </a>
-      <a href="#contact" class="btn-primary drawer-link" style="justify-content: center;">
-        <span>Start A Project</span>
+      <a href="signin.html" class="btn-primary drawer-link" style="justify-content: center;">
+        <span>Get in Touch</span>
       </a>
     </div>
   </div>
@@ -6539,8 +6559,8 @@
             <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="LinkedIn" id="cmsSocialLinkedin"><i class="fa-brands fa-linkedin-in"></i></a>
             <a href="https://instagram.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="Instagram" id="cmsSocialInstagram"><i class="fa-brands fa-instagram"></i></a>
             <a href="https://youtube.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="YouTube" id="cmsSocialYoutube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://artstation.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="ArtStation"><i class="fa-brands fa-artstation"></i></a>
-            <a href="https://github.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="GitHub" id="cmsSocialGithub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://x.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="X" id="cmsSocialX"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" class="social-btn" aria-label="Facebook" id="cmsSocialFacebook"><i class="fa-brands fa-facebook-f"></i></a>
           </div>
         </div>
 
@@ -6553,7 +6573,7 @@
             <li><a href="#services"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Services</a></li>
             <li><a href="#products"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Product</a></li>
             <li><a href="#careers"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Career</a></li>
-            <li><a href="#contact"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Contact us</a></li>
+            <li><a href="#contact"><i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i> Get in Touch</a></li>
           </ul>
         </div>
 
@@ -7822,74 +7842,73 @@
         });
       });
 
-      // 3. Transform Product Cards to Match Hand-Drawn Sketch (Top Image + Horizontal Divider + Centered Content + Link)
-      const productImages = [
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=85',
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=85',
-        'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=1000&q=85',
-        'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=85'
-      ];
-      const productCards = document.querySelectorAll('#landingProductsGrid .product-card');
-      productCards.forEach((pCard, idx) => {
-        if (pCard.querySelector('.product-sketch-media')) return;
-        const badgeText = pCard.querySelector('.product-badge-pill')?.textContent || 'Platform';
-        const titleText = pCard.querySelector('h3')?.textContent || 'Product';
-        const taglineText = pCard.querySelector('.product-tagline')?.textContent || '';
-        const descText = pCard.querySelector('.product-desc')?.textContent || '';
-        const footerEl = pCard.querySelector('.product-card-footer');
-        const linkEl = footerEl ? footerEl.querySelector('a') : null;
-        if (linkEl && linkEl.getAttribute('href') === 'Admin/index.html') {
-          linkEl.setAttribute('href', 'signin.html?role=admin');
-        }
-        const imgUrl = productImages[idx % productImages.length];
-
-        pCard.innerHTML = `
-          <div class="product-sketch-media">
-            <img src="${imgUrl}" alt="${titleText}" class="product-sketch-img" loading="lazy" />
-            <div class="product-sketch-vignette"></div>
-            <span class="product-badge-pill" style="position: absolute; top: 14px; right: 14px; z-index: 2; background: rgba(18, 2, 25, 0.85); color: #2dd48f; border-color: rgba(45, 212, 143, 0.45);">${badgeText}</span>
-          </div>
-          <div class="product-sketch-divider"></div>
-          <div class="product-sketch-body">
-            <div>
-              <h3>${titleText}</h3>
-              <p class="product-tagline">${taglineText}</p>
-              <p class="product-desc">${descText}</p>
+      // 3. Product Section: Single Box with Top Banner Image + Divider + "Medical Learning Game App" + Mobile App Image + "For Demo" Button
+      const productsGrid = document.getElementById('landingProductsGrid');
+      if (productsGrid) {
+        productsGrid.innerHTML = `
+          <article class="product-single-showcase">
+            <div class="product-top-banner-wrap">
+              <img src="assets/images/product-banner.jpg" alt="Immersive Digital &amp; XR Solutions" class="product-top-banner-img" />
             </div>
-            <div class="product-card-footer">
-              ${linkEl ? linkEl.outerHTML : `<a href="#contact" class="btn-primary"><span>Explore Product</span></a>`}
+            <div class="product-sketch-divider"></div>
+            <div class="product-lower-showcase">
+              <h3 class="product-showcase-heading">Medical Learning Game App</h3>
+              <div class="product-mobile-frame">
+                <img src="assets/images/product-mobile-app.jpg" alt="Medical Learning Game Mobile App - MedQuest" class="product-mobile-img" />
+              </div>
+              <a href="#contact" class="product-demo-btn">
+                <span>For Demo</span>
+              </a>
             </div>
-          </div>
+          </article>
         `;
-      });
+      }
 
-      // 4. How We Work (#pipeline): Consolidate into ONE Single Box Explaining Step-by-Step Process
-      const pipelineGrid = document.querySelector('#pipeline .pipeline-grid');
+      // 4. How We Work (#pipeline): Single Box with 7 Vertical Steps + Closing Motto
+      const pipelineGrid = document.querySelector('#pipeline .pipeline-grid, #pipeline .pipeline-single-box');
       if (pipelineGrid) {
         const singleBox = document.createElement('div');
         singleBox.className = 'pipeline-single-box';
         singleBox.innerHTML = `
           <div class="pipeline-steps-list">
             <div class="pipeline-step-item">
-              <div class="step-badge">01</div>
-              <h4>Concept &amp; Vision</h4>
-              <p>Creative brainstorming, moodboards, scriptwriting, character concept sketches, and technical feasibility scoping.</p>
+              <h4>1. Understand &amp; Discover</h4>
+              <div class="pipeline-step-subtitle"><strong>Understanding Your Vision</strong></div>
+              <p>We begin by understanding your business, objectives, challenges and expectations. Through discussions and requirement analysis, we identify the right solutions and define a clear direction for your project.</p>
             </div>
             <div class="pipeline-step-item">
-              <div class="step-badge">02</div>
-              <h4>3D &amp; Asset Creation</h4>
-              <p>High-polygon modeling, UV unwrapping, texturing with Substance Painter, rigging, and custom shader development.</p>
+              <h4>2. Plan &amp; Strategize</h4>
+              <div class="pipeline-step-subtitle"><strong>Building the Right Roadmap</strong></div>
+              <p>We develop a comprehensive project plan covering scope, technology, resources, timelines, deliverables and milestones. This ensures a clear implementation strategy before development begins.</p>
             </div>
             <div class="pipeline-step-item">
-              <div class="step-badge">03</div>
-              <h4>Animation &amp; FX Engine</h4>
-              <p>Keyframe animation, motion capture cleanup, particle simulation, Unreal Engine lighting, and interactive logic.</p>
+              <h4>3. Design &amp; Conceptualize</h4>
+              <div class="pipeline-step-subtitle"><strong>Turning Ideas into Experiences</strong></div>
+              <p>Our creative and technical teams develop concepts, wireframes, prototypes, visual designs and technical architecture. We focus on functionality, usability, creativity and the overall user experience.</p>
             </div>
             <div class="pipeline-step-item">
-              <div class="step-badge">04</div>
-              <h4>Render &amp; Global Launch</h4>
-              <p>Color grading, sound design, cloud farm multi-pass rendering, multi-device QA optimization, and global delivery.</p>
+              <h4>4. Develop &amp; Create</h4>
+              <div class="pipeline-step-subtitle"><strong>Bringing Ideas to Life</strong></div>
+              <p>Our multidisciplinary team transforms approved concepts into working solutions. Through software development, application development, game development, VR/AR experiences, animation and digital content production, we focus on delivering solutions that align with your requirements.</p>
             </div>
+            <div class="pipeline-step-item">
+              <h4>5. Test &amp; Refine</h4>
+              <div class="pipeline-step-subtitle"><strong>Quality at Every Stage</strong></div>
+              <p>We conduct continuous testing, reviews and quality checks throughout the implementation process. We identify issues, optimize performance and refine the solution based on feedback to ensure reliability and quality.</p>
+            </div>
+            <div class="pipeline-step-item">
+              <h4>6. Deliver &amp; Deploy</h4>
+              <div class="pipeline-step-subtitle"><strong>Ready for the Real World</strong></div>
+              <p>Once the project meets the agreed requirements, we proceed with final deployment and delivery. We provide the necessary documentation, project handover and guidance to ensure a smooth transition.</p>
+            </div>
+            <div class="pipeline-step-item">
+              <h4>7. Support &amp; Grow</h4>
+              <div class="pipeline-step-subtitle"><strong>Building Long-Term Partnerships</strong></div>
+              <p>Our relationship doesn't end with project delivery. We provide ongoing technical support, maintenance, updates and improvements to help your business adapt, grow and succeed.</p>
+            </div>
+          </div>
+          <div class="pipeline-closing-motto">
+            <strong>Your Vision. Our Expertise. One Shared Goal – Success.</strong>
           </div>
         `;
         pipelineGrid.replaceWith(singleBox);
