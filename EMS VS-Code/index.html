@@ -4515,17 +4515,57 @@
       margin-top: 10px;
       padding: 6px 18px;
       border-radius: var(--radius-pill);
-      background: rgba(45, 212, 143, 0.12);
-      border: 1px solid rgba(45, 212, 143, 0.32);
-      color: #2dd48f;
+      background: rgba(168, 85, 247, 0.16);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #e9d5ff;
       font-size: 0.88rem;
       font-weight: 600;
     }
 
-    /* ─── 3. PRODUCTS: SINGLE BOX MATCHING HAND-DRAWN SKETCH ─── */
+    /* ─── UNIFIED VIOLET BUTTON COLOR (ALL BUTTONS MATCH LOGIN / GET IN TOUCH BUTTON) ─── */
+    .btn-primary,
+    .btn-white,
+    .btn-ghost,
+    .btn-outline-glow,
+    .service-inquire-btn,
+    .product-demo-btn,
+    .recruitment-link-btn,
+    .newsletter-input-wrap button,
+    #submitBtn {
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid rgba(192, 132, 252, 0.42) !important;
+      box-shadow: 0 6px 20px rgba(84, 14, 105, 0.42) !important;
+    }
+    .btn-primary i,
+    .btn-white i,
+    .btn-ghost i,
+    .btn-outline-glow i,
+    .service-inquire-btn i,
+    .product-demo-btn i,
+    .recruitment-link-btn i {
+      color: #ffffff !important;
+    }
+    .btn-primary:hover,
+    .btn-white:hover,
+    .btn-ghost:hover,
+    .btn-outline-glow:hover,
+    .service-inquire-btn:hover,
+    .product-demo-btn:hover,
+    .recruitment-link-btn:hover,
+    .newsletter-input-wrap button:hover,
+    #submitBtn:hover {
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%) !important;
+      color: #ffffff !important;
+      border-color: #d8b4fe !important;
+      box-shadow: 0 10px 28px rgba(168, 85, 247, 0.55) !important;
+      transform: translateY(-2px);
+    }
+
+    /* ─── 3. PRODUCTS: SINGLE BOX MATCHING HAND-DRAWN SKETCH + DUMMY CONTENT ─── */
     #products .products-grid {
       display: block !important;
-      max-width: 920px;
+      max-width: 940px;
       margin: 0 auto;
     }
     .product-single-showcase {
@@ -4560,7 +4600,7 @@
       background: rgba(192, 132, 252, 0.45);
     }
     .product-lower-showcase {
-      padding: 40px 28px 46px;
+      padding: 42px 34px 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -4569,12 +4609,50 @@
     }
     .product-showcase-heading {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-size: clamp(1.75rem, 3.2vw, 2.35rem);
       font-weight: 800;
       color: #ffffff;
-      margin: 0 0 28px;
+      margin: 0 0 12px;
       letter-spacing: -0.01em;
       text-align: center;
+    }
+    .product-showcase-subtitle {
+      color: #d8b4fe;
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin: 0 0 14px;
+      letter-spacing: 0.02em;
+    }
+    .product-showcase-desc {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      line-height: 1.75;
+      max-width: 720px;
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+    .product-dummy-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 14px;
+      max-width: 740px;
+      margin: 0 auto 28px;
+    }
+    .product-highlight-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      background: rgba(168, 85, 247, 0.14);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      color: #f3e8ff;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .product-highlight-pill i {
+      color: #c084fc;
     }
     .product-mobile-frame {
       width: 100%;
@@ -4589,8 +4667,8 @@
     }
     .product-mobile-frame:hover {
       transform: translateY(-5px);
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.75), 0 0 36px rgba(45, 212, 143, 0.3);
-      border-color: rgba(45, 212, 143, 0.6);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.75), 0 0 36px rgba(192, 132, 252, 0.4);
+      border-color: #c084fc;
     }
     .product-mobile-img {
       width: 100%;
@@ -4605,35 +4683,29 @@
       gap: 10px;
       min-width: 210px;
       padding: 14px 36px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #741793 0%, #a855f7 100%);
-      border: 1.5px solid rgba(216, 180, 254, 0.55);
+      border-radius: 9999px;
       color: #ffffff;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: 0.02em;
-      box-shadow: 0 10px 28px rgba(116, 23, 147, 0.5);
       transition: all 0.3s ease;
       text-decoration: none;
     }
-    .product-demo-btn:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #8b1eb0 0%, #c084fc 100%);
-      box-shadow: 0 14px 34px rgba(168, 85, 247, 0.65);
-      color: #ffffff;
-    }
 
-    /* ─── 4. HOW WE WORK: SINGLE UNIFIED BOX WITH VERTICAL STEPS ─── */
+    /* ─── 4. HOW WE WORK: ATTRACTIVE VERTICAL TIMELINE SHOWCASE IN ONE BOX ─── */
     .pipeline-single-box {
-      background: linear-gradient(145deg, #240433 0%, #170221 100%);
-      border: 1.5px solid rgba(192, 132, 252, 0.32);
-      border-radius: 26px;
-      padding: 44px 40px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.15);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(168, 85, 247, 0.22), transparent 38%),
+        radial-gradient(circle at 88% 85%, rgba(232, 121, 249, 0.16), transparent 40%),
+        linear-gradient(155deg, #250436 0%, #160220 55%, #1d032a 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.38);
+      border-radius: 30px;
+      padding: 52px 46px;
+      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.65), 0 0 45px rgba(168, 85, 247, 0.2);
       position: relative;
       overflow: hidden;
-      max-width: 920px;
+      max-width: 980px;
       margin: 0 auto;
     }
     .pipeline-single-box::before {
@@ -4642,69 +4714,157 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #741793 0%, #a855f7 50%, #2dd48f 100%);
+      height: 5px;
+      background: linear-gradient(90deg, #540e69 0%, #a855f7 50%, #e879f9 100%);
     }
     .pipeline-steps-list {
       display: flex;
       flex-direction: column;
-      gap: 26px;
+      gap: 24px;
       position: relative;
+      padding-left: 38px;
+    }
+    .pipeline-steps-list::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      bottom: 28px;
+      left: 15px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #a855f7 0%, #e879f9 50%, #741793 100%);
+      box-shadow: 0 0 14px rgba(192, 132, 252, 0.65);
     }
     .pipeline-step-item {
       display: flex;
-      flex-direction: column;
       align-items: flex-start;
+      gap: 22px;
       text-align: left;
       position: relative;
-      padding: 24px 28px;
-      background: rgba(18, 2, 26, 0.55);
-      border: 1px solid rgba(192, 132, 252, 0.22);
-      border-left: 4px solid #a855f7;
-      border-radius: 18px;
-      transition: border-color 0.3s ease, transform 0.3s ease;
+      padding: 26px 30px;
+      background: linear-gradient(135deg, rgba(42, 7, 60, 0.85) 0%, rgba(22, 3, 33, 0.9) 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.26);
+      border-radius: 22px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pipeline-step-item::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 34px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #e879f9;
+      border: 3px solid #1c0326;
+      box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.5), 0 0 14px #e879f9;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
     .pipeline-step-item:hover {
-      border-color: rgba(45, 212, 143, 0.5);
-      border-left-color: #2dd48f;
-      transform: translateX(4px);
+      border-color: #c084fc;
+      transform: translateX(8px);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.6), 0 0 28px rgba(168, 85, 247, 0.3);
+    }
+    .pipeline-step-item:hover::before {
+      transform: scale(1.25);
+      background: #ffffff;
+    }
+    .pipeline-step-icon-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #4e0b62 0%, #741793 55%, #a855f7 100%);
+      border: 1.5px solid rgba(233, 213, 255, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #ffffff;
+      box-shadow: 0 8px 22px rgba(116, 23, 147, 0.5);
+    }
+    .pipeline-step-icon-badge i {
+      font-size: 1.2rem;
+      color: #ffffff;
+    }
+    .pipeline-step-icon-badge span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #e9d5ff;
+      margin-top: 2px;
+    }
+    .pipeline-step-content {
+      flex: 1;
+    }
+    .pipeline-step-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 8px;
     }
     .pipeline-step-item h4 {
-      font-size: 1.28rem;
+      font-size: 1.32rem;
       color: #ffffff;
-      margin: 0 0 4px;
+      margin: 0;
       font-weight: 800;
     }
     .pipeline-step-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(192, 132, 252, 0.38);
       font-weight: 700;
-      color: #c084fc;
-      font-size: 1rem;
-      margin: 0 0 10px;
+      color: #e9d5ff;
+      font-size: 0.85rem;
+      margin: 0;
     }
     .pipeline-step-item p {
       color: var(--text-muted);
       font-size: 0.96rem;
-      line-height: 1.7;
+      line-height: 1.72;
       margin: 0;
     }
     .pipeline-closing-motto {
-      margin-top: 32px;
-      padding: 20px 24px;
-      border-radius: 16px;
-      background: linear-gradient(90deg, rgba(116, 23, 147, 0.32) 0%, rgba(45, 212, 143, 0.18) 100%);
-      border: 1.5px solid rgba(192, 132, 252, 0.38);
+      margin-top: 36px;
+      padding: 24px 28px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #38064a 0%, #540e69 50%, #741793 100%);
+      border: 1.5px solid rgba(216, 180, 254, 0.5);
       text-align: center;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.08rem, 2vw, 1.32rem);
+      font-size: clamp(1.12rem, 2.2vw, 1.38rem);
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.01em;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 14px 36px rgba(84, 14, 105, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .pipeline-closing-motto i {
+      color: #e9d5ff;
+      font-size: 1.2rem;
     }
 
-    /* ─── 5. CAREER: SOLID FLAT COLOR UNDER IMAGE + ORIGINAL FRONT BOX COLOR ─── */
+    /* ─── 5. CAREER: SOLID VIOLET COLOR UNDER IMAGE + ORIGINAL FRONT BOX COLOR ─── */
+    #careers .recruitment-card {
+      background: #190324 !important;
+      border-color: rgba(192, 132, 252, 0.35) !important;
+    }
+    #careers .recruitment-divider {
+      height: 2px;
+      background: rgba(192, 132, 252, 0.45) !important;
+    }
     #careers .recruitment-lower-base {
-      background: #0d3b2e !important;
+      background: #2b063d !important;
       background-image: none !important;
       min-height: 250px;
     }
@@ -4723,10 +4883,22 @@
         max-width: 290px;
       }
       .pipeline-single-box {
-        padding: 28px 20px;
+        padding: 28px 18px;
+      }
+      .pipeline-steps-list {
+        padding-left: 22px;
+      }
+      .pipeline-steps-list::before {
+        left: 6px;
       }
       .pipeline-step-item {
+        flex-direction: column;
+        gap: 14px;
         padding: 20px 18px;
+      }
+      .pipeline-step-item::before {
+        left: -22px;
+        top: 26px;
       }
     }
 
@@ -4764,7 +4936,7 @@
           <i class="fa-solid fa-lock" style="font-size: 0.8rem; color: var(--accent-cyan);"></i> Sign In
         </a>
         <a href="signin.html" class="btn-primary">
-          <span>Get In Touch</span>
+          <span>Login</span>
           <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
         </a>
         <button class="mobile-menu-btn" id="mobileMenuOpen" aria-label="Open menu">
@@ -4798,7 +4970,7 @@
         <i class="fa-solid fa-lock"></i> Employee & Admin Sign In
       </a>
       <a href="signin.html" class="btn-primary drawer-link" style="justify-content: center;">
-        <span>Get in Touch</span>
+        <span>Login</span>
       </a>
     </div>
   </div>
@@ -6090,7 +6262,7 @@
   <section class="section-wrap" id="products">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag" id="cmsProductsBadge"><i class="fa-solid fa-boxes-stacked"></i> Proprietary Platforms</span>
+        <span class="section-tag" id="cmsProductsBadge"><i class="fa-solid fa-boxes-stacked"></i> Product</span>
         <h2 class="section-title" id="cmsProductsTitle">Next-Generation <span class="gradient-text">Digital Products &amp; Platforms</span></h2>
         <p class="section-subtitle" id="cmsProductsSubtitle">
           Our in-house developed software suites powering workforce management, real-time 3D workflows, and spatial simulations.
@@ -6304,7 +6476,7 @@
         <!-- Contact Direct Channels -->
         <div class="contact-info-col">
           <div class="contact-direct-card">
-            <h3 style="font-size: 1.4rem; color: #ffffff; margin-bottom: 20px;">Direct Studio Channels</h3>
+            <h3 style="font-size: 1.4rem; color: #ffffff; margin-bottom: 20px;">Contact</h3>
             
             <!-- Email -->
             <div class="contact-channel" onclick="copyToClipboard('paoyaila@gmail.com', 'Studio Email')">
@@ -6346,8 +6518,8 @@
           </div>
 
           <!-- Studio Trust Badge -->
-          <div style="background: rgba(39, 196, 133, 0.08); border: 1px dashed rgba(39, 196, 133, 0.35); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 14px;">
-            <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: var(--accent-cyan);"></i>
+          <div style="background: #230533; border: 1.5px solid rgba(192, 132, 252, 0.35); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);">
+            <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: #c084fc;"></i>
             <div>
               <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem;">NDA &amp; IP Protected</div>
               <div style="font-size: 0.82rem; color: var(--text-muted);">All client concepts and source assets remain 100% confidential.</div>
@@ -7842,7 +8014,11 @@
         });
       });
 
-      // 3. Product Section: Single Box with Top Banner Image + Divider + "Medical Learning Game App" + Mobile App Image + "For Demo" Button
+      // 3. Product Section: Badge = "Product" + Single Box with Top Banner Image + Divider + Dummy Content + Mobile App Image + "For Demo" Button
+      const prodBadgeEl = document.getElementById('cmsProductsBadge');
+      if (prodBadgeEl) {
+        prodBadgeEl.innerHTML = '<i class="fa-solid fa-boxes-stacked"></i> Product';
+      }
       const productsGrid = document.getElementById('landingProductsGrid');
       if (productsGrid) {
         productsGrid.innerHTML = `
@@ -7853,18 +8029,29 @@
             <div class="product-sketch-divider"></div>
             <div class="product-lower-showcase">
               <h3 class="product-showcase-heading">Medical Learning Game App</h3>
+              <p class="product-showcase-subtitle">Interactive 3D Anatomy &amp; Gamified Clinical Training Platform</p>
+              <p class="product-showcase-desc">
+                Experience next-generation medical education through interactive 3D anatomical models, real-time diagnostic quizzes, XP progression levels, and immersive clinical case simulations designed for medical students, educators, and healthcare professionals.
+              </p>
+              <div class="product-dummy-highlights">
+                <span class="product-highlight-pill"><i class="fa-solid fa-heart-pulse"></i> 3D Organ &amp; Anatomy Explorer</span>
+                <span class="product-highlight-pill"><i class="fa-solid fa-trophy"></i> Gamified XP &amp; Leaderboards</span>
+                <span class="product-highlight-pill"><i class="fa-solid fa-stethoscope"></i> Clinical Case Modules</span>
+                <span class="product-highlight-pill"><i class="fa-solid fa-mobile-screen-button"></i> iOS, Android &amp; XR Ready</span>
+              </div>
               <div class="product-mobile-frame">
                 <img src="assets/images/product-mobile-app.jpg" alt="Medical Learning Game Mobile App - MedQuest" class="product-mobile-img" />
               </div>
               <a href="#contact" class="product-demo-btn">
                 <span>For Demo</span>
+                <i class="fa-solid fa-arrow-right"></i>
               </a>
             </div>
           </article>
         `;
       }
 
-      // 4. How We Work (#pipeline): Single Box with 7 Vertical Steps + Closing Motto
+      // 4. How We Work (#pipeline): Attractive Vertical Timeline inside Single Box with 7 Steps + Closing Motto
       const pipelineGrid = document.querySelector('#pipeline .pipeline-grid, #pipeline .pipeline-single-box');
       if (pipelineGrid) {
         const singleBox = document.createElement('div');
@@ -7872,42 +8059,105 @@
         singleBox.innerHTML = `
           <div class="pipeline-steps-list">
             <div class="pipeline-step-item">
-              <h4>1. Understand &amp; Discover</h4>
-              <div class="pipeline-step-subtitle"><strong>Understanding Your Vision</strong></div>
-              <p>We begin by understanding your business, objectives, challenges and expectations. Through discussions and requirement analysis, we identify the right solutions and define a clear direction for your project.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                <span>STEP 01</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>1. Understand &amp; Discover</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-lightbulb"></i> Understanding Your Vision</span>
+                </div>
+                <p>We begin by understanding your business, objectives, challenges and expectations. Through discussions and requirement analysis, we identify the right solutions and define a clear direction for your project.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>2. Plan &amp; Strategize</h4>
-              <div class="pipeline-step-subtitle"><strong>Building the Right Roadmap</strong></div>
-              <p>We develop a comprehensive project plan covering scope, technology, resources, timelines, deliverables and milestones. This ensures a clear implementation strategy before development begins.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-route"></i>
+                <span>STEP 02</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>2. Plan &amp; Strategize</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-compass"></i> Building the Right Roadmap</span>
+                </div>
+                <p>We develop a comprehensive project plan covering scope, technology, resources, timelines, deliverables and milestones. This ensures a clear implementation strategy before development begins.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>3. Design &amp; Conceptualize</h4>
-              <div class="pipeline-step-subtitle"><strong>Turning Ideas into Experiences</strong></div>
-              <p>Our creative and technical teams develop concepts, wireframes, prototypes, visual designs and technical architecture. We focus on functionality, usability, creativity and the overall user experience.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-pen-ruler"></i>
+                <span>STEP 03</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>3. Design &amp; Conceptualize</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-wand-magic-sparkles"></i> Turning Ideas into Experiences</span>
+                </div>
+                <p>Our creative and technical teams develop concepts, wireframes, prototypes, visual designs and technical architecture. We focus on functionality, usability, creativity and the overall user experience.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>4. Develop &amp; Create</h4>
-              <div class="pipeline-step-subtitle"><strong>Bringing Ideas to Life</strong></div>
-              <p>Our multidisciplinary team transforms approved concepts into working solutions. Through software development, application development, game development, VR/AR experiences, animation and digital content production, we focus on delivering solutions that align with your requirements.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-laptop-code"></i>
+                <span>STEP 04</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>4. Develop &amp; Create</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-cubes"></i> Bringing Ideas to Life</span>
+                </div>
+                <p>Our multidisciplinary team transforms approved concepts into working solutions. Through software development, application development, game development, VR/AR experiences, animation and digital content production, we focus on delivering solutions that align with your requirements.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>5. Test &amp; Refine</h4>
-              <div class="pipeline-step-subtitle"><strong>Quality at Every Stage</strong></div>
-              <p>We conduct continuous testing, reviews and quality checks throughout the implementation process. We identify issues, optimize performance and refine the solution based on feedback to ensure reliability and quality.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-vial-circle-check"></i>
+                <span>STEP 05</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>5. Test &amp; Refine</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-shield-check"></i> Quality at Every Stage</span>
+                </div>
+                <p>We conduct continuous testing, reviews and quality checks throughout the implementation process. We identify issues, optimize performance and refine the solution based on feedback to ensure reliability and quality.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>6. Deliver &amp; Deploy</h4>
-              <div class="pipeline-step-subtitle"><strong>Ready for the Real World</strong></div>
-              <p>Once the project meets the agreed requirements, we proceed with final deployment and delivery. We provide the necessary documentation, project handover and guidance to ensure a smooth transition.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-rocket"></i>
+                <span>STEP 06</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>6. Deliver &amp; Deploy</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-globe"></i> Ready for the Real World</span>
+                </div>
+                <p>Once the project meets the agreed requirements, we proceed with final deployment and delivery. We provide the necessary documentation, project handover and guidance to ensure a smooth transition.</p>
+              </div>
             </div>
+
             <div class="pipeline-step-item">
-              <h4>7. Support &amp; Grow</h4>
-              <div class="pipeline-step-subtitle"><strong>Building Long-Term Partnerships</strong></div>
-              <p>Our relationship doesn't end with project delivery. We provide ongoing technical support, maintenance, updates and improvements to help your business adapt, grow and succeed.</p>
+              <div class="pipeline-step-icon-badge">
+                <i class="fa-solid fa-handshake-angle"></i>
+                <span>STEP 07</span>
+              </div>
+              <div class="pipeline-step-content">
+                <div class="pipeline-step-header-row">
+                  <h4>7. Support &amp; Grow</h4>
+                  <span class="pipeline-step-subtitle"><i class="fa-solid fa-chart-line"></i> Building Long-Term Partnerships</span>
+                </div>
+                <p>Our relationship doesn't end with project delivery. We provide ongoing technical support, maintenance, updates and improvements to help your business adapt, grow and succeed.</p>
+              </div>
             </div>
           </div>
           <div class="pipeline-closing-motto">
+            <i class="fa-solid fa-award"></i>
             <strong>Your Vision. Our Expertise. One Shared Goal – Success.</strong>
           </div>
         `;

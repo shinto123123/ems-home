@@ -23,11 +23,11 @@
       --bg-card-hover: #2d073f;
       --primary-violet: #a855f7;
       --primary-violet-hover: #c084fc;
-      --accent-emerald: #2dd48f;
+      --accent-emerald: #c084fc;
       --text-main: #ffffff;
       --text-muted: #e4d5ef;
-      --border-subtle: rgba(192, 132, 252, 0.22);
-      --border-green: rgba(45, 212, 143, 0.42);
+      --border-subtle: rgba(192, 132, 252, 0.28);
+      --border-green: rgba(192, 132, 252, 0.45);
       --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.55);
       --radius-lg: 24px;
       --radius-pill: 9999px;
@@ -37,6 +37,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
 
     body {
@@ -44,8 +45,8 @@
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       color: var(--text-main);
       background:
-        radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.16), transparent 32%),
-        radial-gradient(circle at 85% 25%, rgba(45, 212, 143, 0.14), transparent 30%),
+        radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.18), transparent 32%),
+        radial-gradient(circle at 85% 25%, rgba(232, 121, 249, 0.14), transparent 30%),
         linear-gradient(180deg, #120219 0%, #170321 50%, #100216 100%);
       line-height: 1.65;
     }
@@ -97,18 +98,20 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: var(--radius-pill);
-      background: rgba(168, 85, 247, 0.15);
-      border: 1px solid var(--border-subtle);
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
       color: var(--text-main);
       font-size: 0.9rem;
       font-weight: 700;
+      box-shadow: 0 6px 20px rgba(84, 14, 105, 0.4);
     }
 
     .back-link:hover {
-      border-color: var(--accent-emerald);
-      color: var(--accent-emerald);
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      color: #ffffff;
       transform: translateX(-3px);
     }
 
@@ -129,9 +132,9 @@
       gap: 10px;
       padding: 8px 22px;
       border-radius: var(--radius-pill);
-      background: rgba(45, 212, 143, 0.14);
+      background: rgba(168, 85, 247, 0.16);
       border: 1.5px solid var(--border-green);
-      color: var(--accent-emerald);
+      color: #e9d5ff;
       font-size: 0.86rem;
       font-weight: 800;
       text-transform: uppercase;
@@ -146,7 +149,7 @@
     }
 
     .gradient-text {
-      background: linear-gradient(135deg, #d8b4fe 0%, #a855f7 45%, #2dd48f 100%);
+      background: linear-gradient(135deg, #d8b4fe 0%, #a855f7 50%, #e879f9 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -166,8 +169,8 @@
     }
 
     .job-card {
-      background: linear-gradient(145deg, #220430 0%, #14021d 65%, #0c3528 100%);
-      border: 1.5px solid rgba(45, 212, 143, 0.32);
+      background: linear-gradient(145deg, #240433 0%, #170221 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.32);
       border-radius: var(--radius-lg);
       padding: 28px 26px;
       box-shadow: var(--shadow-card);
@@ -187,13 +190,13 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #741793 0%, #a855f7 50%, #2dd48f 100%);
+      background: linear-gradient(90deg, #540e69 0%, #a855f7 50%, #e879f9 100%);
     }
 
     .job-card:hover {
       transform: translateY(-6px);
-      border-color: var(--accent-emerald);
-      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.7), 0 0 30px rgba(45, 212, 143, 0.22);
+      border-color: #c084fc;
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 85, 247, 0.28);
     }
 
     .job-card-top {
@@ -222,9 +225,9 @@
     }
 
     .job-tag-pill.green {
-      background: rgba(45, 212, 143, 0.15);
-      border-color: rgba(45, 212, 143, 0.4);
-      color: var(--accent-emerald);
+      background: rgba(116, 23, 147, 0.32);
+      border-color: rgba(192, 132, 252, 0.45);
+      color: #f3e8ff;
     }
 
     .job-card h3 {
@@ -285,7 +288,7 @@
     .status-text {
       font-size: 0.82rem;
       font-weight: 700;
-      color: var(--accent-emerald);
+      color: #d8b4fe;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -297,17 +300,19 @@
       gap: 8px;
       padding: 10px 22px;
       border-radius: var(--radius-pill);
-      background: linear-gradient(135deg, #3b0752 0%, #0d7a56 55%, #2dd48f 100%);
-      border: 1px solid rgba(45, 212, 143, 0.45);
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
       color: #ffffff;
       font-weight: 700;
       font-size: 0.88rem;
-      box-shadow: 0 8px 22px rgba(13, 122, 86, 0.4);
+      box-shadow: 0 8px 22px rgba(84, 14, 105, 0.45);
     }
 
     .apply-btn:hover {
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(45, 212, 143, 0.5);
+      box-shadow: 0 12px 28px rgba(168, 85, 247, 0.55);
     }
 
     .site-footer {

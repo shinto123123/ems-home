@@ -3,52 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In - Paoyaila Animation Studio</title>
+  <title>Login - Paoyaila Technologies Studio</title>
+  <!-- Fonts (Same as Landing Page) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
     :root {
-      --bg: #0a1226;
-      --canvas: #0f1836;
-      --surface: #171f44;
-      --surface-soft: rgba(255,255,255,0.08);
-      --text: #edf2ff;
-      --muted: #9ab3dc;
-      --accent: #2bb7ff;
-      --accent-strong: #45d0ff;
-      --success: #2ce27a;
-      --border: rgba(255,255,255,0.12);
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      --bg: #120219;
+      --canvas: #160320;
+      --surface: #230533;
+      --surface-soft: rgba(168, 85, 247, 0.12);
+      --text: #ffffff;
+      --muted: #e4d5ef;
+      --accent: #a855f7;
+      --accent-strong: #c084fc;
+      --success: #c084fc;
+      --border: rgba(192, 132, 252, 0.25);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 38px rgba(168, 85, 247, 0.2);
       --radius: 24px;
     }
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.025em;
+    }
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at top left, rgba(67, 156, 255, 0.18), transparent 25%),
-                  radial-gradient(circle at right, rgba(72, 203, 255, 0.14), transparent 18%),
-                  linear-gradient(180deg, #08101f 0%, #0a1226 100%);
+      background:
+        radial-gradient(circle at top left, rgba(168, 85, 247, 0.22), transparent 30%),
+        radial-gradient(circle at right, rgba(232, 121, 249, 0.16), transparent 24%),
+        linear-gradient(180deg, #120219 0%, #190324 55%, #110217 100%);
     }
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 22%),
-                  radial-gradient(circle at 80% 15%, rgba(0, 183, 255, 0.14), transparent 18%);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(192, 132, 252, 0.1), transparent 25%),
+        radial-gradient(circle at 80% 15%, rgba(116, 23, 147, 0.22), transparent 22%);
       pointer-events: none;
     }
     .auth-container {
       width: min(540px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 48px 0;
+      padding: 36px 0 48px;
       position: relative;
       z-index: 1;
       animation: fadeInUp 0.8s ease forwards;
     }
+    .auth-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 18px;
+    }
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(84, 14, 105, 0.42);
+      transition: all 0.25s ease;
+    }
+    .back-home-btn:hover {
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      transform: translateX(-3px);
+      box-shadow: 0 10px 28px rgba(168, 85, 247, 0.55);
+      color: #ffffff;
+    }
     .auth-card {
-      background: rgba(255,255,255,0.04);
+      background: linear-gradient(155deg, rgba(35, 5, 51, 0.94) 0%, rgba(21, 2, 31, 0.96) 100%);
       backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(192, 132, 252, 0.32);
       border-radius: var(--radius);
       padding: 40px 32px;
       box-shadow: var(--shadow);
@@ -57,16 +100,17 @@
       text-align: center;
       margin-bottom: 28px;
     }
-    .auth-header .brand img {
-      width: 100px;
+    .auth-header img {
+      width: 170px;
       height: auto;
       display: block;
-      margin: 0 auto 12px;
+      margin: 0 auto 16px;
     }
     .auth-header h1 {
       margin: 0 0 10px;
       font-size: 2rem;
       letter-spacing: -0.03em;
+      color: #ffffff;
     }
     .auth-header p {
       margin: 0;
@@ -92,8 +136,8 @@
       gap: 6px;
       padding: 12px 6px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(192, 132, 252, 0.2);
+      background: rgba(18, 2, 26, 0.65);
       color: var(--muted);
       font-size: 0.8rem;
       font-weight: 600;
@@ -104,15 +148,15 @@
       white-space: nowrap;
     }
     .role-option label:hover {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(67,156,255,0.35);
+      background: rgba(168, 85, 247, 0.16);
+      border-color: rgba(192, 132, 252, 0.45);
       color: var(--text);
     }
     .role-option input:checked + label {
-      background: rgba(43,183,255,0.14);
-      border-color: rgba(67,156,255,0.55);
-      color: var(--text);
-      box-shadow: 0 0 0 4px rgba(43,183,255,0.08);
+      background: linear-gradient(135deg, rgba(84, 14, 105, 0.75) 0%, rgba(116, 23, 147, 0.85) 100%);
+      border-color: #c084fc;
+      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.22);
     }
     .role-icon {
       font-size: 1.4rem;
@@ -127,6 +171,7 @@
       gap: 8px;
       font-size: 0.92rem;
       color: var(--muted);
+      font-weight: 600;
     }
     .input-wrapper {
       position: relative;
@@ -135,18 +180,19 @@
       width: 100%;
       padding: 16px 18px;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(192, 132, 252, 0.26);
+      background: rgba(18, 2, 25, 0.75);
       color: var(--text);
+      font-size: 0.95rem;
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .input-wrapper input::placeholder {
-      color: rgba(154,179,220,0.7);
+      color: rgba(228, 213, 239, 0.55);
     }
     .input-wrapper input:focus {
-      border-color: rgba(43,183,255,0.55);
-      box-shadow: 0 0 0 4px rgba(43,183,255,0.12);
+      border-color: #c084fc;
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
     }
     .form-row {
       display: flex;
@@ -169,28 +215,33 @@
     }
     .forgot-link {
       font-size: 0.88rem;
-      color: var(--accent);
+      color: #d8b4fe;
       text-decoration: none;
+      font-weight: 600;
       transition: color 0.2s ease;
     }
     .forgot-link:hover {
-      color: var(--accent-strong);
+      color: #ffffff;
     }
     .auth-form button {
-      border: none;
-      border-radius: 18px;
-      padding: 16px 20px;
-      background: linear-gradient(135deg, #2bb7ff, #57eeff);
-      color: #08101f;
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
+      border-radius: 9999px;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      color: #ffffff;
+      font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.02rem;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 8px 24px rgba(84, 14, 105, 0.5);
+      transition: all 0.25s ease;
       margin-top: 6px;
     }
     .auth-form button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 18px 48px rgba(43,183,255,0.28);
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      box-shadow: 0 14px 36px rgba(168, 85, 247, 0.55);
     }
     .auth-form button:active {
       transform: translateY(0);
@@ -201,14 +252,14 @@
       gap: 16px;
       color: var(--muted);
       font-size: 0.85rem;
-      margin: 4px 0;
+      margin: 8px 0;
     }
     .auth-divider::before,
     .auth-divider::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(192, 132, 252, 0.22);
     }
     .social-buttons {
       display: grid;
@@ -220,20 +271,21 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
+      padding: 13px 16px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(192, 132, 252, 0.42);
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      color: #ffffff;
       font-size: 0.92rem;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(84, 14, 105, 0.38);
+      transition: all 0.25s ease;
     }
     .social-btn:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(67,156,255,0.35);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      transform: translateY(-2px);
     }
     .social-btn svg {
       width: 20px;
@@ -247,20 +299,20 @@
       font-size: 0.9rem;
     }
     .auth-footer a {
-      color: var(--accent);
+      color: #d8b4fe;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       transition: color 0.2s ease;
     }
     .auth-footer a:hover {
-      color: var(--accent-strong);
+      color: #ffffff;
     }
     .demo-hint {
       margin-top: 20px;
       padding: 14px 16px;
       border-radius: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(18, 2, 25, 0.65);
+      border: 1px solid rgba(192, 132, 252, 0.22);
       color: var(--muted);
       font-size: 0.82rem;
       line-height: 1.6;
@@ -307,9 +359,15 @@
 </head>
 <body>
   <div class="auth-container">
+    <div class="auth-top-bar">
+      <a href="index.html" class="back-home-btn" aria-label="Back to Home">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back</span>
+      </a>
+    </div>
     <div class="auth-card">
       <div class="auth-header">
-        <img src="paoyaila-logo.svg" alt="Paoyaila Animation Studio logo" />
+        <img src="paoyaila-logo-white.svg" alt="Paoyaila Animation Studio logo" />
         <h1>Welcome back</h1>
         <p>Sign in to access your dashboard</p>
       </div>
