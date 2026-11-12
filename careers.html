@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Open Career Roles at Paoyaila Technologies LLP — join our animation, games, AR/VR, and digital product studio." />
+  <meta name="theme-color" content="#120219" />
+  <title>Career | Paoyaila Technologies Studio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-dark: #120219;
+      --bg-surface: #1e052c;
+      --bg-card: #21042e;
+      --bg-card-hover: #2d073f;
+      --primary-violet: #a855f7;
+      --primary-violet-hover: #c084fc;
+      --accent-emerald: #c084fc;
+      --text-main: #ffffff;
+      --text-muted: #e4d5ef;
+      --border-subtle: rgba(192, 132, 252, 0.28);
+      --border-green: rgba(192, 132, 252, 0.45);
+      --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.55);
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.18), transparent 32%),
+        radial-gradient(circle at 85% 25%, rgba(232, 121, 249, 0.14), transparent 30%),
+        linear-gradient(180deg, #120219 0%, #170321 50%, #100216 100%);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .topbar {
+      background: rgba(18, 2, 25, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      width: min(1140px, calc(100% - 36px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(84, 14, 105, 0.4);
+    }
+
+    .back-link:hover {
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      color: #ffffff;
+      transform: translateX(-3px);
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 0 0 80px;
+    }
+
+    .hero {
+      padding: 68px 0 44px;
+      text-align: center;
+    }
+
+    .hero .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 22px;
+      border-radius: var(--radius-pill);
+      background: rgba(168, 85, 247, 0.16);
+      border: 1.5px solid var(--border-green);
+      color: #e9d5ff;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.2rem, 4.2vw, 3.2rem);
+      font-weight: 800;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #d8b4fe 0%, #a855f7 50%, #e879f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 680px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .job-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 24px;
+    }
+
+    .job-card {
+      background: linear-gradient(145deg, #240433 0%, #170221 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.32);
+      border-radius: var(--radius-lg);
+      padding: 28px 26px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .job-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #540e69 0%, #a855f7 50%, #e879f9 100%);
+    }
+
+    .job-card:hover {
+      transform: translateY(-6px);
+      border-color: #c084fc;
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 85, 247, 0.28);
+    }
+
+    .job-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .job-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .job-tag-pill {
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      color: #e9d5ff;
+    }
+
+    .job-tag-pill.green {
+      background: rgba(116, 23, 147, 0.32);
+      border-color: rgba(192, 132, 252, 0.45);
+      color: #f3e8ff;
+    }
+
+    .job-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      color: #ffffff;
+    }
+
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #c084fc;
+      font-size: 0.86rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .job-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .job-desc {
+      color: var(--text-muted);
+      line-height: 1.68;
+      font-size: 0.94rem;
+      margin-bottom: 12px;
+    }
+
+    .job-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .skill-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(192, 132, 252, 0.24);
+      color: #f3e8ff;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .job-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(192, 132, 252, 0.16);
+      gap: 12px;
+    }
+
+    .status-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #d8b4fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .apply-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #38064a 0%, #4e0b62 50%, #741793 100%);
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      box-shadow: 0 8px 22px rgba(84, 14, 105, 0.45);
+    }
+
+    .apply-btn:hover {
+      background: linear-gradient(135deg, #540e69 0%, #741793 50%, #a855f7 100%);
+      border-color: #d8b4fe;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(168, 85, 247, 0.55);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: #180221;
+      text-align: center;
+      padding: 32px 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 640px) {
+      .page, .topbar-inner { width: calc(100% - 24px); }
+      .hero { padding: 44px 0 28px; }
+      .job-list { grid-template-columns: 1fr; }
+      .job-card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/images/paoyaila-logo.png" alt="Paoyaila Technologies Studio logo" />
+      </a>
+      <a class="back-link" href="index.html#careers">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Studio</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="page">
+    <section class="hero">
+      <span class="eyebrow"><i class="fa-solid fa-sparkles"></i> Career at Paoyaila</span>
+      <h1>Join Our <span class="gradient-text">World-Class Studio Team</span></h1>
+      <p>We are a technology-driven 3D animation, Unreal Engine gaming, AR/VR, and enterprise software studio at Infopark, Kochi. Explore our open career opportunities below.</p>
+    </section>
+
+    <div class="job-list" id="jobList"></div>
+  </div>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 Paoyaila Technologies LLP, Infopark Phase-1, Kochi, India. All rights reserved.</span>
+  </footer>
+
+  <script type="module">
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { db } from "./assets/js/firebase-config.js";
+
+    const defaultOpenRoles = [
+      {
+        jobTitle: "Senior 3D Animator & Character TD",
+        department: "Animation & Rigging",
+        workMode: "On-site",
+        employmentType: "Full-Time",
+        location: "Infopark, Kochi • 3-6 Years",
+        openings: 2,
+        statusLabel: "Immediate Opening",
+        description: "Lead cinematic character rigging, facial blendshapes, and realistic creature motion for AAA interactive and CGI film projects.",
+        requiredSkills: "Maya, Blender, Character Rigging, Blendshapes, Motion Capture"
+      },
+      {
+        jobTitle: "Unreal Engine 5 Gameplay Developer",
+        department: "Interactive & Gaming",
+        workMode: "Hybrid",
+        employmentType: "Full-Time",
+        location: "Kochi / Remote • 2-5 Years",
+        openings: 2,
+        statusLabel: "Active Role",
+        description: "Architect multiplayer mechanics, C++ Blueprints optimization, Lumen lighting workflows, and VR/AR interactive logic.",
+        requiredSkills: "Unreal Engine 5, C++, Blueprints, Lumen, Multiplayer"
+      },
+      {
+        jobTitle: "Full-Stack Enterprise Software Engineer",
+        department: "Digital Platforms & Data Analytics",
+        workMode: "On-site",
+        employmentType: "Full-Time",
+        location: "Infopark, Kochi • 2-4 Years",
+        openings: 3,
+        statusLabel: "Immediate Opening",
+        description: "Build scalable cloud architectures, BI data analytics dashboards, and real-time enterprise ERP/HRM management modules.",
+        requiredSkills: "React, Node.js, Python, Data Analytics, Cloud Architecture"
+      }
+    ];
+
+    const jobList = document.getElementById('jobList');
+    let firestoreRolesCache = [];
+
+    function getCMSRolesAndHeader() {
+      try {
+        const raw = localStorage.getItem('landingPageContent');
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed.career) {
+          const heroTitleEl = document.querySelector('.hero h1');
+          const heroSubEl = document.querySelector('.hero p');
+          if (heroTitleEl && parsed.career.pageHeroTitle) {
+            heroTitleEl.innerHTML = parsed.career.pageHeroTitle;
+          }
+          if (heroSubEl && parsed.career.pageHeroSubtitle) {
+            heroSubEl.textContent = parsed.career.pageHeroSubtitle;
+          }
+          if (Array.isArray(parsed.career.positions)) {
+            return parsed.career.positions
+              .filter(p => p.published !== false)
+              .map(p => ({
+                jobTitle: p.jobTitle || p.title || 'Open Role',
+                department: p.department || p.dept || 'Studio Team',
+                workMode: p.workMode || 'On-site',
+                employmentType: p.employmentType || p.type || 'Full-Time',
+                location: p.location || 'Infopark, Kochi',
+                openings: p.openings || 1,
+                statusLabel: p.statusLabel || 'Active Opening',
+                description: p.description || p.desc || '',
+                requiredSkills: p.requiredSkills || ''
+              }));
+          }
+        }
+      } catch (e) {
+        console.warn("CMS career read error:", e);
+      }
+      return null;
+    }
+
+    function renderRoles(roles) {
+      if (!roles.length) {
+        jobList.innerHTML = `<div class="empty-box"><h3>No Open Positions Right Now</h3><p>Check back soon or send your portfolio to paoyaila@gmail.com.</p></div>`;
+        return;
+      }
+      jobList.innerHTML = roles.map(v => {
+        const skills = (v.requiredSkills || '').split(',').map(s => s.trim()).filter(Boolean);
+        const mailSubject = encodeURIComponent(`Application: ${v.jobTitle || 'Open Role'}`);
+        const mailBody = encodeURIComponent(`Hi Paoyaila Hiring Team,\n\nI would like to apply for the ${v.jobTitle || 'open role'} position.\n\n[Attach your resume / portfolio link and tell us about yourself]`);
+        return `
+          <article class="job-card">
+            <div>
+              <div class="job-tags-row">
+                <span class="job-tag-pill">${v.department || 'Studio Team'}</span>
+                <span class="job-tag-pill green">${v.employmentType || 'Full-Time'} • ${v.workMode || 'On-site'}</span>
+              </div>
+              <h3>${v.jobTitle || 'Open Role'}</h3>
+              <div class="job-meta">
+                <span><i class="fa-solid fa-location-dot"></i> ${v.location || 'Infopark, Kochi'}</span>
+                <span><i class="fa-solid fa-user-plus"></i> ${v.openings || 1} opening${(v.openings || 1) > 1 ? 's' : ''}</span>
+              </div>
+              ${v.description ? `<p class="job-desc">${v.description}</p>` : ''}
+              ${skills.length ? `<div class="job-skills">${skills.map(s => `<span class="skill-chip">${s}</span>`).join('')}</div>` : ''}
+            </div>
+            <div class="job-card-footer">
+              <span class="status-text"><i class="fa-solid fa-circle-check"></i> ${v.statusLabel || 'Active Opening'}</span>
+              <a class="apply-btn" href="mailto:paoyaila@gmail.com?subject=${mailSubject}&body=${mailBody}">
+                <span>Apply Now</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function refreshCombinedRoles() {
+      const cmsRoles = getCMSRolesAndHeader();
+      const baseRoles = cmsRoles !== null ? cmsRoles : defaultOpenRoles;
+      const seen = new Set(baseRoles.map(r => (r.jobTitle || '').toLowerCase().trim()));
+      const extraFirestore = firestoreRolesCache.filter(r => !seen.has((r.jobTitle || '').toLowerCase().trim()));
+      renderRoles([...extraFirestore, ...baseRoles]);
+    }
+
+    // Render immediately from CMS / defaults
+    refreshCombinedRoles();
+
+    async function loadOpenRoles() {
+      try {
+        const snap = await getDocs(collection(db, "recruitment"));
+        firestoreRolesCache = snap.docs
+          .map(d => d.data())
+          .filter(v => v.published && (v.status || 'Active') === 'Active');
+        refreshCombinedRoles();
+      } catch (error) {
+        console.warn("Using CMS / default studio career roles:", error);
+      }
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'landingPageContent') {
+        refreshCombinedRoles();
+      }
+    });
+
+    loadOpenRoles();
+  </script>
+</body>
+</html>
